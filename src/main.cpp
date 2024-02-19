@@ -1,13 +1,6 @@
-#include <GL.h>
-#include <GLFW.h>
+#include <iostream>
 
-int main() {
-    glfwInit();
-    auto window = glfwCreateWindow(100, 100, "Test", nullptr, nullptr);
-
-    while (!glfwWindowShouldClose(window)) {
-        glfwPollEvents();
-    }
-
-    return 0;
+int main()
+{
+	std::cout << "Hello World!" << std::endl;
 }
