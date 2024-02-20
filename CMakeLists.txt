@@ -3,21 +3,29 @@ project(Minecraft_Remake VERSION 0.1)
 
 # Adding GLAD library
 add_library(
-    glad
-    lib/glad/glad.c
-    lib/glad/include/glad/glad.h
-    lib/glad/include/KHR/khrplatform.h
+        glad
+        lib/glad/glad.c
+        lib/glad/include/glad/glad.h
+        lib/glad/include/KHR/khrplatform.h
 )
 
 # Adding GLFW library
 add_subdirectory(lib/glfw)
 
+# Adding GLM library
+add_subdirectory(lib/glm/glm)
+
 # Include dirs
 include_directories(lib/glad/include)
 include_directories(lib/glfw/include)
+include_directories(lib/glm)
 
 # Main executable
-add_executable(main src/Main.cpp)
+add_executable(main
+        src/Main.cpp
+        src/Common.h
+        src/Common.cpp
+)
 
 # Linking libraries
 target_link_libraries(main glfw ${GLFW_LIBRARIES})
