@@ -3,6 +3,8 @@
 .idea/
 bin/
 obj/
+.vscode/
+build/
 
 # Files
 *.vcxproj
