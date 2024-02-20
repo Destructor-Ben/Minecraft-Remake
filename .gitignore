@@ -5,6 +5,7 @@ bin/
 obj/
 .vscode/
 build/
+cmake-build-debug/
 
 # Files
 *.vcxproj
