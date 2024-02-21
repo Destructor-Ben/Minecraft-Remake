@@ -18,6 +18,7 @@ namespace Minecraft
             0.0f, 1.0f
         };
 
+        // TODO: i believe opengl uses anti clockwise winding order for indicies
         uint index[] = {
             0,
             1,
