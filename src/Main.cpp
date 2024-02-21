@@ -25,12 +25,6 @@ static void InitGLFW()
 #endif
 }
 
-static void InitGLAD()
-{
-    gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-}
-
 static void InitWindow()
 {
     window = glfwCreateWindow(1280, 720, "Minecraft", nullptr, nullptr);
@@ -38,9 +32,16 @@ static void InitWindow()
     glfwSetFramebufferSizeCallback(window, Resize);
 }
 
+static void InitGLAD()
+{
+    gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+}
+
 static void RunWindow()
 {
+    // TODO: somehow make this go into InitWindow
     glfwMaximizeWindow(window);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
     while (!glfwWindowShouldClose(window))
     {
