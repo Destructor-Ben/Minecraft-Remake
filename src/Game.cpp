@@ -7,8 +7,8 @@
 namespace Minecraft
 {
     GLFWwindow* window;
-    IndexBuffer indexBuffer;
-    VertexBuffer vertexBuffer;
+    IndexBuffer* indexBuffer;
+    VertexBuffer* vertexBuffer;
 
     void Initialize()
     {
@@ -25,18 +25,19 @@ namespace Minecraft
             2
         };
 
-        indexBuffer = IndexBuffer();
-        indexBuffer.SetData(index, 3);
-        indexBuffer.Bind();
+        indexBuffer = new IndexBuffer();
+        indexBuffer->SetData(index, 3);
+        indexBuffer->Bind();
 
-        vertexBuffer = VertexBuffer();
-        vertexBuffer.SetData(vertex, 3, 2);
-        vertexBuffer.Bind();
+        vertexBuffer = new VertexBuffer();
+        vertexBuffer->SetData(vertex, 3, 2);
+        vertexBuffer->Bind();
     }
 
     void Shutdown()
     {
-
+        delete indexBuffer;
+        delete vertexBuffer;
     }
 
     void Tick(float deltaTime)
@@ -52,7 +53,7 @@ namespace Minecraft
 
     void Render()
     {
-        glDrawElements(GL_TRIANGLES, indexBuffer.GetCount(), GL_UNSIGNED_INT, nullptr);
+        glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
     }
 
     void OnResize(int width, int height)
