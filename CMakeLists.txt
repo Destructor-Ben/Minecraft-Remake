@@ -27,6 +27,16 @@ add_executable(Minecraft_Remake
         src/Common.cpp
         src/Game.h
         src/Game.cpp
+        src/Graphics/FragmentShader.h
+        src/Graphics/FragmentShader.cpp
+        src/Graphics/VertexShader.h
+        src/Graphics/VertexShader.cpp
+        src/Graphics/Shader.h
+        src/Graphics/Shader.cpp
+        src/Graphics/VertexBuffer.h
+        src/Graphics/VertexBuffer.cpp
+        src/Graphics/IndexBuffer.h
+        src/Graphics/IndexBuffer.cpp
 )
 
 # Linking libraries
