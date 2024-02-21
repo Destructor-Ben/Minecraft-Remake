@@ -1,19 +1,20 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include "Common.h"
+#include "Game.h"
 
-#include <iostream>
+using namespace Minecraft;
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void processInput(GLFWwindow *window);
+// TODO: improve error checking at some point and also make logging better
+// TODO: tick thread and deltaTime
+// TODO: improve window settings
 
-// settings
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
-
-int main()
+static void Resize(GLFWwindow* window, int width, int height)
 {
-    // glfw: initialize and configure
-    // ------------------------------
+    glViewport(0, 0, width, height);
+    OnResize(width, height);
+}
+
+static void InitGLFW()
+{
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -22,66 +23,52 @@ int main()
 #ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
+}
 
-    // glfw window creation
-    // --------------------
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Hello World!", NULL, NULL);
-    if (window == NULL)
-    {
-        std::cout << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
-        return -1;
-    }
+static void InitGLAD()
+{
+    gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+    glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
+}
+
+static void InitWindow()
+{
+    window = glfwCreateWindow(1280, 720, "Minecraft", nullptr, nullptr);
     glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetFramebufferSizeCallback(window, Resize);
+}
 
-    // glad: load all OpenGL function pointers
-    // ---------------------------------------
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-        std::cout << "Failed to initialize GLAD" << std::endl;
-        return -1;
-    }    
+static void RunWindow()
+{
+    glfwMaximizeWindow(window);
 
-    // render loop
-    // -----------
     while (!glfwWindowShouldClose(window))
     {
-        // input
-        // -----
-        processInput(window);
+        Update(1.0f);
 
-        // render
-        // ------
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-        // -------------------------------------------------------------------------------
+        Render();
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+}
 
-    // glfw: terminate, clearing all previously allocated GLFW resources.
-    // ------------------------------------------------------------------
+static void ShutdownGLFW()
+{
     glfwTerminate();
-    return 0;
 }
 
-// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
-// ---------------------------------------------------------------------------------------------------------
-void processInput(GLFWwindow *window)
+int main()
 {
-    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
-}
+    InitGLFW();
+    InitWindow();
+    InitGLAD();
+    Initialize();
 
-// glfw: whenever the window size changed (by OS or user resize) this callback function executes
-// ---------------------------------------------------------------------------------------------
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-    // make sure the viewport matches the new window dimensions; note that width and 
-    // height will be significantly larger than specified on retina displays.
-    glViewport(0, 0, width, height);
-}
+    RunWindow();
 
+    Shutdown();
+    ShutdownGLFW();
+}

@@ -21,12 +21,14 @@ include_directories(lib/glfw/include)
 include_directories(lib/glm)
 
 # Main executable
-add_executable(main
+add_executable(Minecraft_Remake
         src/Main.cpp
         src/Common.h
         src/Common.cpp
+        src/Game.h
+        src/Game.cpp
 )
 
 # Linking libraries
-target_link_libraries(main glfw ${GLFW_LIBRARIES})
-target_link_libraries(main glad)
+target_link_libraries(Minecraft_Remake glfw ${GLFW_LIBRARIES})
+target_link_libraries(Minecraft_Remake glad)
