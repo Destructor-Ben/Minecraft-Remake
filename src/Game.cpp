@@ -1,27 +1,36 @@
 #include "Common.h"
 #include "Game.h"
 
+#include "Graphics/IndexBuffer.h"
+#include "Graphics/VertexBuffer.h"
+
 namespace Minecraft
 {
     GLFWwindow* window;
-    uint vBuffer;
-    uint iBuffer;
+    IndexBuffer indexBuffer;
+    VertexBuffer vertexBuffer;
 
     void Initialize()
     {
         float vertex[] = {
-                0.0f, 0.0f,
-                1.0f, 0.0f,
-                0.0f, 1.0f,
+            0.0f, 0.0f,
+            1.0f, 0.0f,
+            0.0f, 1.0f
         };
-        glGenBuffers(1, &vBuffer);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6, vertex, GL_STATIC_DRAW);
-        glBindBuffer(GL_ARRAY_BUFFER, vBuffer);
 
-        uint indicies[] =  {0, 1, 2};
-        glGenBuffers(1, &iBuffer);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * 3, indicies, GL_STATIC_DRAW);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iBuffer);
+        uint index[] = {
+            0,
+            1,
+            2
+        };
+
+        indexBuffer = IndexBuffer();
+        indexBuffer.SetData(index, 3);
+        indexBuffer.Bind();
+
+        vertexBuffer = VertexBuffer();
+        vertexBuffer.SetData(vertex, 3, 2);
+        vertexBuffer.Bind();
     }
 
     void Shutdown()
@@ -42,7 +51,7 @@ namespace Minecraft
 
     void Render()
     {
-        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
+        glDrawElements(GL_TRIANGLES, indexBuffer.GetCount(), GL_UNSIGNED_INT, nullptr);
     }
 
     void OnResize(int width, int height)
