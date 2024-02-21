@@ -3,6 +3,7 @@
 
 #include "Graphics/IndexBuffer.h"
 #include "Graphics/VertexBuffer.h"
+#include "Graphics/Shader.h"
 
 namespace Minecraft
 {
@@ -14,8 +15,8 @@ namespace Minecraft
     {
         float vertex[] = {
             0.0f, 0.0f,
+            0.0f, 1.0f,
             1.0f, 0.0f,
-            0.0f, 1.0f
         };
 
         // TODO: i believe opengl uses anti clockwise winding order for indicies
@@ -32,6 +33,9 @@ namespace Minecraft
         vertexBuffer = new VertexBuffer();
         vertexBuffer->SetData(vertex, 3, 2);
         vertexBuffer->Bind();
+
+        Shader shader("res/shaders/shader");
+        shader.Bind();
     }
 
     void Shutdown()

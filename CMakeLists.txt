@@ -20,6 +20,9 @@ include_directories(lib/glad/include)
 include_directories(lib/glfw/include)
 include_directories(lib/glm)
 
+# Resources
+FILE(COPY res DESTINATION "${CMAKE_BINARY_DIR}")
+
 # Main executable
 add_executable(Minecraft_Remake
         src/Main.cpp
