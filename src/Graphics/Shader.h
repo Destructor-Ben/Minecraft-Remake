@@ -15,6 +15,7 @@ namespace Minecraft
 		~Shader();
 
 		void Bind() const;
+        uint GetID() const;
 
 		static void Unbind();
         static Shader* FromFile(const str& filePath);

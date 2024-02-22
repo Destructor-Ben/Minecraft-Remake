@@ -32,6 +32,11 @@ namespace Minecraft
 		glUseProgram(m_ID);
 	}
 
+    uint Shader::GetID() const
+    {
+        return m_ID;
+    }
+
 	void Shader::Unbind()
 	{
 		glUseProgram(0);
