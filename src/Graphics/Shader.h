@@ -17,7 +17,7 @@ namespace Minecraft
 		void Bind() const;
 
 		static void Unbind();
-        static Shader FromFile(const str& filePath);
+        static Shader* FromFile(const str& filePath);
 
 	private:
 		uint m_ID = 0;
