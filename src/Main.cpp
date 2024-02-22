@@ -6,6 +6,11 @@ using namespace Minecraft;
 // TODO: improve error checking at some point and also make logging better
 // TODO: tick thread and deltaTime
 // TODO: improve window settings
+// TODO: upper level abstractions for graphics stuff:
+// Mesh - contains a VAO and multiple materials
+// VAO - just a gl VAO, though no index buffer is ever bound to it because of materials
+// Material - contains an index buffer and a shader for the index buffer
+// Maybe index buffers should be handled differently, idk though
 
 static void Resize(GLFWwindow* window, int width, int height)
 {
