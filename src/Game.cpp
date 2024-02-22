@@ -16,9 +16,9 @@ namespace Minecraft
     void Initialize()
     {
         float vertex[] = {
-            -0.5f, -0.5f, 0.0f,
-            0.5f, -0.5f, 0.0f,
-            0.0f,  0.5f, 0.0f
+            0.0f, 0.5f,
+            0.5f, 0.5f,
+            0.5f, 0.0f,
         };
 
         glGenVertexArrays(1, &VAO);
@@ -29,16 +29,15 @@ namespace Minecraft
         vertexBuffer->Bind();
 
         glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 
         shader = new Shader("res/shaders/shader");
         shader->Bind();
 
-        // TODO: i believe opengl uses anti clockwise winding order for indicies
         uint index[] = {
-                0,
-                2,
-                1,
+            0,
+            1,
+            2,
         };
 
         indexBuffer = new IndexBuffer();
