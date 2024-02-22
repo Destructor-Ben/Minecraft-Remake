@@ -6,6 +6,7 @@
 #include "Graphics/VertexBuffer.h"
 #include "Graphics/Shader.h"
 
+// TODO: Time - ticks count, render count, framreate, tickrate, etc. real world time?
 namespace Minecraft
 {
     GLFWwindow* Window;
