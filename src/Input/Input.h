@@ -6,9 +6,6 @@
 
 namespace Minecraft
 {
-    static bool* pressedThisFrame = nullptr;
-    static bool* pressedLastFrame = nullptr;
-
     bool IsKeyDown(Key key);
     bool IsKeyUp(Key key);
     bool WasKeyPressed(Key key);
@@ -17,6 +14,4 @@ namespace Minecraft
     void InitializeInput();
     void ShutdownInput();
     void UpdateInput();
-
-    static int GetGLFWKeyCode(Key key);
 }

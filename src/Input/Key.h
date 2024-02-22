@@ -5,6 +5,7 @@
 enum class Key
 {
     // Numbers
+    Zero,
     One,
     Two,
     Three,
@@ -15,37 +16,33 @@ enum class Key
     Eight,
     Nine,
 
-    // First letter row
-    Q,
-    W,
-    E,
-    R,
-    T,
-    Y,
-    U,
-    I,
-    O,
-    P,
-
-    // Second letter row
+    // Letters
     A,
-    S,
+    B,
+    C,
     D,
+    E,
     F,
     G,
     H,
+    I,
     J,
     K,
     L,
-
-    // Third letter row
-    Z,
-    X,
-    C,
-    V,
-    B,
-    N,
     M,
+    N,
+    O,
+    P,
+    Q,
+    R,
+    S,
+    T,
+    U,
+    V,
+    W,
+    X,
+    Y,
+    Z,
 
     // Punctuation
     Grave,
