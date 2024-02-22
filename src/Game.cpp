@@ -50,6 +50,7 @@ namespace Minecraft
         delete indexBuffer;
         delete vertexBuffer;
         delete shader;
+        glDeleteVertexArrays(1, &VAO);
     }
 
     void Tick(float deltaTime)
