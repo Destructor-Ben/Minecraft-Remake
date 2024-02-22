@@ -67,7 +67,7 @@ namespace Minecraft
     {
         UpdateInput();
 
-        if (IsKeyDown(Key::Space))
+        if (WasKeyReleased(Key::Space))
             glfwSetWindowShouldClose(window, true);
     }
 
