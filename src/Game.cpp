@@ -38,7 +38,7 @@ namespace Minecraft
         glEnableVertexAttribArray(0);
         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 
-        shader = new Shader("res/shaders/shader");
+        shader = Shader::FromFile("res/shaders/shader");
         shader->Bind();
 
         uint index[] = {

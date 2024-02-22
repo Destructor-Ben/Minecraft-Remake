@@ -5,25 +5,11 @@
 
 namespace Minecraft
 {
-	Shader::Shader(const str& filePath) : m_ID(0), m_FilePath(filePath)
+	Shader::Shader(const VertexShader& vertexShader, const FragmentShader& fragmentShader) : m_ID(0)
 	{
 		m_ID = glCreateProgram();
-
-		// Loading vertex and fragment shaders
-		std::ifstream vertStream(filePath + ".vert");
-		std::stringstream vertBuffer;
-		vertBuffer << vertStream.rdbuf();
-		vertStream.close();
-		VertexShader vert(vertBuffer.str());
-
-		std::ifstream fragStream(filePath + ".frag");
-		std::stringstream fragBuffer;
-		fragBuffer << fragStream.rdbuf();
-		fragStream.close();
-		FragmentShader frag(fragBuffer.str());
-
-		glAttachShader(m_ID, vert.GetID());
-		glAttachShader(m_ID, frag.GetID());
+		glAttachShader(m_ID, vertexShader.GetID());
+		glAttachShader(m_ID, fragmentShader.GetID());
 		glLinkProgram(m_ID);
 
 		// Error checking
@@ -50,4 +36,11 @@ namespace Minecraft
 	{
 		glUseProgram(0);
 	}
+
+    Shader Shader::FromFile(const str &filePath)
+    {
+        VertexShader vert = VertexShader::FromFile(filePath);
+        FragmentShader frag = FragmentShader::FromFile(filePath);
+        return Shader(vert, frag);
+    }
 }

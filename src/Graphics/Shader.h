@@ -8,19 +8,18 @@
 namespace Minecraft
 {
     // TODO: functions to set uniforms
-    // TODO: options to take in shaders already and also make FromFile functions so u can specify either a filepath or source
 	class Shader
 	{
 	public:
-		Shader(const str& filePath);
+		Shader(const VertexShader& vertexShader, const FragmentShader& fragmentShader);
 		~Shader();
 
 		void Bind() const;
 
 		static void Unbind();
+        static Shader FromFile(const str& filePath);
 
 	private:
 		uint m_ID = 0;
-		str m_FilePath;
 	};
 }
