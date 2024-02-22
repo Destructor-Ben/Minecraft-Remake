@@ -3,9 +3,10 @@
 #include "../Game.h"
 
 // TODO: make keybinds that can be reassigned
-// TODO: mouse input, also get screen size somewhere in the code
 namespace Minecraft
 {
+    glm::vec2 MousePos;
+
     const int KeyCount = (int)Key::Count;
 
     static bool* pressedThisFrame = nullptr;
@@ -32,6 +33,8 @@ namespace Minecraft
     }
 
     void InitializeInput() {
+        MousePos = glm::vec2();
+
         pressedThisFrame = new bool[KeyCount];
         pressedLastFrame = new bool[KeyCount];
 
@@ -161,6 +164,13 @@ namespace Minecraft
 
     void UpdateInput()
     {
+        // Mouse
+        double mouseX, mouseY;
+        glfwGetCursorPos(Window, &mouseX, &mouseY);
+        MousePos.x = (float)mouseX;
+        MousePos.y = (float)mouseY;
+
+        // Keys
         for (int i = 0; i < KeyCount; ++i) {
             int key = GetGLFWKeyCode((Key)i);
 
