@@ -2,6 +2,8 @@
 
 #include "../Game.h"
 
+// TODO: make keybinds that can be reassigned
+// TODO: mouse input, also get screen size somewhere in the code
 namespace Minecraft
 {
     const int KeyCount = (int)Key::Count;
@@ -45,7 +47,6 @@ namespace Minecraft
     }
 
     int GetGLFWKeyCode(Key key) {
-        // TODO: implement this fully
         switch (key) {
             // Numbers
             case Key::Zero:
