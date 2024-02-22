@@ -11,6 +11,7 @@ namespace Minecraft
     IndexBuffer* indexBuffer;
     VertexBuffer* vertexBuffer;
     Shader* shader;
+    uint VAO;
 
     void Initialize()
     {
@@ -20,23 +21,29 @@ namespace Minecraft
             0.0f,  0.5f, 0.0f
         };
 
-        // TODO: i believe opengl uses anti clockwise winding order for indicies
-        uint index[] = {
-            0,
-            2,
-            1
-        };
-
-        indexBuffer = new IndexBuffer();
-        indexBuffer->SetData(index, 3);
-        indexBuffer->Bind();
+        glGenVertexArrays(1, &VAO);
+        glBindVertexArray(VAO);
 
         vertexBuffer = new VertexBuffer();
         vertexBuffer->SetData(vertex, 3, 2);
         vertexBuffer->Bind();
 
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+
         shader = new Shader("res/shaders/shader");
         shader->Bind();
+
+        // TODO: i believe opengl uses anti clockwise winding order for indicies
+        uint index[] = {
+                0,
+                2,
+                1,
+        };
+
+        indexBuffer = new IndexBuffer();
+        indexBuffer->SetData(index, 4);
+        indexBuffer->Bind();
     }
 
     void Shutdown()
