@@ -24,6 +24,7 @@ namespace Minecraft
         m_DataAlreadySet = true;
 
 		Bind();
+        // TODO: sizeof?
 		glBufferData(GL_ARRAY_BUFFER, count * countPerVertex * sizeOfNumber, data, m_Static ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
 	}
 

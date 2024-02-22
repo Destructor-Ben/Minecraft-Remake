@@ -10,20 +10,21 @@ namespace Minecraft
     GLFWwindow* window;
     IndexBuffer* indexBuffer;
     VertexBuffer* vertexBuffer;
+    Shader* shader;
 
     void Initialize()
     {
         float vertex[] = {
-            0.0f, 0.0f,
-            0.0f, 1.0f,
-            1.0f, 0.0f,
+            -0.5f, -0.5f, 0.0f,
+            0.5f, -0.5f, 0.0f,
+            0.0f,  0.5f, 0.0f
         };
 
         // TODO: i believe opengl uses anti clockwise winding order for indicies
         uint index[] = {
             0,
-            1,
-            2
+            2,
+            1
         };
 
         indexBuffer = new IndexBuffer();
@@ -34,14 +35,15 @@ namespace Minecraft
         vertexBuffer->SetData(vertex, 3, 2);
         vertexBuffer->Bind();
 
-        Shader shader("res/shaders/shader");
-        shader.Bind();
+        shader = new Shader("res/shaders/shader");
+        shader->Bind();
     }
 
     void Shutdown()
     {
         delete indexBuffer;
         delete vertexBuffer;
+        delete shader;
     }
 
     void Tick(float deltaTime)

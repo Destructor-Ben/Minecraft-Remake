@@ -4,6 +4,10 @@
 
 namespace Minecraft
 {
+    const int InitialWidth = 1280;
+    const int InitialHeight = 720;
+    const bool StartFullscreen = true;
+
     extern GLFWwindow* window;
 
     void Initialize();

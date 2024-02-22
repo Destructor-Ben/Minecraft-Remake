@@ -7,6 +7,7 @@
 
 namespace Minecraft
 {
+    // TODO: functions to set uniforms
 	class Shader
 	{
 	public:
