@@ -37,7 +37,7 @@ namespace Minecraft
 		glUseProgram(0);
 	}
 
-    // TODO: ideally this wont return a pointer
+    // TODO: ideally this wont return a pointer - also fix for other shaders
     Shader* Shader::FromFile(const str &filePath)
     {
         VertexShader vert = VertexShader::FromFile(filePath);

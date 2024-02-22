@@ -5,18 +5,21 @@
 #include "Graphics/IndexBuffer.h"
 #include "Graphics/VertexBuffer.h"
 #include "Graphics/Shader.h"
+#include "Graphics/VertexArray.h"
 
 // TODO: Time - ticks count, render count, framreate, tickrate, etc. real world time?
 namespace Minecraft
 {
+    // TODO: maybe move this to graphics class?
     GLFWwindow* Window;
     int ScreenWidth = InitialWidth;
     int ScreenHeight = InitialHeight;
+    // END TODO
 
     IndexBuffer* indexBuffer;
     VertexBuffer* vertexBuffer;
+    VertexArray* vertexArray;
     Shader* shader;
-    uint VAO;
 
     void Initialize()
     {
@@ -28,8 +31,8 @@ namespace Minecraft
             0.5f, 0.0f,
         };
 
-        glGenVertexArrays(1, &VAO);
-        glBindVertexArray(VAO);
+        vertexArray = new VertexArray();
+        vertexArray->Bind();
 
         vertexBuffer = new VertexBuffer();
         vertexBuffer->SetData(vertex, 3, 2);
@@ -58,8 +61,8 @@ namespace Minecraft
 
         delete indexBuffer;
         delete vertexBuffer;
+        delete vertexArray;
         delete shader;
-        glDeleteVertexArrays(1, &VAO);
     }
 
     void Tick(float deltaTime)
