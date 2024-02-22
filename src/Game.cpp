@@ -8,7 +8,10 @@
 
 namespace Minecraft
 {
-    GLFWwindow* window;
+    GLFWwindow* Window;
+    int ScreenWidth = InitialWidth;
+    int ScreenHeight = InitialHeight;
+
     IndexBuffer* indexBuffer;
     VertexBuffer* vertexBuffer;
     Shader* shader;
@@ -68,7 +71,7 @@ namespace Minecraft
         UpdateInput();
 
         if (WasKeyReleased(Key::Space))
-            glfwSetWindowShouldClose(window, true);
+            glfwSetWindowShouldClose(Window, true);
     }
 
     void Render()
@@ -78,6 +81,7 @@ namespace Minecraft
 
     void OnResize(int width, int height)
     {
-
+        ScreenWidth = width;
+        ScreenHeight = height;
     }
 }

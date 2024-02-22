@@ -8,6 +8,7 @@
 namespace Minecraft
 {
     // TODO: functions to set uniforms
+    // TODO: options to take in shaders already and also make FromFile functions so u can specify either a filepath or source
 	class Shader
 	{
 	public:

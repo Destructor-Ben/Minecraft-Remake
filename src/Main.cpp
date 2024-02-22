@@ -32,9 +32,9 @@ static void InitGLFW()
 
 static void InitWindow()
 {
-    window = glfwCreateWindow(InitialWidth, InitialHeight, "Minecraft", nullptr, nullptr);
-    glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, Resize);
+    Window = glfwCreateWindow(InitialWidth, InitialHeight, "Minecraft", nullptr, nullptr);
+    glfwMakeContextCurrent(Window);
+    glfwSetFramebufferSizeCallback(Window, Resize);
 }
 
 static void InitGLAD()
@@ -48,9 +48,9 @@ static void RunWindow()
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glViewport(0, 0, InitialWidth, InitialHeight);
     if (StartFullscreen)
-        glfwMaximizeWindow(window);
+        glfwMaximizeWindow(Window);
 
-    while (!glfwWindowShouldClose(window))
+    while (!glfwWindowShouldClose(Window))
     {
         Update(1.0f);
 
@@ -58,7 +58,7 @@ static void RunWindow()
 
         Render();
 
-        glfwSwapBuffers(window);
+        glfwSwapBuffers(Window);
         glfwPollEvents();
     }
 }

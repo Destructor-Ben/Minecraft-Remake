@@ -8,9 +8,9 @@ namespace Minecraft
     const int InitialHeight = 720;
     const bool StartFullscreen = true;
 
-    // TODO: capitalize this
-    extern GLFWwindow* window;
-    // TODO: add window size variables
+    extern GLFWwindow* Window;
+    extern int ScreenWidth;
+    extern int ScreenHeight;
 
     void Initialize();
     void Shutdown();

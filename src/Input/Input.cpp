@@ -168,7 +168,7 @@ namespace Minecraft
                 continue;
 
             pressedLastFrame[i] = pressedThisFrame[i];
-            pressedThisFrame[i] = glfwGetKey(window, key) == GLFW_PRESS;
+            pressedThisFrame[i] = glfwGetKey(Window, key) == GLFW_PRESS;
         }
     }
 }
