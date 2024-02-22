@@ -40,6 +40,9 @@ add_executable(Minecraft_Remake
         src/Graphics/VertexBuffer.cpp
         src/Graphics/IndexBuffer.h
         src/Graphics/IndexBuffer.cpp
+        src/Input/Input.h
+        src/Input/Input.cpp
+        src/Input/Key.h
 )
 
 # Linking libraries

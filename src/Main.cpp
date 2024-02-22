@@ -68,10 +68,10 @@ int main()
     InitGLFW();
     InitWindow();
     InitGLAD();
+
     Initialize();
-
     RunWindow();
-
     Shutdown();
+
     ShutdownGLFW();
 }

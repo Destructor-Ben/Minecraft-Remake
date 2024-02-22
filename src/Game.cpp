@@ -1,6 +1,7 @@
 #include "Common.h"
 #include "Game.h"
 
+#include "Input/Input.h."
 #include "Graphics/IndexBuffer.h"
 #include "Graphics/VertexBuffer.h"
 #include "Graphics/Shader.h"
@@ -15,6 +16,8 @@ namespace Minecraft
 
     void Initialize()
     {
+        InitializeInput();
+
         float vertex[] = {
             0.0f, 0.5f,
             0.5f, 0.5f,
@@ -47,6 +50,8 @@ namespace Minecraft
 
     void Shutdown()
     {
+        ShutdownInput();
+
         delete indexBuffer;
         delete vertexBuffer;
         delete shader;
@@ -60,7 +65,9 @@ namespace Minecraft
 
     void Update(float deltaTime)
     {
-        if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        UpdateInput();
+
+        if (IsKeyDown(Key::Space))
             glfwSetWindowShouldClose(window, true);
     }
 
