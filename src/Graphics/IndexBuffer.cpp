@@ -25,7 +25,6 @@ namespace Minecraft
         m_DataAlreadySet = true;
 
 		Bind();
-		// TODO: ASSERT(sizeof(GLuint) == sizeof(uint));
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizePerIndex, data, m_Static ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
 	}
 

@@ -20,6 +20,8 @@ namespace Minecraft
 			glGetProgramInfoLog(m_ID, 512, nullptr, infoLog);
 			Log(str("Error: Shader linking failed:\n") + infoLog);
 		}
+
+        Bind();
 	}
 
 	Shader::~Shader()
@@ -42,7 +44,6 @@ namespace Minecraft
 		glUseProgram(0);
 	}
 
-    // TODO: ideally this wont return a pointer - also fix for other shaders
     Shader* Shader::FromFile(const str &filePath)
     {
         VertexShader vert = VertexShader::FromFile(filePath);
