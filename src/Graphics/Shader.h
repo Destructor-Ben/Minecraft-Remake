@@ -16,7 +16,6 @@ namespace Minecraft
 		~Shader();
 
 		void Bind() const;
-        uint GetID() const;
 
 		static void Unbind();
         // TODO: ideally this wont return a pointer - also fix for other shaders

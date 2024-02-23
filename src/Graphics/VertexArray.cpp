@@ -5,6 +5,7 @@ namespace Minecraft
     VertexArray::VertexArray()
     {
         glGenVertexArrays(1, &m_ID);
+        Bind();
     }
 
     VertexArray::~VertexArray()

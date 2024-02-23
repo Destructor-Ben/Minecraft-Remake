@@ -26,16 +26,16 @@ namespace Minecraft
         InitializeInput();
 
         float vertex[] = {
-            0.0f, 0.5f,
-            0.5f, 0.5f,
-            0.5f, 0.0f,
+            -1.0f, -1.0f,
+            -1.0f, 1.0f,
+            0.0f, 0.0f,
         };
 
         vertexArray = new VertexArray();
         vertexArray->Bind();
 
         vertexBuffer = new VertexBuffer();
-        vertexBuffer->SetData(vertex, 3, 2);
+        vertexBuffer->SetData(vertex, sizeof(vertex));
         vertexBuffer->Bind();
 
         glEnableVertexAttribArray(0);
@@ -51,7 +51,7 @@ namespace Minecraft
         };
 
         indexBuffer = new IndexBuffer();
-        indexBuffer->SetData(index, 4);
+        indexBuffer->SetData(index, 3);
         indexBuffer->Bind();
     }
 
