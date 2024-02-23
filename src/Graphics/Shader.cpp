@@ -37,10 +37,10 @@ namespace Minecraft
 		glUseProgram(0);
 	}
 
-    Shader* Shader::FromFile(const str &filePath)
+    Shader Shader::FromFile(const str &filePath)
     {
         VertexShader vert = VertexShader::FromFile(filePath);
         FragmentShader frag = FragmentShader::FromFile(filePath);
-        return new Shader(vert, frag);
+        return Shader(vert, frag);
     }
 }

@@ -25,6 +25,19 @@ namespace Minecraft
     {
         InitializeInput();
 
+        // Shader and indices
+        shader = new Shader(Shader::FromFile("res/shaders/shader"));
+
+        uint index[] = {
+                0,
+                1,
+                2,
+        };
+
+        indexBuffer = new IndexBuffer();
+        indexBuffer->SetData(index, 3);
+
+        // Vertex buffer and array
         float vertex[] = {
             -1.0f, -1.0f,
             -1.0f, 1.0f,
@@ -32,27 +45,12 @@ namespace Minecraft
         };
 
         vertexArray = new VertexArray();
-        vertexArray->Bind();
 
         vertexBuffer = new VertexBuffer();
         vertexBuffer->SetData(vertex, sizeof(vertex));
-        vertexBuffer->Bind();
 
         glEnableVertexAttribArray(0);
         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
-
-        shader = Shader::FromFile("res/shaders/shader");
-        shader->Bind();
-
-        uint index[] = {
-            0,
-            1,
-            2,
-        };
-
-        indexBuffer = new IndexBuffer();
-        indexBuffer->SetData(index, 3);
-        indexBuffer->Bind();
     }
 
     void Shutdown()
@@ -60,9 +58,9 @@ namespace Minecraft
         ShutdownInput();
 
         delete indexBuffer;
+        delete shader;
         delete vertexBuffer;
         delete vertexArray;
-        delete shader;
     }
 
     void Tick(float deltaTime)
@@ -80,6 +78,10 @@ namespace Minecraft
 
     void Render()
     {
+        indexBuffer->Bind();
+        shader->Bind();
+        vertexArray->Bind();
+
         glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
     }
 

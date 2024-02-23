@@ -18,8 +18,7 @@ namespace Minecraft
 		void Bind() const;
 
 		static void Unbind();
-        // TODO: ideally this wont return a pointer - also fix for other shaders
-        static Shader* FromFile(const str& filePath);
+        static Shader FromFile(const str& filePath);
 
 	private:
 		uint m_ID = 0;
