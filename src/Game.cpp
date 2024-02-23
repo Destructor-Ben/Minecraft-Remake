@@ -29,19 +29,19 @@ namespace Minecraft
         shader = new Shader(Shader::FromFile("res/shaders/shader"));
 
         uint index[] = {
-                0,
-                1,
-                2,
+            0, 2, 1,
+            1, 2, 3,
         };
 
         indexBuffer = new IndexBuffer();
-        indexBuffer->SetData(index, 3);
+        indexBuffer->SetData(index, 6);
 
         // Vertex buffer and array
         float vertex[] = {
-            -1.0f, -1.0f,
-            -1.0f, 1.0f,
-            0.0f, 0.0f,
+            -0.5f, -0.5f,
+            -0.5f, 0.5f,
+            0.5f, -0.5f,
+            0.5f, 0.5f,
         };
 
         vertexArray = new VertexArray();
