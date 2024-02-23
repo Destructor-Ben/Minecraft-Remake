@@ -8,6 +8,7 @@
 namespace Minecraft
 {
     // TODO: functions to set uniforms
+    // TODO: shaders in /res dont get copied again after changes
 	class Shader
 	{
 	public:

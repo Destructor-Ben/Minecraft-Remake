@@ -20,8 +20,6 @@ namespace Minecraft
 			glGetProgramInfoLog(m_ID, 512, nullptr, infoLog);
 			Log(str("Error: Shader linking failed:\n") + infoLog);
 		}
-
-        Bind();
 	}
 
 	Shader::~Shader()

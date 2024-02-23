@@ -7,7 +7,7 @@ namespace Minecraft
 	class FragmentShader
 	{
 	public:
-		FragmentShader(const str& source);
+		explicit FragmentShader(const str& source);
 		~FragmentShader();
 
 		uint GetID() const;

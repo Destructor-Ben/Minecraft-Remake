@@ -7,7 +7,7 @@ namespace Minecraft
 	class VertexShader
 	{
 	public:
-		VertexShader(const str& source);
+        explicit VertexShader(const str& source);
 		~VertexShader();
 
 		uint GetID() const;
