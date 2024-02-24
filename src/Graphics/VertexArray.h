@@ -16,7 +16,7 @@ namespace Minecraft
 
         void Bind() const;
 \
-        void Push(int type, int count);
+        void Push(int type, int count, bool normalized = false);
         void AddBuffer(const VertexBuffer& buffer);
 
         static void Unbind();
@@ -28,5 +28,6 @@ namespace Minecraft
         uint m_Stride = 0;
         std::vector<int> m_Types;
         std::vector<int> m_Counts;
+        std::vector<bool> m_Normalized;
     };
 }
