@@ -44,21 +44,31 @@ namespace Minecraft
             0.5f, 0.5f,
         };
 
-        vertexArray = new VertexArray();
-
         vertexBuffer = new VertexBuffer();
         vertexBuffer->SetData(vertex, sizeof(vertex));
 
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+        vertexArray = new VertexArray();
+        vertexArray->Push(GL_FLOAT, 2);
+        vertexArray->AddBuffer(*vertexBuffer);
+
+        // Unbinding
+        VertexArray::Unbind();
+        VertexBuffer::Unbind();
+        IndexBuffer::Unbind();
+        Shader::Unbind();
     }
 
     void Shutdown()
     {
         ShutdownInput();
 
-        delete indexBuffer;
+        VertexArray::Unbind();
+        VertexBuffer::Unbind();
+        IndexBuffer::Unbind();
+        Shader::Unbind();
+
         delete shader;
+        delete indexBuffer;
         delete vertexBuffer;
         delete vertexArray;
     }
