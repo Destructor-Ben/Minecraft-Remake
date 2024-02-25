@@ -47,7 +47,7 @@ static void RunWindow()
     // TODO: somehow make this go into InitWindow
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glViewport(0, 0, InitialWidth, InitialHeight);
-    if (StartFullscreen)
+    if (StartFullScreen)
         glfwMaximizeWindow(Window);
 
     while (!glfwWindowShouldClose(Window))

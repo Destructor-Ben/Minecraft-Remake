@@ -5,52 +5,12 @@
 // TODO: make keybinds that can be reassigned
 namespace Minecraft
 {
-    glm::vec2 MousePos;
-
     const int KeyCount = (int)Key::Count;
 
-    static bool* pressedThisFrame = nullptr;
-    static bool* pressedLastFrame = nullptr;
-
-    bool IsKeyDown(Key key)
+    static int GetGLFWKeyCode(Key key)
     {
-        return pressedThisFrame[(int)key];
-    }
-
-    bool IsKeyUp(Key key)
-    {
-        return !pressedThisFrame[(int)key];
-    }
-
-    bool WasKeyPressed(Key key)
-    {
-        return pressedThisFrame[(int)key] && !pressedLastFrame[(int)key];
-    }
-
-    bool WasKeyReleased(Key key)
-    {
-        return !pressedThisFrame[(int)key] && pressedLastFrame[(int)key];
-    }
-
-    void InitializeInput() {
-        MousePos = glm::vec2();
-
-        pressedThisFrame = new bool[KeyCount];
-        pressedLastFrame = new bool[KeyCount];
-
-        for (int i = 0; i < KeyCount; ++i) {
-            pressedThisFrame[i] = false;
-            pressedLastFrame[i] = false;
-        }
-    }
-
-    void ShutdownInput() {
-        delete[] pressedThisFrame;
-        delete[] pressedLastFrame;
-    }
-
-    int GetGLFWKeyCode(Key key) {
-        switch (key) {
+        switch (key)
+        {
             // Numbers
             case Key::Zero:
                 return GLFW_KEY_0;
@@ -162,13 +122,56 @@ namespace Minecraft
         }
     }
 
-    void UpdateInput()
+    InputManager::InputManager()
+    {
+        m_PressedThisFrame = new bool[KeyCount];
+        m_PressedLastFrame = new bool[KeyCount];
+
+        for (int i = 0; i < KeyCount; i++)
+        {
+            m_PressedThisFrame[i] = false;
+            m_PressedLastFrame[i] = false;
+        }
+    }
+
+    InputManager::~InputManager()
+    {
+        delete[] m_PressedThisFrame;
+        delete[] m_PressedLastFrame;
+    }
+
+    glm::vec2 InputManager::GetMousePos() const
+    {
+        return m_MousePos;
+    }
+
+    bool InputManager::IsKeyDown(Key key) const
+    {
+        return m_PressedThisFrame[(int)key];
+    }
+
+    bool InputManager::IsKeyUp(Key key) const
+    {
+        return !m_PressedThisFrame[(int)key];
+    }
+
+    bool InputManager::WasKeyPressed(Key key) const
+    {
+        return m_PressedThisFrame[(int)key] && !m_PressedLastFrame[(int)key];
+    }
+
+    bool InputManager::WasKeyReleased(Key key) const
+    {
+        return !m_PressedThisFrame[(int)key] && m_PressedLastFrame[(int)key];
+    }
+
+    void InputManager::Update()
     {
         // Mouse
         double mouseX, mouseY;
         glfwGetCursorPos(Window, &mouseX, &mouseY);
-        MousePos.x = (float)mouseX;
-        MousePos.y = (float)mouseY;
+        m_MousePos.x = (float)mouseX;
+        m_MousePos.y = (float)mouseY;
 
         // Keys
         for (int i = 0; i < KeyCount; ++i) {
@@ -177,8 +180,8 @@ namespace Minecraft
             if (key == -1)
                 continue;
 
-            pressedLastFrame[i] = pressedThisFrame[i];
-            pressedThisFrame[i] = glfwGetKey(Window, key) == GLFW_PRESS;
+            m_PressedLastFrame[i] = m_PressedThisFrame[i];
+            m_PressedThisFrame[i] = glfwGetKey(Window, key) == GLFW_PRESS;
         }
     }
 }

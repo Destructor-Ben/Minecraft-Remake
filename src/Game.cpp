@@ -8,6 +8,7 @@
 #include "Graphics/VertexArray.h"
 
 // TODO: Time - ticks count, render count, framreate, tickrate, etc. real world time?
+// TODO: maybe make this a class instead of global variables so we can have a definite initialization order
 namespace Minecraft
 {
     // TODO: maybe move this to graphics class?
@@ -16,6 +17,8 @@ namespace Minecraft
     int ScreenHeight = InitialHeight;
     // END TODO
 
+    InputManager Input;
+
     IndexBuffer* indexBuffer;
     VertexBuffer* vertexBuffer;
     VertexArray* vertexArray;
@@ -23,8 +26,6 @@ namespace Minecraft
 
     void Initialize()
     {
-        InitializeInput();
-
         // Shader and indices
         shader = new Shader(Shader::FromFile("res/shaders/shader"));
 
@@ -60,8 +61,6 @@ namespace Minecraft
 
     void Shutdown()
     {
-        ShutdownInput();
-
         VertexArray::Unbind();
         VertexBuffer::Unbind();
         IndexBuffer::Unbind();
@@ -80,9 +79,9 @@ namespace Minecraft
 
     void Update(float deltaTime)
     {
-        UpdateInput();
+        Input.Update();
 
-        if (WasKeyReleased(Key::Space))
+        if (Input.WasKeyReleased(Key::Space))
             glfwSetWindowShouldClose(Window, true);
     }
 
