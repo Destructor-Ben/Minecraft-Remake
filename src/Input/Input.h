@@ -23,6 +23,7 @@ namespace Minecraft
 
         // TODO: raw mouse motion
         // TODO: hiding cursor
+        // TODO: typing input
 
         bool IsKeyDown(Key key) const;
         bool IsKeyUp(Key key) const;
