@@ -70,18 +70,6 @@ namespace Minecraft
     void Update(float deltaTime)
     {
         Input->Update();
-
-        if (Input->WasMouseButtonPressed(MouseButton::Left))
-            Log("LMB");
-
-        if (Input->WasMouseButtonPressed(MouseButton::Right))
-            Log("RMB");
-
-        if (Input->WasKeyPressed(Key::T))
-            Log("T");
-
-        if (Input->WasKeyReleased(Key::Space))
-            Window::Close();
     }
 
     void Render()

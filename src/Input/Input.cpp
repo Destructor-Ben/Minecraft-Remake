@@ -134,9 +134,9 @@ namespace Minecraft
             case MouseButton::Middle:
                 return GLFW_MOUSE_BUTTON_MIDDLE;
             case MouseButton::X1:
-                return GLFW_MOUSE_BUTTON_4; // TODO: test if this is correct
+                return GLFW_MOUSE_BUTTON_4;
             case MouseButton::X2:
-                return GLFW_MOUSE_BUTTON_5; // TODO: test if this is correct
+                return GLFW_MOUSE_BUTTON_5;
             default:
                 return -1;
         }
