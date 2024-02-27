@@ -56,9 +56,6 @@ static void RunWindow()
     while (!glfwWindowShouldClose(Window::Handle))
     {
         Update(1.0f);
-
-        glClear(GL_COLOR_BUFFER_BIT);
-
         Render();
 
         glfwSwapBuffers(Window::Handle);

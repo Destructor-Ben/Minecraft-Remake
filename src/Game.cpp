@@ -2,16 +2,10 @@
 
 #include "Common.h"
 
-#include "Input/Input.h"
-#include "Graphics/IndexBuffer.h"
-#include "Graphics/Shader.h"
-#include "Graphics/VertexBuffer.h"
-#include "Graphics/VertexArray.h"
-#include "Graphics/Window.h"
-
 namespace Minecraft
 {
     InputManager* Input = nullptr;
+    Renderer* Camera = nullptr;
 
     static IndexBuffer* indexBuffer;
     static VertexBuffer* vertexBuffer;
@@ -21,30 +15,30 @@ namespace Minecraft
     void Initialize()
     {
         Input = new InputManager();
-
-        // Shader and indices
-        shader = new Shader(Shader::FromFile("res/shaders/shader"));
+        Camera = new Renderer();
 
         uint index[] = {
             0, 2, 1,
             1, 2, 3,
         };
 
+        float vertex[] = {
+                -0.5f, -0.5f, 0.5f,
+                -0.5f, 0.5f, 0.5f,
+                0.5f, -0.5f, 0.5f,
+                0.5f, 0.5f, 0.5f,
+                -0.5f, -0.5f, -0.5f,
+                -0.5f, 0.5f, -0.5f,
+                0.5f, -0.5f, -0.5f,
+                0.5f, 0.5f, -0.5f,
+        };
+
+        shader = new Shader(Shader::FromFile("res/shaders/shader"));
+
         indexBuffer = new IndexBuffer();
         indexBuffer->SetData(index, 6);
 
         // Vertex buffer and array
-        float vertex[] = {
-            -0.5f, -0.5f, 0.5f,
-            -0.5f, 0.5f, 0.5f,
-            0.5f, -0.5f, 0.5f,
-            0.5f, 0.5f, 0.5f,
-            -0.5f, -0.5f, -0.5f,
-            -0.5f, 0.5f, -0.5f,
-            0.5f, -0.5f, -0.5f,
-            0.5f, 0.5f, -0.5f,
-        };
-
         vertexBuffer = new VertexBuffer();
         vertexBuffer->SetData(vertex, sizeof(vertex));
 
@@ -52,21 +46,15 @@ namespace Minecraft
         vertexArray->Push(GL_FLOAT, 3);
         vertexArray->AddBuffer(*vertexBuffer);
 
-        // Unbinding
-        VertexArray::Unbind();
-        VertexBuffer::Unbind();
-        IndexBuffer::Unbind();
-        Shader::Unbind();
+        Renderer::UnbindAll();
     }
 
     void Shutdown()
     {
-        delete Input;
+        Renderer::UnbindAll();
 
-        VertexArray::Unbind();
-        VertexBuffer::Unbind();
-        IndexBuffer::Unbind();
-        Shader::Unbind();
+        delete Input;
+        delete Camera;
 
         delete shader;
         delete indexBuffer;
@@ -89,6 +77,8 @@ namespace Minecraft
 
     void Render()
     {
+        Renderer::Clear();
+
         indexBuffer->Bind();
         shader->Bind();
         vertexArray->Bind();

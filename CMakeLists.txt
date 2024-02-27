@@ -46,6 +46,8 @@ add_executable(Minecraft_Remake
         src/Graphics/VertexArray.h
         src/Graphics/Window.h
         src/Graphics/Window.cpp
+        src/Graphics/Renderer.cpp
+        src/Graphics/Renderer.h
 )
 
 # Linking libraries
