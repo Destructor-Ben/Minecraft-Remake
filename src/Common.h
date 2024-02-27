@@ -15,5 +15,14 @@ namespace Minecraft
     typedef unsigned int uint;
     typedef std::string str;
 
-    void Log(const str& message);
+    inline void Log(const str& message)
+    {
+        std::cout << message << std::endl;
+    }
+
+    template<typename T>
+    inline str ToStr(const T& value)
+    {
+        return std::to_string(value);
+    }
 }

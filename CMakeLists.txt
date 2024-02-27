@@ -27,7 +27,6 @@ FILE(COPY res DESTINATION "${CMAKE_BINARY_DIR}")
 add_executable(Minecraft_Remake
         src/Main.cpp
         src/Common.h
-        src/Common.cpp
         src/Game.h
         src/Game.cpp
         src/Graphics/FragmentShader.h
