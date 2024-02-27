@@ -14,6 +14,7 @@ namespace Minecraft
 
         glm::vec2 GetMousePos() const;
         // TODO: mouse buttons - could just implement as a key internally and have special functions for them
+        // TODO: scroll wheel
 
         bool IsKeyDown(Key key) const;
         bool IsKeyUp(Key key) const;

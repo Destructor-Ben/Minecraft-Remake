@@ -1,12 +1,11 @@
 #include "Input.h"
 
-#include "../Game.h"
 #include "../Graphics/Window.h"
 
 // TODO: make keybinds that can be reassigned
 namespace Minecraft
 {
-    const int KeyCount = (int)Key::Count;
+    static const int KeyCount = (int)Key::Count;
 
     static int GetGLFWKeyCode(Key key)
     {

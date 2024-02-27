@@ -3,8 +3,8 @@
 #include "Common.h"
 
 #include "Input/Input.h"
-#include "Graphics/Shader.h"
 #include "Graphics/IndexBuffer.h"
+#include "Graphics/Shader.h"
 #include "Graphics/VertexBuffer.h"
 #include "Graphics/VertexArray.h"
 #include "Graphics/Window.h"
