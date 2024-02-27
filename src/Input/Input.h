@@ -20,6 +20,7 @@ namespace Minecraft
         bool IsMouseButtonUp(MouseButton button) const;
         bool WasMouseButtonPressed(MouseButton button) const;
         bool WasMouseButtonReleased(MouseButton button) const;
+
         // TODO: raw mouse motion
         // TODO: hiding cursor
 
@@ -32,8 +33,12 @@ namespace Minecraft
 
     private:
         glm::vec2 m_MousePos = glm::vec2();
+        float m_ScrollDelta = 0.0f;
 
-        bool* m_PressedThisFrame = nullptr;
-        bool* m_PressedLastFrame = nullptr;
+        bool* m_KeysPressedThisFrame = nullptr;
+        bool* m_KeysPressedLastFrame = nullptr;
+
+        bool* m_MouseButtonsPressedThisFrame = nullptr;
+        bool* m_MouseButtonsPressedLastFrame = nullptr;
     };
 }

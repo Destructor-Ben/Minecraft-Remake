@@ -7,7 +7,6 @@ namespace Minecraft
 {
     static const int KeyCount = (int)Key::Count;
     static const int MouseButtonCount = (int)MouseButton::Count;
-    static const int Count = KeyCount + MouseButtonCount;
 
     static int GetGLFWKeyCode(Key key)
     {
@@ -145,20 +144,30 @@ namespace Minecraft
 
     InputManager::InputManager()
     {
-        m_PressedThisFrame = new bool[Count];
-        m_PressedLastFrame = new bool[Count];
+        m_KeysPressedThisFrame = new bool[KeyCount];
+        m_KeysPressedLastFrame = new bool[KeyCount];
+        m_MouseButtonsPressedThisFrame = new bool[MouseButtonCount];
+        m_MouseButtonsPressedLastFrame = new bool[MouseButtonCount];
 
-        for (int i = 0; i < Count; i++)
+        for (int i = 0; i < KeyCount; i++)
         {
-            m_PressedThisFrame[i] = false;
-            m_PressedLastFrame[i] = false;
+            m_KeysPressedThisFrame[i] = false;
+            m_KeysPressedLastFrame[i] = false;
+        }
+
+        for (int i = 0; i < MouseButtonCount; i++)
+        {
+            m_MouseButtonsPressedThisFrame[i] = false;
+            m_MouseButtonsPressedLastFrame[i] = false;
         }
     }
 
     InputManager::~InputManager()
     {
-        delete[] m_PressedThisFrame;
-        delete[] m_PressedLastFrame;
+        delete[] m_KeysPressedThisFrame;
+        delete[] m_KeysPressedLastFrame;
+        delete[] m_MouseButtonsPressedThisFrame;
+        delete[] m_MouseButtonsPressedLastFrame;
     }
 
     glm::vec2 InputManager::GetMousePos() const
@@ -168,48 +177,47 @@ namespace Minecraft
 
     float InputManager::GetScrollWheelDelta() const
     {
-        // TODO: scroll wheel
-        return 0;
+        return m_ScrollDelta;
     }
 
     bool InputManager::IsMouseButtonDown(MouseButton button) const
     {
-        return m_PressedThisFrame[(int)button];
+        return m_MouseButtonsPressedThisFrame[(int)button];
     }
 
     bool InputManager::IsMouseButtonUp(MouseButton button) const
     {
-        return !m_PressedThisFrame[(int)button];
+        return !m_MouseButtonsPressedThisFrame[(int)button];
     }
 
     bool InputManager::WasMouseButtonPressed(MouseButton button) const
     {
-        return m_PressedThisFrame[(int)button] && !m_PressedLastFrame[(int)button];
+        return m_MouseButtonsPressedThisFrame[(int)button] && !m_MouseButtonsPressedLastFrame[(int)button];
     }
 
     bool InputManager::WasMouseButtonReleased(MouseButton button) const
     {
-        return !m_PressedThisFrame[(int)button] && m_PressedLastFrame[(int)button];
+        return !m_MouseButtonsPressedThisFrame[(int)button] && m_MouseButtonsPressedLastFrame[(int)button];
     }
 
     bool InputManager::IsKeyDown(Key key) const
     {
-        return m_PressedThisFrame[(int)key];
+        return m_KeysPressedThisFrame[(int)key];
     }
 
     bool InputManager::IsKeyUp(Key key) const
     {
-        return !m_PressedThisFrame[(int)key];
+        return !m_KeysPressedThisFrame[(int)key];
     }
 
     bool InputManager::WasKeyPressed(Key key) const
     {
-        return m_PressedThisFrame[(int)key] && !m_PressedLastFrame[(int)key];
+        return m_KeysPressedThisFrame[(int)key] && !m_KeysPressedLastFrame[(int)key];
     }
 
     bool InputManager::WasKeyReleased(Key key) const
     {
-        return !m_PressedThisFrame[(int)key] && m_PressedLastFrame[(int)key];
+        return !m_KeysPressedThisFrame[(int)key] && m_KeysPressedLastFrame[(int)key];
     }
 
     void InputManager::Update()
@@ -220,16 +228,28 @@ namespace Minecraft
         m_MousePos.x = (float)mouseX;
         m_MousePos.y = (float)mouseY;
 
-        // Keys and mouse buttons
-        for (int i = 0; i < Count; ++i) {
-            bool isMouseButton = i >= KeyCount;
-            int id = isMouseButton ? GetGLFWMouseButtonCode((MouseButton)i) : GetGLFWKeyCode((Key)i);
+        // TODO: Scroll wheel
+
+        // Mouse buttons
+        for (int i = 0; i < MouseButtonCount; ++i) {
+            int id = GetGLFWMouseButtonCode((MouseButton)i);
 
             if (id == -1)
                 continue;
 
-            m_PressedLastFrame[i] = m_PressedThisFrame[i];
-            m_PressedThisFrame[i] = (isMouseButton ? glfwGetMouseButton(Window::Handle, id) : glfwGetKey(Window::Handle, id)) == GLFW_PRESS;
+            m_MouseButtonsPressedLastFrame[i] = m_MouseButtonsPressedThisFrame[i];
+            m_MouseButtonsPressedThisFrame[i] = glfwGetMouseButton(Window::Handle, id) == GLFW_PRESS;
+        }
+
+        // Keys
+        for (int i = 0; i < KeyCount; ++i) {
+            int id = GetGLFWKeyCode((Key)i);
+
+            if (id == -1)
+                continue;
+
+            m_KeysPressedLastFrame[i] = m_KeysPressedThisFrame[i];
+            m_KeysPressedThisFrame[i] = glfwGetKey(Window::Handle, id) == GLFW_PRESS;
         }
     }
 }
