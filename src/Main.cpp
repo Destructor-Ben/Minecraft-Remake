@@ -31,13 +31,12 @@ static void InitGLFW()
 #ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
-}
 
-static void InitWindow()
-{
     Window::Handle = glfwCreateWindow(Window::InitialWidth, Window::InitialHeight, Window::Title.c_str(), nullptr, nullptr);
     glfwMakeContextCurrent(Window::Handle);
     glfwSetFramebufferSizeCallback(Window::Handle, Resize);
+    glfwSetInputMode(Window::Handle, GLFW_STICKY_KEYS, GLFW_TRUE);
+    glfwSetInputMode(Window::Handle, GLFW_STICKY_MOUSE_BUTTONS, GLFW_TRUE);
 }
 
 static void InitGLAD()
@@ -71,7 +70,6 @@ static void ShutdownGLFW()
 int main()
 {
     InitGLFW();
-    InitWindow();
     InitGLAD();
 
     Initialize();

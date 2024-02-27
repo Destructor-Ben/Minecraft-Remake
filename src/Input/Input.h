@@ -3,6 +3,7 @@
 #include "../Common.h"
 
 #include "Key.h"
+#include "MouseButton.h"
 
 namespace Minecraft
 {
@@ -13,8 +14,14 @@ namespace Minecraft
         ~InputManager();
 
         glm::vec2 GetMousePos() const;
-        // TODO: mouse buttons - could just implement as a key internally and have special functions for them
-        // TODO: scroll wheel
+        float GetScrollWheelDelta() const;
+
+        bool IsMouseButtonDown(MouseButton button) const;
+        bool IsMouseButtonUp(MouseButton button) const;
+        bool WasMouseButtonPressed(MouseButton button) const;
+        bool WasMouseButtonReleased(MouseButton button) const;
+        // TODO: raw mouse motion
+        // TODO: hiding cursor
 
         bool IsKeyDown(Key key) const;
         bool IsKeyUp(Key key) const;

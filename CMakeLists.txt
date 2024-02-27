@@ -48,6 +48,7 @@ add_executable(Minecraft_Remake
         src/Graphics/Window.cpp
         src/Graphics/Renderer.cpp
         src/Graphics/Renderer.h
+        src/Input/MouseButton.h
 )
 
 # Linking libraries

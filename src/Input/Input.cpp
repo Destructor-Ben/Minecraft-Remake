@@ -6,6 +6,8 @@
 namespace Minecraft
 {
     static const int KeyCount = (int)Key::Count;
+    static const int MouseButtonCount = (int)MouseButton::Count;
+    static const int Count = KeyCount + MouseButtonCount;
 
     static int GetGLFWKeyCode(Key key)
     {
@@ -122,12 +124,31 @@ namespace Minecraft
         }
     }
 
+    static int GetGLFWMouseButtonCode(MouseButton button)
+    {
+        switch (button)
+        {
+            case MouseButton::Left:
+                return GLFW_MOUSE_BUTTON_LEFT;
+            case MouseButton::Right:
+                return GLFW_MOUSE_BUTTON_RIGHT;
+            case MouseButton::Middle:
+                return GLFW_MOUSE_BUTTON_MIDDLE;
+            case MouseButton::X1:
+                return GLFW_MOUSE_BUTTON_4; // TODO: test if this is correct
+            case MouseButton::X2:
+                return GLFW_MOUSE_BUTTON_5; // TODO: test if this is correct
+            default:
+                return -1;
+        }
+    }
+
     InputManager::InputManager()
     {
-        m_PressedThisFrame = new bool[KeyCount];
-        m_PressedLastFrame = new bool[KeyCount];
+        m_PressedThisFrame = new bool[Count];
+        m_PressedLastFrame = new bool[Count];
 
-        for (int i = 0; i < KeyCount; i++)
+        for (int i = 0; i < Count; i++)
         {
             m_PressedThisFrame[i] = false;
             m_PressedLastFrame[i] = false;
@@ -143,6 +164,32 @@ namespace Minecraft
     glm::vec2 InputManager::GetMousePos() const
     {
         return m_MousePos;
+    }
+
+    float InputManager::GetScrollWheelDelta() const
+    {
+        // TODO: scroll wheel
+        return 0;
+    }
+
+    bool InputManager::IsMouseButtonDown(MouseButton button) const
+    {
+        return m_PressedThisFrame[(int)button];
+    }
+
+    bool InputManager::IsMouseButtonUp(MouseButton button) const
+    {
+        return !m_PressedThisFrame[(int)button];
+    }
+
+    bool InputManager::WasMouseButtonPressed(MouseButton button) const
+    {
+        return m_PressedThisFrame[(int)button] && !m_PressedLastFrame[(int)button];
+    }
+
+    bool InputManager::WasMouseButtonReleased(MouseButton button) const
+    {
+        return !m_PressedThisFrame[(int)button] && m_PressedLastFrame[(int)button];
     }
 
     bool InputManager::IsKeyDown(Key key) const
@@ -167,21 +214,22 @@ namespace Minecraft
 
     void InputManager::Update()
     {
-        // Mouse
+        // Cursor
         double mouseX, mouseY;
         glfwGetCursorPos(Window::Handle, &mouseX, &mouseY);
         m_MousePos.x = (float)mouseX;
         m_MousePos.y = (float)mouseY;
 
-        // Keys
-        for (int i = 0; i < KeyCount; ++i) {
-            int key = GetGLFWKeyCode((Key)i);
+        // Keys and mouse buttons
+        for (int i = 0; i < Count; ++i) {
+            bool isMouseButton = i >= KeyCount;
+            int id = isMouseButton ? GetGLFWMouseButtonCode((MouseButton)i) : GetGLFWKeyCode((Key)i);
 
-            if (key == -1)
+            if (id == -1)
                 continue;
 
             m_PressedLastFrame[i] = m_PressedThisFrame[i];
-            m_PressedThisFrame[i] = glfwGetKey(Window::Handle, key) == GLFW_PRESS;
+            m_PressedThisFrame[i] = (isMouseButton ? glfwGetMouseButton(Window::Handle, id) : glfwGetKey(Window::Handle, id)) == GLFW_PRESS;
         }
     }
 }
