@@ -32,6 +32,10 @@ namespace Minecraft
 		glUseProgram(m_ID);
 	}
 
+    void Shader::SetUniform(const str &name, const glm::mat4& value) {
+        glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &value[0][0]);
+    }
+
 	void Shader::Unbind()
 	{
 		glUseProgram(0);
@@ -42,5 +46,9 @@ namespace Minecraft
         VertexShader vert = VertexShader::FromFile(filePath);
         FragmentShader frag = FragmentShader::FromFile(filePath);
         return Shader(vert, frag);
+    }
+
+    int Shader::GetUniformLocation(const str& name) {
+        return glGetUniformLocation(m_ID, name.c_str());
     }
 }
