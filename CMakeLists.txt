@@ -44,6 +44,8 @@ add_executable(Minecraft_Remake
         src/Input/Key.h
         src/Graphics/VertexArray.cpp
         src/Graphics/VertexArray.h
+        src/Graphics/Window.h
+        src/Graphics/Window.cpp
 )
 
 # Linking libraries

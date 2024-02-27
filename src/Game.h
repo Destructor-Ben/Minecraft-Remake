@@ -6,15 +6,7 @@
 
 namespace Minecraft
 {
-    const int InitialWidth = 1280;
-    const int InitialHeight = 720;
-    const bool StartFullScreen = true;
-
-    extern GLFWwindow* Window;
-    extern int ScreenWidth;
-    extern int ScreenHeight;
-
-    extern InputManager Input;
+    extern InputManager* Input;
 
     void Initialize();
     void Shutdown();
@@ -22,5 +14,4 @@ namespace Minecraft
     void Tick(float deltaTime);
     void Update(float deltaTime);
     void Render();
-    void OnResize(int width, int height);
 }

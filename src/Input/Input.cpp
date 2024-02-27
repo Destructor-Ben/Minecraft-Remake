@@ -1,6 +1,7 @@
 #include "Input.h"
 
 #include "../Game.h"
+#include "../Graphics/Window.h"
 
 // TODO: make keybinds that can be reassigned
 namespace Minecraft
@@ -169,7 +170,7 @@ namespace Minecraft
     {
         // Mouse
         double mouseX, mouseY;
-        glfwGetCursorPos(Window, &mouseX, &mouseY);
+        glfwGetCursorPos(Window::Handle, &mouseX, &mouseY);
         m_MousePos.x = (float)mouseX;
         m_MousePos.y = (float)mouseY;
 
@@ -181,7 +182,7 @@ namespace Minecraft
                 continue;
 
             m_PressedLastFrame[i] = m_PressedThisFrame[i];
-            m_PressedThisFrame[i] = glfwGetKey(Window, key) == GLFW_PRESS;
+            m_PressedThisFrame[i] = glfwGetKey(Window::Handle, key) == GLFW_PRESS;
         }
     }
 }

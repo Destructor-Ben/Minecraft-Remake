@@ -1,11 +1,13 @@
 // Preprocessor directives order:
-// - #pragma once if this is a .h file
+// - .cpp or .h
+//   - .h: #pragma once
+//   - .h/Main.cpp: Common.h
+//   - .cpp: Corresponding header file
+// - Regular imports
+//   - Own files ("")
+//   - Std lib (<>)
+//   - Other libs (<>)
 // - #defines
-// - Header for corresponding .h file if this is .cpp file
-// - Common.h
-// - Own files
-// - Std lib
-// - Other libs
 
 #pragma once
 

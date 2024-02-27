@@ -1,21 +1,24 @@
 #include "Common.h"
 
 #include "Game.h"
+#include "Graphics/Window.h"
 
 using namespace Minecraft;
 
 // TODO: improve error checking at some point and also make logging better
 // TODO: tick thread and deltaTime
-// TODO: improve window settings
+// TODO: Time - ticks count, render count, framreate, tickrate, etc. real world time?
 // TODO: upper level abstractions for graphics stuff:
 // Mesh - contains a VAO and multiple materials with index buffers for each material
 // Material - a shader and binding functions
 // Texture
+// Window
 
 static void Resize(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
-    OnResize(width, height);
+    Window::ScreenWidth = width;
+    Window::ScreenHeight = height;
 }
 
 static void InitGLFW()
@@ -32,9 +35,9 @@ static void InitGLFW()
 
 static void InitWindow()
 {
-    Window = glfwCreateWindow(InitialWidth, InitialHeight, "Minecraft", nullptr, nullptr);
-    glfwMakeContextCurrent(Window);
-    glfwSetFramebufferSizeCallback(Window, Resize);
+    Window::Handle = glfwCreateWindow(Window::InitialWidth, Window::InitialHeight, Window::Title.c_str(), nullptr, nullptr);
+    glfwMakeContextCurrent(Window::Handle);
+    glfwSetFramebufferSizeCallback(Window::Handle, Resize);
 }
 
 static void InitGLAD()
@@ -44,13 +47,13 @@ static void InitGLAD()
 
 static void RunWindow()
 {
-    // TODO: somehow make this go into InitWindow
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glViewport(0, 0, InitialWidth, InitialHeight);
-    if (StartFullScreen)
-        glfwMaximizeWindow(Window);
+    glViewport(0, 0, Window::InitialWidth, Window::InitialHeight);
 
-    while (!glfwWindowShouldClose(Window))
+    if (Window::StartFullScreen)
+        glfwMaximizeWindow(Window::Handle);
+
+    while (!glfwWindowShouldClose(Window::Handle))
     {
         Update(1.0f);
 
@@ -58,7 +61,7 @@ static void RunWindow()
 
         Render();
 
-        glfwSwapBuffers(Window);
+        glfwSwapBuffers(Window::Handle);
         glfwPollEvents();
     }
 }
