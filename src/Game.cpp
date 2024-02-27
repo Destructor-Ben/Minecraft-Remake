@@ -1,10 +1,9 @@
-#include "Common.h"
 #include "Game.h"
 
-#include "Input/Input.h."
+#include "Input/Input.h"
+#include "Graphics/Shader.h"
 #include "Graphics/IndexBuffer.h"
 #include "Graphics/VertexBuffer.h"
-#include "Graphics/Shader.h"
 #include "Graphics/VertexArray.h"
 
 // TODO: Time - ticks count, render count, framreate, tickrate, etc. real world time?

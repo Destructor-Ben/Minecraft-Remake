@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Common.h"
+
 #include "Input/Input.h"
 
 namespace Minecraft

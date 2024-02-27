@@ -1,4 +1,5 @@
 #include "Common.h"
+
 #include "Game.h"
 
 using namespace Minecraft;
@@ -7,10 +8,9 @@ using namespace Minecraft;
 // TODO: tick thread and deltaTime
 // TODO: improve window settings
 // TODO: upper level abstractions for graphics stuff:
-// Mesh - contains a VAO and multiple materials
-// VAO - just a gl VAO, though no index buffer is ever bound to it because of materials
-// Material - contains an index buffer and a shader for the index buffer
-// Maybe index buffers should be handled differently, idk though
+// Mesh - contains a VAO and multiple materials with index buffers for each material
+// Material - a shader and binding functions
+// Texture
 
 static void Resize(GLFWwindow* window, int width, int height)
 {

@@ -1,9 +1,19 @@
+// Preprocessor directives order:
+// - #pragma once if this is a .h file
+// - #defines
+// - Header for corresponding .h file if this is .cpp file
+// - Common.h
+// - Own files
+// - Std lib
+// - Other libs
+
 #pragma once
 
 #define GLFW_INCLUDE_NONE
 
 #include <iostream>
 #include <string>
+#include <cassert>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
