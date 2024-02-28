@@ -13,7 +13,7 @@ namespace Minecraft
     void Initialize();
     void Shutdown();
 
-    void Tick(float deltaTime);
-    void Update(float deltaTime);
+    void Tick();
+    void Update();
     void Render();
 }

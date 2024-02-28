@@ -12,7 +12,6 @@ using namespace Minecraft;
 // Mesh - contains a VAO and multiple materials with index buffers for each material
 // Material - a shader and binding functions
 // Texture
-// Window
 
 static void Resize(GLFWwindow* window, int width, int height)
 {
@@ -54,7 +53,7 @@ static void RunWindow()
 
     while (!glfwWindowShouldClose(Window::Handle))
     {
-        Update(1.0f);
+        Update();
         Render();
 
         glfwSwapBuffers(Window::Handle);

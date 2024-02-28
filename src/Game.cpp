@@ -64,12 +64,12 @@ namespace Minecraft
         delete vertexArray;
     }
 
-    void Tick(float deltaTime)
+    void Tick()
     {
 
     }
 
-    void Update(float deltaTime)
+    void Update()
     {
         Input->Update();
     }
