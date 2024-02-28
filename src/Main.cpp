@@ -1,12 +1,13 @@
 #include "Common.h"
 
 #include "Game.h"
+#include "Time.h"
 #include "Graphics/Window.h"
 
 using namespace Minecraft;
 
 // TODO: improve error checking at some point and also make logging better
-// TODO: tick thread and deltaTime
+// TODO: tick thread
 // TODO: Time - ticks count, render count, framreate, tickrate, etc. real world time?
 // TODO: upper level abstractions for graphics stuff:
 // Mesh - contains a VAO and multiple materials with index buffers for each material
@@ -16,8 +17,8 @@ using namespace Minecraft;
 static void Resize(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
-    Window::ScreenWidth = width;
-    Window::ScreenHeight = height;
+    Window::Width = width;
+    Window::Height = height;
 }
 
 static void InitGLFW()
@@ -53,8 +54,13 @@ static void RunWindow()
 
     while (!glfwWindowShouldClose(Window::Handle))
     {
+        Time::WallTime = (float)glfwGetTime();
+
         Update();
         Render();
+
+        Time::DeltaTime = (float)glfwGetTime() - Time::WallTime;
+        Time::UpdateCount++;
 
         glfwSwapBuffers(Window::Handle);
         glfwPollEvents();

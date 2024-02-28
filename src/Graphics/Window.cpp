@@ -5,7 +5,7 @@ namespace Minecraft
     namespace Window
     {
         GLFWwindow* Handle = nullptr;
-        int ScreenWidth = 0;
-        int ScreenHeight = 0;
+        int Width = 0;
+        int Height = 0;
     }
 }

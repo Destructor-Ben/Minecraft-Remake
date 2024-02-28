@@ -12,8 +12,8 @@ namespace Minecraft
         const str Title = "Minecraft";
 
         extern GLFWwindow* Handle;
-        extern int ScreenWidth;
-        extern int ScreenHeight;
+        extern int Width;
+        extern int Height;
 
         inline void Close()
         {
