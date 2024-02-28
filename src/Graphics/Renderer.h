@@ -8,12 +8,15 @@
 #include "VertexArray.h"
 #include "Window.h"
 
+// TODO: temporary
+class Mesh;
+
 namespace Minecraft
 {
     class Renderer
     {
     public:
-        void Draw(const VertexArray& vertexArray, const IndexBuffer& indexBuffer, const Shader& shader);
+        void Draw(const Mesh& mesh);
 
         static void Clear();
         static void UnbindAll();

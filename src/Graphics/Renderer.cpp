@@ -2,11 +2,9 @@
 
 namespace Minecraft
 {
-    void Renderer::Draw(const VertexArray &vertexArray, const IndexBuffer &indexBuffer, const Shader &shader)
+    void Renderer::Draw(const Mesh& mesh)
     {
-        shader.Bind();
-        indexBuffer.Bind();
-        vertexArray.Bind();
+
     }
 
     void Renderer::Clear()
