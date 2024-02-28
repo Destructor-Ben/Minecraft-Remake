@@ -200,6 +200,16 @@ namespace Minecraft
         return !m_MouseButtonsPressedThisFrame[(int)button] && m_MouseButtonsPressedLastFrame[(int)button];
     }
 
+    void InputManager::SetCursorDisabled(bool disabled)
+    {
+        glfwSetInputMode(Window::Handle, GLFW_CURSOR, disabled ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
+    }
+
+    bool InputManager::IsCursorDisabled()
+    {
+        return glfwGetInputMode(Window::Handle, GLFW_CURSOR) == GLFW_CURSOR_DISABLED;
+    }
+
     bool InputManager::IsKeyDown(Key key) const
     {
         return m_KeysPressedThisFrame[(int)key];

@@ -17,6 +17,8 @@ namespace Minecraft
         Input = new InputManager();
         Camera = new Renderer();
 
+        Input->SetCursorDisabled(false);
+
         uint index[] = {
             0, 2, 1,
             1, 2, 3,

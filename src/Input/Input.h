@@ -21,6 +21,9 @@ namespace Minecraft
         bool WasMouseButtonPressed(MouseButton button) const;
         bool WasMouseButtonReleased(MouseButton button) const;
 
+        void SetCursorDisabled(bool hidden);
+        bool IsCursorDisabled();
+
         // TODO: raw mouse motion
         // TODO: hiding cursor
         // TODO: typing input
