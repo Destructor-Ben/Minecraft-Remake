@@ -31,4 +31,14 @@ namespace Minecraft
         IndexBuffer::Unbind();
         Shader::Unbind();
     }
+
+    glm::mat4 Renderer::CreateOrthographicMatrix(float scale)
+    {
+        return glm::ortho(0.0f, (float)(Window::Width) * scale, 0.0f, (float)(Window::Height) * scale, NearClip, FarClip);
+    }
+
+    glm::mat4 Renderer::CreatePerspectiveMatrix(float fov)
+    {
+        return glm::perspective(fov, (float)Window::Width / (float)Window::Height, NearClip, FarClip);
+    }
 }

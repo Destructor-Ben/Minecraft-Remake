@@ -88,9 +88,12 @@ namespace Minecraft
     {
         Renderer::Clear();
 
-        Camera->ProjectionMatrix = glm::mat4(1.0f);//ortho(0.0f, (float)Window::Width, 0.0f, (float)Window::Height, 0.1f, 100.0f);
+        Camera->ProjectionMatrix = Camera->CreateOrthographicMatrix();
         Camera->ViewMatrix = glm::mat4(1.0f);
 
-        Camera->Draw(*mesh, glm::mat4(1.0f));
+        glm::mat4 modelMatrix(1.0f);
+        modelMatrix = glm::rotate(modelMatrix, glm::radians(90.0f) * (float)glfwGetTime(), glm::vec3(1.0f, 1.0f, 1.0f));
+
+        Camera->Draw(*mesh, modelMatrix);
     }
 }
