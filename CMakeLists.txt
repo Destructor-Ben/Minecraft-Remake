@@ -51,6 +51,10 @@ add_executable(Minecraft_Remake
         src/Input/MouseButton.h
         src/Time.cpp
         src/Time.h
+        src/Graphics/Material.cpp
+        src/Graphics/Material.h
+        src/Graphics/Mesh.cpp
+        src/Graphics/Mesh.h
 )
 
 # Linking libraries

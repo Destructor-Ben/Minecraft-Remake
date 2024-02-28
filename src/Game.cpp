@@ -7,10 +7,14 @@ namespace Minecraft
     InputManager* Input = nullptr;
     Renderer* Camera = nullptr;
 
+    static Shader* shader;
+    static Material* material;
     static IndexBuffer* indexBuffer;
+
     static VertexBuffer* vertexBuffer;
     static VertexArray* vertexArray;
-    static Shader* shader;
+
+    static Mesh* mesh;
 
     void Initialize()
     {
@@ -25,28 +29,30 @@ namespace Minecraft
         };
 
         float vertex[] = {
-                -0.5f, -0.5f, 0.5f,
-                -0.5f, 0.5f, 0.5f,
-                0.5f, -0.5f, 0.5f,
-                0.5f, 0.5f, 0.5f,
-                -0.5f, -0.5f, -0.5f,
-                -0.5f, 0.5f, -0.5f,
-                0.5f, -0.5f, -0.5f,
-                0.5f, 0.5f, -0.5f,
+            0.5f, 0.5f,
+            0.5f, 1.0f,
+            1.0f, 0.5f,
+            1.0f, 1.0f
         };
 
+        // Material
         shader = new Shader(Shader::FromFile("res/shaders/shader"));
+        material = new Material(*shader);
 
         indexBuffer = new IndexBuffer();
-        indexBuffer->SetData(index, 6);
+        indexBuffer->SetData(index, sizeof(index) / sizeof(uint));
 
-        // Vertex buffer and array
+        // Vertices
         vertexBuffer = new VertexBuffer();
         vertexBuffer->SetData(vertex, sizeof(vertex));
 
         vertexArray = new VertexArray();
-        vertexArray->Push(GL_FLOAT, 3);
+        vertexArray->Push(GL_FLOAT, 2);
         vertexArray->AddBuffer(*vertexBuffer);
+
+        // Mesh
+        mesh = new Mesh(*vertexArray);
+        mesh->AddMaterial(material, indexBuffer);
 
         Renderer::UnbindAll();
     }
@@ -59,9 +65,13 @@ namespace Minecraft
         delete Camera;
 
         delete shader;
+        delete material;
         delete indexBuffer;
+
         delete vertexBuffer;
         delete vertexArray;
+
+        delete mesh;
     }
 
     void Tick()
@@ -78,20 +88,9 @@ namespace Minecraft
     {
         Renderer::Clear();
 
-        indexBuffer->Bind();
-        shader->Bind();
-        vertexArray->Bind();
+        Camera->ProjectionMatrix = glm::mat4(1.0f);//ortho(0.0f, (float)Window::Width, 0.0f, (float)Window::Height, 0.1f, 100.0f);
+        Camera->ViewMatrix = glm::mat4(1.0f);
 
-        glm::mat4 model(1.0f);
-        model = glm::rotate(model, glm::radians(90.0f) * (float)glfwGetTime(), glm::vec3(1.0f, 1.0f, 1.0f));
-        model = glm::scale(model, glm::vec3(10000.0f));
-
-        glm::mat4 view = glm::mat4(1.0f);
-        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-
-        glm::mat4 projection(1.0f);// = glm::perspective(glm::radians(45.0f), (float)ScreenWidth / (float)ScreenHeight, 0.1f, 100.0f);//glm::ortho(0.0f, (float)ScreenWidth, 0.0f, (float)ScreenHeight, 0.1f, 100.0f);
-
-        shader->SetUniform("uTransform", model * view * projection);
-        glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+        Camera->Draw(*mesh, glm::mat4(1.0f));
     }
 }

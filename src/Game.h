@@ -2,8 +2,10 @@
 
 #include "Common.h"
 
+#include "Time.h"
 #include "Input/Input.h"
 #include "Graphics/Renderer.h"
+#include "Graphics/Window.h"
 
 namespace Minecraft
 {
