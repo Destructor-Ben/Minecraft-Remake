@@ -9,6 +9,9 @@ namespace Minecraft
         float DeltaTime = 0;
         float FixedDeltaTime = 0;
 
+        float FrameRate = 0;
+        float TickRate = 0;
+
         float WallTime = 0;
     }
 }

@@ -10,6 +10,9 @@ namespace Minecraft
         extern float DeltaTime;
         extern float FixedDeltaTime;
 
+        extern float FrameRate;
+        extern float TickRate;
+
         // Seconds since the program started
         extern float WallTime;
     }

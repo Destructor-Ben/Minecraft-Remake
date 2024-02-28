@@ -8,11 +8,7 @@ using namespace Minecraft;
 
 // TODO: improve error checking at some point and also make logging better
 // TODO: tick thread
-// TODO: Time - ticks count, render count, framreate, tickrate, etc. real world time?
-// TODO: upper level abstractions for graphics stuff:
-// Mesh - contains a VAO and multiple materials with index buffers for each material
-// Material - a shader and binding functions
-// Texture
+// TODO: textures
 
 static void Resize(GLFWwindow* window, int width, int height)
 {
@@ -60,6 +56,7 @@ static void RunWindow()
         Render();
 
         Time::DeltaTime = (float)glfwGetTime() - Time::WallTime;
+        Time::FrameRate = 1.0f / Time::DeltaTime;
         Time::UpdateCount++;
 
         glfwSwapBuffers(Window::Handle);
