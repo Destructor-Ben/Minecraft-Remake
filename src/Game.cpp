@@ -92,7 +92,7 @@ namespace Minecraft
         Camera->ViewMatrix = glm::mat4(1.0f);
 
         glm::mat4 modelMatrix(1.0f);
-        modelMatrix = glm::rotate(modelMatrix, glm::radians(90.0f) * (float)glfwGetTime(), glm::vec3(1.0f, 1.0f, 1.0f));
+        modelMatrix = glm::rotate(modelMatrix, glm::radians(90.0f) * Time::WallTime, glm::vec3(1.0f, 1.0f, 1.0f));
 
         Camera->Draw(*mesh, modelMatrix);
     }
