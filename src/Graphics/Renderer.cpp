@@ -9,7 +9,7 @@ namespace Minecraft
         for (int i = 0; i < mesh.MaterialCount; i++)
         {
             Material material = *mesh.Materials[i];
-            material.Transform = transform * ViewMatrix * ProjectionMatrix;
+            material.Transform = ProjectionMatrix * ViewMatrix * transform;
             material.Bind();
 
             IndexBuffer indexBuffer = *mesh.Indices[i];
@@ -34,7 +34,7 @@ namespace Minecraft
 
     glm::mat4 Renderer::CreateOrthographicMatrix(float scale)
     {
-        return glm::ortho(0.0f, (float)(Window::Width) * scale, 0.0f, (float)(Window::Height) * scale, NearClip, FarClip);
+        return glm::ortho(0.0f, (float)Window::Width * scale, 0.0f, (float)Window::Height * scale, NearClip, FarClip);
     }
 
     glm::mat4 Renderer::CreatePerspectiveMatrix(float fov)

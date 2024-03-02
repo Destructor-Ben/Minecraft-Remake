@@ -88,12 +88,55 @@ namespace Minecraft
     {
         Renderer::Clear();
 
+        uint index[] = {
+                // Bottom
+                0, 1, 3,
+                3, 2, 1,
+
+                // Top
+                4, 6, 5,
+                5, 6, 7,
+
+                // Front
+                1, 3, 5,
+        };
+
+        float vertex[] = {
+            -1.0f, -1.0f, -1.0f,
+            -1.0f, -1.0f, 1.0f,
+            1.0f, -1.0f, -1.0f,
+            1.0f, -1.0f, 1.0f,
+            -1.0f, 1.0f, -1.0f,
+            -1.0f, 1.0f, 1.0f,
+            1.0f, 1.0f, -1.0f,
+            1.0f, 1.0f, 1.0f,
+        };
+
+        Shader testShader = Shader::FromFile("res/shaders/shader");
+        Material testMaterial = Material(testShader);
+
+        IndexBuffer testIndexBuffer = IndexBuffer();
+        testIndexBuffer.SetData(index, sizeof(index) / sizeof(uint));
+
+        // Vertices
+        VertexBuffer testVertexBuffer = VertexBuffer();
+        testVertexBuffer.SetData(vertex, sizeof(vertex));
+
+        VertexArray textVertexArray = VertexArray();
+        textVertexArray.Push(GL_FLOAT, 3);
+        textVertexArray.AddBuffer(testVertexBuffer);
+
+        // Mesh
+        Mesh testMesh = Mesh(textVertexArray);
+        testMesh.AddMaterial(&testMaterial, &testIndexBuffer);
+
         Camera->ProjectionMatrix = Camera->CreateOrthographicMatrix();
         Camera->ViewMatrix = glm::mat4(1.0f);
+        Camera->ViewMatrix = glm::translate(Camera->ViewMatrix, glm::vec3(0.0f, 0.0f, -10.0f));
 
         glm::mat4 modelMatrix(1.0f);
-        modelMatrix = glm::rotate(modelMatrix, glm::radians(90.0f) * Time::WallTime, glm::vec3(1.0f, 1.0f, 1.0f));
+        modelMatrix = glm::rotate(modelMatrix, Time::WallTime, glm::vec3(1.0f, 1.0f, 1.0f));
 
-        Camera->Draw(*mesh, modelMatrix);
+        Camera->Draw(testMesh, modelMatrix);
     }
 }
