@@ -16,6 +16,8 @@ namespace Minecraft
 
     static Mesh* mesh;
 
+    static glm::mat4 CameraMatrix(1.0f);
+
     void Initialize()
     {
         Input = new InputManager();
@@ -55,6 +57,8 @@ namespace Minecraft
         mesh->AddMaterial(material, indexBuffer);
 
         Renderer::UnbindAll();
+
+        CameraMatrix = glm::translate(CameraMatrix, glm::vec3(0.0f, 0.0f, -10.0f));
     }
 
     void Shutdown()
@@ -82,6 +86,24 @@ namespace Minecraft
     void Update()
     {
         Input->Update();
+
+        if (Input->IsKeyDown(Key::W))
+            CameraMatrix = glm::translate(CameraMatrix, glm::vec3(0.0f, 0.0f, 1.0f) * 0.1f);
+
+        if (Input->IsKeyDown(Key::S))
+            CameraMatrix = glm::translate(CameraMatrix, glm::vec3(0.0f, 0.0f, -1.0f) * 0.1f);
+
+        if (Input->IsKeyDown(Key::A))
+            CameraMatrix = glm::translate(CameraMatrix, glm::vec3(1.0f, 0.0f, 0.0f) * 0.1f);
+
+        if (Input->IsKeyDown(Key::D))
+            CameraMatrix = glm::translate(CameraMatrix, glm::vec3(-1.0f, 0.0f, 0.0f) * 0.1f);
+
+        if (Input->IsKeyDown(Key::Space))
+            CameraMatrix = glm::translate(CameraMatrix, glm::vec3(0.0f, -1.0f, 0.0f) * 0.1f);
+
+        if (Input->IsKeyDown(Key::C))
+            CameraMatrix = glm::translate(CameraMatrix, glm::vec3(0.0f, 1.0f, 0.0f) * 0.1f);
     }
 
     void Render()
@@ -144,8 +166,7 @@ namespace Minecraft
         testMesh.AddMaterial(&testMaterial, &testIndexBuffer);
 
         Camera->ProjectionMatrix = Camera->CreatePerspectiveMatrix();
-        Camera->ViewMatrix = glm::mat4(1.0f);
-        Camera->ViewMatrix = glm::translate(Camera->ViewMatrix, glm::vec3(0.0f, 0.0f, -10.0f));
+        Camera->ViewMatrix = CameraMatrix;
         // Camera->ViewMatrix = glm::translate(Camera->ViewMatrix, glm::vec3(Window::Width / 2.0f, Window::Height / 2.0f, 0.0f)); // TODO: only needed with orthographic because perspective matrix doesnt remap NDC to window coords properly
 
         glm::mat4 modelMatrix(1.0f);
