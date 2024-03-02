@@ -87,23 +87,30 @@ namespace Minecraft
     {
         Input->Update();
 
+        // Remember that this needs to be inverted because of how view matrices work
+        float cameraSpeed = 15.0f;
+        glm::vec3 movementDirection(0.0f);
+
         if (Input->IsKeyDown(Key::W))
-            CameraMatrix = glm::translate(CameraMatrix, glm::vec3(0.0f, 0.0f, 1.0f) * 0.1f);
+            movementDirection.z += 1;
 
         if (Input->IsKeyDown(Key::S))
-            CameraMatrix = glm::translate(CameraMatrix, glm::vec3(0.0f, 0.0f, -1.0f) * 0.1f);
+            movementDirection.z -= 1;
 
         if (Input->IsKeyDown(Key::A))
-            CameraMatrix = glm::translate(CameraMatrix, glm::vec3(1.0f, 0.0f, 0.0f) * 0.1f);
+            movementDirection.x += 1;
 
         if (Input->IsKeyDown(Key::D))
-            CameraMatrix = glm::translate(CameraMatrix, glm::vec3(-1.0f, 0.0f, 0.0f) * 0.1f);
+            movementDirection.x -= 1;
 
         if (Input->IsKeyDown(Key::Space))
-            CameraMatrix = glm::translate(CameraMatrix, glm::vec3(0.0f, -1.0f, 0.0f) * 0.1f);
+            movementDirection.y -= 1;
 
         if (Input->IsKeyDown(Key::C))
-            CameraMatrix = glm::translate(CameraMatrix, glm::vec3(0.0f, 1.0f, 0.0f) * 0.1f);
+            movementDirection.y += 1;
+
+        if (movementDirection != glm::vec3(0.0f))
+            CameraMatrix = glm::translate(CameraMatrix, glm::normalize(movementDirection) * Time::DeltaTime * cameraSpeed);
     }
 
     void Render()
