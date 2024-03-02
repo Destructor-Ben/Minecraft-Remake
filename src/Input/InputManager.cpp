@@ -1,4 +1,4 @@
-#include "Input.h"
+#include "InputManager.h"
 
 #include "../Graphics/Window.h"
 

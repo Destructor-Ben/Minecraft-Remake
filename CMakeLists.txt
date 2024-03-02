@@ -39,8 +39,8 @@ add_executable(Minecraft_Remake
         src/Graphics/VertexBuffer.cpp
         src/Graphics/IndexBuffer.h
         src/Graphics/IndexBuffer.cpp
-        src/Input/Input.h
-        src/Input/Input.cpp
+        src/Input/InputManager.h
+        src/Input/InputManager.cpp
         src/Input/Key.h
         src/Graphics/VertexArray.cpp
         src/Graphics/VertexArray.h
@@ -55,6 +55,8 @@ add_executable(Minecraft_Remake
         src/Graphics/Material.h
         src/Graphics/Mesh.cpp
         src/Graphics/Mesh.h
+        src/World/World.cpp
+        src/World/World.h
 )
 
 # Linking libraries

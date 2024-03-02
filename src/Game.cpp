@@ -6,6 +6,7 @@ namespace Minecraft
 {
     InputManager* Input = nullptr;
     Renderer* Camera = nullptr;
+    World* CurrentWorld = nullptr;
 
     static Shader* shader;
     static Material* material;
@@ -16,14 +17,12 @@ namespace Minecraft
 
     static Mesh* mesh;
 
-    static glm::mat4 CameraMatrix(1.0f);
-
     void Initialize()
     {
         Input = new InputManager();
         Camera = new Renderer();
-
-        Input->SetCursorDisabled(false);
+        CurrentWorld = new World();
+        CurrentWorld->OnEnter();
 
         uint index[] = {
             0, 2, 1,
@@ -57,16 +56,17 @@ namespace Minecraft
         mesh->AddMaterial(material, indexBuffer);
 
         Renderer::UnbindAll();
-
-        CameraMatrix = glm::translate(CameraMatrix, glm::vec3(0.0f, 0.0f, -10.0f));
     }
 
     void Shutdown()
     {
+        CurrentWorld->OnExit();
+
         Renderer::UnbindAll();
 
         delete Input;
         delete Camera;
+        delete CurrentWorld;
 
         delete shader;
         delete material;
@@ -80,42 +80,20 @@ namespace Minecraft
 
     void Tick()
     {
-
+        CurrentWorld->Tick();
     }
 
     void Update()
     {
         Input->Update();
-
-        // Remember that this needs to be inverted because of how view matrices work
-        float cameraSpeed = 15.0f;
-        glm::vec3 movementDirection(0.0f);
-
-        if (Input->IsKeyDown(Key::W))
-            movementDirection.z += 1;
-
-        if (Input->IsKeyDown(Key::S))
-            movementDirection.z -= 1;
-
-        if (Input->IsKeyDown(Key::A))
-            movementDirection.x += 1;
-
-        if (Input->IsKeyDown(Key::D))
-            movementDirection.x -= 1;
-
-        if (Input->IsKeyDown(Key::Space))
-            movementDirection.y -= 1;
-
-        if (Input->IsKeyDown(Key::C))
-            movementDirection.y += 1;
-
-        if (movementDirection != glm::vec3(0.0f))
-            CameraMatrix = glm::translate(CameraMatrix, glm::normalize(movementDirection) * Time::DeltaTime * cameraSpeed);
+        CurrentWorld->Update();
     }
 
     void Render()
     {
         Renderer::Clear();
+
+        CurrentWorld->Render();
 
         uint index[] = {
                 // Bottom
@@ -172,12 +150,7 @@ namespace Minecraft
         Mesh testMesh = Mesh(textVertexArray);
         testMesh.AddMaterial(&testMaterial, &testIndexBuffer);
 
-        Camera->ProjectionMatrix = Camera->CreatePerspectiveMatrix();
-        Camera->ViewMatrix = CameraMatrix;
-        // Camera->ViewMatrix = glm::translate(Camera->ViewMatrix, glm::vec3(Window::Width / 2.0f, Window::Height / 2.0f, 0.0f)); // TODO: only needed with orthographic because perspective matrix doesnt remap NDC to window coords properly
-
         glm::mat4 modelMatrix(1.0f);
-        // modelMatrix = glm::scale(modelMatrix, glm::vec3(100.0f)); // TODO: only needed with orthographic because perspective matrix doesnt remap NDC to window coords properly
         modelMatrix = glm::rotate(modelMatrix, Time::WallTime, glm::vec3(1.0f, 1.0f, 1.0f));
 
         Camera->Draw(testMesh, modelMatrix);
