@@ -35,9 +35,11 @@ static void InitGLFW()
     glfwSetInputMode(Window::Handle, GLFW_STICKY_MOUSE_BUTTONS, GLFW_TRUE);
 }
 
-static void InitGLAD()
+static void InitGL()
 {
     gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+
+    glEnable(GL_DEPTH_TEST);
 }
 
 static void RunWindow()
@@ -72,7 +74,7 @@ static void ShutdownGLFW()
 int main()
 {
     InitGLFW();
-    InitGLAD();
+    InitGL();
 
     Initialize();
     RunWindow();

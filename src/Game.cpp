@@ -90,7 +90,7 @@ namespace Minecraft
 
         uint index[] = {
                 // Bottom
-                0, 1, 3,
+                0, 1, 2,
                 3, 2, 1,
 
                 // Top
@@ -99,6 +99,19 @@ namespace Minecraft
 
                 // Front
                 1, 3, 5,
+                5, 3, 7,
+
+                // Back
+                4, 2, 0,
+                6, 2, 4,
+
+                // Left
+                0, 1, 4,
+                4, 1, 5,
+
+                // Right
+                6, 3, 2,
+                7, 3, 6,
         };
 
         float vertex[] = {
@@ -130,11 +143,13 @@ namespace Minecraft
         Mesh testMesh = Mesh(textVertexArray);
         testMesh.AddMaterial(&testMaterial, &testIndexBuffer);
 
-        Camera->ProjectionMatrix = Camera->CreateOrthographicMatrix();
+        Camera->ProjectionMatrix = Camera->CreatePerspectiveMatrix();
         Camera->ViewMatrix = glm::mat4(1.0f);
         Camera->ViewMatrix = glm::translate(Camera->ViewMatrix, glm::vec3(0.0f, 0.0f, -10.0f));
+        // Camera->ViewMatrix = glm::translate(Camera->ViewMatrix, glm::vec3(Window::Width / 2.0f, Window::Height / 2.0f, 0.0f)); // TODO: only needed with orthographic because perspective matrix doesnt remap NDC to window coords properly
 
         glm::mat4 modelMatrix(1.0f);
+        // modelMatrix = glm::scale(modelMatrix, glm::vec3(100.0f)); // TODO: only needed with orthographic because perspective matrix doesnt remap NDC to window coords properly
         modelMatrix = glm::rotate(modelMatrix, Time::WallTime, glm::vec3(1.0f, 1.0f, 1.0f));
 
         Camera->Draw(testMesh, modelMatrix);
