@@ -2,7 +2,7 @@
 
 #include "../Graphics/Window.h"
 
-// TODO: make keybinds that can be reassigned
+// TODO: make key binds that can be reassigned
 namespace Minecraft
 {
     static const int KeyCount = (int)Key::Count;
@@ -170,74 +170,22 @@ namespace Minecraft
         delete[] m_MouseButtonsPressedLastFrame;
     }
 
-    glm::vec2 InputManager::GetMousePos() const
-    {
-        return m_MousePos;
-    }
-
-    float InputManager::GetScrollWheelDelta() const
-    {
-        return m_ScrollDelta;
-    }
-
-    bool InputManager::IsMouseButtonDown(MouseButton button) const
-    {
-        return m_MouseButtonsPressedThisFrame[(int)button];
-    }
-
-    bool InputManager::IsMouseButtonUp(MouseButton button) const
-    {
-        return !m_MouseButtonsPressedThisFrame[(int)button];
-    }
-
-    bool InputManager::WasMouseButtonPressed(MouseButton button) const
-    {
-        return m_MouseButtonsPressedThisFrame[(int)button] && !m_MouseButtonsPressedLastFrame[(int)button];
-    }
-
-    bool InputManager::WasMouseButtonReleased(MouseButton button) const
-    {
-        return !m_MouseButtonsPressedThisFrame[(int)button] && m_MouseButtonsPressedLastFrame[(int)button];
-    }
-
-    void InputManager::SetCursorDisabled(bool disabled)
-    {
-        glfwSetInputMode(Window::Handle, GLFW_CURSOR, disabled ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
-    }
-
-    bool InputManager::IsCursorDisabled()
-    {
-        return glfwGetInputMode(Window::Handle, GLFW_CURSOR) == GLFW_CURSOR_DISABLED;
-    }
-
-    bool InputManager::IsKeyDown(Key key) const
-    {
-        return m_KeysPressedThisFrame[(int)key];
-    }
-
-    bool InputManager::IsKeyUp(Key key) const
-    {
-        return !m_KeysPressedThisFrame[(int)key];
-    }
-
-    bool InputManager::WasKeyPressed(Key key) const
-    {
-        return m_KeysPressedThisFrame[(int)key] && !m_KeysPressedLastFrame[(int)key];
-    }
-
-    bool InputManager::WasKeyReleased(Key key) const
-    {
-        return !m_KeysPressedThisFrame[(int)key] && m_KeysPressedLastFrame[(int)key];
-    }
-
     void InputManager::Update()
     {
         // Cursor
+        m_OldMousePos = m_MousePos;
+
         double mouseX, mouseY;
         glfwGetCursorPos(Window::Handle, &mouseX, &mouseY);
         m_MousePos.x = (float)mouseX;
         m_MousePos.y = (float)mouseY;
 
+        if (!m_OldMousePosInitialized) {
+            m_OldMousePosInitialized = true;
+            m_OldMousePos = m_MousePos;
+        }
+
+        // Scroll wheel
         // TODO: Scroll wheel
 
         // Mouse buttons

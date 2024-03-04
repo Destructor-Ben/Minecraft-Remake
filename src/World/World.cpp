@@ -6,11 +6,14 @@ namespace Minecraft
 {
     void World::OnEnter()
     {
+        InputManager::SetRawMouseMotion(true);
+        InputManager::SetCursorDisabled(true);
     }
 
     void World::OnExit()
     {
-
+        InputManager::SetRawMouseMotion(false);
+        InputManager::SetCursorDisabled(false);
     }
 
     void World::Tick()
