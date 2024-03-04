@@ -2,9 +2,10 @@
 
 namespace Minecraft
 {
-	VertexBuffer::VertexBuffer() : m_ID(0), m_Static(false), m_DataAlreadySet(false)
+	VertexBuffer::VertexBuffer() : m_ID(0)
 	{
 		glGenBuffers(1, &m_ID);
+        Bind();
 	}
 
 	VertexBuffer::~VertexBuffer()
@@ -12,20 +13,10 @@ namespace Minecraft
 		glDeleteBuffers(1, &m_ID);
 	}
 
-	void VertexBuffer::SetData(const void* data, uint count, uint countPerVertex, uint sizeOfNumber, bool isStatic)
+	void VertexBuffer::SetData(const void* data, uint size, GLenum usage) const
 	{
-		if (m_Static && m_DataAlreadySet)
-		{
-			Log("Error: Static vertex buffer already has data");
-			return;
-		}
-
-        m_Static = isStatic;
-        m_DataAlreadySet = true;
-
 		Bind();
-        // TODO: sizeof?
-		glBufferData(GL_ARRAY_BUFFER, count * countPerVertex * sizeOfNumber, data, m_Static ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, size, data, usage);
 	}
 
 	void VertexBuffer::Bind() const

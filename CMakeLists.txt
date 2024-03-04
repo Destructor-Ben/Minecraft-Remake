@@ -27,7 +27,6 @@ FILE(COPY res DESTINATION "${CMAKE_BINARY_DIR}")
 add_executable(Minecraft_Remake
         src/Main.cpp
         src/Common.h
-        src/Common.cpp
         src/Game.h
         src/Game.cpp
         src/Graphics/FragmentShader.h
@@ -40,9 +39,24 @@ add_executable(Minecraft_Remake
         src/Graphics/VertexBuffer.cpp
         src/Graphics/IndexBuffer.h
         src/Graphics/IndexBuffer.cpp
-        src/Input/Input.h
-        src/Input/Input.cpp
+        src/Input/InputManager.h
+        src/Input/InputManager.cpp
         src/Input/Key.h
+        src/Graphics/VertexArray.cpp
+        src/Graphics/VertexArray.h
+        src/Graphics/Window.h
+        src/Graphics/Window.cpp
+        src/Graphics/Renderer.cpp
+        src/Graphics/Renderer.h
+        src/Input/MouseButton.h
+        src/Time.cpp
+        src/Time.h
+        src/Graphics/Material.cpp
+        src/Graphics/Material.h
+        src/Graphics/Mesh.cpp
+        src/Graphics/Mesh.h
+        src/World/World.cpp
+        src/World/World.h
 )
 
 # Linking libraries

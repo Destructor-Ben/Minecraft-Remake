@@ -2,9 +2,10 @@
 
 namespace Minecraft
 {
-	IndexBuffer::IndexBuffer() : m_ID(0), m_Count(0), m_Static(false), m_DataAlreadySet(false)
+	IndexBuffer::IndexBuffer() : m_ID(0), m_Count(0)
 	{
 		glGenBuffers(1, &m_ID);
+        Bind();
 	}
 
 	IndexBuffer::~IndexBuffer()
@@ -12,21 +13,11 @@ namespace Minecraft
 		glDeleteBuffers(1, &m_ID);
 	}
 
-	void IndexBuffer::SetData(const uint* data, uint count, uint sizePerIndex, bool isStatic)
+	void IndexBuffer::SetData(const uint* data, uint count, GLenum usage)
 	{
-		if (m_Static && m_DataAlreadySet)
-		{
-			Log("Error: Static index buffer already has data");
-			return;
-		}
-
         m_Count = count;
-        m_Static = isStatic;
-        m_DataAlreadySet = true;
-
 		Bind();
-		// TODO: ASSERT(sizeof(GLuint) == sizeof(uint));
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizePerIndex, data, m_Static ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint), data, usage);
 	}
 
 	void IndexBuffer::Bind() const

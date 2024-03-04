@@ -11,15 +11,19 @@ namespace Minecraft
 	class Shader
 	{
 	public:
-		Shader(const str& filePath);
+		Shader(const VertexShader& vertexShader, const FragmentShader& fragmentShader);
 		~Shader();
 
 		void Bind() const;
 
+        void SetUniform(const str& name, const glm::mat4& value);
+
 		static void Unbind();
+        static Shader FromFile(const str& filePath);
 
 	private:
+        int GetUniformLocation(const str& name);
+
 		uint m_ID = 0;
-		str m_FilePath;
 	};
 }

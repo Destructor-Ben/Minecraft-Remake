@@ -1,5 +1,8 @@
 #include "FragmentShader.h"
 
+#include <fstream>
+#include <sstream>
+
 namespace Minecraft
 {
 	FragmentShader::FragmentShader(const str& source) : m_ID(0)
@@ -29,5 +32,13 @@ namespace Minecraft
     uint FragmentShader::GetID() const
     {
         return m_ID;
+    }
+
+    FragmentShader FragmentShader::FromFile(const str &filePath) {
+        std::ifstream stream(filePath + ".frag");
+        std::stringstream buffer;
+        buffer << stream.rdbuf();
+        stream.close();
+        return FragmentShader(buffer.str());
     }
 }

@@ -1,5 +1,8 @@
 #include "VertexShader.h"
 
+#include <fstream>
+#include <sstream>
+
 namespace Minecraft
 {
     VertexShader::VertexShader(const str& source) : m_ID(0)
@@ -28,5 +31,13 @@ namespace Minecraft
     uint VertexShader::GetID() const
     {
         return m_ID;
+    }
+
+    VertexShader VertexShader::FromFile(const str &filePath) {
+        std::ifstream stream(filePath + ".vert");
+        std::stringstream buffer;
+        buffer << stream.rdbuf();
+        stream.close();
+        return VertexShader(buffer.str());
     }
 }

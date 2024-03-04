@@ -10,7 +10,7 @@ namespace Minecraft
         VertexBuffer();
         ~VertexBuffer();
 
-        void SetData(const void* data, uint count, uint countPerVertex, uint sizeOfNumber = sizeof(float), bool isStatic = true);
+        void SetData(const void* data, uint size, GLenum usage = GL_STATIC_DRAW) const;
 
         void Bind() const;
 
@@ -18,7 +18,5 @@ namespace Minecraft
 
     private:
         uint m_ID = 0;
-        bool m_Static = true;
-        bool m_DataAlreadySet = false;
     };
 }

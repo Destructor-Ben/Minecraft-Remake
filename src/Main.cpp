@@ -1,21 +1,20 @@
 #include "Common.h"
+
 #include "Game.h"
+#include "Time.h"
+#include "Graphics/Window.h"
 
 using namespace Minecraft;
 
 // TODO: improve error checking at some point and also make logging better
-// TODO: tick thread and deltaTime
-// TODO: improve window settings
-// TODO: upper level abstractions for graphics stuff:
-// Mesh - contains a VAO and multiple materials
-// VAO - just a gl VAO, though no index buffer is ever bound to it because of materials
-// Material - contains an index buffer and a shader for the index buffer
-// Maybe index buffers should be handled differently, idk though
+// TODO: tick thread
+// TODO: textures
 
 static void Resize(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
-    OnResize(width, height);
+    Window::Width = width;
+    Window::Height = height;
 }
 
 static void InitGLFW()
@@ -28,37 +27,41 @@ static void InitGLFW()
 #ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
+
+    Window::Handle = glfwCreateWindow(Window::InitialWidth, Window::InitialHeight, Window::Title.c_str(), nullptr, nullptr);
+    glfwMakeContextCurrent(Window::Handle);
+    glfwSetFramebufferSizeCallback(Window::Handle, Resize);
+    glfwSetInputMode(Window::Handle, GLFW_STICKY_KEYS, GLFW_TRUE);
+    glfwSetInputMode(Window::Handle, GLFW_STICKY_MOUSE_BUTTONS, GLFW_TRUE);
 }
 
-static void InitWindow()
-{
-    window = glfwCreateWindow(InitialWidth, InitialHeight, "Minecraft", nullptr, nullptr);
-    glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, Resize);
-}
-
-static void InitGLAD()
+static void InitGL()
 {
     gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+
+    glEnable(GL_DEPTH_TEST);
 }
 
 static void RunWindow()
 {
-    // TODO: somehow make this go into InitWindow
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glViewport(0, 0, InitialWidth, InitialHeight);
-    if (StartFullscreen)
-        glfwMaximizeWindow(window);
+    glViewport(0, 0, Window::InitialWidth, Window::InitialHeight);
 
-    while (!glfwWindowShouldClose(window))
+    if (Window::StartFullScreen)
+        glfwMaximizeWindow(Window::Handle);
+
+    while (!glfwWindowShouldClose(Window::Handle))
     {
-        Update(1.0f);
+        Time::WallTime = (float)glfwGetTime();
 
-        glClear(GL_COLOR_BUFFER_BIT);
-
+        Update();
         Render();
 
-        glfwSwapBuffers(window);
+        Time::DeltaTime = (float)glfwGetTime() - Time::WallTime;
+        Time::FrameRate = 1.0f / Time::DeltaTime;
+        Time::UpdateCount++;
+
+        glfwSwapBuffers(Window::Handle);
         glfwPollEvents();
     }
 }
@@ -71,8 +74,7 @@ static void ShutdownGLFW()
 int main()
 {
     InitGLFW();
-    InitWindow();
-    InitGLAD();
+    InitGL();
 
     Initialize();
     RunWindow();

@@ -5,25 +5,11 @@
 
 namespace Minecraft
 {
-	Shader::Shader(const str& filePath) : m_ID(0), m_FilePath(filePath)
+	Shader::Shader(const VertexShader& vertexShader, const FragmentShader& fragmentShader) : m_ID(0)
 	{
 		m_ID = glCreateProgram();
-
-		// Loading vertex and fragment shaders
-		std::ifstream vertStream(filePath + ".vert");
-		std::stringstream vertBuffer;
-		vertBuffer << vertStream.rdbuf();
-		vertStream.close();
-		VertexShader vert(vertBuffer.str());
-
-		std::ifstream fragStream(filePath + ".frag");
-		std::stringstream fragBuffer;
-		fragBuffer << fragStream.rdbuf();
-		fragStream.close();
-		FragmentShader frag(fragBuffer.str());
-
-		glAttachShader(m_ID, vert.GetID());
-		glAttachShader(m_ID, frag.GetID());
+		glAttachShader(m_ID, vertexShader.GetID());
+		glAttachShader(m_ID, fragmentShader.GetID());
 		glLinkProgram(m_ID);
 
 		// Error checking
@@ -46,8 +32,23 @@ namespace Minecraft
 		glUseProgram(m_ID);
 	}
 
+    void Shader::SetUniform(const str &name, const glm::mat4& value) {
+        glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &value[0][0]);
+    }
+
 	void Shader::Unbind()
 	{
 		glUseProgram(0);
 	}
+
+    Shader Shader::FromFile(const str &filePath)
+    {
+        VertexShader vert = VertexShader::FromFile(filePath);
+        FragmentShader frag = FragmentShader::FromFile(filePath);
+        return Shader(vert, frag);
+    }
+
+    int Shader::GetUniformLocation(const str& name) {
+        return glGetUniformLocation(m_ID, name.c_str());
+    }
 }

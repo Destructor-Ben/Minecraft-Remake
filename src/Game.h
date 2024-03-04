@@ -2,21 +2,22 @@
 
 #include "Common.h"
 
+#include "Time.h"
+#include "World/World.h"
+#include "Input/InputManager.h"
+#include "Graphics/Renderer.h"
+#include "Graphics/Window.h"
+
 namespace Minecraft
 {
-    const int InitialWidth = 1280;
-    const int InitialHeight = 720;
-    const bool StartFullscreen = true;
-
-    // TODO: capitalize this
-    extern GLFWwindow* window;
-    // TODO: add window size variables
+    extern InputManager* Input;
+    extern Renderer* Camera;
+    extern World* CurrentWorld; // TODO: consider renaming
 
     void Initialize();
     void Shutdown();
 
-    void Tick(float deltaTime);
-    void Update(float deltaTime);
+    void Tick();
+    void Update();
     void Render();
-    void OnResize(int width, int height);
 }
