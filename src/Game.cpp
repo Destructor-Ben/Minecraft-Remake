@@ -87,6 +87,8 @@ namespace Minecraft
     {
         Input->Update();
         CurrentWorld->Update();
+
+        Input->PostUpdate();
     }
 
     void Render()

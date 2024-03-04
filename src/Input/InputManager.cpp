@@ -210,6 +210,11 @@ namespace Minecraft
 
     void InputManager::UpdateScroll(float xOffset, float yOffset)
     {
-        // TODO: Scroll wheel
+        m_ScrollDelta = yOffset;
+    }
+
+    void InputManager::PostUpdate()
+    {
+        m_ScrollDelta = 0;
     }
 }

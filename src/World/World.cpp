@@ -23,6 +23,9 @@ namespace Minecraft
 
     void World::Update()
     {
+        if (Input->WasKeyReleased(Key::Escape))
+            Window::Close();
+
         UpdateCamera();
     }
 
@@ -52,11 +55,11 @@ namespace Minecraft
         if (Input->IsKeyDown(Key::Space))
             movementDirection.y += 1;
 
-        if (Input->IsKeyDown(Key::C))
+        if (Input->IsKeyDown(Key::LeftShift))
             movementDirection.y -= 1;
 
         if (movementDirection != glm::vec3(0.0f))
-            CameraPosition += movementDirection * Time::DeltaTime * cameraSpeed;
+            CameraPosition += glm::normalize(movementDirection) * Time::DeltaTime * cameraSpeed;
 
         // TODO: Rotation
 

@@ -36,6 +36,7 @@ namespace Minecraft
 
         void Update();
         void UpdateScroll(float xOffset, float yOffset);
+        void PostUpdate();
 
     private:
         bool m_OldMousePosInitialized = false;
