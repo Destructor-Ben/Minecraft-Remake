@@ -57,6 +57,10 @@ add_executable(Minecraft_Remake
         src/Graphics/Mesh.h
         src/World/World.cpp
         src/World/World.h
+        src/World/Chunk.cpp
+        src/World/Chunk.h
+        src/World/Block.cpp
+        src/World/Block.h
 )
 
 # Linking libraries
