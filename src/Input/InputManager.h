@@ -35,6 +35,7 @@ namespace Minecraft
         static bool IsRawMouseMotionEnabled() { return glfwGetInputMode(Window::Handle, GLFW_RAW_MOUSE_MOTION) == GLFW_TRUE; }
 
         void Update();
+        void UpdateScroll(float xOffset, float yOffset);
 
     private:
         bool m_OldMousePosInitialized = false;

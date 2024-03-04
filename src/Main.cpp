@@ -17,6 +17,11 @@ static void Resize(GLFWwindow* window, int width, int height)
     Window::Height = height;
 }
 
+static void OnScroll(GLFWwindow* window, double xOffset, double yOffset)
+{
+    Input->UpdateScroll((float)xOffset, (float)yOffset);
+}
+
 static void InitGLFW()
 {
     glfwInit();
@@ -33,6 +38,7 @@ static void InitGLFW()
     glfwSetFramebufferSizeCallback(Window::Handle, Resize);
     glfwSetInputMode(Window::Handle, GLFW_STICKY_KEYS, GLFW_TRUE);
     glfwSetInputMode(Window::Handle, GLFW_STICKY_MOUSE_BUTTONS, GLFW_TRUE);
+    glfwSetScrollCallback(Window::Handle, OnScroll);
 }
 
 static void InitGL()

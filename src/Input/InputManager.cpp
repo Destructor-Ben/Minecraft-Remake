@@ -185,9 +185,6 @@ namespace Minecraft
             m_OldMousePos = m_MousePos;
         }
 
-        // Scroll wheel
-        // TODO: Scroll wheel
-
         // Mouse buttons
         for (int i = 0; i < MouseButtonCount; ++i) {
             int id = GetGLFWMouseButtonCode((MouseButton)i);
@@ -209,5 +206,10 @@ namespace Minecraft
             m_KeysPressedLastFrame[i] = m_KeysPressedThisFrame[i];
             m_KeysPressedThisFrame[i] = glfwGetKey(Window::Handle, id) == GLFW_PRESS;
         }
+    }
+
+    void InputManager::UpdateScroll(float xOffset, float yOffset)
+    {
+        // TODO: Scroll wheel
     }
 }
