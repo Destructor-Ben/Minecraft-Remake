@@ -77,7 +77,6 @@ namespace Minecraft
         Delete,
         CapsLock,
         PrintScreen,
-
         LeftShift,
         LeftControl,
         LeftAlt,

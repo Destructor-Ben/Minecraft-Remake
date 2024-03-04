@@ -2,7 +2,6 @@
 
 #include "../Graphics/Window.h"
 
-// TODO: make key binds that can be reassigned
 namespace Minecraft
 {
     static const int KeyCount = (int)Key::Count;
@@ -111,11 +110,57 @@ namespace Minecraft
                 return GLFW_KEY_PERIOD;
             case Key::ForwardSlash:
                 return GLFW_KEY_SLASH;
+
+            // Function keys - TODO f1-f25 keys
+            case Key::Escape:
+                return GLFW_KEY_ESCAPE;
+            case Key::Enter:
+                return GLFW_KEY_ENTER;
             case Key::Space:
                 return GLFW_KEY_SPACE;
+            case Key::Tab:
+                return GLFW_KEY_TAB;
+            case Key::Backspace:
+                return GLFW_KEY_BACKSPACE;
+            case Key::UpArrow:
+                return GLFW_KEY_UP;
+            case Key::DownArrow:
+                return GLFW_KEY_DOWN;
+            case Key::LeftArrow:
+                return GLFW_KEY_LEFT;
+            case Key::RightArrow:
+                return GLFW_KEY_RIGHT;
+            case Key::PageUp:
+                return GLFW_KEY_PAGE_UP;
+            case Key::PageDown:
+                return GLFW_KEY_PAGE_DOWN;
+            case Key::Home:
+                return GLFW_KEY_HOME;
+            case Key::End:
+                return GLFW_KEY_END;
+            case Key::Insert:
+                return GLFW_KEY_INSERT;
+            case Key::Delete:
+                return GLFW_KEY_DELETE;
+            case Key::CapsLock:
+                return GLFW_KEY_CAPS_LOCK;
+            case Key::PrintScreen:
+                return GLFW_KEY_PRINT_SCREEN;
+            case Key::LeftShift:
+                return GLFW_KEY_LEFT_SHIFT;
+            case Key::LeftControl:
+                return GLFW_KEY_LEFT_CONTROL;
+            case Key::LeftAlt:
+                return GLFW_KEY_LEFT_ALT;
+            case Key::RightShift:
+                return GLFW_KEY_RIGHT_SHIFT;
+            case Key::RightControl:
+                return GLFW_KEY_RIGHT_CONTROL;
+            case Key::RightAlt:
+                return GLFW_KEY_RIGHT_ALT;
 
-            // Function keys
-            // TODO: function keys
+            // Keypad
+            // TODO
 
             // Unknown key
             default:

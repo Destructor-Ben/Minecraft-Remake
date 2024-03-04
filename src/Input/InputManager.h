@@ -8,6 +8,9 @@
 
 namespace Minecraft
 {
+    // TODO: typing input
+    // TODO: getting key names - possibly put it in localization
+    // TODO: make key binds that can be reassigned
     class InputManager
     {
     public:
