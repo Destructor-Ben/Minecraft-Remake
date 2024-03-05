@@ -62,7 +62,7 @@ namespace Minecraft
             CameraPosition += glm::normalize(movementDirection) * Time::DeltaTime * cameraSpeed;
 
         // TODO: Rotation
-        
+
         // Recreating matrices
         glm::mat4 viewMatrix(1.0f);
         viewMatrix = glm::translate(viewMatrix, -CameraPosition);
