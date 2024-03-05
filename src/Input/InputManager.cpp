@@ -111,7 +111,7 @@ namespace Minecraft
             case Key::ForwardSlash:
                 return GLFW_KEY_SLASH;
 
-            // Function keys - TODO f1-f25 keys
+            // Function keys
             case Key::Escape:
                 return GLFW_KEY_ESCAPE;
             case Key::Enter:
@@ -159,8 +159,93 @@ namespace Minecraft
             case Key::RightAlt:
                 return GLFW_KEY_RIGHT_ALT;
 
+            // F keys
+            case Key::F1:
+                return GLFW_KEY_F1;
+            case Key::F2:
+                return GLFW_KEY_F2;
+            case Key::F3:
+                return GLFW_KEY_F3;
+            case Key::F4:
+                return GLFW_KEY_F4;
+            case Key::F5:
+                return GLFW_KEY_F5;
+            case Key::F6:
+                return GLFW_KEY_F6;
+            case Key::F7:
+                return GLFW_KEY_F7;
+            case Key::F8:
+                return GLFW_KEY_F8;
+            case Key::F9:
+                return GLFW_KEY_F9;
+            case Key::F10:
+                return GLFW_KEY_F10;
+            case Key::F11:
+                return GLFW_KEY_F11;
+            case Key::F12:
+                return GLFW_KEY_F12;
+            case Key::F13:
+                return GLFW_KEY_F13;
+            case Key::F14:
+                return GLFW_KEY_F14;
+            case Key::F15:
+                return GLFW_KEY_F15;
+            case Key::F16:
+                return GLFW_KEY_F16;
+            case Key::F17:
+                return GLFW_KEY_F17;
+            case Key::F18:
+                return GLFW_KEY_F18;
+            case Key::F19:
+                return GLFW_KEY_F19;
+            case Key::F20:
+                return GLFW_KEY_F20;
+            case Key::F21:
+                return GLFW_KEY_F21;
+            case Key::F22:
+                return GLFW_KEY_F22;
+            case Key::F23:
+                return GLFW_KEY_F23;
+            case Key::F24:
+                return GLFW_KEY_F24;
+            case Key::F25:
+                return GLFW_KEY_F25;
+
             // Keypad
-            // TODO
+            case Key::KeyPad0:
+                return GLFW_KEY_KP_0;
+            case Key::KeyPad1:
+                return GLFW_KEY_KP_1;
+            case Key::KeyPad2:
+                return GLFW_KEY_KP_2;
+            case Key::KeyPad3:
+                return GLFW_KEY_KP_3;
+            case Key::KeyPad4:
+                return GLFW_KEY_KP_4;
+            case Key::KeyPad5:
+                return GLFW_KEY_KP_5;
+            case Key::KeyPad6:
+                return GLFW_KEY_KP_6;
+            case Key::KeyPad7:
+                return GLFW_KEY_KP_7;
+            case Key::KeyPad8:
+                return GLFW_KEY_KP_8;
+            case Key::KeyPad9:
+                return GLFW_KEY_KP_9;
+            case Key::KeyPadAdd:
+                return GLFW_KEY_KP_ADD;
+            case Key::KeyPadSubtract:
+                return GLFW_KEY_KP_SUBTRACT;
+            case Key::KeyPadMultiply:
+                return GLFW_KEY_KP_MULTIPLY;
+            case Key::KeyPadDivide:
+                return GLFW_KEY_KP_DIVIDE;
+            case Key::KeyPadDecimal:
+                return GLFW_KEY_KP_DECIMAL;
+            case Key::KeyPadEquals:
+                return GLFW_KEY_KP_EQUAL;
+            case Key::KeyPadEnter:
+                return GLFW_KEY_KP_ENTER;
 
             // Unknown key
             default:

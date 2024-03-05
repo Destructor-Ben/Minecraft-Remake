@@ -10,6 +10,7 @@ using namespace Minecraft;
 // TODO: tick thread
 // TODO: #include resources - https://www.reddit.com/r/opengl/comments/wcjdtg/comment/iidfgxj/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
 // TODO: textures
+// TODO: make root src an inlcude dir so we can #include "Common.cpp" easily
 
 static void Resize(GLFWwindow* window, int width, int height)
 {

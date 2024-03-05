@@ -84,6 +84,7 @@ namespace Minecraft
         RightControl,
         RightAlt,
 
+        // F keys
         F1,
         F2,
         F3,
