@@ -16,13 +16,13 @@ namespace Minecraft
 
 		void Bind() const;
 
-        void SetUniform(const str& name, const glm::mat4& value);
+        void SetUniform(const string& name, const glm::mat4& value);
 
 		static void Unbind();
-        static Shader FromFile(const str& filePath);
+        static Shader FromFile(const string& filePath);
 
 	private:
-        int GetUniformLocation(const str& name);
+        int GetUniformLocation(const string& name);
 
 		uint m_ID = 0;
 	};

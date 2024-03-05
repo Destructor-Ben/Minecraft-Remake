@@ -5,7 +5,7 @@
 
 namespace Minecraft
 {
-	FragmentShader::FragmentShader(const str& source) : m_ID(0)
+	FragmentShader::FragmentShader(const string& source) : m_ID(0)
 	{
         m_ID = glCreateShader(GL_FRAGMENT_SHADER);
         const char* cStringSource = source.c_str();
@@ -19,7 +19,7 @@ namespace Minecraft
         if (!success)
         {
             glGetShaderInfoLog(m_ID, 512, nullptr, infoLog);
-            Log(str("Error: Fragment shader compilation failed:\n") + infoLog);
+            Log(string("Error: Fragment shader compilation failed:\n") + infoLog);
         }
 	}
 
@@ -34,7 +34,7 @@ namespace Minecraft
         return m_ID;
     }
 
-    FragmentShader FragmentShader::FromFile(const str &filePath) {
+    FragmentShader FragmentShader::FromFile(const string &filePath) {
         std::ifstream stream(filePath + ".frag");
         std::stringstream buffer;
         buffer << stream.rdbuf();

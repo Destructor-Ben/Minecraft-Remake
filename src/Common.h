@@ -24,17 +24,25 @@
 
 namespace Minecraft
 {
-    typedef unsigned int uint;
-    typedef std::string str;
+    using std::string;
+    using std::to_string;
 
-    inline void Log(const str& message)
+    using glm::mat4;
+    using glm::vec2;
+    using glm::vec3;
+    using glm::vec4;
+
+    typedef signed char        int8;
+    typedef signed short       int16;
+    typedef signed int         int32;
+    typedef signed long long   int64;
+    typedef unsigned char      uint8;
+    typedef unsigned short     uint16;
+    typedef unsigned int       uint32;
+    typedef unsigned long long uint64;
+
+    inline void Log(const string& message)
     {
         std::cout << message << std::endl;
-    }
-
-    template<typename T>
-    inline str ToStr(const T& value)
-    {
-        return std::to_string(value);
     }
 }

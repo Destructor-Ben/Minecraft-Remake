@@ -9,7 +9,7 @@ namespace Minecraft
         const int InitialWidth = 1280;
         const int InitialHeight = 720;
         const bool StartFullScreen = true;
-        const str Title = "Minecraft";
+        const string Title = "Minecraft";
 
         extern GLFWwindow* Handle;
         extern int Width;

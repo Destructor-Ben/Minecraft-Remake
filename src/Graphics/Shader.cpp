@@ -18,7 +18,7 @@ namespace Minecraft
 		glGetProgramiv(m_ID, GL_LINK_STATUS, &success);
 		if (!success) {
 			glGetProgramInfoLog(m_ID, 512, nullptr, infoLog);
-			Log(str("Error: Shader linking failed:\n") + infoLog);
+			Log(string("Error: Shader linking failed:\n") + infoLog);
 		}
 	}
 
@@ -32,7 +32,7 @@ namespace Minecraft
 		glUseProgram(m_ID);
 	}
 
-    void Shader::SetUniform(const str &name, const glm::mat4& value) {
+    void Shader::SetUniform(const string &name, const glm::mat4& value) {
         glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &value[0][0]);
     }
 
@@ -41,14 +41,14 @@ namespace Minecraft
 		glUseProgram(0);
 	}
 
-    Shader Shader::FromFile(const str &filePath)
+    Shader Shader::FromFile(const string &filePath)
     {
         VertexShader vert = VertexShader::FromFile(filePath);
         FragmentShader frag = FragmentShader::FromFile(filePath);
         return Shader(vert, frag);
     }
 
-    int Shader::GetUniformLocation(const str& name) {
+    int Shader::GetUniformLocation(const string& name) {
         return glGetUniformLocation(m_ID, name.c_str());
     }
 }

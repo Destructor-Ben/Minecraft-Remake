@@ -5,7 +5,7 @@
 
 namespace Minecraft
 {
-    VertexShader::VertexShader(const str& source) : m_ID(0)
+    VertexShader::VertexShader(const string& source) : m_ID(0)
     {
         m_ID = glCreateShader(GL_VERTEX_SHADER);
         const char* cStringSource = source.c_str();
@@ -19,7 +19,7 @@ namespace Minecraft
         if (!success)
         {
             glGetShaderInfoLog(m_ID, 512, nullptr, infoLog);
-            Log(str("Error: Vertex shader compilation failed:\n") + infoLog);
+            Log(string("Error: Vertex shader compilation failed:\n") + infoLog);
         }
     }
 
@@ -33,7 +33,7 @@ namespace Minecraft
         return m_ID;
     }
 
-    VertexShader VertexShader::FromFile(const str &filePath) {
+    VertexShader VertexShader::FromFile(const string &filePath) {
         std::ifstream stream(filePath + ".vert");
         std::stringstream buffer;
         buffer << stream.rdbuf();
