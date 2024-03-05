@@ -34,6 +34,7 @@ namespace Minecraft
 
     }
 
+    // TODO: make camera object
     void World::UpdateCamera()
     {
         // Movement
@@ -61,7 +62,7 @@ namespace Minecraft
         if (movementDirection != glm::vec3(0.0f))
             CameraPosition += glm::normalize(movementDirection) * Time::DeltaTime * cameraSpeed;
 
-        // TODO: Rotation
+        // Rotation - TODO
 
         // Recreating matrices
         glm::mat4 viewMatrix(1.0f);
