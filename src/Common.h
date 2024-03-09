@@ -41,6 +41,8 @@ namespace Minecraft
     typedef unsigned int       uint32;
     typedef unsigned long long uint64;
 
+    typedef uint32 uint; // TODO: remove
+
     inline void Log(const string& message)
     {
         std::cout << message << std::endl;
