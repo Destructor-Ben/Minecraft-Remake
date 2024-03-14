@@ -24,6 +24,6 @@ namespace Minecraft
 	private:
         int GetUniformLocation(const string& name);
 
-		uint m_ID = 0;
+		uint32 m_ID = 0;
 	};
 }

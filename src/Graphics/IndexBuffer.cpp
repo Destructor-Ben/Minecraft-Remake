@@ -13,11 +13,11 @@ namespace Minecraft
 		glDeleteBuffers(1, &m_ID);
 	}
 
-	void IndexBuffer::SetData(const uint* data, uint count, GLenum usage)
+	void IndexBuffer::SetData(const uint32* data, uint32 count, GLenum usage)
 	{
         m_Count = count;
 		Bind();
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint), data, usage);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32), data, usage);
 	}
 
 	void IndexBuffer::Bind() const
@@ -25,7 +25,7 @@ namespace Minecraft
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ID);
 	}
 
-    uint IndexBuffer::GetCount() const
+    uint32 IndexBuffer::GetCount() const
     {
         return m_Count;
     }

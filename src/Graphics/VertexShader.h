@@ -10,11 +10,11 @@ namespace Minecraft
         explicit VertexShader(const string& source);
 		~VertexShader();
 
-		uint GetID() const;
+		uint32 GetID() const;
 
         static VertexShader FromFile(const string& filePath);
 
 	private:
-		uint m_ID = 0;
+		uint32 m_ID = 0;
 	};
 }

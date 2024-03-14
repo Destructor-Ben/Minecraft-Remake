@@ -22,10 +22,10 @@ namespace Minecraft
         static void Unbind();
 
     private:
-        uint m_ID = 0;
+        uint32 m_ID = 0;
 
-        uint m_Count = 0;
-        uint m_Stride = 0;
+        uint32 m_Count = 0;
+        uint32 m_Stride = 0;
         std::vector<int> m_Types;
         std::vector<int> m_Counts;
         std::vector<bool> m_Normalized;

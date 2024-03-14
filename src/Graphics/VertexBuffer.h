@@ -10,13 +10,13 @@ namespace Minecraft
         VertexBuffer();
         ~VertexBuffer();
 
-        void SetData(const void* data, uint size, GLenum usage = GL_STATIC_DRAW) const;
+        void SetData(const void* data, uint32 size, GLenum usage = GL_STATIC_DRAW) const;
 
         void Bind() const;
 
         static void Unbind();
 
     private:
-        uint m_ID = 0;
+        uint32 m_ID = 0;
     };
 }

@@ -10,15 +10,15 @@ namespace Minecraft
         IndexBuffer();
 		~IndexBuffer();
 
-        void SetData(const uint* data, uint count, GLenum usage = GL_STATIC_DRAW);
+        void SetData(const uint32* data, uint32 count, GLenum usage = GL_STATIC_DRAW);
 
 		void Bind() const;
-        uint GetCount() const;
+        uint32 GetCount() const;
 
         static void Unbind();
 
 	private:
-		uint m_ID = 0;
-		uint m_Count = 0;
+		uint32 m_ID = 0;
+		uint32 m_Count = 0;
 	};
 }

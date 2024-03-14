@@ -28,7 +28,7 @@ namespace Minecraft
         glDeleteShader(m_ID);
     }
 
-    uint VertexShader::GetID() const
+    uint32 VertexShader::GetID() const
     {
         return m_ID;
     }

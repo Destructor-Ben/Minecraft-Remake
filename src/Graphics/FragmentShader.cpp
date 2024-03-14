@@ -29,7 +29,7 @@ namespace Minecraft
 	}
 
 
-    uint FragmentShader::GetID() const
+    uint32 FragmentShader::GetID() const
     {
         return m_ID;
     }
