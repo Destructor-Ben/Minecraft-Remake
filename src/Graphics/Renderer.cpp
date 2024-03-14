@@ -2,20 +2,34 @@
 
 namespace Minecraft
 {
-    void Renderer::Draw(const Mesh& mesh, glm::mat4 transform)
+    void Renderer::Update()
+    {
+        if (m_Camera != nullptr)
+        {
+            ViewMatrix = m_Camera->GetViewMatrix();
+            ProjectionMatrix = m_Camera->GetProjectionMatrix();
+        }
+        else
+        {
+            ViewMatrix = mat4(1.0f);
+            ProjectionMatrix = mat4(1.0f);
+        }
+    }
+
+    void Renderer::Draw(const Mesh& mesh, const glm::mat4& transform)
     {
         mesh.Vertices.Bind();
 
         for (int i = 0; i < mesh.MaterialCount; i++)
         {
-            Material material = *mesh.Materials[i];
-            material.Transform = ProjectionMatrix * ViewMatrix * transform;
-            material.Bind();
+            IndexBuffer* indexBuffer = mesh.Indices[i];
+            indexBuffer->Bind();
 
-            IndexBuffer indexBuffer = *mesh.Indices[i];
-            indexBuffer.Bind();
+            Material* material = mesh.Materials[i];
+            material->Transform = ProjectionMatrix * ViewMatrix * transform;
+            material->Bind();
 
-            glDrawElements(GL_TRIANGLES, indexBuffer.GetCount(), GL_UNSIGNED_INT, nullptr);
+            glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
         }
     }
 

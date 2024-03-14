@@ -14,13 +14,13 @@ namespace Minecraft
         VertexArray& Vertices;
 
         // TODO: maybe don't make these public?
-        std::vector<const Material*> Materials;
-        std::vector<const IndexBuffer*> Indices;
+        std::vector<Material*> Materials;
+        std::vector<IndexBuffer*> Indices;
         int MaterialCount = 0;
         // end TODO
 
         Mesh(VertexArray& vertexArray);
 
-        void AddMaterial(const Material* material, const IndexBuffer* indexBuffer);
+        void AddMaterial(Material* material, IndexBuffer* indexBuffer);
     };
 }

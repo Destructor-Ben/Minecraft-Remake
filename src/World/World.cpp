@@ -8,12 +8,16 @@ namespace Minecraft
     {
         InputManager::SetRawMouseMotion(true);
         InputManager::SetCursorDisabled(true);
+
+        Renderer->SetCamera(&Camera);
     }
 
     void World::OnExit()
     {
         InputManager::SetRawMouseMotion(false);
         InputManager::SetCursorDisabled(false);
+
+        Renderer->SetCamera(nullptr);
     }
 
     void World::Tick()
@@ -62,9 +66,5 @@ namespace Minecraft
             Camera.Position += glm::normalize(movementDirection) * Time::DeltaTime * cameraSpeed;
 
         // Rotation - TODO
-
-        // Recreating matrices
-        Renderer->ViewMatrix = Camera.GetViewMatrix();
-        Renderer->ProjectionMatrix = Camera.GetProjectionMatrix();
     }
 }

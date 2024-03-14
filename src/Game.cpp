@@ -111,6 +111,7 @@ namespace Minecraft
     {
         Input->Update();
         World->Update();
+        Renderer->Update();
 
         Input->PostUpdate();
     }
@@ -121,9 +122,9 @@ namespace Minecraft
 
         World->Render();
 
-        glm::mat4 modelMatrix(1.0f);
-        modelMatrix = glm::rotate(modelMatrix, Time::WallTime, glm::vec3(1.0f, 1.0f, 1.0f));
+        glm::mat4 transform(1.0f);
+        transform = glm::rotate(transform, Time::WallTime, glm::vec3(1.0f, 1.0f, 1.0f));
 
-        Renderer->Draw(*mesh, modelMatrix);
+        Renderer->Draw(*mesh, transform);
     }
 }
