@@ -16,7 +16,7 @@ namespace Minecraft
         }
     }
 
-    void Renderer::Draw(const Mesh& mesh, const glm::mat4& transform)
+    void Renderer::Draw(const Mesh& mesh, const mat4& transform)
     {
         mesh.Vertices.Bind();
 

@@ -8,7 +8,7 @@ namespace Minecraft
     {
     public:
         vec3 Position = vec3(0.0f);
-        vec3 Rotation = vec3(0.0f);
+        vec3 Rotation = vec3(0.0f, -90.0f, 0.0f); // Has to have -90 for yaw because cosine
 
         bool IsPerspective = true;
 
@@ -20,5 +20,9 @@ namespace Minecraft
 
         mat4 GetViewMatrix() const;
         mat4 GetProjectionMatrix() const;
+
+        vec3 GetFrontVector() const;
+        vec3 GetRightVector() const;
+        vec3 GetUpVector() const;
     };
 }

@@ -122,9 +122,6 @@ namespace Minecraft
 
         World->Render();
 
-        glm::mat4 transform(1.0f);
-        transform = glm::rotate(transform, Time::WallTime, glm::vec3(1.0f, 1.0f, 1.0f));
-
-        Renderer->Draw(*mesh, transform);
+        Renderer->Draw(*mesh);
     }
 }

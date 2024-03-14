@@ -22,7 +22,7 @@ namespace Minecraft
 
         void Update();
 
-        void Draw(const Mesh& mesh, const glm::mat4& transform);
+        void Draw(const Mesh& mesh, const mat4& transform = mat4(1.0f));
 
         static void Clear();
         static void UnbindAll();

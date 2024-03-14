@@ -10,6 +10,7 @@ namespace Minecraft
         InputManager::SetCursorDisabled(true);
 
         Renderer->SetCamera(&Camera);
+        Camera.FOV = 70.0f;
     }
 
     void World::OnExit()
@@ -40,8 +41,15 @@ namespace Minecraft
 
     void World::UpdateCamera()
     {
-        // Movement
         const float cameraSpeed = 15.0f;
+        const float sensitivity = 0.1f;
+
+        // Rotation
+        Camera.Rotation.x -= Input->GetMousePosDelta().y * sensitivity;
+        Camera.Rotation.y += Input->GetMousePosDelta().x * sensitivity;
+        Camera.Rotation.z = 0;
+
+        // Movement
         glm::vec3 movementDirection(0.0f);
 
         if (Input->IsKeyDown(Key::W))
@@ -62,9 +70,8 @@ namespace Minecraft
         if (Input->IsKeyDown(Key::LeftShift))
             movementDirection.y -= 1;
 
+        // TODO: check if movement is correct
         if (movementDirection != glm::vec3(0.0f))
-            Camera.Position += glm::normalize(movementDirection) * Time::DeltaTime * cameraSpeed;
-
-        // Rotation - TODO
+            Camera.Position += glm::normalize(movementDirection * Camera.GetFrontVector()) * Time::DeltaTime * cameraSpeed;
     }
 }
