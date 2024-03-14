@@ -11,8 +11,8 @@
 namespace Minecraft
 {
     extern InputManager* Input;
-    extern Renderer* Camera;
-    extern World* CurrentWorld; // TODO: consider renaming
+    extern Renderer* Renderer;
+    extern World* World;
 
     void Initialize();
     void Shutdown();

@@ -2,7 +2,7 @@
 
 namespace Minecraft
 {
-    Mesh::Mesh(VertexArray &vertexArray) : Vertices(vertexArray) { }
+    Mesh::Mesh(VertexArray& vertexArray) : Vertices(vertexArray) { }
 
     // TODO: use references?
     void Mesh::AddMaterial(const Material* material, const IndexBuffer* indexBuffer)

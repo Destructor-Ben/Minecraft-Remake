@@ -5,8 +5,8 @@
 namespace Minecraft
 {
     InputManager* Input = nullptr;
-    Renderer* Camera = nullptr;
-    World* CurrentWorld = nullptr;
+    class Renderer* Renderer = nullptr;
+    class World* World = nullptr;
 
     static Shader* shader;
     static Material* material;
@@ -20,84 +20,11 @@ namespace Minecraft
     void Initialize()
     {
         Input = new InputManager();
-        Camera = new Renderer();
-        CurrentWorld = new World();
-        CurrentWorld->OnEnter();
+        Renderer = new class Renderer();
+        World = new class World();
+        World->OnEnter();
 
-        uint index[] = {
-            0, 2, 1,
-            1, 2, 3,
-        };
-
-        float vertex[] = {
-            0.5f, 0.5f,
-            0.5f, 1.0f,
-            1.0f, 0.5f,
-            1.0f, 1.0f
-        };
-
-        // Material
-        shader = new Shader(Shader::FromFile("res/shaders/shader"));
-        material = new Material(*shader);
-
-        indexBuffer = new IndexBuffer();
-        indexBuffer->SetData(index, sizeof(index) / sizeof(uint));
-
-        // Vertices
-        vertexBuffer = new VertexBuffer();
-        vertexBuffer->SetData(vertex, sizeof(vertex));
-
-        vertexArray = new VertexArray();
-        vertexArray->Push(GL_FLOAT, 2);
-        vertexArray->AddBuffer(*vertexBuffer);
-
-        // Mesh
-        mesh = new Mesh(*vertexArray);
-        mesh->AddMaterial(material, indexBuffer);
-
-        Renderer::UnbindAll();
-    }
-
-    void Shutdown()
-    {
-        CurrentWorld->OnExit();
-
-        Renderer::UnbindAll();
-
-        delete Input;
-        delete Camera;
-        delete CurrentWorld;
-
-        delete shader;
-        delete material;
-        delete indexBuffer;
-
-        delete vertexBuffer;
-        delete vertexArray;
-
-        delete mesh;
-    }
-
-    void Tick()
-    {
-        CurrentWorld->Tick();
-    }
-
-    void Update()
-    {
-        Input->Update();
-        CurrentWorld->Update();
-
-        Input->PostUpdate();
-    }
-
-    void Render()
-    {
-        Renderer::Clear();
-
-        CurrentWorld->Render();
-
-        uint index[] = {
+        uint32 index[] = {
                 // Bottom
                 0, 1, 2,
                 3, 2, 1,
@@ -124,37 +51,79 @@ namespace Minecraft
         };
 
         float vertex[] = {
-            -1.0f, -1.0f, -1.0f,
-            -1.0f, -1.0f, 1.0f,
-            1.0f, -1.0f, -1.0f,
-            1.0f, -1.0f, 1.0f,
-            -1.0f, 1.0f, -1.0f,
-            -1.0f, 1.0f, 1.0f,
-            1.0f, 1.0f, -1.0f,
-            1.0f, 1.0f, 1.0f,
+                -1.0f, -1.0f, -1.0f,
+                -1.0f, -1.0f, 1.0f,
+                1.0f, -1.0f, -1.0f,
+                1.0f, -1.0f, 1.0f,
+                -1.0f, 1.0f, -1.0f,
+                -1.0f, 1.0f, 1.0f,
+                1.0f, 1.0f, -1.0f,
+                1.0f, 1.0f, 1.0f,
         };
 
-        Shader testShader = Shader::FromFile("res/shaders/shader");
-        Material testMaterial = Material(testShader);
+        shader = new Shader(Shader::FromFile("res/shaders/shader"));
+        material = new Material(*shader);
 
-        IndexBuffer testIndexBuffer = IndexBuffer();
-        testIndexBuffer.SetData(index, sizeof(index) / sizeof(uint));
+        indexBuffer = new IndexBuffer();
+        indexBuffer->SetData(index, sizeof(index) / sizeof(uint32));
 
         // Vertices
-        VertexBuffer testVertexBuffer = VertexBuffer();
-        testVertexBuffer.SetData(vertex, sizeof(vertex));
+        vertexBuffer = new VertexBuffer();
+        vertexBuffer->SetData(vertex, sizeof(vertex));
 
-        VertexArray textVertexArray = VertexArray();
-        textVertexArray.Push(GL_FLOAT, 3);
-        textVertexArray.AddBuffer(testVertexBuffer);
+        vertexArray = new VertexArray();
+        vertexArray->Push(GL_FLOAT, 3);
+        vertexArray->AddBuffer(*vertexBuffer);
 
         // Mesh
-        Mesh testMesh = Mesh(textVertexArray);
-        testMesh.AddMaterial(&testMaterial, &testIndexBuffer);
+        mesh = new Mesh(*vertexArray);
+        mesh->AddMaterial(material, indexBuffer);
+
+        Renderer::UnbindAll();
+    }
+
+    void Shutdown()
+    {
+        World->OnExit();
+
+        Renderer::UnbindAll();
+
+        delete Input;
+        delete Renderer;
+        delete World;
+
+        delete shader;
+        delete material;
+        delete indexBuffer;
+
+        delete vertexBuffer;
+        delete vertexArray;
+
+        delete mesh;
+    }
+
+    void Tick()
+    {
+        World->Tick();
+    }
+
+    void Update()
+    {
+        Input->Update();
+        World->Update();
+
+        Input->PostUpdate();
+    }
+
+    void Render()
+    {
+        Renderer::Clear();
+
+        World->Render();
 
         glm::mat4 modelMatrix(1.0f);
         modelMatrix = glm::rotate(modelMatrix, Time::WallTime, glm::vec3(1.0f, 1.0f, 1.0f));
 
-        Camera->Draw(testMesh, modelMatrix);
+        Renderer->Draw(*mesh, modelMatrix);
     }
 }

@@ -2,13 +2,14 @@
 
 #include "../Common.h"
 
+#include "../Graphics/Camera.h"
+
 namespace Minecraft
 {
     class World
     {
     public:
-        glm::vec3 CameraPosition = glm::vec3(0.0f);
-        glm::vec2 CameraAngles = glm::vec2(0.0f);
+        Camera Camera;
 
         void OnEnter();
         void OnExit();

@@ -34,7 +34,6 @@ namespace Minecraft
 
     }
 
-    // TODO: make camera object
     void World::UpdateCamera()
     {
         // Movement
@@ -60,14 +59,12 @@ namespace Minecraft
             movementDirection.y -= 1;
 
         if (movementDirection != glm::vec3(0.0f))
-            CameraPosition += glm::normalize(movementDirection) * Time::DeltaTime * cameraSpeed;
+            Camera.Position += glm::normalize(movementDirection) * Time::DeltaTime * cameraSpeed;
 
         // Rotation - TODO
 
         // Recreating matrices
-        glm::mat4 viewMatrix(1.0f);
-        viewMatrix = glm::translate(viewMatrix, -CameraPosition);
-        Camera->ViewMatrix = viewMatrix;
-        Camera->ProjectionMatrix = Camera->CreatePerspectiveMatrix();
+        Renderer->ViewMatrix = Camera.GetViewMatrix();
+        Renderer->ProjectionMatrix = Camera.GetProjectionMatrix();
     }
 }
