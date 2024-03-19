@@ -5,7 +5,7 @@ namespace Minecraft
     // TODO: handle getting vectors
     vec3 Object::GetUpVector() const
     {
-        return glm::vec3();
+        return glm::vec3(0.0f, 1.0f, 0.0f);
     }
 
     vec3 Object::GetDownVector() const
@@ -20,12 +20,12 @@ namespace Minecraft
 
     vec3 Object::GetRightVector() const
     {
-        return glm::vec3();
+        return glm::vec3(1.0f, 0.0f, 0.0f);
     }
 
     vec3 Object::GetForwardVector() const
     {
-        return glm::vec3();
+        return glm::vec3(0.0f, 0.0f, -1.0f);
     }
 
     vec3 Object::GetBackwardVector() const
