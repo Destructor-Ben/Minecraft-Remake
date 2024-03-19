@@ -2,15 +2,29 @@
 
 namespace Minecraft
 {
-    // TODO: handle getting vectors
-    vec3 Transform::GetUpVector() const
+    // TODO: handle getting vectors properly - im not sure if all rotation is handled properly
+    vec3 Transform::GetForwardVector() const
     {
-        return glm::vec3(0.0f, 1.0f, 0.0f);
+        vec3 forward;
+        forward.x = cos(glm::radians(Rotation.y)) * cos(glm::radians(Rotation.x));
+        forward.y = sin(glm::radians(Rotation.x));
+        forward.z = sin(glm::radians(Rotation.y)) * cos(glm::radians(Rotation.x));
+        return glm::normalize(forward);
     }
 
-    vec3 Transform::GetDownVector() const
+    vec3 Transform::GetRightVector() const
     {
-        return -GetUpVector();
+        return glm::normalize(glm::cross(GetForwardVector(), vec3(0.0f, 1.0f, 0.0f)));
+    }
+
+    vec3 Transform::GetUpVector() const
+    {
+        return glm::normalize(glm::cross(GetRightVector(), GetForwardVector()));
+    }
+
+    vec3 Transform::GetBackwardVector() const
+    {
+        return -GetForwardVector();
     }
 
     vec3 Transform::GetLeftVector() const
@@ -18,19 +32,9 @@ namespace Minecraft
         return -GetRightVector();
     }
 
-    vec3 Transform::GetRightVector() const
+    vec3 Transform::GetDownVector() const
     {
-        return glm::vec3(1.0f, 0.0f, 0.0f);
-    }
-
-    vec3 Transform::GetForwardVector() const
-    {
-        return glm::vec3(0.0f, 0.0f, -1.0f);
-    }
-
-    vec3 Transform::GetBackwardVector() const
-    {
-        return -GetForwardVector();
+        return -GetUpVector();
     }
 
     mat4 Transform::GetTransformMatrix() const

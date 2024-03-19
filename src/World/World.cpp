@@ -46,6 +46,7 @@ namespace Minecraft
         float speed = cameraSpeed * Time::DeltaTime;
 
         // Rotation
+        // TODO: clamp x axis rotation
         Camera.Rotation.x -= Input->GetMousePosDelta().y * sensitivity;
         Camera.Rotation.y += Input->GetMousePosDelta().x * sensitivity;
         Camera.Rotation.z = 0;
