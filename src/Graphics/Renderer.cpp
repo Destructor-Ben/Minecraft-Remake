@@ -22,14 +22,14 @@ namespace Minecraft
 
         for (int i = 0; i < mesh.MaterialCount; i++)
         {
-            IndexBuffer* indexBuffer = mesh.Indices[i];
-            indexBuffer->Bind();
+            IndexBuffer& indexBuffer = *mesh.Indices[i];
+            indexBuffer.Bind();
 
-            Material* material = mesh.Materials[i];
-            material->Transform = ProjectionMatrix * ViewMatrix * transform;
-            material->Bind();
+            Material& material = *mesh.Materials[i];
+            material.Transform = ProjectionMatrix * ViewMatrix * transform;
+            material.Bind();
 
-            glDrawElements(GL_TRIANGLES, indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+            glDrawElements(GL_TRIANGLES, indexBuffer.GetCount(), GL_UNSIGNED_INT, nullptr);
         }
     }
 
