@@ -43,6 +43,7 @@ namespace Minecraft
     {
         const float cameraSpeed = 15.0f;
         const float sensitivity = 0.1f;
+        float speed = cameraSpeed * Time::DeltaTime;
 
         // Rotation
         Camera.Rotation.x -= Input->GetMousePosDelta().y * sensitivity;
@@ -50,7 +51,7 @@ namespace Minecraft
         Camera.Rotation.z = 0;
 
         // Movement
-        glm::vec3 movementDirection(0.0f);
+        vec3 movementDirection = vec3(0.0f);
 
         if (Input->IsKeyDown(Key::W))
             movementDirection.z -= 1;
@@ -70,8 +71,23 @@ namespace Minecraft
         if (Input->IsKeyDown(Key::LeftShift))
             movementDirection.y -= 1;
 
-        // TODO: check if movement is correct
-        if (movementDirection != glm::vec3(0.0f))
-            Camera.Position += glm::normalize(movementDirection * Camera.GetFrontVector()) * Time::DeltaTime * cameraSpeed;
+        // Vertical movement
+        Camera.Position.y += movementDirection.y * speed;
+
+        // Horizontal movement
+        if (movementDirection.x != 0 && movementDirection.z != 0)
+        {
+            vec2 horizontalDirection = glm::normalize(vec2(movementDirection.x, movementDirection.z));
+            float horizontalForward = horizontalDirection.y;
+            float horizontalSideways = horizontalDirection.x;
+
+            vec3 cameraRight = Camera.GetRightVector();
+            vec3 cameraFront = Camera.GetForwardVector();
+            cameraFront.z = 0.0f;
+            cameraFront = glm::normalize(cameraFront);
+
+            Camera.Position += cameraFront * horizontalForward * speed;
+            Camera.Position += cameraRight * horizontalSideways * speed;
+        }
     }
 }

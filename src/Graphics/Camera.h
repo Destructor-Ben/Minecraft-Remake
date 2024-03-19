@@ -2,13 +2,19 @@
 
 #include "../Common.h"
 
+#include "../World/Object.h"
+
 namespace Minecraft
 {
-    class Camera
+    // Handles camera matrices - view and projection
+    class Camera : public Object
     {
     public:
-        vec3 Position = vec3(0.0f);
-        vec3 Rotation = vec3(0.0f, -90.0f, 0.0f); // Has to have -90 for yaw because cosine
+        Camera() : Object()
+        {
+            // Has to have -90 for yaw because cos(0) is 1 or something
+            Rotation.y = -90.0f;
+        }
 
         bool IsPerspective = true;
 
@@ -20,9 +26,5 @@ namespace Minecraft
 
         mat4 GetViewMatrix() const;
         mat4 GetProjectionMatrix() const;
-
-        vec3 GetFrontVector() const;
-        vec3 GetRightVector() const;
-        vec3 GetUpVector() const;
     };
 }

@@ -2,22 +2,18 @@
 
 #include "../Common.h"
 
+#include "Object.h"
+
 namespace Minecraft
 {
-    class Entity
+    // Handles not only transformations but also update methods
+    class Entity : public Object
     {
     public:
-        vec3 Position;
-        vec3 Rotation;
-        vec3 Scale;
+        Entity() : Object() { }
 
-        mat4 GetModelMatrix() const
-        {
-            mat4 matrix(1.0f);
-            matrix = glm::scale(matrix, Scale);
-            matrix = glm::rotate(matrix, glm::length(Rotation), Rotation);
-            matrix = glm::translate(matrix, Position);
-            return matrix;
-        }
+        virtual void Tick() = 0;
+        virtual void Update() = 0;
+        virtual void Render() = 0;
     };
 }
