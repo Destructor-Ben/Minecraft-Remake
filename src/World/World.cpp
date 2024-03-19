@@ -10,7 +10,9 @@ namespace Minecraft
         InputManager::SetCursorDisabled(true);
 
         Renderer->SetCamera(&Camera);
+
         Camera.FOV = 70.0f;
+        Camera.Position.z = 5.0f;
     }
 
     void World::OnExit()
@@ -43,15 +45,24 @@ namespace Minecraft
     {
         const float cameraSpeed = 15.0f;
         const float sensitivity = 0.1f;
+        const float maxAngle = 89.0f;
         float speed = cameraSpeed * Time::DeltaTime;
 
         // Rotation
-        // TODO: clamp x axis rotation
         Camera.Rotation.x -= Input->GetMousePosDelta().y * sensitivity;
         Camera.Rotation.y += Input->GetMousePosDelta().x * sensitivity;
         Camera.Rotation.z = 0;
 
-        // Movement
+        // Clamping
+        float& xRotation = Camera.Rotation.x;
+
+        // TODO: clamp function
+        if (xRotation > maxAngle)
+            xRotation = maxAngle;
+        if (xRotation < -maxAngle)
+            xRotation = -maxAngle;
+
+        // Input
         vec3 movementDirection = vec3(0.0f);
 
         if (Input->IsKeyDown(Key::W))
@@ -76,19 +87,23 @@ namespace Minecraft
         Camera.Position.y += movementDirection.y * speed;
 
         // Horizontal movement
-        if (movementDirection.x != 0 && movementDirection.z != 0)
+        if (movementDirection.x != 0 || movementDirection.z != 0)
         {
+            // Normalising horizontal movement direction
             vec2 horizontalDirection = glm::normalize(vec2(movementDirection.x, movementDirection.z));
-            float horizontalForward = horizontalDirection.y;
-            float horizontalSideways = horizontalDirection.x;
+            movementDirection.x = horizontalDirection.x;
+            movementDirection.z = horizontalDirection.y;
 
+            // Calculating forward and right vectors
+            vec3 cameraForward = Camera.GetForwardVector();
             vec3 cameraRight = Camera.GetRightVector();
-            vec3 cameraFront = Camera.GetForwardVector();
-            cameraFront.z = 0.0f;
-            cameraFront = glm::normalize(cameraFront);
 
-            Camera.Position += cameraFront * horizontalForward * speed;
-            Camera.Position += cameraRight * horizontalSideways * speed;
+            cameraForward.y = 0.0f;
+            cameraForward = glm::normalize(cameraForward);
+
+            // Moving camera
+            Camera.Position += cameraForward * -movementDirection.z * speed;
+            Camera.Position += cameraRight * movementDirection.x * speed;
         }
     }
 }

@@ -3,6 +3,7 @@
 namespace Minecraft
 {
     // TODO: handle getting vectors properly - im not sure if all rotation is handled properly
+    // TODO: check matrix creation - rotation probably isn't right
     vec3 Transform::GetForwardVector() const
     {
         vec3 forward;
