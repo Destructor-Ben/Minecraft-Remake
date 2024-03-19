@@ -2,15 +2,15 @@
 
 #include "../Common.h"
 
-#include "Object.h"
+#include "Transform.h"
 
 namespace Minecraft
 {
     // Handles not only transformations but also update methods
-    class Entity : public Object
+    class Entity : public Transform
     {
     public:
-        Entity() : Object() { }
+        Entity() : Transform() { }
 
         virtual void Tick() = 0;
         virtual void Update() = 0;

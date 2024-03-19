@@ -4,8 +4,8 @@
 
 namespace Minecraft
 {
-    // Base class that handles transformations in a 3D world
-    class Object
+    // Base + instanced class that handles transformations in a 3D world
+    class Transform
     {
     public:
         vec3 Position;
@@ -19,6 +19,6 @@ namespace Minecraft
         vec3 GetForwardVector() const;
         vec3 GetBackwardVector() const;
 
-        mat4 GetTransform() const;
+        mat4 GetTransformMatrix() const;
     };
 }

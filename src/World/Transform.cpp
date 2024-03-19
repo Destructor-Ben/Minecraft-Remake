@@ -1,0 +1,46 @@
+#include "Transform.h"
+
+namespace Minecraft
+{
+    // TODO: handle getting vectors
+    vec3 Transform::GetUpVector() const
+    {
+        return glm::vec3(0.0f, 1.0f, 0.0f);
+    }
+
+    vec3 Transform::GetDownVector() const
+    {
+        return -GetUpVector();
+    }
+
+    vec3 Transform::GetLeftVector() const
+    {
+        return -GetRightVector();
+    }
+
+    vec3 Transform::GetRightVector() const
+    {
+        return glm::vec3(1.0f, 0.0f, 0.0f);
+    }
+
+    vec3 Transform::GetForwardVector() const
+    {
+        return glm::vec3(0.0f, 0.0f, -1.0f);
+    }
+
+    vec3 Transform::GetBackwardVector() const
+    {
+        return -GetForwardVector();
+    }
+
+    mat4 Transform::GetTransformMatrix() const
+    {
+        mat4 transform(1.0f);
+        transform = glm::translate(transform, Position);
+        transform = glm::rotate(transform, Rotation.x, vec3(1.0f, 0.0f, 0.0f));
+        transform = glm::rotate(transform, Rotation.y, vec3(0.0f, 1.0f, 0.0f));
+        transform = glm::rotate(transform, Rotation.z, vec3(0.0f, 0.0f, 1.0f));
+        transform = glm::scale(transform, Scale);
+        return transform;
+    }
+}

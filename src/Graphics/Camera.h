@@ -2,15 +2,15 @@
 
 #include "../Common.h"
 
-#include "../World/Object.h"
+#include "../World/Transform.h"
 
 namespace Minecraft
 {
     // Handles camera matrices - view and projection
-    class Camera : public Object
+    class Camera : public Transform
     {
     public:
-        Camera() : Object()
+        Camera() : Transform()
         {
             // Has to have -90 for yaw because cos(0) is 1 or something
             Rotation.y = -90.0f;

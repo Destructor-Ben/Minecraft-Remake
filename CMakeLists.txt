@@ -65,8 +65,8 @@ add_executable(Minecraft_Remake
         src/World/Entity.h
         src/Graphics/Camera.cpp
         src/Graphics/Camera.h
-        src/World/Object.cpp
-        src/World/Object.h
+        src/World/Transform.cpp
+        src/World/Transform.h
 )
 
 # Linking libraries
