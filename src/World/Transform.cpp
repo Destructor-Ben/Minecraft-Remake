@@ -36,7 +36,7 @@ namespace Minecraft
         return -GetUpVector();
     }
 
-    mat4 Transform::GetTransformMatrix() const
+    mat4 Transform::GetTransformationMatrix() const
     {
         mat4 transform(1.0f);
         transform = glm::translate(transform, Position);

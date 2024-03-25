@@ -19,6 +19,6 @@ namespace Minecraft
         vec3 GetLeftVector() const;
         vec3 GetDownVector() const;
 
-        mat4 GetTransformMatrix() const;
+        mat4 GetTransformationMatrix() const;
     };
 }
