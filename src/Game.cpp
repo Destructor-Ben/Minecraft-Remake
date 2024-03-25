@@ -22,7 +22,6 @@ namespace Minecraft
         Input = new InputManager();
         Renderer = new class Renderer();
         World = new class World();
-        World->OnEnter();
 
         uint32 index[] = {
                 // Bottom
@@ -84,13 +83,11 @@ namespace Minecraft
 
     void Shutdown()
     {
-        World->OnExit();
-
         Renderer::UnbindAll();
 
-        delete Input;
-        delete Renderer;
         delete World;
+        delete Renderer;
+        delete Input;
 
         delete shader;
         delete material;
