@@ -10,12 +10,6 @@ namespace Minecraft
     class Camera : public Transform
     {
     public:
-        Camera() : Transform()
-        {
-            // Has to have -90 for yaw because cos(0) is 1 or something
-            Rotation.y = -90.0f;
-        }
-
         bool IsPerspective = true;
 
         float FOV = 45.0f;
