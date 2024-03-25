@@ -5,6 +5,7 @@
 #include <map>
 
 #include "Chunk.h"
+#include "../Graphics/Renderer.h"
 #include "../Graphics/Camera.h"
 
 namespace Minecraft
@@ -13,6 +14,15 @@ namespace Minecraft
     {
     public:
         Camera Camera;
+
+        Shader* shader;
+        Material* material;
+        IndexBuffer* indexBuffer;
+
+        VertexBuffer* vertexBuffer;
+        VertexArray* vertexArray;
+
+        Mesh* mesh;
 
         World();
         ~World();
