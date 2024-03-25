@@ -14,8 +14,8 @@ namespace Minecraft
     public:
         Camera Camera;
 
-        void OnEnter();
-        void OnExit();
+        World();
+        ~World();
 
         void Tick();
         void Update();
@@ -27,7 +27,5 @@ namespace Minecraft
 
     private:
         void UpdateCamera();
-
-        std::map<uint32, Chunk> m_Chunks;
     };
 }

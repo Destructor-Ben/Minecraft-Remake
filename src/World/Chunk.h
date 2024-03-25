@@ -12,8 +12,13 @@ namespace Minecraft
     public:
         static const uint8 Size = 10;
 
+        Chunk();
+        ~Chunk();
+
+        Block& GetBlock(int32 x, int32 y, int32 z);
+
     private:
-        Block m_Blocks[Size * Size * Size];
+        Block* m_Blocks;
         std::vector<Entity> m_Entities;
     };
 }

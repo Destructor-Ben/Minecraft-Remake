@@ -4,10 +4,9 @@
 
 namespace Minecraft
 {
-    class Block {
-        private:
-            uint16_t BlockType;  // 0 = air, 1 = grass
-        public:
-            uint16_t GetBlockType();
+    class Block
+    {
+    public:
+        bool IsSolid = false;
     };
 }

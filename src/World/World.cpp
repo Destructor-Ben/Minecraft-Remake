@@ -4,7 +4,7 @@
 
 namespace Minecraft
 {
-    void World::OnEnter()
+    World::World()
     {
         InputManager::SetRawMouseMotion(true);
         InputManager::SetCursorDisabled(true);
@@ -15,7 +15,7 @@ namespace Minecraft
         Camera.Position.z = 5.0f;
     }
 
-    void World::OnExit()
+    World::~World()
     {
         InputManager::SetRawMouseMotion(false);
         InputManager::SetCursorDisabled(false);

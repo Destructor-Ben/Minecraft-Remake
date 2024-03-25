@@ -2,12 +2,18 @@
 
 namespace Minecraft
 {
-    /*
-    Block Chunk::GetBlockInChunk(uint8_t BlockX, uint8_t BlockY, uint8_t BlockZ) {
-        return blocks_[BlockX*ChunkSize*ChunkSize + BlockY*ChunkSize + BlockZ];
-    };
+    Chunk::Chunk()
+    {
+        m_Blocks = new Block[Size * Size * Size];
+    }
 
-    void Chunk::SetBlockInChunk(uint8_t BlockX, uint8_t BlockY, uint8_t BlockZ, Block Block) {
-        blocks_[BlockX*ChunkSize*ChunkSize + BlockY*ChunkSize + BlockZ] = Block;
-    };*/
+    Chunk::~Chunk()
+    {
+        delete[] m_Blocks;
+    }
+
+    Block& Chunk::GetBlock(int32 x, int32 y, int32 z)
+    {
+        return m_Blocks[x * Size * Size + y * Size + z];
+    }
 }
