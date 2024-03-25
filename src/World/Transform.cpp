@@ -40,7 +40,7 @@ namespace Minecraft
     {
         mat4 transform(1.0f);
         transform = glm::translate(transform, Position);
-        // TODO: test if this is correct
+        // TODO: test if this is correct - it appears to be, but the transform may have the incorrect default angles +
         transform = glm::rotate(transform, glm::radians(Rotation.x), vec3(1.0f, 0.0f, 0.0f));
         transform = glm::rotate(transform, glm::radians(Rotation.y), vec3(0.0f, 1.0f, 0.0f));
         transform = glm::rotate(transform, glm::radians(Rotation.z), vec3(0.0f, 0.0f, 1.0f));
