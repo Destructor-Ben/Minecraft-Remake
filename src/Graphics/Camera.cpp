@@ -11,7 +11,7 @@ namespace Minecraft
         return glm::lookAt(Position, Position + forward, up);
     }
 
-    // TODO: perspective doesn't remap 0 - Width to -1 to 1 and so forth - is this even an issue? 1 metre looks fine on screen, only really matters for ui rendering
+    // Perspective projection doesn't remap 0:Width and 0:Height to -1:1 (orthographic does), but this is good because 1 block is 1 metre and fits on screen nicely
     mat4 Camera::GetProjectionMatrix() const
     {
         if (IsPerspective)

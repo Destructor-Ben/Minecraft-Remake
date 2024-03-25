@@ -98,7 +98,7 @@ namespace Minecraft
             cameraForward = glm::normalize(cameraForward);
 
             // Moving camera
-            Camera.Position += cameraForward * -movementDirection.z * speed; // TODO: is this minus sign from incorrect forward/reverse motion above? from bad view matrix?
+            Camera.Position += cameraForward * -movementDirection.z * speed; // There is a negative sign here because movement direction -z is forward, but camera forward -z backwards
             Camera.Position += cameraRight * movementDirection.x * speed;
         }
     }

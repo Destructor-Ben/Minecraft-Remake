@@ -40,10 +40,10 @@ namespace Minecraft
     {
         mat4 transform(1.0f);
         transform = glm::translate(transform, Position);
+        // TODO: test if this is correct
         transform = glm::rotate(transform, Rotation.x, vec3(1.0f, 0.0f, 0.0f));
         transform = glm::rotate(transform, Rotation.y, vec3(0.0f, 1.0f, 0.0f));
         transform = glm::rotate(transform, Rotation.z, vec3(0.0f, 0.0f, 1.0f));
-        // TODO: test if this is correct
         transform = glm::scale(transform, Scale);
         return transform;
     }
