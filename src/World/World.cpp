@@ -55,12 +55,7 @@ namespace Minecraft
 
         // Clamping
         float& xRotation = Camera.Rotation.x;
-
-        // TODO: clamp function
-        if (xRotation > maxAngle)
-            xRotation = maxAngle;
-        if (xRotation < -maxAngle)
-            xRotation = -maxAngle;
+        xRotation = glm::clamp(xRotation, -maxAngle, maxAngle);
 
         // Input
         vec3 movementDirection = vec3(0.0f);
@@ -98,12 +93,13 @@ namespace Minecraft
             vec3 cameraForward = Camera.GetForwardVector();
             vec3 cameraRight = Camera.GetRightVector();
 
+            // Disable movement on the Y axis from WASD movement
             cameraForward.y = 0.0f;
             cameraForward = glm::normalize(cameraForward);
 
             // Moving camera
-            Camera.Position += cameraForward * -movementDirection.z * speed;
-            Camera.Position += cameraRight * movementDirection.x * speed;
+            test.Position += cameraForward * -movementDirection.z * speed; // TODO: is this minus sign from incorrect forward/reverse motion above? from bad view matrix?
+            test.Position += cameraRight * movementDirection.x * speed;
         }
     }
 }

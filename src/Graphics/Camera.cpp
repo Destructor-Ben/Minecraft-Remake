@@ -6,12 +6,12 @@ namespace Minecraft
 {
     mat4 Camera::GetViewMatrix() const
     {
-        vec3 front = GetForwardVector();
+        vec3 forward = GetForwardVector();
         vec3 up = GetUpVector();
-        return glm::lookAt(Position, Position + front, up);
+        return glm::lookAt(Position, Position + forward, up);
     }
 
-    // TODO: perspective doesn't remap 0 - Width to -1 to 1 and so forth
+    // TODO: perspective doesn't remap 0 - Width to -1 to 1 and so forth - is this even an issue? 1 metre looks fine on screen, only really matters for ui rendering
     mat4 Camera::GetProjectionMatrix() const
     {
         if (IsPerspective)

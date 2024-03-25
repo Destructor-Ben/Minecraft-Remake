@@ -2,8 +2,6 @@
 
 namespace Minecraft
 {
-    // TODO: handle getting vectors properly - im not sure if all rotation is handled properly
-    // TODO: check matrix creation - rotation probably isn't right
     vec3 Transform::GetForwardVector() const
     {
         vec3 forward;
@@ -15,12 +13,12 @@ namespace Minecraft
 
     vec3 Transform::GetRightVector() const
     {
-        return glm::normalize(glm::cross(GetForwardVector(), vec3(0.0f, 1.0f, 0.0f)));
+        return glm::normalize(glm::cross(GetForwardVector(), GetUpVector()));
     }
 
     vec3 Transform::GetUpVector() const
     {
-        return glm::normalize(glm::cross(GetRightVector(), GetForwardVector()));
+        return glm::normalize(vec3(sin(Rotation.z), cos(Rotation.z), 0));
     }
 
     vec3 Transform::GetBackwardVector() const
@@ -45,6 +43,7 @@ namespace Minecraft
         transform = glm::rotate(transform, Rotation.x, vec3(1.0f, 0.0f, 0.0f));
         transform = glm::rotate(transform, Rotation.y, vec3(0.0f, 1.0f, 0.0f));
         transform = glm::rotate(transform, Rotation.z, vec3(0.0f, 0.0f, 1.0f));
+        // TODO: test if this is correct
         transform = glm::scale(transform, Scale);
         return transform;
     }

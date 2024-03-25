@@ -1,18 +1,19 @@
 #pragma once
 
 #include "../Common.h"
-#include "Block.h"
 
-uint8_t const ChunkSize = 16;
+#include "Block.h"
+#include "Entity.h"
 
 namespace Minecraft
 {
     class Chunk
     {
-        private:
-            Block blocks_[ChunkSize*ChunkSize*ChunkSize];
-        public:
-            Block GetBlockInChunk(uint8_t BlockX, uint8_t BlockY, uint8_t BlockZ);
-            void SetBlockInChunk(uint8_t BlockX, uint8_t BlockY, uint8_t BlockZ, Block Block);
+    public:
+        static const uint8 Size = 10;
+
+    private:
+        Block m_Blocks[Size * Size * Size];
+        std::vector<Entity> m_Entities;
     };
 }
