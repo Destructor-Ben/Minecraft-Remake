@@ -47,14 +47,23 @@ static void InitGL()
 {
     gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
+    // Viewport settings
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glViewport(0, 0, Window::InitialWidth, Window::InitialHeight);
+
+    // Culling
     glEnable(GL_DEPTH_TEST);
+
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+    glFrontFace(GL_CCW);
+
+    // Blending TODO
+    //glEnable(GL_BLEND);
 }
 
 static void RunWindow()
 {
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glViewport(0, 0, Window::InitialWidth, Window::InitialHeight);
-
     if (Window::StartFullScreen)
         glfwMaximizeWindow(Window::Handle);
 
