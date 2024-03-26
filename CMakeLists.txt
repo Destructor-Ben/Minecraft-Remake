@@ -70,6 +70,7 @@ add_executable(Minecraft_Remake
         src/Graphics/Camera.h
         src/World/Transform.cpp
         src/World/Transform.h
+        src/World/BlockType.h
 )
 
 # Linking libraries

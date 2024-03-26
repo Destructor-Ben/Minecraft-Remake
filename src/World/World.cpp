@@ -13,7 +13,12 @@ namespace Minecraft
         // Camera
         Renderer->SetCamera(&Camera);
         Camera.FOV = 70.0f;
-        Camera.Position.z = 5.0f;
+        Camera.Position.y = 5.0f;
+
+        // Chunks
+        Chunk = new class Chunk(0, 0, 0);
+
+        // Generate world TODO
 
 #pragma region Cube
         uint32 index[] = {
@@ -42,15 +47,16 @@ namespace Minecraft
             7, 3, 6,
         };
 
+        float v = 0.5f;
         float vertex[] = {
-            -1.0f, -1.0f, -1.0f,
-            -1.0f, -1.0f, 1.0f,
-            1.0f, -1.0f, -1.0f,
-            1.0f, -1.0f, 1.0f,
-            -1.0f, 1.0f, -1.0f,
-            -1.0f, 1.0f, 1.0f,
-            1.0f, 1.0f, -1.0f,
-            1.0f, 1.0f, 1.0f,
+            -v, -v, -v,
+            -v, -v, v,
+            v, -v, -v,
+            v, -v, v,
+            -v, v, -v,
+            -v, v, v,
+            v, v, -v,
+            v, v, v,
         };
 
         shader = new Shader(Shader::FromFile("res/shaders/shader"));
@@ -82,6 +88,10 @@ namespace Minecraft
         // Camera
         Renderer->SetCamera(nullptr);
 
+        // Chunks
+        delete Chunk;
+
+        // Cube
         delete shader;
         delete material;
         delete indexBuffer;
@@ -107,7 +117,7 @@ namespace Minecraft
 
     void World::Render()
     {
-        Renderer->Draw(*mesh);
+
     }
 
     void World::UpdateCamera()

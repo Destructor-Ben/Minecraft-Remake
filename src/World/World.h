@@ -2,7 +2,8 @@
 
 #include "../Common.h"
 
-#include <map>
+#include <array>
+#include <unordered_map>
 
 #include "Chunk.h"
 #include "../Graphics/Renderer.h"
@@ -10,10 +11,14 @@
 
 namespace Minecraft
 {
+    // TODO: make some form of static block data
     class World
     {
     public:
         Camera Camera;
+
+        // TODO: properly handle world
+        Chunk* Chunk;
 
         Shader* shader;
         Material* material;
@@ -33,7 +38,7 @@ namespace Minecraft
 
         // Interface for chunks
         // TODO: entity getters
-        // TODO: block getters
+        // TODO: block getters - use indexing operator
 
     private:
         void UpdateCamera();
