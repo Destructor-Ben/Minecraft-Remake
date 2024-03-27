@@ -38,8 +38,7 @@ namespace Minecraft
 
     private:
         // TODO: what kind of collection should be used instead of a map?
+        // TODO: make the actual block data - essentially components but for blocks
         std::vector<std::map<uint16, void*>> m_BlockData;
     };
 }
-
-#endif

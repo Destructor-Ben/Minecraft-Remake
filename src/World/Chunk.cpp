@@ -1,7 +1,5 @@
 #include "Chunk.h"
 
-#include "Block.h"
-
 namespace Minecraft
 {
     Chunk::Chunk(int32 x, int32 y, int32 z): X(x), Y(y), Z(z)
