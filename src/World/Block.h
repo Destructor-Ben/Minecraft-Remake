@@ -6,9 +6,10 @@
 
 namespace Minecraft
 {
-    // Blocks are essentially an index to actual data, similar to an ECS, hence why they are a struct
-    struct Block
+    // Blocks are essentially an index to actual data, similar to an ECS
+    class Block
     {
+    public:
         const Chunk& Parent;
 
         // The offset from the chunk coordinates

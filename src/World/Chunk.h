@@ -5,7 +5,6 @@
 #include <array>
 #include <map>
 
-// TODO: fix ciruclar dependency loop
 #include "Block.h"
 #include "Entity.h"
 
@@ -22,18 +21,25 @@ namespace Minecraft
         const int32 Y;
         const int32 Z;
 
-        // Block data TODO
+        Chunk(int32 x, int32 y, int32 z);
+        ~Chunk();
 
-        Chunk(int32 x, int32 y, int32 z): X(x), Y(y), Z(z) { }
-
-        // TODO: use indexing operator for blocks
         Block GetBlock(uint8 localX, uint8 localY, uint8 localZ);
 
         template<typename T>
-        T GetBlockData(Block block);
+        T& GetBlockData(Block block);
+
+        template<typename T>
+        void RemoveBlockData(Block block);
 
         // TODO: possibly make iterators for entities and blocks in a chunk
 
         // TODO: tick, update, and render chunks
+
+    private:
+        // TODO: what kind of collection should be used instead of a map?
+        std::vector<std::map<uint16, void*>> m_BlockData;
     };
 }
+
+#endif

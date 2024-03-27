@@ -12,6 +12,7 @@
 namespace Minecraft
 {
     // TODO: make some form of static block data
+    // TODO: possibly use indexing operator for accessing blocks in world and chunks
     class World
     {
     public:
