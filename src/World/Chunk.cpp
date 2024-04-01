@@ -14,7 +14,7 @@ namespace Minecraft
 
     Block Chunk::GetBlock(uint8 localX, uint8 localY, uint8 localZ)
     {
-        return Block(*this, localX, localY, localZ);
+        return Block(this, localX, localY, localZ);
     }
 
     template<typename T>
