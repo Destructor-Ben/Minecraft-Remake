@@ -22,12 +22,14 @@ namespace Minecraft
         const int32 Z;
 
         Chunk(int32 x, int32 y, int32 z);
-        ~Chunk();
 
         Block GetBlock(uint8 localX, uint8 localY, uint8 localZ);
 
         template<typename T>
         T& GetBlockData(Block block);
+
+        template<typename T>
+        T& AddBlockData(Block block);
 
         template<typename T>
         void RemoveBlockData(Block block);
