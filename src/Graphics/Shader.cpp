@@ -13,13 +13,19 @@ namespace Minecraft
 		glLinkProgram(m_ID);
 
 		// Error checking
-		GLint success;
-		GLchar* infoLog = nullptr;
-		glGetProgramiv(m_ID, GL_LINK_STATUS, &success);
-		if (!success) {
-			glGetProgramInfoLog(m_ID, 512, nullptr, infoLog);
-			Log(string("Error: Shader linking failed:\n") + infoLog);
-		}
+        int success;
+        glGetProgramiv(m_ID, GL_LINK_STATUS, &success);
+        if (success)
+            return;
+
+        int logLength;
+        glGetProgramiv(m_ID, GL_INFO_LOG_LENGTH, &logLength);
+
+        string infoLog;
+        infoLog.resize(logLength);
+        glGetProgramInfoLog(m_ID, logLength, nullptr, &infoLog[0]);
+
+        Log("Error: Shader linking failed:\n" + infoLog);
 	}
 
 	Shader::~Shader()

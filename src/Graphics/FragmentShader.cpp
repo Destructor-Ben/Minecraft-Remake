@@ -13,14 +13,19 @@ namespace Minecraft
         glCompileShader(m_ID);
 
         // Error checking
-        GLint success;
-        GLchar* infoLog = nullptr;
+        int success;
         glGetShaderiv(m_ID, GL_COMPILE_STATUS, &success);
-        if (!success)
-        {
-            glGetShaderInfoLog(m_ID, 512, nullptr, infoLog);
-            Log(string("Error: Fragment shader compilation failed:\n") + infoLog);
-        }
+        if (success)
+            return;
+
+        int logLength;
+        glGetShaderiv(m_ID, GL_INFO_LOG_LENGTH, &logLength);
+
+        string infoLog;
+        infoLog.resize(logLength);
+        glGetShaderInfoLog(m_ID, logLength, nullptr, &infoLog[0]);
+
+        Log(infoLog);
 	}
 
 	FragmentShader::~FragmentShader()
