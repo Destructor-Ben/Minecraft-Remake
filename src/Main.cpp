@@ -8,9 +8,9 @@ using namespace Minecraft;
 
 // TODO: improve error checking at some point and also make logging better
 // TODO: tick thread
-// TODO: #include resources - https://www.reddit.com/r/opengl/comments/wcjdtg/comment/iidfgxj/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
+// TODO: change res to assets
 // TODO: textures
-// TODO: make root src an inlcude dir so we can #include "Common.cpp" easily
+// TODO: make root src an include dir so we can #include "Common.cpp" easily
 
 static void Resize(GLFWwindow* window, int width, int height)
 {
