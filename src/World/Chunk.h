@@ -11,7 +11,6 @@
 namespace Minecraft
 {
     // Chunks contain the actual block data and information about it's size, as wel as getters for blocks that access the data
-    // TODO: entities
     class Chunk
     {
     public:
@@ -38,9 +37,9 @@ namespace Minecraft
 
         // TODO: tick, update, and render chunks
 
+        // TODO: entities
+
     private:
-        // TODO: what kind of collection should be used instead of a map?
-        // TODO: make the actual block data - essentially components but for blocks
-        std::vector<std::map<uint16, void*>> m_BlockData;
+        std::vector<void*> m_BlockData;
     };
 }

@@ -8,7 +8,7 @@ namespace Minecraft
     {
         // Push void* and then cast to whatever type we want (doesn't even need to be a pointer)
         // TODO: make a system for block data
-        m_BlockData.push_back(std::map<uint16, void*>());
+        //m_BlockData.push_back(std::map<uint16, void*>());
     }
 
     Block Chunk::GetBlock(uint8 localX, uint8 localY, uint8 localZ)

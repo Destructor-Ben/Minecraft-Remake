@@ -20,6 +20,7 @@ namespace Minecraft
         Chunk = new class Chunk(0, 0, 0);
 
         // Generate world TODO
+        /*
         for (int x = 0; x < Chunk::Size; x++)
         {
             for (int z = 0; z < Chunk::Size; z++)
@@ -27,15 +28,15 @@ namespace Minecraft
                 for (int y = 0; y < Chunk::Size; ++y)
                 {
                     Block block = Chunk->GetBlock(x, y, z);
-                    BlockData data = block.AddData<BlockData>();
+                    //BlockData data = block.AddData<BlockData>();
 
                     if (y != 0)
                         return;
 
-                    data.Type = BlockType::Dirt;
+                    //data.Type = BlockType::Dirt;
                 }
             }
-        }
+        }//*/
 
 #pragma region Cube
         uint32 index[] = {
@@ -141,8 +142,8 @@ namespace Minecraft
                 for (int z = 0; z < Chunk::Size; ++z)
                 {
                     Block block = Chunk->GetBlock(x, y, z);
-                    if (block.GetData<BlockData>().Type == BlockType::Air)
-                        continue;
+                    //if (block.GetData<BlockData>().Type == BlockType::Air)
+                    //    continue;
 
                     Transform transform;
                     transform.Position = vec3(x, y, z);
