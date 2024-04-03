@@ -1,6 +1,5 @@
 #include "World.h"
 
-#include "BlockData.h"
 #include "../Game.h"
 
 namespace Minecraft
@@ -20,7 +19,6 @@ namespace Minecraft
         Chunk = new class Chunk(0, 0, 0);
 
         // Generate world TODO
-        /*
         for (int x = 0; x < Chunk::Size; x++)
         {
             for (int z = 0; z < Chunk::Size; z++)
@@ -28,15 +26,16 @@ namespace Minecraft
                 for (int y = 0; y < Chunk::Size; ++y)
                 {
                     Block block = Chunk->GetBlock(x, y, z);
-                    //BlockData data = block.AddData<BlockData>();
+                    BlockType& data = Chunk->BlockTypes[block.GetID()];
+                    data = BlockType::Air;
 
                     if (y != 0)
                         return;
 
-                    //data.Type = BlockType::Dirt;
+                    data = BlockType::Dirt;
                 }
             }
-        }//*/
+        }
 
 #pragma region Cube
         uint32 index[] = {
@@ -142,8 +141,8 @@ namespace Minecraft
                 for (int z = 0; z < Chunk::Size; ++z)
                 {
                     Block block = Chunk->GetBlock(x, y, z);
-                    //if (block.GetData<BlockData>().Type == BlockType::Air)
-                    //    continue;
+                    if (Chunk->BlockTypes[block.GetID()] == BlockType::Air)
+                        continue;
 
                     Transform transform;
                     transform.Position = vec3(x, y, z);

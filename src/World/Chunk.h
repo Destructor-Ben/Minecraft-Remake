@@ -2,10 +2,8 @@
 
 #include "../Common.h"
 
-#include <array>
-#include <map>
-
 #include "Block.h"
+#include "BlockType.h"
 #include "Entity.h"
 
 namespace Minecraft
@@ -15,6 +13,8 @@ namespace Minecraft
     {
     public:
         static const uint8 Size = 10;
+
+        std::array<BlockType, Size * Size * Size> BlockTypes = std::array<BlockType, Size * Size * Size>();
 
         const int32 X;
         const int32 Y;
@@ -40,6 +40,6 @@ namespace Minecraft
         // TODO: entities
 
     private:
-        std::vector<void*> m_BlockData;
+        std::vector<std::array<BlockType, Size * Size * Size>> m_BlockData = std::vector<std::array<BlockType, Size * Size * Size>>();
     };
 }

@@ -71,8 +71,6 @@ add_executable(Minecraft_Remake
         src/World/Transform.cpp
         src/World/Transform.h
         src/World/BlockType.h
-        src/World/BlockData.cpp
-        src/World/BlockData.h
 )
 
 # Linking libraries

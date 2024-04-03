@@ -19,6 +19,8 @@
 #include <cmath>
 #include <vector>
 #include <list>
+#include <array>
+#include <map>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
