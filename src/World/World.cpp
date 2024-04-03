@@ -11,31 +11,17 @@ namespace Minecraft
         InputManager::SetCursorDisabled(true);
 
         // Camera
-        Renderer->SetCamera(&Camera);
+        Camera = Minecraft::Camera();
         Camera.FOV = 70.0f;
         Camera.Position.y = 5.0f;
+        Renderer->SetCamera(&Camera);
 
         // Chunks
         Chunk = new class Chunk(0, 0, 0);
 
-        // Generate world TODO
-        for (int x = 0; x < Chunk::Size; x++)
-        {
-            for (int z = 0; z < Chunk::Size; z++)
-            {
-                for (int y = 0; y < Chunk::Size; ++y)
-                {
-                    Block block = Chunk->GetBlock(x, y, z);
-                    BlockType& data = Chunk->BlockTypes[block.GetID()];
-                    data = BlockType::Air;
-
-                    if (y != 0)
-                        return;
-
-                    data = BlockType::Dirt;
-                }
-            }
-        }
+        // Generate world
+        WorldGenerator = Minecraft::WorldGenerator(*this, 0);// TODO: random seed generation
+        WorldGenerator.Generate();
 
 #pragma region Cube
         uint32 index[] = {
@@ -121,7 +107,7 @@ namespace Minecraft
 
     void World::Tick()
     {
-
+        Chunk->Tick();
     }
 
     void World::Update()
@@ -129,27 +115,13 @@ namespace Minecraft
         if (Input->WasKeyReleased(Key::Escape))
             Window::Close();
 
+        Chunk->Update();
         UpdateCamera();
     }
 
     void World::Render()
     {
-        for (int x = 0; x < Chunk::Size; ++x)
-        {
-            for (int y = 0; y < Chunk::Size; ++y)
-            {
-                for (int z = 0; z < Chunk::Size; ++z)
-                {
-                    Block block = Chunk->GetBlock(x, y, z);
-                    if (Chunk->BlockTypes[block.GetID()] == BlockType::Air)
-                        continue;
-
-                    Transform transform;
-                    transform.Position = vec3(x, y, z);
-                    Renderer->Draw(*mesh, transform.GetTransformationMatrix());
-                }
-            }
-        }
+        Chunk->Render();
     }
 
     void World::UpdateCamera()

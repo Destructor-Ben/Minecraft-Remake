@@ -22,7 +22,7 @@ namespace Minecraft
 
         Chunk(int32 x, int32 y, int32 z);
 
-        Block GetBlock(uint8 localX, uint8 localY, uint8 localZ);
+        Block GetBlock(uint8 localX, uint8 localY, uint8 localZ) const;
 
         template<typename T>
         T& GetBlockData(Block block);
@@ -35,9 +35,11 @@ namespace Minecraft
 
         // TODO: possibly make iterators for entities and blocks in a chunk
 
-        // TODO: tick, update, and render chunks
-
         // TODO: entities
+
+        void Tick();
+        void Update();
+        void Render();
 
     private:
         std::vector<std::array<BlockType, Size * Size * Size>> m_BlockData = std::vector<std::array<BlockType, Size * Size * Size>>();

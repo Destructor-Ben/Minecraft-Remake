@@ -1,5 +1,7 @@
 #include "Chunk.h"
 
+#include "../Game.h"
+
 namespace Minecraft
 {
     Chunk::Chunk(int32 x, int32 y, int32 z): X(x), Y(y), Z(z)
@@ -7,7 +9,7 @@ namespace Minecraft
 
     }
 
-    Block Chunk::GetBlock(uint8 localX, uint8 localY, uint8 localZ)
+    Block Chunk::GetBlock(uint8 localX, uint8 localY, uint8 localZ) const
     {
         return Block(*this, localX, localY, localZ);
     }
@@ -29,5 +31,36 @@ namespace Minecraft
     void Chunk::RemoveBlockData(Block block)
     {
         //m_BlockData[T::GetID()].erase(block.GetID());
+    }
+
+
+    void Chunk::Tick()
+    {
+
+    }
+
+    void Chunk::Update()
+    {
+
+    }
+
+    void Chunk::Render()
+    {
+        for (int x = 0; x < Size; ++x)
+        {
+            for (int y = 0; y < Size; ++y)
+            {
+                for (int z = 0; z < Size; ++z)
+                {
+                    Block block = GetBlock(x, y, z);
+                    if (BlockTypes[block.GetID()] == BlockType::Air)
+                        continue;
+
+                    Transform transform;
+                    transform.Position = vec3(x, y, z);
+                    Renderer->Draw(*World->mesh, transform.GetTransformationMatrix());
+                }
+            }
+        }
     }
 }

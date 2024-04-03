@@ -6,6 +6,7 @@
 #include <unordered_map>
 
 #include "Chunk.h"
+#include "WorldGenerator.h"
 #include "../Graphics/Renderer.h"
 #include "../Graphics/Camera.h"
 
@@ -18,8 +19,9 @@ namespace Minecraft
     public:
         Camera Camera;
 
-        // TODO: properly handle world
+        // TODO: properly handle world with a vector of Chunks
         Chunk* Chunk;
+        WorldGenerator WorldGenerator;
 
         Shader* shader;
         Material* material;
