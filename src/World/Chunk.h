@@ -3,6 +3,7 @@
 #include "../Common.h"
 
 #include "Block.h"
+#include "BlockData.h"
 #include "BlockType.h"
 #include "Entity.h"
 
@@ -14,8 +15,6 @@ namespace Minecraft
     public:
         static const uint8 Size = 10;
 
-        std::array<BlockType, Size * Size * Size> BlockTypes = std::array<BlockType, Size * Size * Size>();
-
         const int32 X;
         const int32 Y;
         const int32 Z;
@@ -24,6 +23,10 @@ namespace Minecraft
 
         Block GetBlock(uint8 localX, uint8 localY, uint8 localZ) const;
 
+        BlockData& GetBlockData(Block block) { return m_BlockData[block.GetID()]; }
+
+        // TODO: make block data components
+        /*/
         template<typename T>
         T& GetBlockData(Block block);
 
@@ -32,6 +35,7 @@ namespace Minecraft
 
         template<typename T>
         void RemoveBlockData(Block block);
+        //*/
 
         // TODO: possibly make iterators for entities and blocks in a chunk
 
@@ -42,6 +46,8 @@ namespace Minecraft
         void Render();
 
     private:
-        std::vector<std::array<BlockType, Size * Size * Size>> m_BlockData = std::vector<std::array<BlockType, Size * Size * Size>>();
+        std::array<BlockData, Size * Size * Size> m_BlockData = std::array<BlockData, Size * Size * Size>();
+
+        //std::vector<std::array<BlockType, Size * Size * Size>> m_BlockData = std::vector<std::array<BlockType, Size * Size * Size>>();
     };
 }

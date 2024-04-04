@@ -2,6 +2,8 @@
 
 #include "../Common.h"
 
+#include "BlockData.h"
+
 namespace Minecraft
 {
     // Forward declare since we can't include Chunk.h since it includes this file
@@ -11,14 +13,14 @@ namespace Minecraft
     class Block
     {
     public:
-        const Chunk& Parent;
+        Chunk& Parent;
 
         // The offset from the chunk coordinates
         const uint8 LocalX;
         const uint8 LocalY;
         const uint8 LocalZ;
 
-        Block(const Chunk& chunk, uint8 localX, uint8 localY, uint8 localZ);
+        Block(Chunk& chunk, uint8 localX, uint8 localY, uint8 localZ);
 
         // Index of the block used for accessing the arrays of data in the chunks
         uint16 GetID() const;
@@ -28,6 +30,9 @@ namespace Minecraft
         int32 GetY() const;
         int32 GetZ() const;
 
+        BlockData& GetData();
+
+        /*/
         template<typename T>
         T& GetData();
 
@@ -36,5 +41,6 @@ namespace Minecraft
 
         template<typename T>
         void RemoveData();
+        //*/
     };
 }

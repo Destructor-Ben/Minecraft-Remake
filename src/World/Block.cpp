@@ -4,7 +4,7 @@
 
 namespace Minecraft
 {
-    Block::Block(const Chunk& chunk, uint8 localX, uint8 localY, uint8 localZ) : Parent(chunk), LocalX(localX), LocalY(localY), LocalZ(localZ) { }
+    Block::Block(Chunk& chunk, uint8 localX, uint8 localY, uint8 localZ) : Parent(chunk), LocalX(localX), LocalY(localY), LocalZ(localZ) { }
 
     uint16 Block::GetID() const
     {
@@ -27,6 +27,12 @@ namespace Minecraft
         return Parent.Z * Chunk::Size + LocalZ;
     }
 
+    BlockData& Block::GetData()
+    {
+        return Parent.GetBlockData(*this);
+    }
+
+    /*/
     template<typename T>
     T& Block::GetData()
     {
@@ -44,4 +50,5 @@ namespace Minecraft
     {
         Parent.RemoveBlockData<T>(this);
     }
+     //*/
 }

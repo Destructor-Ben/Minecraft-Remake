@@ -73,6 +73,8 @@ add_executable(Minecraft_Remake
         src/World/BlockType.h
         src/World/WorldGenerator.cpp
         src/World/WorldGenerator.h
+        src/World/BlockData.cpp
+        src/World/BlockData.h
 )
 
 # Linking libraries

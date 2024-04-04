@@ -14,6 +14,7 @@ namespace Minecraft
         return Block(*this, localX, localY, localZ);
     }
 
+    /*/
     template<typename T>
     T& Chunk::GetBlockData(Block block)
     {
@@ -32,7 +33,7 @@ namespace Minecraft
     {
         //m_BlockData[T::GetID()].erase(block.GetID());
     }
-
+    //*/
 
     void Chunk::Tick()
     {
@@ -53,7 +54,7 @@ namespace Minecraft
                 for (int z = 0; z < Size; z++)
                 {
                     Block block = GetBlock(x, y, z);
-                    if (BlockTypes[block.GetID()] == BlockType::Air)
+                    if (block.GetData().Type == BlockType::Air)
                         continue;
 
                     Transform transform;

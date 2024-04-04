@@ -27,13 +27,13 @@ namespace Minecraft
                 for (int z = 0; z < Chunk::Size; z++)
                 {
                     Block block = chunk.GetBlock(x, y, z);
-                    BlockType& data = chunk.BlockTypes[block.GetID()];
-                    data = BlockType::Air;
+                    BlockType& type = block.GetData().Type;
+                    type = BlockType::Air;
 
                     if (block.GetY() > -2)
                         continue;
 
-                    data = BlockType::Dirt;
+                    type = BlockType::Dirt;
                 }
             }
         }
