@@ -30,7 +30,7 @@ namespace Minecraft
                     data = BlockType::Air;
 
                     if (y > 1)
-                        return;
+                        continue;
 
                     data = BlockType::Dirt;
                 }

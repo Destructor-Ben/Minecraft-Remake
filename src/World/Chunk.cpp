@@ -46,11 +46,11 @@ namespace Minecraft
 
     void Chunk::Render()
     {
-        for (int x = 0; x < Size; ++x)
+        for (int x = 0; x < Size; x++)
         {
-            for (int y = 0; y < Size; ++y)
+            for (int y = 0; y < Size; y++)
             {
-                for (int z = 0; z < Size; ++z)
+                for (int z = 0; z < Size; z++)
                 {
                     Block block = GetBlock(x, y, z);
                     if (BlockTypes[block.GetID()] == BlockType::Air)
