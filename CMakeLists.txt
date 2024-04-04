@@ -75,6 +75,8 @@ add_executable(Minecraft_Remake
         src/World/WorldGenerator.h
         src/World/BlockData.cpp
         src/World/BlockData.h
+        src/Graphics/Texture.cpp
+        src/Graphics/Texture.h
 )
 
 # Linking libraries
