@@ -12,7 +12,6 @@ namespace Minecraft
 
         // Camera
         Camera.FOV = 70.0f;
-        Camera.Position.y = 5.0f;
         Renderer->SetCamera(&Camera);
 
         // Chunks
@@ -50,6 +49,7 @@ namespace Minecraft
             7, 3, 6,
         };
 
+        /* Removed in favour of an axis aligned block
         float v = 0.5f;
         float vertex[] = {
             -v, -v, -v,
@@ -60,6 +60,19 @@ namespace Minecraft
             -v, v, v,
             v, v, -v,
             v, v, v,
+        };
+        //*/
+        float l = 0.0f;
+        float h = 1.0f;
+        float vertex[] = {
+            l, l, l,
+            l, l, h,
+            h, l, l,
+            h, l, h,
+            l, h, l,
+            l, h, h,
+            h, h, l,
+            h, h, h,
         };
 
         shader = new Shader(Shader::FromFile("res/shaders/shader"));

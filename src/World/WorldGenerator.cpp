@@ -30,7 +30,7 @@ namespace Minecraft
                     BlockType& data = chunk.BlockTypes[block.GetID()];
                     data = BlockType::Air;
 
-                    if (sin(block.GetZ() + block.GetY() + block.GetX()) > 0)
+                    if (block.GetY() > -2)
                         continue;
 
                     data = BlockType::Dirt;
