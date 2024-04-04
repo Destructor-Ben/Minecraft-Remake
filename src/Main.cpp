@@ -9,7 +9,6 @@ using namespace Minecraft;
 // TODO: improve error checking at some point and also make logging better
 // TODO: tick thread
 // TODO: change res to assets
-// TODO: textures
 // TODO: make root src an include dir so we can #include "Common.cpp" easily
 
 static void Resize(GLFWwindow* window, int width, int height)
@@ -60,6 +59,9 @@ static void InitGL()
 
     // Blending TODO
     //glEnable(GL_BLEND);
+
+    // Stb image
+    stbi_set_flip_vertically_on_load(true);
 }
 
 static void RunWindow()

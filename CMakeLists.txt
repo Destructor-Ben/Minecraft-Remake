@@ -9,6 +9,13 @@ add_library(
         lib/glad/include/KHR/khrplatform.h
 )
 
+# Adding stb_image library
+add_library(
+        stb_image
+        lib/stb_image/stb_image.h
+        lib/stb_image/stb_image.c
+)
+
 # Adding GLFW library
 add_subdirectory(lib/glfw)
 
@@ -19,6 +26,7 @@ add_subdirectory(lib/glm/glm)
 include_directories(lib/glad/include)
 include_directories(lib/glfw/include)
 include_directories(lib/glm)
+include_directories(lib/stb_image)
 
 # Make root directory an include dir so we can include Common.h easily
 # TODO: fix include_directories(src)
