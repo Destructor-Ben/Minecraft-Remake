@@ -21,7 +21,7 @@ namespace Minecraft
 
         Chunk(int32 x, int32 y, int32 z);
 
-        Block GetBlock(uint8 localX, uint8 localY, uint8 localZ) const;
+        Block GetBlock(uint8 localX, uint8 localY, uint8 localZ);
 
         BlockData& GetBlockData(Block block) { return m_BlockData[block.GetID()]; }
 
