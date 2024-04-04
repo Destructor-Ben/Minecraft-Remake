@@ -17,6 +17,7 @@ namespace Minecraft
 
         // Chunks
         Chunk = new class Chunk(0, 0, 0);
+        Chunk2 = new class Chunk(0, -1, 0);
 
         // Generate world
         WorldGenerator = new Minecraft::WorldGenerator(*this, 0);// TODO: random seed generation
@@ -92,6 +93,10 @@ namespace Minecraft
 
         // Chunks
         delete Chunk;
+        delete Chunk2;
+
+        // World generator
+        delete WorldGenerator;
 
         // Cube
         delete shader;
@@ -107,6 +112,7 @@ namespace Minecraft
     void World::Tick()
     {
         Chunk->Tick();
+        Chunk2->Tick();
     }
 
     void World::Update()
@@ -115,12 +121,14 @@ namespace Minecraft
             Window::Close();
 
         Chunk->Update();
+        Chunk2->Update();
         UpdateCamera();
     }
 
     void World::Render()
     {
         Chunk->Render();
+        Chunk2->Render();
     }
 
     void World::UpdateCamera()

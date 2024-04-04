@@ -57,7 +57,7 @@ namespace Minecraft
                         continue;
 
                     Transform transform;
-                    transform.Position = vec3(x, y, z);
+                    transform.Position = vec3(block.GetX(), block.GetY(), block.GetZ());
                     Renderer->Draw(*World->mesh, transform.GetTransformationMatrix());
                 }
             }

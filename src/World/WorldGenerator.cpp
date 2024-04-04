@@ -10,6 +10,7 @@ namespace Minecraft
     {
         // TODO: once I have a proper chunking system, make this generate properly
         Generate(*m_World->Chunk);
+        Generate(*m_World->Chunk2);
     }
 
     void WorldGenerator::Generate(int32 chunkX, int32 chunkY, int32 chunkZ)
@@ -29,7 +30,7 @@ namespace Minecraft
                     BlockType& data = chunk.BlockTypes[block.GetID()];
                     data = BlockType::Air;
 
-                    if (y > 1)
+                    if (block.GetY() > 1)
                         continue;
 
                     data = BlockType::Dirt;

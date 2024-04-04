@@ -21,6 +21,7 @@ namespace Minecraft
 
         // TODO: properly handle world with a vector of Chunks
         Chunk* Chunk;
+        class Chunk* Chunk2;
         WorldGenerator* WorldGenerator; // TODO: try to make this not a pointer
 
         Shader* shader;
