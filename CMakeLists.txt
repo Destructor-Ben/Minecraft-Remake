@@ -1,6 +1,13 @@
 cmake_minimum_required(VERSION 3.15)
 project(Minecraft_Remake VERSION 0.1)
 
+# Adding stb_image library
+add_library(
+        stb_image
+        lib/stb_image/stb_image.h
+        lib/stb_image/stb_image.c
+)
+
 # Adding GLAD library
 add_library(
         glad
@@ -9,24 +16,17 @@ add_library(
         lib/glad/include/KHR/khrplatform.h
 )
 
-# Adding stb_image library
-add_library(
-        stb_image
-        lib/stb_image/stb_image.h
-        lib/stb_image/stb_image.c
-)
+# Adding GLM library
+add_subdirectory(lib/glm/glm)
 
 # Adding GLFW library
 add_subdirectory(lib/glfw)
 
-# Adding GLM library
-add_subdirectory(lib/glm/glm)
-
 # Include dirs
-include_directories(lib/glad/include)
-include_directories(lib/glfw/include)
-include_directories(lib/glm)
 include_directories(lib/stb_image)
+include_directories(lib/glad/include)
+include_directories(lib/glm)
+include_directories(lib/glfw/include)
 
 # Make root directory an include dir so we can include Common.h easily
 # TODO: fix include_directories(src)
@@ -88,5 +88,7 @@ add_executable(Minecraft_Remake
 )
 
 # Linking libraries
-target_link_libraries(Minecraft_Remake glfw ${GLFW_LIBRARIES})
+target_link_libraries(Minecraft_Remake stb_image)
 target_link_libraries(Minecraft_Remake glad)
+target_link_libraries(Minecraft_Remake glm)
+target_link_libraries(Minecraft_Remake glfw ${GLFW_LIBRARIES})
