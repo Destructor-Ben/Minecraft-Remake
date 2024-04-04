@@ -4,7 +4,7 @@
 
 namespace Minecraft
 {
-    WorldGenerator::WorldGenerator(class World& world, uint32 seed) : m_World(world), Seed(seed) { }
+    WorldGenerator::WorldGenerator(class World& world, uint32 seed) : m_World(&world), m_Seed(seed) { }
 
     void WorldGenerator::Generate()
     {

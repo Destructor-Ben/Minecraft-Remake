@@ -11,7 +11,6 @@ namespace Minecraft
         InputManager::SetCursorDisabled(true);
 
         // Camera
-        Camera = Minecraft::Camera();
         Camera.FOV = 70.0f;
         Camera.Position.y = 5.0f;
         Renderer->SetCamera(&Camera);
@@ -20,8 +19,8 @@ namespace Minecraft
         Chunk = new class Chunk(0, 0, 0);
 
         // Generate world
-        WorldGenerator = Minecraft::WorldGenerator(*this, 0);// TODO: random seed generation
-        WorldGenerator.Generate();
+        WorldGenerator = new Minecraft::WorldGenerator(*this, 0);// TODO: random seed generation
+        WorldGenerator->Generate();
 
 #pragma region Cube
         uint32 index[] = {
