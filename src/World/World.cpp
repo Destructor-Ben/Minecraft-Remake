@@ -158,10 +158,8 @@ namespace Minecraft
 
     void World::Render()
     {
-        //texture->BindTextureUnit(0);
-        //shader->SetUniform("uTexture", 0);
-
-        texture->Bind();
+        texture->BindTextureUnit(0);
+        shader->SetUniform("uTexture", 0);
 
         Chunk->Render();
         Chunk2->Render();
