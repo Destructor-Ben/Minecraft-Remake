@@ -66,6 +66,7 @@ static void InitGL()
 
 static void RunWindow()
 {
+    // TODO: remove this, just make it a single call with no if check
     if (Window::StartFullScreen)
         glfwMaximizeWindow(Window::Handle);
 

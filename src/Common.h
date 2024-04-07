@@ -38,6 +38,8 @@ namespace Minecraft
     using glm::vec3;
     using glm::vec4;
 
+    // TODO: float32, float64, vec2i, vec3i, vec4i
+
     typedef int8_t int8;
     typedef int16_t int16;
     typedef int32_t int32;

@@ -7,6 +7,7 @@ namespace Minecraft
     World::World()
     {
         // Input
+        // TODO: this should be moved to a function
         InputManager::SetRawMouseMotion(true);
         InputManager::SetCursorDisabled(true);
 
@@ -15,6 +16,7 @@ namespace Minecraft
         Renderer->SetCamera(&Camera);
 
         // Chunks
+        // TODO: make a proper chunking system
         Chunk = new class Chunk(0, 0, 0);
         Chunk2 = new class Chunk(0, -1, 0);
 
@@ -22,80 +24,18 @@ namespace Minecraft
         WorldGenerator = new Minecraft::WorldGenerator(*this, 0);// TODO: random seed generation
         WorldGenerator->Generate();
 
-#pragma region Cube
-        uint32 index[] = {
-            // Bottom
-            2, 1, 0,
-            1, 2, 3,
+        // TODO: move these calls into the WorldGenerator
+        Chunk->RegenerateMesh();
+        Chunk2->RegenerateMesh();
 
-            // Top
-            4, 5, 6,
-            7, 6, 5,
-
-            // Front
-            1, 3, 5,
-            5, 3, 7,
-
-            // Back
-            4, 2, 0,
-            6, 2, 4,
-
-            // Left
-            0, 1, 4,
-            4, 1, 5,
-
-            // Right
-            6, 3, 2,
-            7, 3, 6,
-        };
-
-        /* Removed in favour of an axis aligned block
-        float v = 0.5f;
-        float vertex[] = {
-            -v, -v, -v,
-            -v, -v, v,
-            v, -v, -v,
-            v, -v, v,
-            -v, v, -v,
-            -v, v, v,
-            v, v, -v,
-            v, v, v,
-        };
-        //*/
-        float l = 0.0f;
-        float h = 1.0f;
-        // TODO: each cube face will not share vertices, since they will need different UVs
-        float vertex[] = {
-            l, l, l, l, l,
-            l, l, h, l, h,
-            h, l, l, h, l,
-            h, l, h, h, h,
-            l, h, l, h, h,
-            l, h, h, h, l,
-            h, h, l, l, h,
-            h, h, h, l, l,
-        };
-
+        // Chunk material
+        // TODO: move this to a chunk renderer class
         shader = new Shader(Shader::FromFile("res/shaders/shader"));
         material = new Material(*shader);
 
-        indexBuffer = new IndexBuffer();
-        indexBuffer->SetData(index, sizeof(index) / sizeof(uint32));
-
-        // Vertices
-        vertexBuffer = new VertexBuffer();
-        vertexBuffer->SetData(vertex, sizeof(vertex));
-
-        vertexArray = new VertexArray();
-        vertexArray->Push(GL_FLOAT, 3);
-        vertexArray->Push(GL_FLOAT, 2);
-        vertexArray->AddBuffer(*vertexBuffer);
-
-        // Mesh
-        mesh = new Mesh(*vertexArray);
-        mesh->AddMaterial(material, indexBuffer);
-
         // Texture
+        // TODO: fix texture loading
+        //texture = new Texture(Texture::FromFile("res/textures/test.png", GL_RGBA));
         int width, height, channels;
         uint8* data = stbi_load("res/textures/test.png", &width, &height, &channels, 0);
         if (!data)
@@ -106,9 +46,6 @@ namespace Minecraft
         texture = new Texture();
         texture->SetData(data, width, height, GL_RGBA);
         stbi_image_free(data);
-
-        //texture = new Texture(Texture::FromFile("res/textures/test.png", GL_RGBA));
-#pragma endregion
     }
 
     World::~World()
@@ -127,16 +64,9 @@ namespace Minecraft
         // World generator
         delete WorldGenerator;
 
-        // Cube
+        // Chunk material
         delete shader;
         delete material;
-        delete indexBuffer;
-
-        delete vertexBuffer;
-        delete vertexArray;
-
-        delete mesh;
-
         delete texture;
     }
 
