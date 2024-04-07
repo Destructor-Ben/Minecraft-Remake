@@ -9,6 +9,7 @@
 #include "WorldGenerator.h"
 #include "../Graphics/Renderer.h"
 #include "../Graphics/Camera.h"
+#include "src/Graphics/Texture.h"
 
 namespace Minecraft
 {
@@ -32,6 +33,8 @@ namespace Minecraft
         VertexArray* vertexArray;
 
         Mesh* mesh;
+
+        Texture* texture;
 
         World();
         ~World();

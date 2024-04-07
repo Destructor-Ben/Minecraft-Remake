@@ -9,7 +9,7 @@ using namespace Minecraft;
 // TODO: improve error checking at some point and also make logging better
 // TODO: tick thread
 // TODO: change res to assets
-// TODO: make root src an include dir so we can #include "Common.cpp" easily
+// TODO: make root src an include dir so we can #include "Common.cpp" easily - https://stackoverflow.com/questions/32773283/cmake-include-header-into-every-source-file
 
 static void Resize(GLFWwindow* window, int width, int height)
 {

@@ -44,5 +44,6 @@ namespace Minecraft
         VertexBuffer::Unbind();
         IndexBuffer::Unbind();
         Shader::Unbind();
+        Texture::Unbind();
     }
 }

@@ -64,15 +64,16 @@ namespace Minecraft
         //*/
         float l = 0.0f;
         float h = 1.0f;
+        // TODO: each cube face will not share vertices, since they will need different UVs
         float vertex[] = {
-            l, l, l,
-            l, l, h,
-            h, l, l,
-            h, l, h,
-            l, h, l,
-            l, h, h,
-            h, h, l,
-            h, h, h,
+            l, l, l, l, l,
+            l, l, h, l, h,
+            h, l, l, h, l,
+            h, l, h, h, h,
+            l, h, l, h, h,
+            l, h, h, h, l,
+            h, h, l, l, h,
+            h, h, h, l, l,
         };
 
         shader = new Shader(Shader::FromFile("res/shaders/shader"));
@@ -87,11 +88,26 @@ namespace Minecraft
 
         vertexArray = new VertexArray();
         vertexArray->Push(GL_FLOAT, 3);
+        vertexArray->Push(GL_FLOAT, 2);
         vertexArray->AddBuffer(*vertexBuffer);
 
         // Mesh
         mesh = new Mesh(*vertexArray);
         mesh->AddMaterial(material, indexBuffer);
+
+        // Texture
+        int width, height, channels;
+        uint8* data = stbi_load("res/textures/test.png", &width, &height, &channels, 0);
+        if (!data)
+        {
+            throw std::exception();
+        }
+
+        texture = new Texture();
+        texture->SetData(data, width, height, GL_RGBA);
+        stbi_image_free(data);
+
+        //texture = new Texture(Texture::FromFile("res/textures/test.png", GL_RGBA));
 #pragma endregion
     }
 
@@ -120,6 +136,8 @@ namespace Minecraft
         delete vertexArray;
 
         delete mesh;
+
+        delete texture;
     }
 
     void World::Tick()
@@ -140,6 +158,11 @@ namespace Minecraft
 
     void World::Render()
     {
+        //texture->BindTextureUnit(0);
+        //shader->SetUniform("uTexture", 0);
+
+        texture->Bind();
+
         Chunk->Render();
         Chunk2->Render();
     }

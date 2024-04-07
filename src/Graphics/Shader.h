@@ -17,6 +17,7 @@ namespace Minecraft
 		void Bind() const;
 
         void SetUniform(const string& name, const glm::mat4& value);
+        void SetUniform(const string& name, int32 value);
 
 		static void Unbind();
         static Shader FromFile(const string& filePath);

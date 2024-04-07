@@ -42,6 +42,10 @@ namespace Minecraft
         glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &value[0][0]);
     }
 
+    void Shader::SetUniform(const string &name, int32 value) {
+        glUniform1i(GetUniformLocation(name), value);
+    }
+
 	void Shader::Unbind()
 	{
 		glUseProgram(0);
@@ -49,6 +53,7 @@ namespace Minecraft
 
     Shader Shader::FromFile(const string &filePath)
     {
+        // Keep in mind that the vert and frag shaders get destroyed after the program is made, and that's fine
         VertexShader vert = VertexShader::FromFile(filePath);
         FragmentShader frag = FragmentShader::FromFile(filePath);
         return Shader(vert, frag);

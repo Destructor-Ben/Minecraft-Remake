@@ -6,6 +6,7 @@
 #include "Mesh.h"
 #include "IndexBuffer.h"
 #include "Shader.h"
+#include "Texture.h"
 #include "VertexBuffer.h"
 #include "VertexArray.h"
 #include "Window.h"
