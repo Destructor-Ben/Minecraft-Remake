@@ -41,6 +41,7 @@ static void InitGLFW()
     glfwSetInputMode(Window::Handle, GLFW_STICKY_KEYS, GLFW_TRUE);
     glfwSetInputMode(Window::Handle, GLFW_STICKY_MOUSE_BUTTONS, GLFW_TRUE);
     glfwSetScrollCallback(Window::Handle, OnScroll);
+    glfwSwapInterval(1);  // TODO: fix properly
 }
 
 static void InitGL()
