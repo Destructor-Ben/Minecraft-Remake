@@ -13,10 +13,10 @@ namespace Minecraft
 		glDeleteBuffers(1, &m_ID);
 	}
 
-	void VertexBuffer::SetData(const void* data, uint32 size, GLenum usage)
+	void VertexBuffer::SetData(const float* data, uint32 count, GLenum usage)
 	{
 		Bind();
-		glBufferData(GL_ARRAY_BUFFER, size, data, usage);
+        glBufferData(GL_ARRAY_BUFFER, count * sizeof(float), data, usage);
 	}
 
 	void VertexBuffer::Bind() const

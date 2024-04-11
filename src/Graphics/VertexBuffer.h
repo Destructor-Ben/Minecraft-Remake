@@ -10,7 +10,7 @@ namespace Minecraft
         VertexBuffer();
         ~VertexBuffer();
 
-        void SetData(const void* data, uint32 size, GLenum usage = GL_STATIC_DRAW);
+        void SetData(const float* data, uint32 size, GLenum usage = GL_STATIC_DRAW);
 
         void Bind() const;
 

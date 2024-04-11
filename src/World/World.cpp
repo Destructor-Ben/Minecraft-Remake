@@ -24,7 +24,7 @@ namespace Minecraft
         WorldGenerator = new Minecraft::WorldGenerator(*this, 0);// TODO: random seed generation
         WorldGenerator->Generate();
 
-        // TODO: move these calls into the WorldGenerator
+        // TODO: move these calls into the WorldGenerator and block modification
         Chunk->RegenerateMesh();
         Chunk2->RegenerateMesh();
 
@@ -35,6 +35,7 @@ namespace Minecraft
 
         // Texture
         // TODO: fix texture loading
+        // TODO: make a texture atlas
         //texture = new Texture(Texture::FromFile("res/textures/test.png", GL_RGBA));
         int width, height, channels;
         uint8* data = stbi_load("res/textures/test.png", &width, &height, &channels, 0);

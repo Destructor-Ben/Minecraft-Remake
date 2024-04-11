@@ -31,8 +31,9 @@ namespace Minecraft
         int32 GetZ() const;
 
         // TODO: make vec3i
-        // TODO: possible make GetWorldPos and GetBlockPos which return vec3i and vec3
-        vec3 GetPosition() const { return vec3((float)GetX(), (float)GetY(), (float)GetZ()); }
+        // TODO: possible make GetWorldPos and GetBlockPos and GetChunkPos which return vec3i or vec3
+        vec3 GetWorldPos() const { return vec3((float)GetX(), (float)GetY(), (float)GetZ()); }
+        vec3 GetChunkPos() const { return vec3((float)LocalX, (float)LocalY, (float)LocalZ); }
 
         BlockData& GetData();
 

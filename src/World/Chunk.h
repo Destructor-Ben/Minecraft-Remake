@@ -7,6 +7,7 @@
 #include "BlockType.h"
 #include "Entity.h"
 #include "src/Graphics/Mesh.h"
+#include "src/Graphics/Texture.h"
 
 namespace Minecraft
 {
@@ -16,6 +17,18 @@ namespace Minecraft
     public:
         static const uint8 Size = 10;
         static const uint16 Volume = Size * Size * Size;
+
+        struct Face
+        {
+            vec3 Centre;
+            vec3 Normal;
+        };
+
+        struct Vertex
+        {
+            vec3 Position;
+            vec2 UV;
+        };
 
         const int32 X;
         const int32 Y;
@@ -53,7 +66,10 @@ namespace Minecraft
         void RegenerateMesh();
 
     private:
+        void CreateMesh(const std::vector<float>& vertices, const std::vector<uint32>& indices);
         void DeleteMesh();
+
+        std::vector<Face> GetFaces();
 
         std::array<BlockData, Volume> m_BlockData = std::array<BlockData, Volume>();
 
@@ -61,6 +77,10 @@ namespace Minecraft
         VertexArray* m_VertexArray = nullptr;
         VertexBuffer* m_VertexBuffer = nullptr;
         IndexBuffer* m_IndexBuffer = nullptr;
+
+        Texture* m_Texture;
+        Shader* m_Shader;
+        Material* m_Material;
 
         //std::vector<std::array<BlockType, Volume>> m_BlockData = std::vector<std::array<BlockType, Volume>>();
     };
