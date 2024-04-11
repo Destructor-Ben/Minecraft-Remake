@@ -26,19 +26,13 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/rotate_vector.hpp>
 #include <stb_image.h>
 
 namespace Minecraft
 {
-    using std::string;
-    using std::to_string;
-
-    using glm::mat4;
-    using glm::vec2;
-    using glm::vec3;
-    using glm::vec4;
-
-    // TODO: float32, float64, vec2i, vec3i, vec4i
+    typedef float float32;
+    typedef double float64;
 
     typedef int8_t int8;
     typedef int16_t int16;
@@ -49,6 +43,18 @@ namespace Minecraft
     typedef uint16_t uint16;
     typedef uint32_t uint32;
     typedef uint64_t uint64;
+
+    typedef glm::vec<2, int32, glm::defaultp> vec2i;
+    typedef glm::vec<3, int32, glm::defaultp> vec3i;
+    typedef glm::vec<4, int32, glm::defaultp> vec4i;
+
+    using glm::mat4;
+    using glm::vec2;
+    using glm::vec3;
+    using glm::vec4;
+
+    using std::string;
+    using std::to_string;
 
     inline void Log(const string& message)
     {
