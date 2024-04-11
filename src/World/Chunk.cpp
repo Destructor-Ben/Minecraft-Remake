@@ -138,11 +138,11 @@ namespace Minecraft
         m_Mesh = new Mesh(*m_VertexArray);
 
         // TODO: make the material less convoluted
-        m_Shader = new Shader(Shader::FromFile("res/shaders/shader"));
+        m_Shader = new Shader(Shader::FromFile("assets/shaders/shader"));
         m_Material = new Material(*m_Shader);
 
         int width, height, channels;
-        uint8* data = stbi_load("res/textures/test.png", &width, &height, &channels, 0);
+        uint8* data = stbi_load("assets/textures/test.png", &width, &height, &channels, 0);
         if (!data)
         {
             throw std::exception();

@@ -10,7 +10,6 @@ using namespace Minecraft;
 // TODO: tick thread
 // TODO: make the renderer take ownership of graphics resources and dispose of them automatically
 // TODO: use quaternions for rotation instead of euler angles
-// TODO: change res to assets
 // TODO: make root src an include dir so we can #include "Common.cpp" easily - https://stackoverflow.com/questions/32773283/cmake-include-header-into-every-source-file
 
 static void Resize(GLFWwindow* window, int width, int height)

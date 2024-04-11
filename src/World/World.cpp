@@ -30,7 +30,7 @@ namespace Minecraft
 
         // Chunk material
         // TODO: move this to a chunk renderer class
-        shader = new Shader(Shader::FromFile("res/shaders/shader"));
+        shader = new Shader(Shader::FromFile("assets/shaders/shader"));
         material = new Material(*shader);
 
         // Texture
@@ -38,7 +38,7 @@ namespace Minecraft
         // TODO: make a texture atlas
         //texture = new Texture(Texture::FromFile("res/textures/test.png", GL_RGBA));
         int width, height, channels;
-        uint8* data = stbi_load("res/textures/test.png", &width, &height, &channels, 0);
+        uint8* data = stbi_load("assets/textures/test.png", &width, &height, &channels, 0);
         if (!data)
         {
             throw std::exception();

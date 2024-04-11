@@ -1,18 +1,10 @@
 # Directories
 .vs/
+.vscode/
 .idea/
 bin/
 obj/
-.vscode/
 build/
-cmake-build-debug/
-
-# Files
-*.vcxproj
-*.vcxproj.user
-*.vcxproj.filters
-*.sln
-*.log
 *.user
 *.make
 Makefile

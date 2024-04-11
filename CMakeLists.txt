@@ -32,7 +32,7 @@ include_directories(lib/glfw/include)
 # TODO: fix include_directories(src)
 
 # Resources
-FILE(COPY res DESTINATION "${CMAKE_BINARY_DIR}")
+FILE(COPY assets DESTINATION "${CMAKE_BINARY_DIR}")
 
 # Main executable
 add_executable(Minecraft_Remake
