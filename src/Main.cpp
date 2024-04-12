@@ -6,27 +6,48 @@
 
 using namespace Minecraft;
 
-// TODO: improve error checking at some point and also make logging better
 // TODO: tick thread
+// TODO: fix frame rate
 // TODO: make the renderer take ownership of graphics resources and dispose of them automatically
 // TODO: use quaternions for rotation instead of euler angles
-// TODO: make root src an include dir so we can #include "Common.cpp" easily - https://stackoverflow.com/questions/32773283/cmake-include-header-into-every-source-file
+// TODO: use proper typedefs and namespaces, as well as sorted includes
+// TODO: embed resources into executable by creating a cpp and header file for each resource with their info (path, size, and bytes) - https://stackoverflow.com/questions/11813271/embed-resources-eg-shader-code-images-into-executable-library-with-cmake
 
-static void Resize(GLFWwindow* window, int width, int height)
+// TODO: better error handling: finish callback functions, update opengl, wrap main loop in try catch to avoid exceptions from crashing the game
+static void GLFWError(int32 code, cstring description)
+{
+    Log(format("GLFW Error {}: {}", to_string(code), description));
+}
+
+static void GLError(GLenum source,
+                        GLenum type,
+                        GLuint id,
+                        GLenum severity,
+                        GLsizei length,
+                        cstring message,
+                        const void* userParam)
+{
+    //fprintf( stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
+    //         ( type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "" ),
+    //         type, severity, message );
+}
+
+static void Resize(GLFWwindow* window, int32 width, int32 height)
 {
     glViewport(0, 0, width, height);
     Window::Width = width;
     Window::Height = height;
 }
 
-static void OnScroll(GLFWwindow* window, double xOffset, double yOffset)
+static void OnScroll(GLFWwindow* window, float64 xOffset, float64 yOffset)
 {
-    Input->UpdateScroll((float)xOffset, (float)yOffset);
+    Input->UpdateScroll((float32)xOffset, (float32)yOffset);
 }
 
 static void InitGLFW()
 {
     glfwInit();
+    // TODO: update OpenGL
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -37,16 +58,21 @@ static void InitGLFW()
 
     Window::Handle = glfwCreateWindow(Window::InitialWidth, Window::InitialHeight, Window::Title.c_str(), nullptr, nullptr);
     glfwMakeContextCurrent(Window::Handle);
+    glfwSetErrorCallback(GLFWError);
+
     glfwSetFramebufferSizeCallback(Window::Handle, Resize);
     glfwSetInputMode(Window::Handle, GLFW_STICKY_KEYS, GLFW_TRUE);
     glfwSetInputMode(Window::Handle, GLFW_STICKY_MOUSE_BUTTONS, GLFW_TRUE);
     glfwSetScrollCallback(Window::Handle, OnScroll);
-    glfwSwapInterval(1);  // TODO: fix properly
+    glfwSwapInterval(1); // TODO: fix properly
 }
 
 static void InitGL()
 {
     gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+    // TODO: update opengl to latest version so we can have the debug output
+    //glEnable(GL_DEBUG_OUTPUT);
+    //glDebugMessageCallback(GLError, nullptr);
 
     // Viewport settings
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -68,18 +94,17 @@ static void InitGL()
 
 static void RunWindow()
 {
-    // TODO: remove this, just make it a single call with no if check
-    if (Window::StartFullScreen)
-        glfwMaximizeWindow(Window::Handle);
+    glfwMaximizeWindow(Window::Handle);
 
     while (!glfwWindowShouldClose(Window::Handle))
     {
-        Time::WallTime = (float)glfwGetTime();
+        Time::WallTime = (float32)glfwGetTime();
 
         Update();
         Render();
 
-        Time::DeltaTime = (float)glfwGetTime() - Time::WallTime;
+        // TODO: this is wrong, maybe do the calculations at the beginning?
+        Time::DeltaTime = (float32)glfwGetTime() - Time::WallTime;
         Time::FrameRate = 1.0f / Time::DeltaTime;
         Time::UpdateCount++;
 

@@ -1,14 +1,3 @@
-// Preprocessor directives order:
-// - .cpp or .h
-//   - .h: #pragma once
-//   - .h/Main.cpp: Common.h
-//   - .cpp: Corresponding header file
-// - Regular imports
-//   - Own files ("")
-//   - Std lib (<>)
-//   - Other libs (<>)
-// - #defines
-
 #pragma once
 
 #define GLFW_INCLUDE_NONE
@@ -16,6 +5,7 @@
 
 #include <iostream>
 #include <string>
+#include <format>
 #include <cassert>
 #include <cmath>
 #include <vector>
@@ -32,6 +22,14 @@
 
 namespace Minecraft
 {
+    // Strings
+    typedef const char* cstring;
+
+    using std::string;
+    using std::to_string;
+    using std::format;
+
+    // Numbers
     typedef float float32;
     typedef double float64;
 
@@ -45,6 +43,7 @@ namespace Minecraft
     typedef uint32_t uint32;
     typedef uint64_t uint64;
 
+    // Vectors and matrices
     typedef glm::vec<2, int32, glm::defaultp> vec2i;
     typedef glm::vec<3, int32, glm::defaultp> vec3i;
     typedef glm::vec<4, int32, glm::defaultp> vec4i;
@@ -53,9 +52,6 @@ namespace Minecraft
     using glm::vec2;
     using glm::vec3;
     using glm::vec4;
-
-    using std::string;
-    using std::to_string;
 
     inline void Log(const string& message)
     {
