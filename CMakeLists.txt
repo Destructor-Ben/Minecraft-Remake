@@ -1,5 +1,6 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.27)
 project(Minecraft_Remake VERSION 0.1)
+set(CMAKE_CXX_STANDARD 23)
 
 # Adding stb_image library
 add_library(
