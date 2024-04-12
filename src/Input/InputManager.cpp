@@ -4,10 +4,10 @@
 
 namespace Minecraft
 {
-    static const int KeyCount = (int)Key::Count;
-    static const int MouseButtonCount = (int)MouseButton::Count;
+    static const int32 KeyCount = (int32)Key::Count;
+    static const int32 MouseButtonCount = (int32)MouseButton::Count;
 
-    static int GetGLFWKeyCode(Key key)
+    static int32 GetGLFWKeyCode(Key key)
     {
         switch (key)
         {
@@ -253,7 +253,7 @@ namespace Minecraft
         }
     }
 
-    static int GetGLFWMouseButtonCode(MouseButton button)
+    static int32 GetGLFWMouseButtonCode(MouseButton button)
     {
         switch (button)
         {
@@ -279,13 +279,13 @@ namespace Minecraft
         m_MouseButtonsPressedThisFrame = new bool[MouseButtonCount];
         m_MouseButtonsPressedLastFrame = new bool[MouseButtonCount];
 
-        for (int i = 0; i < KeyCount; i++)
+        for (int32 i = 0; i < KeyCount; i++)
         {
             m_KeysPressedThisFrame[i] = false;
             m_KeysPressedLastFrame[i] = false;
         }
 
-        for (int i = 0; i < MouseButtonCount; i++)
+        for (int32 i = 0; i < MouseButtonCount; i++)
         {
             m_MouseButtonsPressedThisFrame[i] = false;
             m_MouseButtonsPressedLastFrame[i] = false;
@@ -305,10 +305,10 @@ namespace Minecraft
         // Cursor
         m_OldMousePos = m_MousePos;
 
-        double mouseX, mouseY;
+        float64 mouseX, mouseY;
         glfwGetCursorPos(Window::Handle, &mouseX, &mouseY);
-        m_MousePos.x = (float)mouseX;
-        m_MousePos.y = (float)mouseY;
+        m_MousePos.x = (float32)mouseX;
+        m_MousePos.y = (float32)mouseY;
 
         if (!m_OldMousePosInitialized) {
             m_OldMousePosInitialized = true;
@@ -316,8 +316,8 @@ namespace Minecraft
         }
 
         // Mouse buttons
-        for (int i = 0; i < MouseButtonCount; ++i) {
-            int id = GetGLFWMouseButtonCode((MouseButton)i);
+        for (int32 i = 0; i < MouseButtonCount; ++i) {
+            int32 id = GetGLFWMouseButtonCode((MouseButton)i);
 
             if (id == -1)
                 continue;
@@ -327,8 +327,8 @@ namespace Minecraft
         }
 
         // Keys
-        for (int i = 0; i < KeyCount; ++i) {
-            int id = GetGLFWKeyCode((Key)i);
+        for (int32 i = 0; i < KeyCount; ++i) {
+            int32 id = GetGLFWKeyCode((Key)i);
 
             if (id == -1)
                 continue;
@@ -338,7 +338,7 @@ namespace Minecraft
         }
     }
 
-    void InputManager::UpdateScroll(float xOffset, float yOffset)
+    void InputManager::UpdateScroll(float32 xOffset, float32 yOffset)
     {
         m_ScrollDelta = yOffset;
     }

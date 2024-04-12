@@ -17,20 +17,20 @@ namespace Minecraft
         InputManager();
         ~InputManager();
 
-        glm::vec2 GetMousePos() const { return m_MousePos; }
-        glm::vec2 GetMousePosDelta() const { return m_MousePos - m_OldMousePos; }
+        vec2 GetMousePos() const { return m_MousePos; }
+        vec2 GetMousePosDelta() const { return m_MousePos - m_OldMousePos; }
 
-        float GetScrollWheelDelta() const { return m_ScrollDelta; }
+        float32 GetScrollWheelDelta() const { return m_ScrollDelta; }
 
-        bool IsMouseButtonDown(MouseButton button) const { return m_MouseButtonsPressedThisFrame[(int)button];}
-        bool IsMouseButtonUp(MouseButton button) const { return !m_MouseButtonsPressedThisFrame[(int)button]; }
-        bool WasMouseButtonPressed(MouseButton button) const { return m_MouseButtonsPressedThisFrame[(int)button] && !m_MouseButtonsPressedLastFrame[(int)button]; }
-        bool WasMouseButtonReleased(MouseButton button) const { return !m_MouseButtonsPressedThisFrame[(int)button] && m_MouseButtonsPressedLastFrame[(int)button]; }
+        bool IsMouseButtonDown(MouseButton button) const { return m_MouseButtonsPressedThisFrame[(int32)button];}
+        bool IsMouseButtonUp(MouseButton button) const { return !m_MouseButtonsPressedThisFrame[(int32)button]; }
+        bool WasMouseButtonPressed(MouseButton button) const { return m_MouseButtonsPressedThisFrame[(int32)button] && !m_MouseButtonsPressedLastFrame[(int32)button]; }
+        bool WasMouseButtonReleased(MouseButton button) const { return !m_MouseButtonsPressedThisFrame[(int32)button] && m_MouseButtonsPressedLastFrame[(int32)button]; }
 
-        bool IsKeyDown(Key key) const { return m_KeysPressedThisFrame[(int)key]; }
-        bool IsKeyUp(Key key) const { return !m_KeysPressedThisFrame[(int)key]; }
-        bool WasKeyPressed(Key key) const { return m_KeysPressedThisFrame[(int)key] && !m_KeysPressedLastFrame[(int)key];; }
-        bool WasKeyReleased(Key key) const { return !m_KeysPressedThisFrame[(int)key] && m_KeysPressedLastFrame[(int)key]; }
+        bool IsKeyDown(Key key) const { return m_KeysPressedThisFrame[(int32)key]; }
+        bool IsKeyUp(Key key) const { return !m_KeysPressedThisFrame[(int32)key]; }
+        bool WasKeyPressed(Key key) const { return m_KeysPressedThisFrame[(int32)key] && !m_KeysPressedLastFrame[(int32)key];; }
+        bool WasKeyReleased(Key key) const { return !m_KeysPressedThisFrame[(int32)key] && m_KeysPressedLastFrame[(int32)key]; }
 
         static void SetCursorDisabled(bool disabled) { glfwSetInputMode(Window::Handle, GLFW_CURSOR, disabled ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL); }
         static bool IsCursorDisabled() { return glfwGetInputMode(Window::Handle, GLFW_CURSOR) == GLFW_CURSOR_DISABLED; }
@@ -38,14 +38,14 @@ namespace Minecraft
         static bool IsRawMouseMotionEnabled() { return glfwGetInputMode(Window::Handle, GLFW_RAW_MOUSE_MOTION) == GLFW_TRUE; }
 
         void Update();
-        void UpdateScroll(float xOffset, float yOffset);
+        void UpdateScroll(float32 xOffset, float32 yOffset);
         void PostUpdate();
 
     private:
         bool m_OldMousePosInitialized = false;
-        glm::vec2 m_MousePos = glm::vec2();
-        glm::vec2 m_OldMousePos = glm::vec2();
-        float m_ScrollDelta = 0.0f;
+        vec2 m_MousePos = vec2();
+        vec2 m_OldMousePos = vec2();
+        float32 m_ScrollDelta = 0.0f;
 
         bool* m_KeysPressedThisFrame = nullptr;
         bool* m_KeysPressedLastFrame = nullptr;
