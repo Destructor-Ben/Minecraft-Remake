@@ -6,12 +6,13 @@
 
 using namespace Minecraft;
 
-// TODO: tick thread
+// TODO: tick thread - https://stackoverflow.com/questions/52260084/how-to-maintain-certain-frame-rate-in-different-threads
 // TODO: fix frame rate
 // TODO: make the renderer take ownership of graphics resources and dispose of them automatically
 // TODO: use quaternions for rotation instead of euler angles
 // TODO: use proper typedefs and namespaces, as well as sorted includes
 // TODO: embed resources into executable by creating a cpp and header file for each resource with their info (path, size, and bytes) - https://stackoverflow.com/questions/11813271/embed-resources-eg-shader-code-images-into-executable-library-with-cmake
+// TODO: fix random crash from glm miscalculation because the window isn't focused - also make the window behave better when not selected
 
 // TODO: better error handling: finish callback functions, update opengl, wrap main loop in try catch to avoid exceptions from crashing the game
 static void GLFWError(int32 code, cstring description)
