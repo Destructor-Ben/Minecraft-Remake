@@ -29,9 +29,6 @@ include_directories(lib/glad/include)
 include_directories(lib/glm)
 include_directories(lib/glfw/include)
 
-# Make root directory an include dir so we can include Common.h easily
-# TODO: fix include_directories(src)
-
 # Resources
 FILE(COPY assets DESTINATION "${CMAKE_BINARY_DIR}")
 
