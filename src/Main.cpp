@@ -14,7 +14,7 @@ using namespace Minecraft;
 // TODO: embed resources into executable by creating a cpp and header file for each resource with their info (path, size, and bytes) - https://stackoverflow.com/questions/11813271/embed-resources-eg-shader-code-images-into-executable-library-with-cmake
 // TODO: fix random crash from glm miscalculation because the window isn't focused - also make the window behave better when not selected
 
-// TODO: better error handling: finish callback functions, update opengl, wrap main loop in try catch to avoid exceptions from crashing the game
+// TODO: better error handling: finish callback functions, update opengl, wrap main loop in try catch to avoid exceptions from crashing the game - also make shader compilation errors vetter
 static void GLFWError(int32 code, cstring description)
 {
     Log(format("GLFW Error {}: {}", to_string(code), description));
