@@ -8,6 +8,7 @@
 #include "Entity.h"
 #include "src/Graphics/Mesh.h"
 #include "src/Graphics/Texture.h"
+#include "src/Graphics/Quad.h"
 
 namespace Minecraft
 {
@@ -18,24 +19,11 @@ namespace Minecraft
         static const uint8 Size = 10;
         static const uint16 Volume = Size * Size * Size;
 
-        struct Face
-        {
-            vec3 Centre;
-            vec3 Normal;
-        };
-
-        struct Vertex
-        {
-            vec3 Position;
-            vec2 UV;
-        };
-
         const int32 X;
         const int32 Y;
         const int32 Z;
 
         Chunk(int32 x, int32 y, int32 z);
-        ~Chunk();
 
         Block GetBlock(uint8 localX, uint8 localY, uint8 localZ);
 
@@ -63,25 +51,9 @@ namespace Minecraft
         void Update();
         void Render();
 
-        void RegenerateMesh();
-
     private:
-        void CreateMesh(const std::vector<float>& vertices, const std::vector<uint32>& indices);
-        void DeleteMesh();
-
-        std::vector<Face> GetFaces();
-
+        // TODO: block data components
         std::array<BlockData, Volume> m_BlockData = std::array<BlockData, Volume>();
-
-        Mesh* m_Mesh = nullptr;
-        VertexArray* m_VertexArray = nullptr;
-        VertexBuffer* m_VertexBuffer = nullptr;
-        IndexBuffer* m_IndexBuffer = nullptr;
-
-        Texture* m_Texture;
-        Shader* m_Shader;
-        Material* m_Material;
-
         //std::vector<std::array<BlockType, Volume>> m_BlockData = std::vector<std::array<BlockType, Volume>>();
     };
 }

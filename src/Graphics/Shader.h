@@ -8,7 +8,7 @@
 namespace Minecraft
 {
     // TODO: functions to set uniforms
-	class Shader
+	class Shader : public GraphicsResource
 	{
 	public:
 		Shader(const VertexShader& vertexShader, const FragmentShader& fragmentShader);

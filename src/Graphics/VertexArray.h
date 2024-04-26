@@ -5,10 +5,11 @@
 #include <vector>
 
 #include "VertexBuffer.h"
+#include "GraphicsResource.h"
 
 namespace Minecraft
 {
-    class VertexArray
+    class VertexArray : public GraphicsResource
     {
     public:
         VertexArray();

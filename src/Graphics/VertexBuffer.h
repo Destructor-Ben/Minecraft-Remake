@@ -1,10 +1,11 @@
 #pragma once
 
 #include "../Common.h"
+#include "GraphicsResource.h"
 
 namespace Minecraft
 {
-    class VertexBuffer
+    class VertexBuffer : public GraphicsResource
     {
     public:
         VertexBuffer();

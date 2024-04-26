@@ -10,25 +10,29 @@
 #include "VertexBuffer.h"
 #include "VertexArray.h"
 #include "Window.h"
+#include "ChunkRenderer.h"
+#include "GraphicsResource.h"
 
 namespace Minecraft
 {
     class Renderer
     {
     public:
+        ChunkRenderer ChunkRenderer;
+
+        const Camera* Camera = nullptr;
         glm::mat4 ViewMatrix = glm::mat4(1.0f);
         glm::mat4 ProjectionMatrix = glm::mat4(1.0f);
 
         ~Renderer();
 
-        void SetCamera(const Camera* camera) { m_Camera = camera; }
-
         void Update();
 
-        void DrawMesh(const Mesh& mesh, const mat4& transform = mat4(1.0f));
+        void DrawMesh(const Mesh& mesh, const mat4& transform = mat4(1.0f)) const;
 
         // TODO: embed resources (assets, lang, and data) into executable by creating a cpp and header file for each resources with their info (path, size, and bytes) - https://stackoverflow.com/questions/11813271/embed-resources-eg-shader-code-images-into-executable-library-with-cmakexture& RequestTexture(string path);
-        Texture& RequestTexture(string path, int32 format = -1, bool mipMap = true);
+        void TrackGraphicsResource(GraphicsResource* resource);
+        Texture& RequestTexture(string path, bool hasAlpha = false, bool mipMap = true);
         Shader& RequestShader(string path);
         VertexShader& RequestVertexShader(string path);
         FragmentShader& RequestFragmentShader(string path);
@@ -37,12 +41,9 @@ namespace Minecraft
         static void UnbindAll();
 
     private:
-        template<typename T>
-        void DeleteResources(const std::unordered_map<string, T*>& resources);
-
-        const Camera* m_Camera = nullptr;
-
-        // TODO: make these pointers references instead, and have a vector of pointers for graphics resources that can be automatically deallocated, with these here only for caching the requests
+        // For owning the pointers for all graphics resources
+        std::vector<GraphicsResource*> m_GraphicsResources = {};
+        // For caching resources that are requested multiple times
         std::unordered_map<string, Texture*> m_Textures = {};
         std::unordered_map<string, Shader*> m_Shaders = {};
         std::unordered_map<string, VertexShader*> m_VertexShaders = {};

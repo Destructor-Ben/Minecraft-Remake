@@ -1,10 +1,11 @@
 #pragma once
 
 #include "../Common.h"
+#include "GraphicsResource.h"
 
 namespace Minecraft
 {
-	class IndexBuffer
+	class IndexBuffer : public GraphicsResource
 	{
 	public:
         IndexBuffer();

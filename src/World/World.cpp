@@ -13,7 +13,7 @@ namespace Minecraft
 
         // Camera
         Camera.FOV = 70.0f;
-        Renderer->SetCamera(&Camera);
+        Renderer->Camera = &Camera;
 
         // Chunks
         // TODO: make a proper chunking system
@@ -36,7 +36,7 @@ namespace Minecraft
         InputManager::SetCursorDisabled(false);
 
         // Camera
-        Renderer->SetCamera(nullptr);
+        Renderer->Camera = nullptr;
 
         // Chunks
         delete Chunk;

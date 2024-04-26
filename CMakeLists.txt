@@ -83,6 +83,10 @@ add_executable(Minecraft_Remake
         src/World/BlockData.h
         src/Graphics/Texture.cpp
         src/Graphics/Texture.h
+        src/Graphics/Quad.h
+        src/Graphics/ChunkRenderer.cpp
+        src/Graphics/ChunkRenderer.h
+        src/Graphics/GraphicsResource.h
 )
 
 # Linking libraries

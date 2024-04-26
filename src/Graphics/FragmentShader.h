@@ -1,10 +1,11 @@
 #pragma once
 
 #include "../Common.h"
+#include "GraphicsResource.h"
 
 namespace Minecraft
 {
-	class FragmentShader
+	class FragmentShader : public GraphicsResource
 	{
 	public:
 		explicit FragmentShader(const string& source);

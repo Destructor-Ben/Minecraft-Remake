@@ -8,7 +8,7 @@
 
 namespace Minecraft
 {
-    class Mesh
+    class Mesh : public GraphicsResource
     {
     public:
         VertexArray& Vertices;

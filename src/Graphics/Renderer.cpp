@@ -4,18 +4,16 @@ namespace Minecraft
 {
     Renderer::~Renderer()
     {
-        DeleteResources(m_Textures);
-        DeleteResources(m_Shaders);
-        DeleteResources(m_VertexShaders);
-        DeleteResources(m_FragmentShaders);
+        for (auto resource : m_GraphicsResources)
+            delete resource;
     }
 
     void Renderer::Update()
     {
-        if (m_Camera != nullptr)
+        if (Camera != nullptr)
         {
-            ViewMatrix = m_Camera->GetViewMatrix();
-            ProjectionMatrix = m_Camera->GetProjectionMatrix();
+            ViewMatrix = Camera->GetViewMatrix();
+            ProjectionMatrix = Camera->GetProjectionMatrix();
         }
         else
         {
@@ -24,7 +22,7 @@ namespace Minecraft
         }
     }
 
-    void Renderer::DrawMesh(const Mesh& mesh, const mat4& transform)
+    void Renderer::DrawMesh(const Mesh& mesh, const mat4& transform) const
     {
         mesh.Vertices.Bind();
 
@@ -41,8 +39,13 @@ namespace Minecraft
         }
     }
 
+    void Renderer::TrackGraphicsResource(GraphicsResource* resource)
+    {
+        m_GraphicsResources.push_back(resource);
+    }
+
     // TODO: make these use exceptions and error messages properly
-    Texture& Renderer::RequestTexture(string path, int32 format, bool mipMap)
+    Texture& Renderer::RequestTexture(string path, bool hasAlpha, bool mipMap)
     {
         path = "assets/textures/" + path + ".png";
 
@@ -50,25 +53,18 @@ namespace Minecraft
             return *m_Textures[path];
 
         // Load the texture
-        int width, height, channels;
-        uint8* data = stbi_load(path.c_str(), &width, &height, &channels, 0); // TODO: possibly just make desired channels automatically set by format, and make the format justa bool for whether there is an alpha channel
+        int32 format = hasAlpha ? GL_RGBA : GL_RGB;
+        int32 width, height, channels;
+        uint8* data = stbi_load(path.c_str(), &width, &height, &channels, hasAlpha ? 4 : 3);
         if (!data)
             throw std::exception(string("Failed to load texture at path: " + path).c_str());
-
-        // Pick a default format
-        if (format == -1)
-        {
-            if (channels == 4)
-                format = GL_RGBA;
-            else
-                format = GL_RGB;
-        }
 
         // Set the data
         auto* texture = new Texture();
         texture->SetData(data, width, height, format, mipMap);
         stbi_image_free(data);
 
+        TrackGraphicsResource(texture);
         m_Textures[path] = texture;
         return *texture;
     }
@@ -82,6 +78,7 @@ namespace Minecraft
         auto& frag = RequestFragmentShader(path);
         auto* shader = new Shader(vert, frag);
 
+        TrackGraphicsResource(shader);
         m_Shaders[path] = shader;
         return *shader;
     }
@@ -99,6 +96,7 @@ namespace Minecraft
         stream.close();
         auto shader = new VertexShader(buffer.str());
 
+        TrackGraphicsResource(shader);
         m_VertexShaders[path] = shader;
         return *shader;
     }
@@ -116,6 +114,7 @@ namespace Minecraft
         stream.close();
         auto shader = new FragmentShader(buffer.str());
 
+        TrackGraphicsResource(shader);
         m_FragmentShaders[path] = shader;
         return *shader;
     }
@@ -132,12 +131,5 @@ namespace Minecraft
         IndexBuffer::Unbind();
         Shader::Unbind();
         Texture::Unbind();
-    }
-
-    template<typename T>
-    void Renderer::DeleteResources(const std::unordered_map<string, T*>& resources)
-    {
-        for (auto resource : resources)
-            delete resource.second;
     }
 }

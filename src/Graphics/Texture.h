@@ -1,10 +1,11 @@
 #pragma once
 
 #include "../Common.h"
+#include "GraphicsResource.h"
 
 namespace Minecraft
 {
-    class Texture
+    class Texture : public GraphicsResource
     {
     public:
         Texture();
