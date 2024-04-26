@@ -52,9 +52,13 @@ namespace Minecraft
 
     void Chunk::Render()
     {
+        m_Texture->BindTextureUnit(0);
+        m_Shader->Bind();
+        m_Shader->SetUniform("uTexture", 0);
+
         Transform transform;
         transform.Position = vec3(X * Size, Y * Size, Z * Size);
-        Renderer->Draw(*m_Mesh, transform.GetTransformationMatrix());
+        Renderer->DrawMesh(*m_Mesh, transform.GetTransformationMatrix());
     }
 
     // TODO: chunk meshing class
@@ -67,7 +71,7 @@ namespace Minecraft
         if (faces.empty())
             return;
 
-        // TODO: move this into a function
+        // TODO: move this into a function in another file - renderer
         auto vertices = std::vector<float>();
         auto indices = std::vector<uint32>();
         for (Face face : faces)
@@ -137,23 +141,10 @@ namespace Minecraft
 
         m_Mesh = new Mesh(*m_VertexArray);
 
-        // TODO: make the material less convoluted
-        m_Shader = new Shader(Shader::FromFile("assets/shaders/shader"));
+        m_Texture = &Renderer->RequestTexture("test");
+        m_Shader = &Renderer->RequestShader("shader");
         m_Material = new Material(*m_Shader);
-
-        int width, height, channels;
-        uint8* data = stbi_load("assets/textures/test.png", &width, &height, &channels, 0);
-        if (!data)
-        {
-            throw std::exception();
-        }
-
-        m_Texture = new Texture();
-        m_Texture->SetData(data, width, height, GL_RGBA);
-        stbi_image_free(data);
-
         m_Mesh->AddMaterial(m_Material, m_IndexBuffer);
-        // End TODO
     }
 
     void Chunk::DeleteMesh()
@@ -169,13 +160,6 @@ namespace Minecraft
 
         if (!m_IndexBuffer)
             delete m_IndexBuffer;
-
-        // TODO Temporary
-        if (!m_Texture)
-            delete m_Texture;
-
-        if (!m_Shader)
-            delete m_Shader;
 
         if (!m_Material)
             delete m_Material;

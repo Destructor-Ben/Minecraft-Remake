@@ -298,7 +298,7 @@ void cursor_position_callback( GLFWwindow* window, double x, double y )
 }
 
 /*****************************************************************************
- * Draw the Boing ball.
+ * DrawMesh the Boing ball.
  *
  * The Boing ball is sphere in which each facet is a rectangle.
  * Facet colors alternate between red and white.
@@ -430,7 +430,7 @@ void BounceBall( double delta_t )
 
 
 /*****************************************************************************
- * Draw a faceted latitude band of the Boing ball.
+ * DrawMesh a faceted latitude band of the Boing ball.
  *
  * Parms:   long_lo, long_hi
  *          Low and high longitudes of slice, resp.
@@ -536,7 +536,7 @@ void DrawBoingBallBand( GLfloat long_lo,
 
 
 /*****************************************************************************
- * Draw the purple grid of lines, behind the Boing ball.
+ * DrawMesh the purple grid of lines, behind the Boing ball.
  * When the Workbench is dropped to the bottom, Boing shows 12 rows.
  *****************************************************************************/
 void DrawGrid( void )
@@ -676,4 +676,3 @@ int main( void )
    glfwTerminate();
    exit( EXIT_SUCCESS );
 }
-

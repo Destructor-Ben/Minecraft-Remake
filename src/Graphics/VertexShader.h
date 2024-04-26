@@ -12,8 +12,6 @@ namespace Minecraft
 
 		uint32 GetID() const;
 
-        static VertexShader FromFile(const string& filePath);
-
 	private:
 		uint32 m_ID = 0;
 	};

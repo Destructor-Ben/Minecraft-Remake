@@ -20,8 +20,6 @@ namespace Minecraft
 
         static void Unbind();
 
-        static Texture FromFile(const string& path, int32 format = GL_RGB, bool mipMap = true);
-
     private:
         uint32 m_ID = 0;
     };

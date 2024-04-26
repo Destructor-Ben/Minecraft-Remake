@@ -16,7 +16,10 @@ namespace Minecraft
         int success;
         glGetShaderiv(m_ID, GL_COMPILE_STATUS, &success);
         if (success)
+        {
+            Log("Successfully compiled fragment shader with ID " + to_string(m_ID));
             return;
+        }
 
         int logLength;
         glGetShaderiv(m_ID, GL_INFO_LOG_LENGTH, &logLength);
@@ -37,13 +40,5 @@ namespace Minecraft
     uint32 FragmentShader::GetID() const
     {
         return m_ID;
-    }
-
-    FragmentShader FragmentShader::FromFile(const string &filePath) {
-        std::ifstream stream(filePath + ".frag");
-        std::stringstream buffer;
-        buffer << stream.rdbuf();
-        stream.close();
-        return FragmentShader(buffer.str());
     }
 }

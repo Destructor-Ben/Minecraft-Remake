@@ -51,21 +51,4 @@ namespace Minecraft
     {
         glBindTexture(GL_TEXTURE_2D, 0);
     }
-
-    Texture Texture::FromFile(const string& path, int32 format, bool mipMap)
-    {
-        int width, height, channels;
-        uint8* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
-        if (!data)
-        {
-            Log("Failed to load texture at path: " + path);
-            throw std::exception();
-        }
-
-        // TODO: creating the texture like this will delete it after it is returned
-        Texture texture;
-        texture.SetData(data, width, height, format, mipMap);
-        stbi_image_free(data);
-        return texture;
-    }
 }

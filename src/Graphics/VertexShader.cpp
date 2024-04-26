@@ -16,7 +16,10 @@ namespace Minecraft
         int success;
         glGetShaderiv(m_ID, GL_COMPILE_STATUS, &success);
         if (success)
+        {
+            Log("Successfully compiled vertex shader with ID " + to_string(m_ID));
             return;
+        }
 
         int logLength;
         glGetShaderiv(m_ID, GL_INFO_LOG_LENGTH, &logLength);
@@ -36,13 +39,5 @@ namespace Minecraft
     uint32 VertexShader::GetID() const
     {
         return m_ID;
-    }
-
-    VertexShader VertexShader::FromFile(const string &filePath) {
-        std::ifstream stream(filePath + ".vert");
-        std::stringstream buffer;
-        buffer << stream.rdbuf();
-        stream.close();
-        return VertexShader(buffer.str());
     }
 }

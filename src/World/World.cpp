@@ -27,26 +27,6 @@ namespace Minecraft
         // TODO: move these calls into the WorldGenerator and block modification
         Chunk->RegenerateMesh();
         Chunk2->RegenerateMesh();
-
-        // Chunk material
-        // TODO: move this to a chunk renderer class
-        shader = new Shader(Shader::FromFile("assets/shaders/shader"));
-        material = new Material(*shader);
-
-        // Texture
-        // TODO: fix texture loading
-        // TODO: make a texture atlas
-        //texture = new Texture(Texture::FromFile("res/textures/test.png", GL_RGBA));
-        int width, height, channels;
-        uint8* data = stbi_load("assets/textures/test.png", &width, &height, &channels, 0);
-        if (!data)
-        {
-            throw std::exception();
-        }
-
-        texture = new Texture();
-        texture->SetData(data, width, height, GL_RGBA);
-        stbi_image_free(data);
     }
 
     World::~World()
@@ -64,11 +44,6 @@ namespace Minecraft
 
         // World generator
         delete WorldGenerator;
-
-        // Chunk material
-        delete shader;
-        delete material;
-        delete texture;
     }
 
     void World::Tick()
@@ -89,9 +64,6 @@ namespace Minecraft
 
     void World::Render()
     {
-        texture->BindTextureUnit(0);
-        shader->SetUniform("uTexture", 0);
-
         Chunk->Render();
         Chunk2->Render();
     }

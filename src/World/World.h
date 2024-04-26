@@ -25,17 +25,6 @@ namespace Minecraft
         class Chunk* Chunk2;
         WorldGenerator* WorldGenerator; // TODO: try to make this not a pointer
 
-        Shader* shader;
-        Material* material;
-        IndexBuffer* indexBuffer;
-
-        VertexBuffer* vertexBuffer;
-        VertexArray* vertexArray;
-
-        Mesh* mesh;
-
-        Texture* texture;
-
         World();
         ~World();
 

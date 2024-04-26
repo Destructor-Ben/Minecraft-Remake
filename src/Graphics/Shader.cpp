@@ -51,14 +51,6 @@ namespace Minecraft
 		glUseProgram(0);
 	}
 
-    Shader Shader::FromFile(const string &filePath)
-    {
-        // Keep in mind that the vert and frag shaders get destroyed after the program is made, and that's fine
-        VertexShader vert = VertexShader::FromFile(filePath);
-        FragmentShader frag = FragmentShader::FromFile(filePath);
-        return Shader(vert, frag);
-    }
-
     int Shader::GetUniformLocation(const string& name) {
         return glGetUniformLocation(m_ID, name.c_str());
     }

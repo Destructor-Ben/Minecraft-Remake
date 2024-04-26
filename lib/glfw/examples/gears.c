@@ -37,7 +37,7 @@
 
 /**
 
-  Draw a gear wheel.  You'll probably want to call this function when
+  DrawMesh a gear wheel.  You'll probably want to call this function when
   building a display list since we do a lot of trig here.
 
   Input:  inner_radius - radius of hole at center
@@ -357,4 +357,3 @@ int main(int argc, char *argv[])
     // Exit program
     exit( EXIT_SUCCESS );
 }
-

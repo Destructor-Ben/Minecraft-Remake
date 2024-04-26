@@ -20,7 +20,6 @@ namespace Minecraft
         void SetUniform(const string& name, int32 value);
 
 		static void Unbind();
-        static Shader FromFile(const string& filePath);
 
 	private:
         int GetUniformLocation(const string& name);
