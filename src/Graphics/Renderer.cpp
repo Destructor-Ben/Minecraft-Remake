@@ -105,7 +105,7 @@ namespace Minecraft
 
     FragmentShader& Renderer::RequestFragmentShader(string path)
     {
-        path = "assets/textures/" + path + ".frag";
+        path = "assets/shaders/" + path + ".frag";
 
         if (m_FragmentShaders.contains(path))
             return *m_FragmentShaders[path];
