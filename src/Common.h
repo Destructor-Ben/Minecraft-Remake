@@ -48,16 +48,18 @@ namespace Minecraft
     typedef uint32_t uint32;
     typedef uint64_t uint64;
 
-    // Vectors and matrices
+    // Vectors, matrices, and quaternions
     typedef glm::vec<2, int32, glm::defaultp> vec2i;
     typedef glm::vec<3, int32, glm::defaultp> vec3i;
     typedef glm::vec<4, int32, glm::defaultp> vec4i;
 
     using glm::mat4;
+    using glm::quat;
     using glm::vec2;
     using glm::vec3;
     using glm::vec4;
 
+    // TODO: fix logging
     inline void Log(const string& message)
     {
         std::cout << message << std::endl;
