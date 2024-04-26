@@ -10,6 +10,8 @@
 #include <fstream>
 #include <cassert>
 #include <cmath>
+#include <any>
+#include <variant>
 #include <vector>
 #include <list>
 #include <array>

@@ -1,7 +1,5 @@
 #include "InputManager.h"
 
-#include "../Graphics/Window.h"
-
 namespace Minecraft
 {
     static const int32 KeyCount = (int32)Key::Count;

@@ -1,10 +1,9 @@
 #pragma once
 
-#include "../Common.h"
-
 #include "Key.h"
 #include "MouseButton.h"
-#include "../Graphics/Window.h"
+#include "src/Common.h"
+#include "src/Graphics/Window.h"
 
 namespace Minecraft
 {
