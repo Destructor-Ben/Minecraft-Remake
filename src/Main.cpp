@@ -18,13 +18,7 @@ static void GLFWError(int32 code, cstring description)
     Log(format("GLFW Error {}: {}", to_string(code), description));
 }
 
-static void GLError(GLenum source,
-                        GLenum type,
-                        GLuint id,
-                        GLenum severity,
-                        GLsizei length,
-                        cstring message,
-                        const void* userParam)
+static void GLError(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, cstring message, const void* userParam)
 {
     //fprintf( stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
     //         ( type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "" ),
