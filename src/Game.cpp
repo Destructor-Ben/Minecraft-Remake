@@ -5,7 +5,7 @@ namespace Minecraft
     // TODO: use proper typedefs and namespaces, as well as sorted includes
     // TODO: use quaternions for rotation instead of euler angles
     // TODO: fix random crash from glm miscalculation because the window isn't focused - also make the window behave better when not selected
-    // TODO: better error handling: finish callback functions, update opengl, wrap main loop in try catch to avoid exceptions from crashing the game - also make shader compilation errors vetter
+    // TODO: better error handling: wrap main loop in try catch to avoid exceptions from crashing the game - also make shader compilation errors vetter
 
     class Logger* Logger = nullptr;
 
@@ -42,9 +42,8 @@ namespace Minecraft
         Logger->Info("Initializing GLFW...");
 
         glfwInit();
-        // TODO: update opengl version here: 3.3 -> 4.6
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
         Window::Handle = glfwCreateWindow(Window::InitialWidth, Window::InitialHeight, Window::Title.c_str(), nullptr, nullptr);
@@ -65,9 +64,8 @@ namespace Minecraft
         Logger->Info("Initializing OpenGL...");
 
         gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-        // TODO: update opengl to latest version so we can have the debug output
-        //glEnable(GL_DEBUG_OUTPUT);
-        //glDebugMessageCallback(GLError, nullptr);
+        glEnable(GL_DEBUG_OUTPUT);
+        glDebugMessageCallback(GLError, nullptr);
 
         // Viewport settings
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
