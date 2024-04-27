@@ -3,6 +3,7 @@ project(Minecraft_Remake VERSION 0.1)
 set(CMAKE_CXX_STANDARD 23)
 
 # Adding stb_image library
+# TODO: move this into lib and use add_subdirectory
 add_library(
         stb_image
         lib/stb_image/stb_image.h
@@ -10,6 +11,7 @@ add_library(
 )
 
 # Adding GLAD library
+# TODO: move this into lib and use add_subdirectory
 add_library(
         glad
         lib/glad/glad.c
@@ -30,9 +32,11 @@ include_directories(lib/glm)
 include_directories(lib/glfw/include)
 
 # Resources
+# TODO: make resources embedded into the app with a giant blob of data, which is done for assets, data, and lang
 FILE(COPY assets DESTINATION "${CMAKE_BINARY_DIR}")
 
 # Main executable
+# TODO: move this into src and use add_subdirectory
 add_executable(Minecraft_Remake
         src/Main.cpp
         src/Common.h
@@ -87,6 +91,8 @@ add_executable(Minecraft_Remake
         src/Graphics/ChunkRenderer.cpp
         src/Graphics/ChunkRenderer.h
         src/Graphics/GraphicsResource.h
+        src/Logger.cpp
+        src/Logger.h
 )
 
 # Linking libraries

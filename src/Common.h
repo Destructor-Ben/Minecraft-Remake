@@ -58,10 +58,4 @@ namespace Minecraft
     using glm::vec2;
     using glm::vec3;
     using glm::vec4;
-
-    // TODO: fix logging
-    inline void Log(const string& message)
-    {
-        std::cout << message << std::endl;
-    }
 }
