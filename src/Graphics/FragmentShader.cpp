@@ -1,12 +1,13 @@
 #include "FragmentShader.h"
 
+#include "src/Game.h"
+
 #include <fstream>
-#include <sstream>
 
 namespace Minecraft
 {
-	FragmentShader::FragmentShader(const string& source) : m_ID(0)
-	{
+    FragmentShader::FragmentShader(const string& source) : m_ID(0)
+    {
         m_ID = glCreateShader(GL_FRAGMENT_SHADER);
         const char* cStringSource = source.c_str();
         glShaderSource(m_ID, 1, &cStringSource, nullptr);
@@ -17,7 +18,7 @@ namespace Minecraft
         glGetShaderiv(m_ID, GL_COMPILE_STATUS, &success);
         if (success)
         {
-            Log("Successfully compiled fragment shader with ID " + to_string(m_ID));
+            Logger->Info("Successfully compiled fragment shader with ID " + to_string(m_ID));
             return;
         }
 
@@ -28,14 +29,13 @@ namespace Minecraft
         infoLog.resize(logLength);
         glGetShaderInfoLog(m_ID, logLength, nullptr, &infoLog[0]);
 
-        Log(infoLog);
-	}
+        Logger->Error(infoLog);
+    }
 
-	FragmentShader::~FragmentShader()
-	{
+    FragmentShader::~FragmentShader()
+    {
         glDeleteShader(m_ID);
-	}
-
+    }
 
     uint32 FragmentShader::GetID() const
     {

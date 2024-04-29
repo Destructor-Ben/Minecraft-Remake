@@ -1,6 +1,6 @@
 #pragma once
 
-#include "src/Common.h"
+#include "Common.h"
 
 namespace Minecraft
 {
@@ -18,5 +18,6 @@ namespace Minecraft
     private:
         void Log(const string& message);
         void Throw(const string& message);
+        string GetMessage(const string& message, const string& logLevel);
     };
 }

@@ -12,11 +12,14 @@
 #include <cmath>
 #include <any>
 #include <variant>
+#include <memory>
 #include <vector>
 #include <list>
 #include <array>
 #include <map>
 #include <unordered_map>
+#include <chrono>
+#include <thread>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>

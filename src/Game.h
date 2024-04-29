@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Common.h"
-
 #include "Time.h"
 #include "Logger.h"
 #include "World/World.h"

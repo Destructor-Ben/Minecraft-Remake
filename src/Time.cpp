@@ -2,7 +2,8 @@
 
 namespace Minecraft
 {
-    namespace Time {
+    namespace Time
+    {
         int UpdateCount = 0;
         int TickCount = 0;
 

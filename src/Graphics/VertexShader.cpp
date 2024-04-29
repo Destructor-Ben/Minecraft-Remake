@@ -1,7 +1,8 @@
 #include "VertexShader.h"
 
+#include "src/Game.h"
+
 #include <fstream>
-#include <sstream>
 
 namespace Minecraft
 {
@@ -17,7 +18,7 @@ namespace Minecraft
         glGetShaderiv(m_ID, GL_COMPILE_STATUS, &success);
         if (success)
         {
-            Log("Successfully compiled vertex shader with ID " + to_string(m_ID));
+            Logger->Info("Successfully compiled vertex shader with ID " + to_string(m_ID));
             return;
         }
 
@@ -28,7 +29,7 @@ namespace Minecraft
         infoLog.resize(logLength);
         glGetShaderInfoLog(m_ID, logLength, nullptr, &infoLog[0]);
 
-        Log(infoLog);
+        Logger->Error(infoLog);
     }
 
     VertexShader::~VertexShader()

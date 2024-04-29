@@ -26,7 +26,8 @@ namespace Minecraft
 
     static int GetSizeFromGLType(int type)
     {
-        switch (type) {
+        switch (type)
+        {
             case GL_BYTE:
                 return sizeof(GLbyte);
             case GL_UNSIGNED_BYTE:
@@ -46,7 +47,8 @@ namespace Minecraft
         }
     }
 
-    void VertexArray::Push(int type, int count, bool normalized) {
+    void VertexArray::Push(int type, int count, bool normalized)
+    {
         m_Types.push_back(type);
         m_Counts.push_back(count);
         m_Normalized.push_back(normalized);
@@ -54,12 +56,14 @@ namespace Minecraft
         m_Count++;
     }
 
-    void VertexArray::AddBuffer(const VertexBuffer& buffer) {
+    void VertexArray::AddBuffer(const VertexBuffer& buffer)
+    {
         Bind();
         buffer.Bind();
 
-        int offset = 0;
-        for (int i = 0; i < m_Count; ++i) {
+        int64 offset = 0;
+        for (int i = 0; i < m_Count; ++i)
+        {
             int type = m_Types[i];
             int count = m_Counts[i];
 
