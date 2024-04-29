@@ -25,8 +25,8 @@ namespace Minecraft
         WorldGenerator->Generate();
 
         // TODO: move these calls into the WorldGenerator and block modification
-        Chunk->RegenerateMesh();
-        Chunk2->RegenerateMesh();
+        Renderer->ChunkRenderer.RegenerateMesh(*Chunk);
+        Renderer->ChunkRenderer.RegenerateMesh(*Chunk2);
     }
 
     World::~World()
