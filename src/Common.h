@@ -61,4 +61,9 @@ namespace Minecraft
     using glm::vec2;
     using glm::vec3;
     using glm::vec4;
+
+    // Pointers
+    using std::unique_ptr;
+    using std::shared_ptr;
+    using std::weak_ptr;
 }
