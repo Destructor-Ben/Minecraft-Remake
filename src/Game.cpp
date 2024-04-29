@@ -2,6 +2,7 @@
 
 namespace Minecraft
 {
+    // TODO: change the way pointers work - unique/shared ptrs for ownership, then references/raw pointers for accessing
     // TODO: use proper typedefs and namespaces, as well as sorted includes
     // TODO: use quaternions for rotation instead of euler angles
     // TODO: fix random crash from glm miscalculation because the window isn't focused - also make the window behave better when not selected
