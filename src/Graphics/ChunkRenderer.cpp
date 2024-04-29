@@ -6,29 +6,35 @@ namespace Minecraft
 {
     ChunkRenderer::ChunkRenderer()
     {
-        m_ChunkTexture = Renderer->RequestTexture("test");
-        auto shader = Renderer->RequestShader("shader");
-        m_ChunkMaterial = new Material(shader);
+        m_ChunkTexture = &Renderer->RequestTexture("test");
+        m_ChunkShader = &Renderer->RequestShader("shader");
+        m_ChunkMaterial = new Material(*m_ChunkShader);
+        Renderer->TrackGraphicsResource(m_ChunkMaterial);
     }
 
-    ChunkRenderer::~ChunkRenderer()
+    void ChunkRenderer::RenderChunk(Chunk& chunk)
     {
+        m_ChunkTexture->BindTextureUnit(0);
+        m_ChunkShader->Bind();
+        m_ChunkShader->SetUniform("uTexture", 0);
 
+        Transform transform;
+        transform.Position = vec3(chunk.X * Chunk::Size, chunk.Y * Chunk::Size, chunk.Z * Chunk::Size);
+        Renderer->DrawMesh(*m_ChunkMeshes[&chunk], transform.GetTransformationMatrix());
     }
 
-    // TODO: implement greedy meshing - flat, adjacent block faces use the same quad
-    void Chunk::RegenerateMesh()
+    void ChunkRenderer::RegenerateMesh(Chunk& chunk)
     {
-        auto faces = GetFaces();
+        auto faces = GetChunkFaces(chunk);
 
-        // Generating the vertices
         if (faces.empty())
             return;
 
+        // Generating the vertices
         // TODO: move this into a function in another file - renderer
         auto vertices = std::vector<float>();
         auto indices = std::vector<uint32>();
-        for (Quad face : faces)
+        for (Quad face: faces)
         {
             // Vertices
             // TODO: properly handle the rotation with the normal
@@ -75,60 +81,48 @@ namespace Minecraft
         }
         // End TODO
 
-        CreateMesh(vertices, indices);
+        // Create the mesh if it doesn't exist
+        if (!m_ChunkMeshes.contains(&chunk))
+        {
+            auto vertexBuffer = new VertexBuffer();
+            Renderer->TrackGraphicsResource(vertexBuffer);
+
+            auto indexBuffer = new IndexBuffer();
+            Renderer->TrackGraphicsResource(indexBuffer);
+
+            auto vertexArray = new VertexArray();
+            vertexArray->Push(GL_FLOAT, 3);
+            vertexArray->Push(GL_FLOAT, 2);
+            vertexArray->AddBuffer(*vertexBuffer);
+            Renderer->TrackGraphicsResource(vertexArray);
+
+            auto mesh = new Mesh(*vertexArray);
+            mesh->AddMaterial(m_ChunkMaterial, indexBuffer);
+            Renderer->TrackGraphicsResource(mesh);
+
+            m_ChunkMeshes[&chunk] = mesh;
+            m_ChunkVertices[&chunk] = vertexBuffer;
+            m_ChunkIndices[&chunk] = indexBuffer;
+        }
+
+        // Set the mesh data
+        m_ChunkVertices[&chunk]->SetData(vertices.data(), vertices.size());
+        m_ChunkIndices[&chunk]->SetData(indices.data(), indices.size());
     }
 
-    void Chunk::CreateMesh(const std::vector<float>& vertices, const std::vector<uint32>& indices)
-    {
-        DeleteMesh();
-
-        m_VertexBuffer = new VertexBuffer();
-        m_VertexBuffer->SetData(vertices.data(), vertices.size());
-
-        m_IndexBuffer = new IndexBuffer();
-        m_IndexBuffer->SetData(indices.data(), indices.size());
-
-        m_VertexArray = new VertexArray();
-        m_VertexArray->Push(GL_FLOAT, 3);
-        m_VertexArray->Push(GL_FLOAT, 2);
-        m_VertexArray->AddBuffer(*m_VertexBuffer);
-
-        m_Mesh = new Mesh(*m_VertexArray);
-
-        m_Mesh->AddMaterial(m_Material, m_IndexBuffer);
-    }
-
-    void Chunk::DeleteMesh(Chunk* chunk)
-    {
-        if (!m_ChunkMeshes[chunk].m_VertexArray)
-            delete m_Mesh;
-
-        if (!m_VertexArray)
-            delete m_VertexArray;
-
-        if (!m_VertexBuffer)
-            delete m_VertexBuffer;
-
-        if (!m_IndexBuffer)
-            delete m_IndexBuffer;
-
-        if (!m_Material)
-            delete m_Material;
-    }
-
-    std::vector<Quad> Chunk::GetFaces()
+    std::vector<Quad> ChunkRenderer::GetChunkFaces(Chunk& chunk)
     {
         std::vector<Quad> faces;
 
         // TODO: make this work with neighboring chunks - don't forget to update nearby chunks
-        // TODO: make this add faces properly
-        for (int x = 0; x < Size; ++x)
+        // TODO: make this add faces in all directions
+        for (int x = 0; x < Chunk::Size; ++x)
         {
-            for (int y = 0; y < Size; ++y)
+            for (int y = 0; y < Chunk::Size; ++y)
             {
-                for (int z = 0; z < Size; ++z)
+                for (int z = 0; z < Chunk::Size; ++z)
                 {
-                    Block block = GetBlock(x, y, z);
+                    Block block = chunk.GetBlock(x, y, z);
                     if (block.GetData().Type == BlockType::Air)
                         continue;
 
@@ -141,16 +135,5 @@ namespace Minecraft
         }
 
         return faces;
-    }
-
-    void ChunkRenderer::RenderChunk(const Chunk& chunk)
-    {
-        m_Texture->BindTextureUnit(0);
-        m_Shader->Bind();
-        m_Shader->SetUniform("uTexture", 0);
-
-        Transform transform;
-        transform.Position = vec3(X * Size, Y * Size, Z * Size);
-        Renderer->DrawMesh(*m_Mesh, transform.GetTransformationMatrix());
     }
 }

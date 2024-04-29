@@ -5,22 +5,25 @@
 
 namespace Minecraft
 {
+    // TODO: implement greedy meshing - flat, adjacent block faces use the same quad
     class ChunkRenderer
     {
     public:
         ChunkRenderer();
-        ~ChunkRenderer();
 
-        std::vector<Quad> GetChunkFaces(Chunk& chunk);
-        void CreateChunkMesh(const std::vector<float>& vertices, const std::vector<uint32>& indices);
-        void DeleteChunkMesh();
-
-        void RenderChunk(const Chunk& chunk);
+        void RenderChunk(Chunk& chunk);
+        void RegenerateMesh(Chunk& chunk);
 
     private:
-        std::unordered_map<Chunk*, Mesh&> m_ChunkMeshes;
+        std::vector<Quad> GetChunkFaces(Chunk& chunk);
 
-        Texture& m_ChunkTexture;
-        Shader& m_ChunkShader;
+        // TODO: make these references
+        std::unordered_map<Chunk*, Mesh*> m_ChunkMeshes;
+        std::unordered_map<Chunk*, VertexBuffer*> m_ChunkVertices;
+        std::unordered_map<Chunk*, IndexBuffer*> m_ChunkIndices;
+
+        Texture* m_ChunkTexture;
+        Material* m_ChunkMaterial; // TODO: make a chunk material
+        Shader* m_ChunkShader;
     };
 }
