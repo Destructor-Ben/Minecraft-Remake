@@ -18,7 +18,7 @@ namespace Minecraft
     class Renderer
     {
     public:
-        ChunkRenderer ChunkRenderer;
+        ChunkRenderer* ChunkRenderer;
 
         const Camera* Camera = nullptr;
         glm::mat4 ViewMatrix = glm::mat4(1.0f);

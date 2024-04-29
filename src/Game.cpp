@@ -118,6 +118,7 @@ namespace Minecraft
 
         Input = new class InputManager();
         Renderer = new class Renderer();
+        Renderer->ChunkRenderer = new ChunkRenderer();
         World = new class World();
 
         Renderer::UnbindAll();

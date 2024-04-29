@@ -4,8 +4,9 @@
 
 namespace Minecraft
 {
-    Chunk::Chunk(int32 x, int32 y, int32 z): X(x), Y(y), Z(z)
-    { }
+    Chunk::Chunk(int32 x, int32 y, int32 z) : X(x), Y(y), Z(z)
+    {
+    }
 
     Block Chunk::GetBlock(uint8 localX, uint8 localY, uint8 localZ)
     {
@@ -45,6 +46,6 @@ namespace Minecraft
 
     void Chunk::Render()
     {
-        Renderer->ChunkRenderer.RenderChunk(*this);
+        Renderer->ChunkRenderer->RenderChunk(*this);
     }
 }

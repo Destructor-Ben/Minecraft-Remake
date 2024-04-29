@@ -20,7 +20,9 @@ namespace Minecraft
 
     void Logger::Error(const string& message)
     {
-        Log(GetMessage(message, "ERROR"));
+        string error = GetMessage(message, "ERROR");
+        Log(error);
+        Throw(error);
     }
 
     void Logger::GLFWError(int32 code, cstring description)

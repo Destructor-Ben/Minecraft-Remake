@@ -1,11 +1,14 @@
 #include "Renderer.h"
+#include "src/Game.h"
 
 namespace Minecraft
 {
     Renderer::~Renderer()
     {
-        for (auto resource : m_GraphicsResources)
+        for (auto resource: m_GraphicsResources)
+        {
             delete resource;
+        }
     }
 
     void Renderer::Update()
@@ -55,9 +58,9 @@ namespace Minecraft
         // Load the texture
         int32 format = hasAlpha ? GL_RGBA : GL_RGB;
         int32 width, height, channels;
-        uint8* data = stbi_load(path.c_str(), &width, &height, &channels, hasAlpha ? 4 : 3);
+        uint8* data = stbi_load(path.c_str(), &width, &height, &channels, 0);//hasAlpha ? 4 : 3);
         if (!data)
-            throw std::exception(string("Failed to load texture at path: " + path).c_str());
+            Logger->Error("Failed to load texture at path: " + path);
 
         // Set the data
         auto* texture = new Texture();
