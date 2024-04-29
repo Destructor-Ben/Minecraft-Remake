@@ -48,6 +48,7 @@ namespace Minecraft
     }
 
     // TODO: make these use exceptions and error messages properly
+    // TODO: possibly remove the hasAlpha option and don't choose channels, and chose the format based on the numver of channels
     Texture& Renderer::RequestTexture(string path, bool hasAlpha, bool mipMap)
     {
         path = "assets/textures/" + path + ".png";
@@ -58,7 +59,7 @@ namespace Minecraft
         // Load the texture
         int32 format = hasAlpha ? GL_RGBA : GL_RGB;
         int32 width, height, channels;
-        uint8* data = stbi_load(path.c_str(), &width, &height, &channels, 0);//hasAlpha ? 4 : 3);
+        uint8* data = stbi_load(path.c_str(), &width, &height, &channels, hasAlpha ? 4 : 3);
         if (!data)
             Logger->Error("Failed to load texture at path: " + path);
 
