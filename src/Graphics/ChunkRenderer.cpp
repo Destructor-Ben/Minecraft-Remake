@@ -1,5 +1,6 @@
 #include "ChunkRenderer.h"
 
+#include "Vertex.h"
 #include "src/Game.h"
 
 namespace Minecraft
@@ -34,7 +35,7 @@ namespace Minecraft
         // TODO: move this into a function in another file - renderer
         auto vertices = std::vector<float>();
         auto indices = std::vector<uint32>();
-        for (Quad face: faces)
+        for (Quad face : faces)
         {
             // Vertices
             // TODO: properly handle the rotation with the normal
@@ -122,8 +123,13 @@ namespace Minecraft
             {
                 for (int z = 0; z < Chunk::Size; ++z)
                 {
-                    Block block = chunk.GetBlock(x, y, z);
+                    auto block = chunk.GetBlock(x, y, z);
                     if (block.GetData().Type == BlockType::Air)
+                        continue;
+
+                    // TODO: make function to test for a certain direction
+                    auto blockAbove = chunk.GetBlock(x, y + 1, z);
+                    if (blockAbove.GetData().Type != BlockType::Air)
                         continue;
 
                     Quad face{};

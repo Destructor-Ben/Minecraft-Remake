@@ -12,6 +12,7 @@
 #include "Window.h"
 #include "ChunkRenderer.h"
 #include "GraphicsResource.h"
+#include "Vertex.h"
 
 namespace Minecraft
 {
@@ -39,6 +40,9 @@ namespace Minecraft
 
         static void Clear();
         static void UnbindAll();
+
+        //static std::vector<float> VerticesToFloats(const std::vector<Vertex>& vertices);
+        //static (float, float) QuadsToData(const std::vector<Quad>& quads);
 
     private:
         // For owning the pointers for all graphics resources

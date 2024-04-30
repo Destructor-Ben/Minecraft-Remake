@@ -10,6 +10,10 @@ namespace Minecraft
 
     Block Chunk::GetBlock(uint8 localX, uint8 localY, uint8 localZ)
     {
+        // TODO: should this be moved to another place?
+        localX = std::clamp<uint8>(localX, 0, Chunk::Size - 1);
+        localY = std::clamp<uint8>(localY, 0, Chunk::Size - 1);
+        localZ = std::clamp<uint8>(localZ, 0, Chunk::Size - 1);
         return Block(*this, localX, localY, localZ);
     }
 

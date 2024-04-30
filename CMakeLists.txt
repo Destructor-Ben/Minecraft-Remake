@@ -76,6 +76,7 @@ add_executable(Minecraft_Remake
         src/Graphics/GraphicsResource.h
         src/Logger.cpp
         src/Logger.h
+        src/Graphics/Vertex.h
 )
 
 # Linking libraries
