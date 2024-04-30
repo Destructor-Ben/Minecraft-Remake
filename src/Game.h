@@ -15,6 +15,8 @@ namespace Minecraft
     extern Renderer* Renderer;
     extern World* World;
 
+    extern shared_ptr<std::thread> TickThread;
+
     void Initialize();
     void Run();
     void Shutdown();

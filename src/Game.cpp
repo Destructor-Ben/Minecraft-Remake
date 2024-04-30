@@ -16,6 +16,8 @@ namespace Minecraft
 
     class World* World = nullptr;
 
+    shared_ptr<std::thread> TickThread = nullptr;
+
     static void GLFWError(int32 code, cstring description)
     {
         Logger->GLFWError(code, description);
@@ -106,6 +108,29 @@ namespace Minecraft
         World->Render();
     }
 
+    static void RunTickLoop()
+    {
+        Logger->Info("Running tick thread...");
+
+        const auto start = std::chrono::steady_clock::now();
+        const auto period = std::chrono::seconds(1);
+
+        while (!glfwWindowShouldClose(Window::Handle))
+        {
+            Tick();
+            Logger->Debug("Tick");
+
+            // TODO: delay properly
+            Time::TickCount++;
+            auto now = std::chrono::steady_clock::now();
+            auto iterations = (now - start) / period;
+            auto next_start = start + (iterations + 1) * period;
+            std::this_thread::sleep_until(next_start);
+        }
+
+        Logger->Info("Exited tick thread");
+    }
+
     void Initialize()
     {
         Logger = new class Logger();
@@ -118,7 +143,7 @@ namespace Minecraft
 
         Input = new class InputManager();
         Renderer = new class Renderer();
-        Renderer->ChunkRenderer = new ChunkRenderer();
+        Renderer->ChunkRenderer = new ChunkRenderer(); // TODO: maybe make a prepare function
         World = new class World();
 
         Renderer::UnbindAll();
@@ -128,6 +153,9 @@ namespace Minecraft
     {
         // TODO: tick thread - https://stackoverflow.com/questions/52260084/how-to-maintain-certain-frame-rate-in-different-threads
         // TODO: fix frame rate
+
+        TickThread = make_shared<std::thread>(RunTickLoop);
+
         Logger->Info("Running window...");
 
         while (!glfwWindowShouldClose(Window::Handle))
@@ -149,6 +177,9 @@ namespace Minecraft
 
     void Shutdown()
     {
+        Logger->Info("Waiting for tick thread to exit...");
+        TickThread->join();
+
         Logger->Info("Exiting...");
 
         Renderer::UnbindAll();
