@@ -2,7 +2,6 @@
 
 namespace Minecraft
 {
-
     void Logger::Debug(const string& message)
     {
         Log(GetMessage(message, "DEBUG"));
@@ -38,6 +37,7 @@ namespace Minecraft
 
     void Logger::Log(const string& message)
     {
+        // TODO: output to file
         std::cout << message << "\n";
     }
 
@@ -48,8 +48,10 @@ namespace Minecraft
 
     string Logger::GetMessage(const string& message, const string& logLevel)
     {
-        // TODO: time and thread name
-        auto time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-        return logLevel + " - " + message;//format("[{}] [{}/{}] {}", std::ctime(&time), std::this_thread::get_id(), logLevel, message);
+        // TODO: thread name
+        auto time = std::chrono::system_clock::now();
+        string timeString = format("{:%H:%M:}{:%S}", time, std::chrono::duration_cast<std::chrono::milliseconds>(time.time_since_epoch()));
+        string threadName = "Thread Name";
+        return format("[{}] [{}/{}] {}", timeString, threadName, logLevel, message);
     }
 }
