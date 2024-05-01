@@ -20,12 +20,14 @@ namespace Minecraft
 
     static void GLFWError(int32 code, cstring description)
     {
-        Logger->GLFWError(code, description);
+        // TODO: improve GLFW errors
+        Logger->Warn(format("GLFW Error ({}): {}", code, description));
     }
 
     static void GLError(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, cstring message, const void* userParam)
     {
-        Logger->GLError(source, type, id, severity, length, message, userParam);
+        // TODO: improve GLErrors
+        Logger->Warn(format("GL Error:\n  Source: {}\n  Type: {}\n  ID: {}\n  Severity: {}\n  Message: {}", source, type, id, severity, message));
     }
 
     static void Resize(GLFWwindow* window, int32 width, int32 height)
