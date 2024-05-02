@@ -17,7 +17,7 @@ namespace Minecraft
     private:
         void CreateMesh(Chunk& chunk);
         void DeleteMesh(Chunk& chunk);
-        Quad GetFaceInDirection(Chunk& chunk, vec3 dir, vec3 rotation);
+        void AddFaceInDirection(Chunk& chunk, Block& block, std::vector<Quad>& faces, vec3 dir, vec3 rotation);
         std::vector<Quad> GetChunkFaces(Chunk& chunk);
 
         // TODO: make these references

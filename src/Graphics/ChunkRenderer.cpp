@@ -38,6 +38,7 @@ namespace Minecraft
         for (Quad face : faces)
         {
             // Vertices
+            // TODO: make a function to do this
             for (auto vertex : face.ToVertices())
             {
                 vertices.push_back(vertex.Position.x);
@@ -105,9 +106,16 @@ namespace Minecraft
 
     }
 
-    Quad ChunkRenderer::GetFaceInDirection(Chunk& chunk, vec3 dir, vec3 rotation)
+    void ChunkRenderer::AddFaceInDirection(Chunk& chunk, Block& block, std::vector<Quad>& faces, vec3 dir, vec3 rotation)
     {
-        return Quad();
+        auto blockAbove = chunk.GetBlock(block.LocalX + (int)dir.x, block.LocalY + (int)dir.y, block.LocalZ + (int)dir.z);
+        if (blockAbove.GetData().Type != BlockType::Air)
+            return;
+
+        Quad face;
+        face.Position = block.GetChunkPos() + dir * 0.5f;
+        face.Rotation = rotation;
+        faces.push_back(face);
     }
 
     std::vector<Quad> ChunkRenderer::GetChunkFaces(Chunk& chunk)
@@ -126,14 +134,8 @@ namespace Minecraft
                     if (block.GetData().Type == BlockType::Air)
                         continue;
 
-                    // TODO: make function to test for a certain direction
-                    auto blockAbove = chunk.GetBlock(x, y + 1, z);
-                    if (blockAbove.GetData().Type != BlockType::Air)
-                        continue;
-
-                    Quad face;
-                    face.Position = block.GetChunkPos();
-                    faces.push_back(face);
+                    AddFaceInDirection(chunk, block, faces, vec3(0, 1, 0), vec3(0, 0, 0));
+                    AddFaceInDirection(chunk, block, faces, vec3(0, -1, 0), vec3(180, 0, 0));
                 }
             }
         }
