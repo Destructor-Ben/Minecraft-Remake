@@ -34,7 +34,10 @@ namespace Minecraft
                     BlockType& type = block.GetData().Type;
                     type = BlockType::Air;
 
-                    if ((sin(block.GetX()) + sin(block.GetZ()) + block.GetY()) > 0)
+                    const float VerticalScale = 2.0f;
+                    const float HorizontalScale = 0.5f;
+
+                    if ((sin(block.GetX() * HorizontalScale) * VerticalScale + sin(block.GetZ() * HorizontalScale) * VerticalScale + block.GetY() + 3) > 0)
                         continue;
 
                     type = BlockType::Dirt;
