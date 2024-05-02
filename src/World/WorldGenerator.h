@@ -12,7 +12,7 @@ namespace Minecraft
     class WorldGenerator
     {
     public:
-        WorldGenerator(class World& world, uint32 seed);
+        WorldGenerator(class World* world, uint32 seed = 0);
 
         // Generates initial world with spawn chunks and some borders around so the infinite world can work nicely
         void Generate();

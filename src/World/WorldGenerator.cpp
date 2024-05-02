@@ -4,13 +4,17 @@
 
 namespace Minecraft
 {
-    WorldGenerator::WorldGenerator(class World& world, uint32 seed) : m_World(&world), m_Seed(seed) { }
+    WorldGenerator::WorldGenerator(class World* world, uint32 seed) : m_World(world), m_Seed(seed)
+    {
+    }
 
     void WorldGenerator::Generate()
     {
         // TODO: once I have a proper chunking system, make this generate properly
-        Generate(*m_World->Chunk);
-        Generate(*m_World->Chunk2);
+        for (auto& chunk : m_World->Chunks)
+        {
+            Generate(chunk);
+        }
     }
 
     void WorldGenerator::Generate(int32 chunkX, int32 chunkY, int32 chunkZ)

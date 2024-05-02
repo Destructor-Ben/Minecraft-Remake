@@ -20,10 +20,8 @@ namespace Minecraft
     public:
         Camera Camera;
 
-        // TODO: properly handle world with a vector of Chunks
-        Chunk* Chunk;
-        class Chunk* Chunk2;
-        WorldGenerator* WorldGenerator; // TODO: try to make this not a pointer
+        std::vector<Chunk> Chunks;
+        WorldGenerator* WorldGenerator;
 
         World();
         ~World();

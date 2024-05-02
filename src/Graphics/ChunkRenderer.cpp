@@ -28,6 +28,9 @@ namespace Minecraft
     {
         auto faces = GetChunkFaces(chunk);
 
+        if (!m_ChunkMeshes.contains(&chunk))
+            CreateMesh(chunk);
+
         if (faces.empty())
             return;
 
@@ -67,29 +70,7 @@ namespace Minecraft
         // End TODO
 
         // Create the mesh if it doesn't exist
-        // TODO: move this into a function - also make the renderer not own stuff, just use shared_ptr
-        if (!m_ChunkMeshes.contains(&chunk))
-        {
-            auto vertexBuffer = new VertexBuffer();
-            Renderer->TrackGraphicsResource(vertexBuffer);
-
-            auto indexBuffer = new IndexBuffer();
-            Renderer->TrackGraphicsResource(indexBuffer);
-
-            auto vertexArray = new VertexArray();
-            vertexArray->Push(GL_FLOAT, 3);
-            vertexArray->Push(GL_FLOAT, 2);
-            vertexArray->AddBuffer(*vertexBuffer);
-            Renderer->TrackGraphicsResource(vertexArray);
-
-            auto mesh = new Mesh(*vertexArray);
-            mesh->AddMaterial(m_ChunkMaterial, indexBuffer);
-            Renderer->TrackGraphicsResource(mesh);
-
-            m_ChunkMeshes[&chunk] = mesh;
-            m_ChunkVertices[&chunk] = vertexBuffer;
-            m_ChunkIndices[&chunk] = indexBuffer;
-        }
+        // TODO: make the renderer not own stuff, just use shared_ptr, that way we can delete the mesh
 
         // Set the mesh data
         m_ChunkVertices[&chunk]->SetData(vertices.data(), vertices.size());
@@ -98,7 +79,25 @@ namespace Minecraft
 
     void ChunkRenderer::CreateMesh(Chunk& chunk)
     {
+        auto vertexBuffer = new VertexBuffer();
+        Renderer->TrackGraphicsResource(vertexBuffer);
 
+        auto indexBuffer = new IndexBuffer();
+        Renderer->TrackGraphicsResource(indexBuffer);
+
+        auto vertexArray = new VertexArray();
+        vertexArray->Push(GL_FLOAT, 3);
+        vertexArray->Push(GL_FLOAT, 2);
+        vertexArray->AddBuffer(*vertexBuffer);
+        Renderer->TrackGraphicsResource(vertexArray);
+
+        auto mesh = new Mesh(*vertexArray);
+        mesh->AddMaterial(m_ChunkMaterial, indexBuffer);
+        Renderer->TrackGraphicsResource(mesh);
+
+        m_ChunkMeshes[&chunk] = mesh;
+        m_ChunkVertices[&chunk] = vertexBuffer;
+        m_ChunkIndices[&chunk] = indexBuffer;
     }
 
     void ChunkRenderer::DeleteMesh(Chunk& chunk)

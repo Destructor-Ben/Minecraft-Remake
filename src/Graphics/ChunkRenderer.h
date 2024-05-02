@@ -16,6 +16,7 @@ namespace Minecraft
 
     private:
         void CreateMesh(Chunk& chunk);
+        void SetMesh(Chunk& chunk, const std::vector<float32>& vertices, const std::vector<uint32>& indices);
         void DeleteMesh(Chunk& chunk);
         void AddFaceInDirection(Chunk& chunk, Block& block, std::vector<Quad>& faces, vec3 dir, vec3 rotation);
         std::vector<Quad> GetChunkFaces(Chunk& chunk);

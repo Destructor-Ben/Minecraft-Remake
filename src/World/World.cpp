@@ -17,16 +17,29 @@ namespace Minecraft
 
         // Chunks
         // TODO: make a proper chunking system - Make chunk regions, a group of chunks that are dynamically loaded - that or just use a map/unordered_map of chunks
-        Chunk = new class Chunk(0, 0, 0);
-        Chunk2 = new class Chunk(0, -1, 0);
+        const int WorldSize = 5;
+        for (int x = 0; x < WorldSize; ++x)
+        {
+            for (int y = -1; y <= 1; ++y)
+            {
+                for (int z = 0; z < WorldSize; ++z)
+                {
+                    Chunk chunk(x, y, z);
+                    Chunks.push_back(chunk);
+                }
+            }
+        }
 
         // Generate world
-        WorldGenerator = new Minecraft::WorldGenerator(*this, 0);// TODO: random seed generation
+        // TODO: random seed generation
+        WorldGenerator = new Minecraft::WorldGenerator(this);
         WorldGenerator->Generate();
 
-        // TODO: move these calls into the WorldGenerator and block modification
-        Renderer->ChunkRenderer->RegenerateMesh(*Chunk);
-        Renderer->ChunkRenderer->RegenerateMesh(*Chunk2);
+        // TODO: move these calls into the WorldGenerator and block modification + its own function
+        for (auto& chunk : Chunks)
+        {
+            Renderer->ChunkRenderer->RegenerateMesh(chunk);
+        }
     }
 
     World::~World()
@@ -38,18 +51,16 @@ namespace Minecraft
         // Camera
         Renderer->Camera = nullptr;
 
-        // Chunks
-        delete Chunk;
-        delete Chunk2;
-
         // World generator
         delete WorldGenerator;
     }
 
     void World::Tick()
     {
-        Chunk->Tick();
-        Chunk2->Tick();
+        for (auto& chunk : Chunks)
+        {
+            chunk.Tick();
+        }
     }
 
     void World::Update()
@@ -57,15 +68,20 @@ namespace Minecraft
         if (Input->WasKeyReleased(Key::Escape))
             Window::Close();
 
-        Chunk->Update();
-        Chunk2->Update();
+        for (auto& chunk : Chunks)
+        {
+            chunk.Update();
+        }
+
         UpdateCamera();
     }
 
     void World::Render()
     {
-        Chunk->Render();
-        Chunk2->Render();
+        for (auto& chunk : Chunks)
+        {
+            chunk.Render();
+        }
     }
 
     void World::UpdateCamera()
