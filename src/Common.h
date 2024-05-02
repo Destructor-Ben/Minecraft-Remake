@@ -28,6 +28,12 @@
 #include <glm/gtx/rotate_vector.hpp>
 #include <stb_image.h>
 
+#ifndef NDEBUG
+#define DEBUG true
+#else
+#define DEBUG false
+#endif
+
 namespace Minecraft
 {
     // Strings

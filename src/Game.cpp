@@ -20,13 +20,14 @@ namespace Minecraft
 
     static void GLFWError(int32 code, cstring description)
     {
-        // TODO: improve GLFW errors
+        // TODO: improve GLFW errors - Make error code better
         Logger->Warn(format("GLFW Error ({}): {}", code, description));
     }
 
     static void GLError(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, cstring message, const void* userParam)
     {
-        // TODO: improve GLErrors
+        // TODO: improve GLErrors - https://www.khronos.org/opengl/wiki/Debug_Output
+        // glDebugMessageInsert(1, 1, 1, 1, 5, "Test");
         Logger->Warn(format("GL Error:\n  Source: {}\n  Type: {}\n  ID: {}\n  Severity: {}\n  Message: {}", source, type, id, severity, message));
     }
 
@@ -50,6 +51,10 @@ namespace Minecraft
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+#if DEBUG
+        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
+#endif
 
         Window::Handle = glfwCreateWindow(Window::InitialWidth, Window::InitialHeight, Window::Title.c_str(), nullptr, nullptr);
         glfwMakeContextCurrent(Window::Handle);
@@ -120,7 +125,6 @@ namespace Minecraft
         while (!glfwWindowShouldClose(Window::Handle))
         {
             Tick();
-            Logger->Debug("Tick");
 
             // TODO: delay properly
             Time::TickCount++;
