@@ -123,7 +123,7 @@ namespace Minecraft
         std::vector<Quad> faces;
 
         // TODO: make this work with neighboring chunks - don't forget to update nearby chunks
-        // TODO: make this add faces in all directions
+        // TODO: fix rotations - might be an issue with transforms
         for (int x = 0; x < Chunk::Size; ++x)
         {
             for (int y = 0; y < Chunk::Size; ++y)
@@ -136,6 +136,12 @@ namespace Minecraft
 
                     AddFaceInDirection(chunk, block, faces, vec3(0, 1, 0), vec3(0, 0, 0));
                     AddFaceInDirection(chunk, block, faces, vec3(0, -1, 0), vec3(180, 0, 0));
+
+                    AddFaceInDirection(chunk, block, faces, vec3(1, 0, 0), vec3(0, 0, -90));
+                    AddFaceInDirection(chunk, block, faces, vec3(-1, 0, 0), vec3(0, 0, 90));
+
+                    AddFaceInDirection(chunk, block, faces, vec3(0, 0, 1), vec3(90, 0, 0));
+                    AddFaceInDirection(chunk, block, faces, vec3(0, 0, -1), vec3(-90, 0, 0));
                 }
             }
         }
