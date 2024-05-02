@@ -16,7 +16,7 @@ namespace Minecraft
         Renderer->Camera = &Camera;
 
         // Chunks
-        // TODO: make a proper chunking system
+        // TODO: make a proper chunking system - Make chunk regions, a group of chunks that are dynamically loaded - that or just use a map/unordered_map of chunks
         Chunk = new class Chunk(0, 0, 0);
         Chunk2 = new class Chunk(0, -1, 0);
 

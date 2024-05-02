@@ -38,31 +38,14 @@ namespace Minecraft
         for (Quad face : faces)
         {
             // Vertices
-            // TODO: properly handle the rotation with the normal
-            vec3 centre = face.Centre;
-            vertices.push_back(centre.x - 0.5f);
-            vertices.push_back(centre.y);
-            vertices.push_back(centre.z - 0.5f);
-            vertices.push_back(0.0f);
-            vertices.push_back(1.0f);
-
-            vertices.push_back(centre.x + 0.5f);
-            vertices.push_back(centre.y);
-            vertices.push_back(centre.z - 0.5f);
-            vertices.push_back(1.0f);
-            vertices.push_back(1.0f);
-
-            vertices.push_back(centre.x - 0.5f);
-            vertices.push_back(centre.y);
-            vertices.push_back(centre.z + 0.5f);
-            vertices.push_back(0.0f);
-            vertices.push_back(0.0f);
-
-            vertices.push_back(centre.x + 0.5f);
-            vertices.push_back(centre.y);
-            vertices.push_back(centre.z + 0.5f);
-            vertices.push_back(1.0f);
-            vertices.push_back(0.0f);
+            for (auto vertex : face.ToVertices())
+            {
+                vertices.push_back(vertex.Position.x);
+                vertices.push_back(vertex.Position.y);
+                vertices.push_back(vertex.Position.z);
+                vertices.push_back(vertex.UV.x);
+                vertices.push_back(vertex.UV.y);
+            }
 
             // Indices
             // TODO: use a vertex struct to make this maths less convoluted
@@ -83,6 +66,7 @@ namespace Minecraft
         // End TODO
 
         // Create the mesh if it doesn't exist
+        // TODO: move this into a function - also make the renderer not own stuff, just use shared_ptr
         if (!m_ChunkMeshes.contains(&chunk))
         {
             auto vertexBuffer = new VertexBuffer();
@@ -111,6 +95,21 @@ namespace Minecraft
         m_ChunkIndices[&chunk]->SetData(indices.data(), indices.size());
     }
 
+    void ChunkRenderer::CreateMesh(Chunk& chunk)
+    {
+
+    }
+
+    void ChunkRenderer::DeleteMesh(Chunk& chunk)
+    {
+
+    }
+
+    Quad ChunkRenderer::GetFaceInDirection(Chunk& chunk, vec3 dir, vec3 rotation)
+    {
+        return Quad();
+    }
+
     std::vector<Quad> ChunkRenderer::GetChunkFaces(Chunk& chunk)
     {
         std::vector<Quad> faces;
@@ -132,9 +131,8 @@ namespace Minecraft
                     if (blockAbove.GetData().Type != BlockType::Air)
                         continue;
 
-                    Quad face{};
-                    face.Centre = block.GetChunkPos();
-                    face.Normal = vec3(0.0f, 1.0f, 0.0f);
+                    Quad face;
+                    face.Position = block.GetChunkPos();
                     faces.push_back(face);
                 }
             }
