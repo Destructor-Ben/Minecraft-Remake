@@ -22,6 +22,11 @@ namespace Minecraft
         // TODO: once I have a proper chunking system, make this generate properly
     }
 
+    // TODO: make Perlin function and make this use it
+    int16 WorldGenerator::GenerateHeightAtBlock(float VerticalScale, float HorizontalScale, uint32 seed, Block& block){
+        return (sin(block.GetX() * HorizontalScale) * VerticalScale + sin(block.GetZ() * HorizontalScale) * VerticalScale + block.GetY() + 3) > 0;
+    }
+
     void WorldGenerator::Generate(Chunk& chunk)
     {
         for (int x = 0; x < Chunk::Size; x++)
@@ -37,7 +42,7 @@ namespace Minecraft
                     const float VerticalScale = 2.0f;
                     const float HorizontalScale = 0.5f;
 
-                    if ((sin(block.GetX() * HorizontalScale) * VerticalScale + sin(block.GetZ() * HorizontalScale) * VerticalScale + block.GetY() + 3) > 0)
+                    if (GenerateHeightAtBlock(VerticalScale, HorizontalScale, 0, block) > 0)  // TODO: pass seed to function
                         continue;
 
                     type = BlockType::Dirt;

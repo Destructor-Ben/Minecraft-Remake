@@ -32,7 +32,7 @@ namespace Minecraft
 
     void Logger::Throw(const string& message)
     {
-        throw std::exception(message.c_str());
+        //throw std::exception(message.c_str());  commented as this causes problems on my system
     }
 
     string Logger::GetMessage(const string& message, const string& logLevel)

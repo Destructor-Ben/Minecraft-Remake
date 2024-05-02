@@ -20,6 +20,9 @@ namespace Minecraft
         // Generates an individual chunk, used above
         void Generate(int32 chunkX, int32 chunkY, int32 chunkZ);
         void Generate(Chunk& chunk);
+        
+        // Uses noise function to generate height at single block
+        int16 GenerateHeightAtBlock(float VerticalScale, float HorizontalScale, uint32 seed, Block& block);
 
     private:
         World* m_World;
