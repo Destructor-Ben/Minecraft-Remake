@@ -7,7 +7,7 @@ namespace Minecraft
 {
     ChunkRenderer::ChunkRenderer()
     {
-        m_ChunkTexture = &Renderer->RequestTexture("test");
+        m_ChunkTexture = &Renderer->RequestTexture("stone");
         m_ChunkShader = &Renderer->RequestShader("shader");
         m_ChunkMaterial = new Material(*m_ChunkShader);
         Renderer->TrackGraphicsResource(m_ChunkMaterial);

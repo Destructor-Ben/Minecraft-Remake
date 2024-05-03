@@ -66,6 +66,7 @@ namespace Minecraft
         // Set the data
         auto* texture = new Texture();
         texture->SetData(data, width, height, format, mipMap);
+        texture->SetFilters(GL_NEAREST);  // prevents smoothing of low-res textures
         stbi_image_free(data);
 
         TrackGraphicsResource(texture);
