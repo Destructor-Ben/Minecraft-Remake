@@ -23,7 +23,7 @@ namespace Minecraft
         void Generate(Chunk& chunk);
         
         // Uses noise function to generate height at single block
-        int16 GenerateHeightAtBlock(float VerticalScale, float HorizontalScale, uint32 seed, Block& block);
+        int16 GenerateHeightAtBlock(float VerticalScale, float HorizontalScale, uint32 seed, Block& block, double Persistence, double OctaveCount);
 
     private:
         World* m_World;

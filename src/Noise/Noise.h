@@ -3,5 +3,6 @@
 #include "../Common.h"
 
 namespace Minecraft {
-    double Noise2D(uint32 seed, double x, double y);
+    double IntNoise2D(uint32 seed, int32 x, int32 y);
+    double CosineInterpolate(double a, double b, double x);
 }
