@@ -78,6 +78,10 @@ add_executable(Minecraft_Remake
         src/Logger.h
         src/Graphics/Vertex.h
         src/Graphics/Quad.cpp
+        src/Noise/Perlin.cpp
+        src/Noise/Perlin.h
+        src/Noise/Noise.cpp
+        src/Noise/Noise.h
 )
 
 # Linking libraries

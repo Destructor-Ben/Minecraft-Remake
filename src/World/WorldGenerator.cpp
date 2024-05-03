@@ -24,7 +24,7 @@ namespace Minecraft
 
     // TODO: make Perlin function and make this use it
     int16 WorldGenerator::GenerateHeightAtBlock(float VerticalScale, float HorizontalScale, uint32 seed, Block& block){
-        return (sin(block.GetX() * HorizontalScale) * VerticalScale + sin(block.GetZ() * HorizontalScale) * VerticalScale + block.GetY() + 3) > 0;
+        return Perlin2D(seed, block.GetX(), block.GetZ() * HorizontalScale) * VerticalScale + block.GetY() + 3 > 0;
     }
 
     void WorldGenerator::Generate(Chunk& chunk)

@@ -1,0 +1,9 @@
+#pragma once
+
+#include "src/Common.h"
+
+#include "Noise.h"
+
+namespace Minecraft {
+    double Perlin2D(uint32 seed, double x, double y);
+}

@@ -1,8 +1,9 @@
 #pragma once
 
-#include "../Common.h"
+#include "src/Common.h"
 
 #include "Chunk.h"
+#include "src/Noise/Perlin.h"
 
 namespace Minecraft
 {
