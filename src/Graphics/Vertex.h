@@ -8,5 +8,6 @@ namespace Minecraft
     {
         vec3 Position = vec3(0.0f);
         vec2 UV = vec2(0.0f);
+        vec4 Shading = vec4(1.0f);
     };
 }

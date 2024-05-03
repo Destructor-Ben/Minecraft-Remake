@@ -9,5 +9,6 @@ namespace Minecraft
     struct Quad : public Transform
     {
         std::vector<Vertex> ToVertices();
+        vec4 Shading = vec4(1.0f);
     };
 }

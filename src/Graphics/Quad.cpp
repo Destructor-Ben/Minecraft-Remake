@@ -33,6 +33,7 @@ namespace Minecraft
             }
 
             vertex.Position = vec3(GetTransformationMatrix() * vec4(vertex.Position, 1.0f));
+            vertex.Shading = Shading;
             vertices.push_back(vertex);
         }
 
