@@ -17,7 +17,7 @@ namespace Minecraft
 
         // Chunks
         // TODO: make a proper chunking system - Make chunk regions, a group of chunks that are dynamically loaded - that or just use a map/unordered_map of chunks
-        const int WorldSize = 5;
+        const int WorldSize = 8;
         for (int x = 0; x < WorldSize; ++x)
         {
             for (int y = -1; y <= 1; ++y)
