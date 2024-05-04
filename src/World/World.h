@@ -20,7 +20,7 @@ namespace Minecraft
     public:
         Camera Camera;
 
-        std::vector<Chunk> Chunks;
+        vector<Chunk> Chunks;
         WorldGenerator* WorldGenerator;
 
         World();
