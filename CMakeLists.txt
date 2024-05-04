@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.27)
 project(Minecraft_Remake VERSION 0.1)
 set(CMAKE_CXX_STANDARD 23)
+set(GCC_COVERAGE_COMPILE_FLAGS "-fms-extensions")
+
+# Adding compiler flags for gcc
+add_definitions(${GCC_COVERAGE_COMPILE_FLAGS})
 
 # Adding libraries
 add_subdirectory(lib/stb_image)
