@@ -9,11 +9,8 @@ namespace Minecraft
     // TODO: better error handling: wrap main loop in try catch to avoid exceptions from crashing the game - also make shader compilation errors vetter
 
     class Logger* Logger = nullptr;
-
     class InputManager* Input = nullptr;
-
     class Renderer* Renderer = nullptr;
-
     class World* World = nullptr;
 
     shared_ptr<std::thread> TickThread = nullptr;
