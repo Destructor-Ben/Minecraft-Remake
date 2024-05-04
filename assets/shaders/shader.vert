@@ -6,8 +6,8 @@ layout (location = 2) in vec4 iShading;
 
 uniform mat4 uTransform;
 
-layout (location = 0) out vec2 TexCoord;
-layout (location = 1) out vec4 Shading;
+out vec2 TexCoord;
+out vec4 Shading;
 
 void main()
 {

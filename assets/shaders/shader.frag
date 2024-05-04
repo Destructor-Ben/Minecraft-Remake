@@ -1,7 +1,7 @@
 #version 330 core
 
-layout (location = 0) in vec2 TexCoord;
-layout (location = 1) in vec4 Shading;
+in vec2 TexCoord;
+in vec4 Shading;
 
 uniform sampler2D uTexture;
 
