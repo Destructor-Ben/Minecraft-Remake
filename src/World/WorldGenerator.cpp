@@ -10,20 +10,16 @@ namespace Minecraft
 
     void WorldGenerator::Generate()
     {
-        // TODO: once I have a proper chunking system, make this generate properly
+        // TODO: only generate spawn chunks, plus some around them
         for (auto& chunk : m_World->Chunks)
         {
             Generate(chunk);
         }
     }
 
-    void WorldGenerator::Generate(int32 chunkX, int32 chunkY, int32 chunkZ)
-    {
-        // TODO: once I have a proper chunking system, make this generate properly
-    }
-
     // TODO: make Perlin function and make this use it
-    int16 WorldGenerator::GenerateHeightAtBlock(float VerticalScale, float HorizontalScale, uint32 seed, Block& block, double Persistence, double OctaveCount){
+    int16 WorldGenerator::GenerateHeightAtBlock(float VerticalScale, float HorizontalScale, uint32 seed, Block& block, double Persistence, double OctaveCount)
+    {
         return Perlin2D(seed, block.GetX() * HorizontalScale, block.GetZ() * HorizontalScale, Persistence, OctaveCount) * VerticalScale + block.GetY() + 3 > 0;
     }
 

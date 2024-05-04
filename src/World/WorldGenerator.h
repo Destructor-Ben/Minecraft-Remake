@@ -13,16 +13,19 @@ namespace Minecraft
     class WorldGenerator
     {
     public:
-        WorldGenerator(class World* world, uint32 seed = 0);
+        explicit WorldGenerator(class World* world, uint32 seed = 0);
 
-        // Generates initial world with spawn chunks and some borders around so the infinite world can work nicely
+        // Generates the initial chunks in a world
         void Generate();
 
         // Generates an individual chunk, used above
-        void Generate(int32 chunkX, int32 chunkY, int32 chunkZ);
+        // Generation is composed of passes, which run sequentially
+        // TODO: make generation passes
+        // - Biomes
+        // - Terrain
         void Generate(Chunk& chunk);
-        
-        // Uses noise function to generate height at single block
+
+        // Uses noise functions to generate height at single block
         int16 GenerateHeightAtBlock(float VerticalScale, float HorizontalScale, uint32 seed, Block& block, double Persistence, double OctaveCount);
 
     private:
