@@ -2,17 +2,21 @@
 
 namespace Minecraft
 {
-    // TODO: change the way pointers work - unique/shared ptrs for ownership, then references/raw pointers for accessing
+    // TODO: change the way pointers work - unique/shared pointers for ownership, then references/raw pointers for accessing
     // TODO: use proper typedefs and namespaces, as well as sorted includes
     // TODO: use quaternions for rotation instead of euler angles
     // TODO: fix random crash from glm miscalculation because the window isn't focused - also make the window behave better when not selected
     // TODO: better error handling: wrap main loop in try catch to avoid exceptions from crashing the game - also make shader compilation errors vetter
+    // TODO: blending
+    // TODO: fix frame rate properly and allow options for changing frame rate and tick rate
 
-    class Logger* Logger = nullptr;
-    class InputManager* Input = nullptr;
-    class Renderer* Renderer = nullptr;
-    class World* World = nullptr;
+    // TODO: change class names to be different from variable names
+    shared_ptr<class Logger> Logger = nullptr;
+    shared_ptr<class Renderer> Renderer = nullptr;
+    shared_ptr<class World> World = nullptr;
+    shared_ptr<InputManager> Input = nullptr;
 
+    std::thread::id MainThreadID = std::thread::id();
     shared_ptr<std::thread> TickThread = nullptr;
 
     static void GLFWError(int32 code, cstring description)
@@ -61,7 +65,7 @@ namespace Minecraft
         glfwSetInputMode(Window::Handle, GLFW_STICKY_KEYS, GLFW_TRUE);
         glfwSetInputMode(Window::Handle, GLFW_STICKY_MOUSE_BUTTONS, GLFW_TRUE);
         glfwSetScrollCallback(Window::Handle, OnScroll);
-        glfwSwapInterval(1); // TODO: fix frame rate properly
+        glfwSwapInterval(1);
 
         Logger->Info("GLFW Initialized");
     }
@@ -84,9 +88,6 @@ namespace Minecraft
         glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
         glFrontFace(GL_CCW);
-
-        // Blending TODO
-        //glEnable(GL_BLEND);
 
         Logger->Info("OpenGL Initialized");
     }
@@ -136,18 +137,19 @@ namespace Minecraft
 
     void Initialize()
     {
-        Logger = new class Logger();
+        MainThreadID = std::this_thread::get_id();
+        Logger = make_shared<class Logger>();
         Logger->Info("Starting...");
 
         InitGLFW();
         InitGL();
-        stbi_set_flip_vertically_on_load(true);
         glfwMaximizeWindow(Window::Handle);
+        stbi_set_flip_vertically_on_load(true);
 
-        Input = new class InputManager();
-        Renderer = new class Renderer();
-        Renderer->ChunkRenderer = new ChunkRenderer(); // TODO: maybe make a prepare function
-        World = new class World();
+        Input = make_shared<InputManager>();
+        Renderer = make_shared<class Renderer>();
+        Renderer->ChunkRenderer = make_shared<ChunkRenderer>(); // TODO: maybe make a prepare function
+        World = make_shared<class World>();
 
         Renderer::UnbindAll();
     }
@@ -187,12 +189,12 @@ namespace Minecraft
 
         Renderer::UnbindAll();
 
-        delete World;
-        delete Renderer;
-        delete Input;
+        World = nullptr;
+        Renderer = nullptr;
+        Input = nullptr;
 
         glfwTerminate();
 
-        delete Logger;
+        Logger = nullptr;
     }
 }

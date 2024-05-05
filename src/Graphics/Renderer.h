@@ -19,12 +19,13 @@ namespace Minecraft
     class Renderer
     {
     public:
-        ChunkRenderer* ChunkRenderer;
+        shared_ptr<ChunkRenderer> ChunkRenderer;
 
         const Camera* Camera = nullptr;
         glm::mat4 ViewMatrix = glm::mat4(1.0f);
         glm::mat4 ProjectionMatrix = glm::mat4(1.0f);
 
+        Renderer();
         ~Renderer();
 
         void Update();

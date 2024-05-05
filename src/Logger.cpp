@@ -1,4 +1,5 @@
 #include "Logger.h"
+#include "Game.h"
 
 namespace Minecraft
 {
@@ -19,9 +20,7 @@ namespace Minecraft
 
     void Logger::Error(const string& message)
     {
-        string error = GetMessage(message, "ERROR");
-        Log(error);
-        Throw(error);
+        Throw(GetMessage(message, "ERROR"));
     }
 
     void Logger::Log(const string& message)
@@ -37,10 +36,12 @@ namespace Minecraft
 
     string Logger::GetMessage(const string& message, const string& logLevel)
     {
-        // TODO: thread name
         auto time = std::chrono::system_clock::now();
         string timeString = format("{:%H:%M:}{:%S}", time, std::chrono::duration_cast<std::chrono::milliseconds>(time.time_since_epoch()));
-        string threadName = "Thread Name";
+
+        auto threadID = std::this_thread::get_id();
+        string threadName = threadID == MainThreadID ? "Main Thread" : threadID == TickThread->get_id() ? "Tick Thread" : "Unknown Thread";
+
         return format("[{}] [{}/{}] {}", timeString, threadName, logLevel, message);
     }
 }

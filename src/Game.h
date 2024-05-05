@@ -10,11 +10,12 @@
 
 namespace Minecraft
 {
-    extern Logger* Logger;
-    extern InputManager* Input;
-    extern Renderer* Renderer;
-    extern World* World;
+    extern shared_ptr<Logger> Logger;
+    extern shared_ptr<Renderer> Renderer;
+    extern shared_ptr<World> World;
+    extern shared_ptr<InputManager> Input;
 
+    extern std::thread::id MainThreadID;
     extern shared_ptr<std::thread> TickThread;
 
     void Initialize();

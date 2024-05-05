@@ -9,6 +9,7 @@ namespace Minecraft
     class ChunkRenderer
     {
     public:
+        // TODO: take in a renderer as a parameter
         ChunkRenderer();
 
         void RenderChunk(Chunk& chunk);

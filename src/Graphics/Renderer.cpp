@@ -3,9 +3,16 @@
 
 namespace Minecraft
 {
+    Renderer::Renderer()
+    {
+        // Have to initialize here because otherwise the renderer is still null
+        // TODO: fix this
+        // ChunkRenderer = make_shared<class ChunkRenderer>();
+    }
+
     Renderer::~Renderer()
     {
-        for (auto resource: m_GraphicsResources)
+        for (auto resource : m_GraphicsResources)
         {
             delete resource;
         }
