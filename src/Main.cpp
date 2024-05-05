@@ -20,6 +20,11 @@ int main()
         Logger->Catch(message);
         return -1;
     }
+    catch (const cstring& message)
+    {
+        Logger->Catch(message);
+        return -1;
+    }
     catch (...)
     {
         Logger->CatchUnknown();
