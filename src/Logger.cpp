@@ -3,38 +3,63 @@
 
 namespace Minecraft
 {
-    void Logger::Debug(const string& message)
+    Logger_t::Logger_t()
+    {
+        m_LogFile.open("Minecraft_Remake.log", std::ofstream::out | std::ofstream::trunc);
+    }
+
+    Logger_t::~Logger_t()
+    {
+        m_LogFile.close();
+    }
+
+    void Logger_t::Debug(const string& message)
     {
         Log(GetMessage(message, "DEBUG"));
     }
 
-    void Logger::Info(const string& message)
+    void Logger_t::Info(const string& message)
     {
         Log(GetMessage(message, "INFO"));
     }
 
-    void Logger::Warn(const string& message)
+    void Logger_t::Warn(const string& message)
     {
         Log(GetMessage(message, "WARN"));
     }
 
-    void Logger::Error(const string& message)
+    void Logger_t::Error(const string& message)
     {
-        Throw(GetMessage(message, "ERROR"));
+        Log(GetMessage(message, "ERROR"));
     }
 
-    void Logger::Log(const string& message)
+    void Logger_t::Throw(const string& message)
     {
-        // TODO: output to file
-        std::cout << message << "\n";
+        throw std::exception(message.c_str());
     }
 
-    void Logger::Throw(const string& message)
+    void Logger_t::CatchUnknown()
     {
-        //throw std::exception(message.c_str());  commented as this causes problems on my system
+        Catch("Unknown exception occurred");
     }
 
-    string Logger::GetMessage(const string& message, const string& logLevel)
+    void Logger_t::Catch(const string& message)
+    {
+        Log(GetMessage(message, "FATAL"));
+    }
+
+    void Logger_t::Catch(const std::exception& exception)
+    {
+        Catch(exception.what());
+    }
+
+    void Logger_t::Log(const string& message)
+    {
+        std::cout << message;
+        m_LogFile << message;
+    }
+
+    string Logger_t::GetMessage(const string& message, const string& logLevel)
     {
         auto time = std::chrono::system_clock::now();
         string timeString = format("{:%H:%M:}{:%S}", time, std::chrono::duration_cast<std::chrono::milliseconds>(time.time_since_epoch()));
@@ -42,6 +67,6 @@ namespace Minecraft
         auto threadID = std::this_thread::get_id();
         string threadName = threadID == MainThreadID ? "Main Thread" : threadID == TickThread->get_id() ? "Tick Thread" : "Unknown Thread";
 
-        return format("[{}] [{}/{}] {}", timeString, threadName, logLevel, message);
+        return format("[{}] [{}/{}] {}\n", timeString, threadName, logLevel, message);
     }
 }

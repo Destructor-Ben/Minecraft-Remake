@@ -11,10 +11,10 @@ namespace Minecraft
     // TODO: fix frame rate properly and allow options for changing frame rate and tick rate
 
     // TODO: change class names to be different from variable names
-    shared_ptr<class Logger> Logger = nullptr;
+    shared_ptr<Logger_t> Logger = nullptr;
+    shared_ptr<InputManager> Input = nullptr;
     shared_ptr<class Renderer> Renderer = nullptr;
     shared_ptr<class World> World = nullptr;
-    shared_ptr<InputManager> Input = nullptr;
 
     std::thread::id MainThreadID = std::thread::id();
     shared_ptr<std::thread> TickThread = nullptr;
@@ -138,7 +138,7 @@ namespace Minecraft
     void Initialize()
     {
         MainThreadID = std::this_thread::get_id();
-        Logger = make_shared<class Logger>();
+        Logger = make_shared<Logger_t>();
         Logger->Info("Starting...");
 
         InitGLFW();
@@ -189,6 +189,7 @@ namespace Minecraft
 
         Renderer::UnbindAll();
 
+        // We manually null these out because we need to deallocate the objects in a guaranteed order
         World = nullptr;
         Renderer = nullptr;
         Input = nullptr;
