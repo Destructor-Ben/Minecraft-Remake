@@ -20,7 +20,7 @@ namespace Minecraft
     shared_ptr<LogManager> Logger = nullptr;
     shared_ptr<InputManager> Input = nullptr;
     shared_ptr<class Renderer> Renderer = nullptr;
-    shared_ptr<class World> World = nullptr;
+    shared_ptr<World> CurrentWorld = nullptr;
 
     std::thread::id MainThreadID = std::thread::id();
     shared_ptr<std::thread> TickThread = nullptr;
@@ -100,13 +100,13 @@ namespace Minecraft
 
     static void Tick()
     {
-        World->Tick();
+        CurrentWorld->Tick();
     }
 
     static void Update()
     {
         Input->Update();
-        World->Update();
+        CurrentWorld->Update();
         Renderer->Update();
 
         Input->PostUpdate();
@@ -116,7 +116,7 @@ namespace Minecraft
     {
         Renderer::Clear();
 
-        World->Render();
+        CurrentWorld->Render();
     }
 
     static void RunTickLoop()
@@ -155,7 +155,7 @@ namespace Minecraft
         Input = make_shared<InputManager>();
         Renderer = make_shared<class Renderer>();
         Renderer->ChunkRenderer = make_shared<ChunkRenderer>(); // TODO: maybe make a prepare function
-        World = make_shared<class World>();
+        CurrentWorld = make_shared<World>();
 
         Renderer::UnbindAll();
     }
@@ -196,7 +196,7 @@ namespace Minecraft
         Renderer::UnbindAll();
 
         // We manually null these out because we need to deallocate the objects in a guaranteed order
-        World = nullptr;
+        CurrentWorld = nullptr;
         Renderer = nullptr;
         Input = nullptr;
 
