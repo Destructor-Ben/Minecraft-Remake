@@ -3,6 +3,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 # Adding the source files
 add_executable(Minecraft_Remake
+        ${MINECRAFT_REMAKE_GENERATED_FILES}
         Main.cpp
         Common.h
         Game.h

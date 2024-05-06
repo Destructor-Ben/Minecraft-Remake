@@ -1,0 +1,8 @@
+#include "Common.h"
+
+namespace Minecraft::Version
+{
+    const int32 Major = @CMAKE_PROJECT_VERSION_MAJOR@;
+    const int32 Minor = @CMAKE_PROJECT_VERSION_MINOR@;
+    const int32 Patch = @CMAKE_PROJECT_VERSION_PATCH@;
+}

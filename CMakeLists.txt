@@ -4,14 +4,19 @@ set(CMAKE_CXX_STANDARD 23)
 
 # Adding compiler flags for gcc so this compiled on Linux
 # Enables Microsoft extensions that allow certain variable naming conventions
-# TODO: remove this
-set(GCC_COVERAGE_COMPILE_FLAGS "-fms-extensions")
-add_definitions(${GCC_COVERAGE_COMPILE_FLAGS})
+if (CMAKE_CXX_COMPILER_ID EQUAL GNU)
+    set(GCC_COVERAGE_COMPILE_FLAGS "-fms-extensions")
+    add_definitions(${GCC_COVERAGE_COMPILE_FLAGS})
+endif ()
 
 # Resources
 file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
 file(COPY data DESTINATION ${CMAKE_BINARY_DIR})
 file(COPY lang DESTINATION ${CMAKE_BINARY_DIR})
+
+# Version source generator
+# configure_file(generated/Version.cpp.in ${CMAKE_SOURCE_DIR}/generated/Version.cpp)
+# list(APPEND MINECRAFT_REMAKE_GENERATED_FILES ${CMAKE_SOURCE_DIR}/generated/Version.cpp)
 
 # Main executable
 add_subdirectory(src)
