@@ -1,5 +1,4 @@
 #include "Game.h"
-#include "LogManager.h"
 
 using namespace Minecraft;
 

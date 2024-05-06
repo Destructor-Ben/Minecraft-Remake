@@ -12,21 +12,6 @@ namespace Minecraft
         glAttachShader(m_ID, vertexShader.GetID());
         glAttachShader(m_ID, fragmentShader.GetID());
         glLinkProgram(m_ID);
-
-        // Error checking
-        int success;
-        glGetProgramiv(m_ID, GL_LINK_STATUS, &success);
-        if (success)
-            return;
-
-        int logLength;
-        glGetProgramiv(m_ID, GL_INFO_LOG_LENGTH, &logLength);
-
-        string infoLog;
-        infoLog.resize(logLength);
-        glGetProgramInfoLog(m_ID, logLength, nullptr, &infoLog[0]);
-
-        Logger->Error("Shader linking failed:\n" + infoLog);
     }
 
     Shader::~Shader()

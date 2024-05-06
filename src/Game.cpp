@@ -8,7 +8,7 @@ namespace Minecraft
     // TODO: use proper typedefs and namespaces, as well as sorted includes
     // TODO: use quaternions for rotation instead of euler angles
     // TODO: fix random crash from glm miscalculation because the window isn't focused - also make the window behave better when not selected
-    // TODO: make all log messages better
+    // TODO: asset request log messages better
     // TODO: blending
     // TODO: fix frame rate properly and allow options for changing frame rate and tick rate
     // TODO: embed resources - use source generator https://stackoverflow.com/a/71906177/12259381 & https://cmake.org/cmake/help/latest/command/configure_file.html

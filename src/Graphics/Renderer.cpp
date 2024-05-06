@@ -68,7 +68,7 @@ namespace Minecraft
         int32 width, height, channels;
         uint8* data = stbi_load(path.c_str(), &width, &height, &channels, hasAlpha ? 4 : 3);
         if (!data)
-            Logger->Error("Failed to load texture at path: " + path);
+            Logger->Throw("Failed to load texture at path: " + path);
 
         // Set the data
         auto* texture = new Texture();
