@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Common.h"
-#include "TimeA.h"
 #include "Logger.h"
 #include "World/World.h"
 #include "Input/InputManager.h"
@@ -21,4 +20,20 @@ namespace Minecraft
     void Initialize();
     void Run();
     void Shutdown();
+
+    // Declaring this in its own header causes a name conflict with std library
+    namespace Time
+    {
+        extern int UpdateCount;
+        extern int TickCount;
+
+        extern float DeltaTime;
+        extern float FixedDeltaTime;
+
+        extern float FrameRate;
+        extern float TickRate;
+
+        // Seconds since the program started
+        extern float WallTime;
+    }
 }

@@ -27,8 +27,6 @@ add_executable(Minecraft_Remake
         Graphics/Renderer.cpp
         Graphics/Renderer.h
         Input/MouseButton.h
-        Time.cpp
-        TimeA.h
         Graphics/Material.cpp
         Graphics/Material.h
         Graphics/Mesh.cpp

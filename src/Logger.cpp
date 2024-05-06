@@ -3,8 +3,6 @@
 
 namespace Minecraft
 {
-    // TODO: make entire console go into the log file
-    // TODO: make the file close even when the app crashes/make the file get written to after every insertion
     // TODO: append/log game version at beginning of process
     Logger_t::Logger_t()
     {
