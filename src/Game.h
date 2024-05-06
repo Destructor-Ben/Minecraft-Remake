@@ -26,6 +26,7 @@ namespace Minecraft
         const int32 InitialWidth = 1280;
         const int32 InitialHeight = 720;
         const string Title = "Minecraft Remake";
+        const bool StartFullScreen = true;
 
         extern GLFWwindow* Handle;
         extern int32 Width;

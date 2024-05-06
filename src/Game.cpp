@@ -14,12 +14,11 @@ namespace Minecraft
     // TODO: blending
     // TODO: fix frame rate properly and allow options for changing frame rate and tick rate
 
-    // TODO: fix random crash from glm miscalculation because the window isn't focused - also make the window behave better when not selected
+    // TODO: fix random crash from glm miscalculation because the window isn't focused - also make the window behave better when not selected - possibly already fixed in camera.cpp
 
-    // TODO: change class names to be different from variable names
     shared_ptr<LogManager> Logger = nullptr;
     shared_ptr<InputManager> Input = nullptr;
-    shared_ptr<class Renderer> Renderer = nullptr;
+    shared_ptr<class Renderer> Renderer = nullptr;// TODO: rename Renderer class to RendererManager
     shared_ptr<World> CurrentWorld = nullptr;
 
     std::thread::id MainThreadID = std::thread::id();
@@ -149,8 +148,13 @@ namespace Minecraft
 
         InitGLFW();
         InitGL();
-        glfwMaximizeWindow(Window::Handle);
         stbi_set_flip_vertically_on_load(true);
+
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "Simplify"
+        if (Window::StartFullScreen)
+            glfwMaximizeWindow(Window::Handle);
+#pragma clang diagnostic pop
 
         Input = make_shared<InputManager>();
         Renderer = make_shared<class Renderer>();
@@ -208,30 +212,30 @@ namespace Minecraft
     namespace Window
     {
         GLFWwindow* Handle = nullptr;
-        int Width = 0;
-        int Height = 0;
+        int32 Width = 0;
+        int32 Height = 0;
     }
 
     namespace Time
     {
-        int UpdateCount = 0;
-        int TickCount = 0;
+        int32 UpdateCount = 0;
+        int32 TickCount = 0;
 
-        float DeltaTime = 0;
-        float FixedDeltaTime = 0;
+        float32 DeltaTime = 0;
+        float32 FixedDeltaTime = 0;
 
-        float FrameRate = 0;
-        float TickRate = 0;
+        float32 FrameRate = 0;
+        float32 TickRate = 0;
 
-        float WallTime = 0;
+        float32 WallTime = 0;
     }
 
     // TODO: temporary - make source generator for this
     namespace Version
     {
-        const int Major = 0;
-        const int Minor = 1;
-        const int Patch = 0;
+        const int32 Major = 0;
+        const int32 Minor = 1;
+        const int32 Patch = 0;
         const string String = format("{}.{}.{}", Major, Minor, Patch);
     }
 }
