@@ -7,6 +7,7 @@
 #include <cassert>
 #include <chrono>
 #include <cmath>
+#include <exception>
 #include <format>
 #include <fstream>
 #include <iostream>
