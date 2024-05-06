@@ -5,6 +5,7 @@ namespace Minecraft
 {
     // TODO: make entire console go into the log file
     // TODO: make the file close even when the app crashes/make the file get written to after every insertion
+    // TODO: append/log game version at beginning of process
     Logger_t::Logger_t()
     {
         m_LogFile.open("Minecraft_Remake.log", std::ofstream::out | std::ofstream::trunc);
@@ -37,7 +38,7 @@ namespace Minecraft
 
     void Logger_t::Throw(const string& message)
     {
-        throw message;
+        throw std::runtime_error(message);
     }
 
     void Logger_t::CatchUnknown()

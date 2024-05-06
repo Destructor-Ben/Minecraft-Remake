@@ -1,5 +1,6 @@
 #pragma once
 
+// TODO: this header needs to be renamed because it clashes with std::time.h
 namespace Minecraft
 {
     namespace Time

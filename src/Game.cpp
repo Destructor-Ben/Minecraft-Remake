@@ -1,14 +1,17 @@
 #include "Game.h"
 
+#include "src/Common.h"
+
 namespace Minecraft
 {
     // TODO: change the way pointers work - unique/shared pointers for ownership, then references/raw pointers for accessing
     // TODO: use proper typedefs and namespaces, as well as sorted includes
     // TODO: use quaternions for rotation instead of euler angles
     // TODO: fix random crash from glm miscalculation because the window isn't focused - also make the window behave better when not selected
-    // TODO: better error handling: wrap main loop in try catch to avoid exceptions from crashing the game - also make shader compilation errors vetter
+    // TODO: make all log messages better
     // TODO: blending
     // TODO: fix frame rate properly and allow options for changing frame rate and tick rate
+    // TODO: embed resources - use source generator https://stackoverflow.com/a/71906177/12259381 & https://cmake.org/cmake/help/latest/command/configure_file.html
 
     // TODO: change class names to be different from variable names
     shared_ptr<Logger_t> Logger = nullptr;
