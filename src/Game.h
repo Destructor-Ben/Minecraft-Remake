@@ -12,7 +12,7 @@ namespace Minecraft
     extern shared_ptr<LogManager> Logger;
     extern shared_ptr<InputManager> Input;
     extern shared_ptr<Renderer> Renderer;
-    extern shared_ptr<World> CurrentWorld;
+    extern shared_ptr<World> World;
 
     extern std::thread::id MainThreadID;
     extern shared_ptr<std::thread> TickThread;
@@ -26,7 +26,6 @@ namespace Minecraft
         const int32 InitialWidth = 1280;
         const int32 InitialHeight = 720;
         const string Title = "Minecraft Remake";
-        const bool StartFullScreen = true;
 
         extern GLFWwindow* Handle;
         extern int32 Width;
