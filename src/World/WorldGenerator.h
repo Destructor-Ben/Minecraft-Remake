@@ -1,9 +1,10 @@
 #pragma once
 
-#include "src/Common.h"
+#include "Common.h"
 
 #include "Chunk.h"
-#include "src/Noise/Perlin.h"
+#include "Noise/Perlin.h"
+#include "LogManager.h"
 
 namespace Minecraft
 {

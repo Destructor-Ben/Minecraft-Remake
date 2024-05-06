@@ -1,6 +1,6 @@
 #include "Game.h"
 
-#include "src/Common.h"
+#include "Input/InputManager.h"
 
 namespace Minecraft
 {
@@ -14,7 +14,7 @@ namespace Minecraft
     // TODO: embed resources - use source generator https://stackoverflow.com/a/71906177/12259381 & https://cmake.org/cmake/help/latest/command/configure_file.html
 
     // TODO: change class names to be different from variable names
-    shared_ptr<Logger_t> Logger = nullptr;
+    shared_ptr<LogManager> Logger = nullptr;
     shared_ptr<InputManager> Input = nullptr;
     shared_ptr<class Renderer> Renderer = nullptr;
     shared_ptr<class World> World = nullptr;
@@ -141,8 +141,8 @@ namespace Minecraft
     void Initialize()
     {
         MainThreadID = std::this_thread::get_id();
-        Logger = make_shared<Logger_t>();
-        Logger->Info("Starting...");
+        Logger = make_shared<LogManager>();
+        Logger->Info(format("Starting Minecraft_Remake version {}...", Version::String));
 
         InitGLFW();
         InitGL();
@@ -202,6 +202,13 @@ namespace Minecraft
         Logger = nullptr;
     }
 
+    namespace Window
+    {
+        GLFWwindow* Handle = nullptr;
+        int Width = 0;
+        int Height = 0;
+    }
+
     namespace Time
     {
         int UpdateCount = 0;
@@ -214,5 +221,14 @@ namespace Minecraft
         float TickRate = 0;
 
         float WallTime = 0;
+    }
+
+    // TODO: temporary - make source generator for this
+    namespace Version
+    {
+        const int Major = 0;
+        const int Minor = 1;
+        const int Patch = 0;
+        const string String = format("{}.{}.{}", Major, Minor, Patch);
     }
 }

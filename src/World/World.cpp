@@ -1,6 +1,7 @@
 #include "World.h"
 
-#include "../Game.h"
+#include "Game.h"
+#include "Input/InputManager.h"
 
 namespace Minecraft
 {

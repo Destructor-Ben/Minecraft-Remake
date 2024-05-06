@@ -1,6 +1,7 @@
 #include "Chunk.h"
 
-#include "../Game.h"
+#include "Game.h"
+#include "Graphics/Renderer.h"
 
 namespace Minecraft
 {

@@ -9,7 +9,6 @@
 #include "Texture.h"
 #include "VertexBuffer.h"
 #include "VertexArray.h"
-#include "Window.h"
 #include "ChunkRenderer.h"
 #include "GraphicsResource.h"
 #include "Vertex.h"

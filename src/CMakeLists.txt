@@ -22,8 +22,6 @@ add_executable(Minecraft_Remake
         Input/Key.h
         Graphics/VertexArray.cpp
         Graphics/VertexArray.h
-        Graphics/Window.h
-        Graphics/Window.cpp
         Graphics/Renderer.cpp
         Graphics/Renderer.h
         Input/MouseButton.h
@@ -54,8 +52,8 @@ add_executable(Minecraft_Remake
         Graphics/ChunkRenderer.cpp
         Graphics/ChunkRenderer.h
         Graphics/GraphicsResource.h
-        Logger.cpp
-        Logger.h
+        LogManager.cpp
+        LogManager.h
         Graphics/Vertex.h
         Graphics/Quad.cpp
         Noise/Perlin.cpp

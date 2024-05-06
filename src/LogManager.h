@@ -4,11 +4,11 @@
 
 namespace Minecraft
 {
-    class Logger_t
+    class LogManager
     {
     public:
-        Logger_t();
-        ~Logger_t();
+        LogManager();
+        ~LogManager();
 
         void Debug(const string& message);
         void Info(const string& message);
