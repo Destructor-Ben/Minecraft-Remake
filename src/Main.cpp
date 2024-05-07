@@ -2,6 +2,12 @@
 
 using namespace Minecraft;
 
+// Super important to null out Logger, since we want it to deallocate and write to the log file
+#define HANDLE_EXCEPTION(function)\
+        Logger->function;\
+        Logger = nullptr;\
+        return -1;\
+
 int main()
 {
     try
@@ -12,28 +18,19 @@ int main()
     }
     catch (const std::exception& exception)
     {
-        // Super important to null out Logger, since we want it to deallocate and write to the log file
-        Logger->Catch(exception);
-        Logger = nullptr;
-        return -1;
+        HANDLE_EXCEPTION(Catch(exception))
     }
     catch (const string& message)
     {
-        Logger->Catch(message);
-        Logger = nullptr;
-        return -1;
+        HANDLE_EXCEPTION(Catch(message))
     }
     catch (const cstring& message)
     {
-        Logger->Catch(message);
-        Logger = nullptr;
-        return -1;
+        HANDLE_EXCEPTION(Catch(message))
     }
     catch (...)
     {
-        Logger->CatchUnknown();
-        Logger = nullptr;
-        return -1;
+        HANDLE_EXCEPTION(CatchUnknown())
     }
 
     return 0;
