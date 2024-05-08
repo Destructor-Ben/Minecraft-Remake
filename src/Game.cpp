@@ -142,7 +142,7 @@ namespace Minecraft
 
     void Initialize()
     {
-        MainThreadID = std::this_thread::get_id();
+        MainThreadID = std::this_thread::get_id();  // seems to cause segfault in std::thread::id very rarely
         Logger = make_shared<LogManager>();
         Logger->Info(format("Starting Minecraft_Remake version {}...", Version::String));
 

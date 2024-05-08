@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD 23)
 
 # Adding compiler flags for gcc so this compiled on Linux
 # Enables Microsoft extensions that allow certain variable naming conventions
-if (CMAKE_CXX_COMPILER_ID EQUAL GNU)
+if (CMAKE_CXX_COMPILER_ID STREQUAL GNU)
     set(GCC_COVERAGE_COMPILE_FLAGS "-fms-extensions")
     add_definitions(${GCC_COVERAGE_COMPILE_FLAGS})
 endif ()
