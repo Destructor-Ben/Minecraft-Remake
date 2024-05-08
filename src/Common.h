@@ -4,7 +4,6 @@
 #define GLM_ENABLE_EXPERIMENTAL
 
 #include <any>
-#include <cassert>
 #include <chrono>
 #include <cmath>
 #include <exception>

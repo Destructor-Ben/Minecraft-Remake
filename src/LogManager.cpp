@@ -1,5 +1,7 @@
 #include "LogManager.h"
 
+#include <stacktrace>
+
 #include "Game.h"
 
 namespace Minecraft
@@ -37,7 +39,13 @@ namespace Minecraft
 
     void LogManager::Throw(const string& message)
     {
-        throw std::runtime_error(message);
+        throw std::runtime_error(format("{}\nStacktrace:\n{}", message, to_string(std::stacktrace::current())));
+    }
+
+    void LogManager::Assert(bool condition)
+    {
+        if (!condition)
+            Throw("Assertion failed");
     }
 
     void LogManager::CatchUnknown()

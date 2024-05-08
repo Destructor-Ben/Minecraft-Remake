@@ -26,8 +26,7 @@ namespace Minecraft
 
     static void GLFWError(int32 code, cstring description)
     {
-        // TODO: improve GLFW errors - Make error code better
-        Logger->Warn(format("GLFW Error ({}): {}", code, description));
+        Logger->Error(format("GLFW Error (Code {}): {}", code, description));
     }
 
     static void GLError(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, cstring message, const void* userParam)

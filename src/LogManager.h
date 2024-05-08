@@ -15,6 +15,7 @@ namespace Minecraft
         void Warn(const string& message);
         void Error(const string& message);
         void Throw(const string& message);
+        void Assert(bool condition);
 
         void CatchUnknown();
         void Catch(const string& message);
