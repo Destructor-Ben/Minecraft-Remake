@@ -31,9 +31,93 @@ namespace Minecraft
 
     static void GLError(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, cstring message, const void* userParam)
     {
-        // TODO: improve GLErrors - https://www.khronos.org/opengl/wiki/Debug_Output
-        // glDebugMessageInsert(1, 1, 1, 1, 5, "Test");
-        Logger->Warn(format("GL Error:\n  Source: {}\n  Type: {}\n  ID: {}\n  Severity: {}\n  Message: {}", source, type, id, severity, message));
+        string sourceString;
+        switch (source)
+        {
+            case GL_DEBUG_SOURCE_API:
+                sourceString = "API";
+                break;
+            case GL_DEBUG_SOURCE_APPLICATION:
+                sourceString = "Application";
+                break;
+            case GL_DEBUG_SOURCE_OTHER:
+                sourceString = "Other";
+                break;
+            case GL_DEBUG_SOURCE_SHADER_COMPILER:
+                sourceString = "Shader Compiler";
+                break;
+            case GL_DEBUG_SOURCE_THIRD_PARTY:
+                sourceString = "Third Party";
+                break;
+            case GL_DEBUG_SOURCE_WINDOW_SYSTEM:
+                sourceString = "Window System";
+                break;
+            default:
+                Logger->Throw("Unknown GL Error source: " + to_string(source));
+                break;
+        }
+
+        string typeString;
+        switch (type)
+        {
+            case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
+                typeString = "Deprecated Behaviour";
+                break;
+            case GL_DEBUG_TYPE_ERROR:
+                typeString = "Error";
+                break;
+            case GL_DEBUG_TYPE_MARKER:
+                typeString = "Marker";
+                break;
+            case GL_DEBUG_TYPE_OTHER:
+                typeString = "Other";
+                break;
+            case GL_DEBUG_TYPE_PERFORMANCE:
+                typeString = "Performance";
+                break;
+            case GL_DEBUG_TYPE_POP_GROUP:
+                typeString = "Pop Group";
+                break;
+            case GL_DEBUG_TYPE_PORTABILITY:
+                typeString = "Portability";
+                break;
+            case GL_DEBUG_TYPE_PUSH_GROUP:
+                typeString = "Push Group";
+                break;
+            case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
+                typeString = "Undefined Behaviour";
+                break;
+            default:
+                Logger->Throw("Unknown GL Error type: " + to_string(source));
+                break;
+        }
+
+        string severityString;
+        switch (severity)
+        {
+            case GL_DEBUG_SEVERITY_HIGH:
+                severityString = "High";
+                break;
+            case GL_DEBUG_SEVERITY_MEDIUM:
+                severityString = "Medium";
+                break;
+            case GL_DEBUG_SEVERITY_LOW:
+                severityString = "Low";
+                break;
+            case GL_DEBUG_SEVERITY_NOTIFICATION:
+                severityString = "Notification";
+                break;
+            default:
+                Logger->Throw("Unknown GL Error severity: " + to_string(source));
+                break;
+        }
+
+        string logMessage = format("GL Error: {}\n  Source: {}\n  Type: {}\n  Severity: {}\n  ID: {}", message, sourceString, typeString, severityString, id);
+
+        if (severity == GL_DEBUG_SEVERITY_HIGH)
+            Logger->Error(logMessage);
+        else
+            Logger->Warn(logMessage);
     }
 
     static void Resize(GLFWwindow* window, int32 width, int32 height)
@@ -52,6 +136,8 @@ namespace Minecraft
     {
         Logger->Info("Initializing GLFW...");
 
+        glfwSetErrorCallback(GLFWError);
+
         glfwInit();
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
@@ -63,7 +149,6 @@ namespace Minecraft
 
         Window::Handle = glfwCreateWindow(Window::InitialWidth, Window::InitialHeight, Window::Title.c_str(), nullptr, nullptr);
         glfwMakeContextCurrent(Window::Handle);
-        glfwSetErrorCallback(GLFWError);
 
         glfwSetFramebufferSizeCallback(Window::Handle, Resize);
         glfwSetInputMode(Window::Handle, GLFW_STICKY_KEYS, GLFW_TRUE);
@@ -79,8 +164,12 @@ namespace Minecraft
         Logger->Info("Initializing OpenGL...");
 
         gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+
+#if DEBUG
         glEnable(GL_DEBUG_OUTPUT);
+        glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
         glDebugMessageCallback(GLError, nullptr);
+#endif
 
         // Viewport settings
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
