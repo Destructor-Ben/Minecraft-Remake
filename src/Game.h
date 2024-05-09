@@ -54,9 +54,10 @@ namespace Minecraft
 
     namespace Version
     {
-        const extern int32 Major;
-        const extern int32 Minor;
-        const extern int32 Patch;
-        const extern string String;
+        // TODO: allow these to be const, also remove the library from CMakeLists.txt and just add to source files
+        extern int32 Major;
+        extern int32 Minor;
+        extern int32 Patch;
+        extern const string String;
     }
 }

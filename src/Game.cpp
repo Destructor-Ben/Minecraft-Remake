@@ -313,12 +313,8 @@ namespace Minecraft
         float32 WallTime = 0;
     }
 
-    // TODO: temporary - make source generator for this
     namespace Version
     {
-        const int32 Major = 0;
-        const int32 Minor = 1;
-        const int32 Patch = 0;
         const string String = format("{}.{}.{}", Major, Minor, Patch);
     }
 }

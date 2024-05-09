@@ -14,12 +14,11 @@ file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
 file(COPY data DESTINATION ${CMAKE_BINARY_DIR})
 file(COPY lang DESTINATION ${CMAKE_BINARY_DIR})
 
-# Version source generator
-# configure_file(generated/Version.cpp.in ${CMAKE_SOURCE_DIR}/generated/Version.cpp)
-# list(APPEND MINECRAFT_REMAKE_GENERATED_FILES ${CMAKE_SOURCE_DIR}/generated/Version.cpp)
-
 # Main executable
 add_subdirectory(src)
+
+# Source generators
+add_subdirectory(generators/Version)
 
 # Adding libraries
 add_subdirectory(lib/stb_image)
