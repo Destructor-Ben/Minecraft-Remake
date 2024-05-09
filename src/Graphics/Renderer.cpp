@@ -54,8 +54,7 @@ namespace Minecraft
         m_GraphicsResources.push_back(resource);
     }
 
-    // TODO: possibly remove the hasAlpha option and don't choose channels, and chose the format based on the numver of channels
-    Texture& Renderer::RequestTexture(string path, bool hasAlpha, bool mipMap)
+    Texture& Renderer::RequestTexture(string path, bool mipMap)
     {
         path = "assets/textures/" + path + ".png";
 
@@ -63,16 +62,16 @@ namespace Minecraft
             return *m_Textures[path];
 
         // Load the texture
-        int32 format = hasAlpha ? GL_RGBA : GL_RGB;
         int32 width, height, channels;
-        uint8* data = stbi_load(path.c_str(), &width, &height, &channels, hasAlpha ? 4 : 3);
+        uint8* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
+        int32 format = channels == 4 ? GL_RGBA : GL_RGB;
         if (!data)
             Logger->Throw("Failed to load texture at path: " + path);
 
         // Set the data
         auto* texture = new Texture();
+        texture->SetFilters(GL_NEAREST); // Prevents smoothing of low-res textures
         texture->SetData(data, width, height, format, mipMap);
-        texture->SetFilters(GL_NEAREST);  // prevents smoothing of low-res textures
         stbi_image_free(data);
 
         TrackGraphicsResource(texture);

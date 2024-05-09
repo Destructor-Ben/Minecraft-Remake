@@ -10,4 +10,6 @@ out vec4 FragColor;
 void main()
 {
     FragColor = texture(uTexture, TexCoord) * Shading;
+
+    if (FragColor.a == 0) discard;
 }

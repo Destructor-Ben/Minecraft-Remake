@@ -32,7 +32,7 @@ namespace Minecraft
         void DrawMesh(const Mesh& mesh, const mat4& transform = mat4(1.0f)) const;
 
         void TrackGraphicsResource(GraphicsResource* resource);
-        Texture& RequestTexture(string path, bool hasAlpha = false, bool mipMap = true);
+        Texture& RequestTexture(string path, bool mipMap = true);
         Shader& RequestShader(string path);
         VertexShader& RequestVertexShader(string path);
         FragmentShader& RequestFragmentShader(string path);

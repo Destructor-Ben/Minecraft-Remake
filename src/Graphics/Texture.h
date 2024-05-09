@@ -11,7 +11,9 @@ namespace Minecraft
         Texture();
         ~Texture();
 
-        // Important to remember that changing mip map in SetData doesn't change the filters
+        // Important to remember that generating a mip map in SetData doesn't set the mip map filters
+        // Set wrapping mode and filters before data
+        // TODO: make a regenerate mip map function
         void SetWrappingMode(GLenum mode);
         void SetFilters(GLenum filter);
         void SetData(uint8* data, int32 width, int32 height, int32 format = GL_RGB, bool mipMap = true);
