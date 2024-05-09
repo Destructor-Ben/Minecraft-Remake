@@ -10,7 +10,6 @@ namespace Minecraft
     // TODO: embed resources - use source generator https://stackoverflow.com/a/71906177/12259381 & https://cmake.org/cmake/help/latest/command/configure_file.html
 
     // TODO: use quaternions for rotation instead of euler angles
-    // TODO: asset request log messages better
     // TODO: blending
     // TODO: fix frame rate properly and allow options for changing frame rate and tick rate
 
