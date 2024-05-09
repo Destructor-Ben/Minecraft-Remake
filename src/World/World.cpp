@@ -7,24 +7,18 @@ namespace Minecraft
 {
     World::World()
     {
-        // TODO: this should be moved to a function
-        InputManager::SetRawMouseMotion(true);
-        InputManager::SetCursorDisabled(true);
-
+        SetMouseHidden(true);
         Camera.FOV = 70.0f;
         Renderer->Camera = &Camera;
 
         // TODO: random seed generation
         m_WorldGenerator = WorldGenerator(this);
         m_WorldGenerator.Generate();
-
     }
 
     World::~World()
     {
-        InputManager::SetRawMouseMotion(false);
-        InputManager::SetCursorDisabled(false);
-
+        SetMouseHidden(false);
         Renderer->Camera = nullptr;
     }
 
@@ -40,6 +34,9 @@ namespace Minecraft
     {
         if (Input->WasKeyReleased(Key::Escape))
             Window::Close();
+
+        if (Input->WasKeyReleased(Key::E))
+            SetMouseHidden(!IsMouseHidden());
 
         for (auto& chunk : Chunks)
         {
@@ -57,6 +54,13 @@ namespace Minecraft
         }
     }
 
+    void World::SetMouseHidden(bool hidden)
+    {
+        m_IsMouseHidden = hidden;
+        InputManager::SetRawMouseMotion(hidden);
+        InputManager::SetCursorDisabled(hidden);
+    }
+
     void World::UpdateCamera()
     {
         const float cameraSpeed = 150.0f;
@@ -65,13 +69,15 @@ namespace Minecraft
         float speed = cameraSpeed * Time::DeltaTime;
 
         // Rotation
-        Camera.Rotation.x -= Input->GetMousePosDelta().y * sensitivity;
-        Camera.Rotation.y += Input->GetMousePosDelta().x * sensitivity;
-        Camera.Rotation.z = 0;
+        if (m_IsMouseHidden)
+        {
+            Camera.Rotation.x -= Input->GetMousePosDelta().y * sensitivity;
+            Camera.Rotation.y += Input->GetMousePosDelta().x * sensitivity;
+            Camera.Rotation.z = 0;
 
-        // Clamping
-        float& xRotation = Camera.Rotation.x;
-        xRotation = glm::clamp(xRotation, -maxAngle, maxAngle);
+            float& xRotation = Camera.Rotation.x;
+            xRotation = glm::clamp(xRotation, -maxAngle, maxAngle);
+        }
 
         // Input
         vec3 movementDirection = vec3(0.0f);

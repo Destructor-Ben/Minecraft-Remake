@@ -34,9 +34,15 @@ namespace Minecraft
         // TODO: entity getters
         // TODO: block getters - use indexing operator
 
+        // Mouse hiding
+        bool IsMouseHidden() const { return m_IsMouseHidden; }
+        void SetMouseHidden(bool hidden);
+
     private:
         void UpdateCamera();
 
         WorldGenerator m_WorldGenerator;
+
+        bool m_IsMouseHidden = false;
     };
 }
