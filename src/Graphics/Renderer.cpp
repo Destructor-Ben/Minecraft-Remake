@@ -54,7 +54,6 @@ namespace Minecraft
         m_GraphicsResources.push_back(resource);
     }
 
-    // TODO: make these use exceptions and error messages properly
     // TODO: possibly remove the hasAlpha option and don't choose channels, and chose the format based on the numver of channels
     Texture& Renderer::RequestTexture(string path, bool hasAlpha, bool mipMap)
     {
@@ -103,6 +102,9 @@ namespace Minecraft
             return *m_VertexShaders[path];
 
         std::ifstream stream(path);
+        if (stream.fail())
+            Logger->Throw("Failed to load vertex shader at path: " + path);
+
         std::stringstream buffer;
         buffer << stream.rdbuf();
         stream.close();
@@ -121,6 +123,9 @@ namespace Minecraft
             return *m_FragmentShaders[path];
 
         std::ifstream stream(path);
+        if (stream.fail())
+            Logger->Throw("Failed to load fragment shader at path: " + path);
+
         std::stringstream buffer;
         buffer << stream.rdbuf();
         stream.close();

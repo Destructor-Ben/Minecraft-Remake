@@ -31,7 +31,6 @@ namespace Minecraft
 
         void DrawMesh(const Mesh& mesh, const mat4& transform = mat4(1.0f)) const;
 
-        // TODO: embed resources (assets, lang, and data) into executable by creating a cpp and header file for each resources with their info (path, size, and bytes) - https://stackoverflow.com/questions/11813271/embed-resources-eg-shader-code-images-into-executable-library-with-cmakexture& RequestTexture(string path);
         void TrackGraphicsResource(GraphicsResource* resource);
         Texture& RequestTexture(string path, bool hasAlpha = false, bool mipMap = true);
         Shader& RequestShader(string path);
