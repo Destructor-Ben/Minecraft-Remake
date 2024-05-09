@@ -2,7 +2,7 @@
 
 #include "Common.h"
 
-#include "Chunk.h"
+#include "World/Chunk.h"
 #include "Noise/Perlin.h"
 #include "LogManager.h"
 
@@ -14,6 +14,7 @@ namespace Minecraft
     class WorldGenerator
     {
     public:
+        WorldGenerator() : m_World(nullptr), m_Seed(0) { }
         explicit WorldGenerator(class World* world, uint32 seed = 0);
 
         // Generates the initial chunks in a world

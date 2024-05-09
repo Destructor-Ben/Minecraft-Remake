@@ -7,53 +7,25 @@ namespace Minecraft
 {
     World::World()
     {
-        // Input
         // TODO: this should be moved to a function
         InputManager::SetRawMouseMotion(true);
         InputManager::SetCursorDisabled(true);
 
-        // Camera
         Camera.FOV = 70.0f;
         Renderer->Camera = &Camera;
 
-        // Chunks
-        // TODO: make a proper chunking system - Make chunk regions, a group of chunks that are dynamically loaded - that or just use a map/unordered_map of chunks
-        const int WorldSize = 8;
-        for (int x = 0; x < WorldSize; ++x)
-        {
-            for (int y = -1; y <= 1; ++y)
-            {
-                for (int z = 0; z < WorldSize; ++z)
-                {
-                    Chunk chunk(x, y, z);
-                    Chunks.push_back(chunk);
-                }
-            }
-        }
-
-        // Generate world
         // TODO: random seed generation
-        WorldGenerator = new Minecraft::WorldGenerator(this);
-        WorldGenerator->Generate();
+        m_WorldGenerator = WorldGenerator(this);
+        m_WorldGenerator.Generate();
 
-        // TODO: move these calls into the WorldGenerator and block modification + its own function
-        for (auto& chunk : Chunks)
-        {
-            Renderer->ChunkRenderer->RegenerateMesh(chunk);
-        }
     }
 
     World::~World()
     {
-        // Input
         InputManager::SetRawMouseMotion(false);
         InputManager::SetCursorDisabled(false);
 
-        // Camera
         Renderer->Camera = nullptr;
-
-        // World generator
-        delete WorldGenerator;
     }
 
     void World::Tick()

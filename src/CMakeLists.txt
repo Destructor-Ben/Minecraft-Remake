@@ -43,8 +43,8 @@ add_executable(Minecraft_Remake
         World/Transform.cpp
         World/Transform.h
         World/BlockType.h
-        World/WorldGenerator.cpp
-        World/WorldGenerator.h
+        World/Generation/WorldGenerator.cpp
+        World/Generation/WorldGenerator.h
         World/BlockData.cpp
         World/BlockData.h
         Graphics/Texture.cpp

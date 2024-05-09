@@ -1,6 +1,7 @@
 #include "WorldGenerator.h"
 
-#include "World.h"
+#include "Game.h"
+#include "World/World.h"
 
 namespace Minecraft
 {
@@ -10,10 +11,31 @@ namespace Minecraft
 
     void WorldGenerator::Generate()
     {
-        // TODO: only generate spawn chunks, plus some around them
+        // Creating initial chunks
+        const int SpawnRadius = 8;
+        for (int x = 0; x < SpawnRadius * 2; ++x)
+        {
+            for (int z = 0; z < SpawnRadius * 2; ++z)
+            {
+                for (int y = -1; y <= 1; ++y)
+                {
+                    Chunk chunk(x - SpawnRadius, y, z - SpawnRadius);
+                    m_World->Chunks.push_back(chunk);
+                }
+            }
+        }
+
+        // Generating world
         for (auto& chunk : m_World->Chunks)
         {
             Generate(chunk);
+        }
+
+        // Create meshes
+        for (auto& chunk : m_World->Chunks)
+        {
+            // TODO: make a function for chunks to do this
+            Renderer->ChunkRenderer->RegenerateMesh(chunk);
         }
     }
 

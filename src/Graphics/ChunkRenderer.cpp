@@ -123,12 +123,18 @@ namespace Minecraft
         // TODO: Move shading to function
         // TODO: Blocks such as grass and leaves will eventually have grey
         // textures and use shading to change their colour to suit environment
-        if      (dir[0] == 1)  face.Shading = abs(vec4(0.3f,0.3f,0.3f,1.0f));
-        else if (dir[1] == 1)  face.Shading = abs(vec4(1.0f,1.0f,1.0f,1.0f));
-        else if (dir[2] == 1)  face.Shading = abs(vec4(0.4f,0.4f,0.4f,1.0f));
-        else if (dir[0] == -1) face.Shading = abs(vec4(0.5f,0.5f,0.5f,1.0f));
-        else if (dir[1] == -1) face.Shading = abs(vec4(0.1f,0.1f,0.1f,1.0f));
-        else if (dir[2] == -1) face.Shading = abs(vec4(0.6f,0.6f,0.6f,1.0f));
+        if (dir[0] == 1)
+            face.Shading = abs(vec4(0.3f, 0.3f, 0.3f, 1.0f));
+        else if (dir[1] == 1)
+            face.Shading = abs(vec4(1.0f, 1.0f, 1.0f, 1.0f));
+        else if (dir[2] == 1)
+            face.Shading = abs(vec4(0.4f, 0.4f, 0.4f, 1.0f));
+        else if (dir[0] == -1)
+            face.Shading = abs(vec4(0.5f, 0.5f, 0.5f, 1.0f));
+        else if (dir[1] == -1)
+            face.Shading = abs(vec4(0.2f, 0.2f, 0.2f, 1.0f));
+        else if (dir[2] == -1)
+            face.Shading = abs(vec4(0.6f, 0.6f, 0.6f, 1.0f));
 
         //face.Shading = abs(vec4(dir[2],dir[1],dir[0],1.0f)); // debugging colours
         faces.push_back(face);

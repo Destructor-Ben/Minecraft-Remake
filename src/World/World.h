@@ -6,7 +6,7 @@
 #include <unordered_map>
 
 #include "Chunk.h"
-#include "WorldGenerator.h"
+#include "World/Generation/WorldGenerator.h"
 #include "../Graphics/Renderer.h"
 #include "../Graphics/Camera.h"
 #include "src/Graphics/Texture.h"
@@ -20,8 +20,8 @@ namespace Minecraft
     public:
         Camera Camera;
 
+        // TODO: make a proper chunking system - Make chunk regions, a group of chunks that are dynamically loaded - that or just use a map/unordered_map of chunks
         vector<Chunk> Chunks;
-        WorldGenerator* WorldGenerator;
 
         World();
         ~World();
@@ -36,5 +36,7 @@ namespace Minecraft
 
     private:
         void UpdateCamera();
+
+        WorldGenerator m_WorldGenerator;
     };
 }
