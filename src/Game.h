@@ -23,10 +23,18 @@ namespace Minecraft
 
     namespace Window
     {
+        // Initial settings
         const int32 InitialWidth = 1280;
         const int32 InitialHeight = 720;
         const string Title = "Minecraft Remake";
 
+        // User configurable settings - TODO
+        extern float32 TargetFrameRate;
+        extern float32 TargetTickRate;
+        extern bool StartFullScreen;
+        extern bool UseVSync;
+
+        // Updated as the application runs
         extern GLFWwindow* Handle;
         extern int32 Width;
         extern int32 Height;
@@ -48,8 +56,7 @@ namespace Minecraft
         extern float32 FrameRate;
         extern float32 TickRate;
 
-        // Seconds since the program started
-        extern float32 WallTime;
+        extern float32 WallTime; // Seconds since the program started
     }
 
     namespace Version
