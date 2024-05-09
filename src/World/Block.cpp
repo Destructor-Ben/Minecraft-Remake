@@ -4,51 +4,20 @@
 
 namespace Minecraft
 {
-    Block::Block(Chunk& chunk, uint8 localX, uint8 localY, uint8 localZ) : Parent(chunk), LocalX(localX), LocalY(localY), LocalZ(localZ) { }
+    Block::Block(Chunk& chunk, uint8 blockX, uint8 blockY, uint8 blockZ) : m_Chunk(chunk), m_BlockX(blockX), m_BlockY(blockY), m_BlockZ(blockZ) { }
 
-    uint16 Block::GetID() const
+    uint32 Block::GetID() const
     {
-        // TODO: test this - we want it to be a right hand system, so (0,0,0) is the bottom, back, left - does it even matter? it's only how it's laid out in memory
-        return LocalX * Chunk::Size * Chunk::Size + LocalY * Chunk::Size + LocalZ;
-    }
-
-    int32 Block::GetX() const
-    {
-        return Parent.X * Chunk::Size + LocalX;
-    }
-
-    int32 Block::GetY() const
-    {
-        return Parent.Y * Chunk::Size + LocalY;
-    }
-
-    int32 Block::GetZ() const
-    {
-        return Parent.Z * Chunk::Size + LocalZ;
+        return m_BlockX * Chunk::Size * Chunk::Size + m_BlockY * Chunk::Size + m_BlockZ;
     }
 
     BlockData& Block::GetData()
     {
-        return Parent.GetBlockData(*this);
+        return m_Chunk.GetBlockData(*this);
     }
 
-    /*/
-    template<typename T>
-    T& Block::GetData()
+    vec3i Block::GetWorldPos() const
     {
-        return Parent.GetBlockData<T>(this);
+        return {m_Chunk.GetWorldPos().x + m_BlockX, m_Chunk.GetWorldPos().y + m_BlockY, m_Chunk.GetWorldPos().z + m_BlockZ};
     }
-
-    template<typename T>
-    T& Block::AddData()
-    {
-        return Parent.AddBlockData<T>(this);
-    }
-
-    template<typename T>
-    void Block::RemoveData()
-    {
-        Parent.RemoveBlockData<T>(this);
-    }
-     //*/
 }

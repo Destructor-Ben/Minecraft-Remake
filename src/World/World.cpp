@@ -61,6 +61,15 @@ namespace Minecraft
         InputManager::SetCursorDisabled(hidden);
     }
 
+    Block World::GetBlock(vec3i pos)
+    {
+        // TODO: how to handle chunk/block out of range? check for GetChunk too
+        //vec3i chunkPos = pos / 16;
+        //vec3i blockPos = pos - chunkPos;
+        //return m_Chunks[chunkPos].GetBlock(blockPos);
+        return Chunks[0].GetBlock(0, 0, 0); // TODO: finish
+    }
+
     void World::UpdateCamera()
     {
         const float cameraSpeed = 150.0f;

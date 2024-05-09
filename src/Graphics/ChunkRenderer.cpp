@@ -20,7 +20,7 @@ namespace Minecraft
         m_ChunkShader->SetUniform("uTexture", 0);
 
         Transform transform;
-        transform.Position = vec3(chunk.X * Chunk::Size, chunk.Y * Chunk::Size, chunk.Z * Chunk::Size);
+        transform.Position = chunk.GetWorldPos();
         Renderer->DrawMesh(*m_ChunkMeshes[&chunk], transform.GetTransformationMatrix());
     }
 
@@ -110,14 +110,21 @@ namespace Minecraft
 
     }
 
-    void ChunkRenderer::AddFaceInDirection(Chunk& chunk, Block& block, std::vector<Quad>& faces, vec3 dir, vec3 rotation)
+    void ChunkRenderer::AddFaceInDirection(Chunk& chunk, Block& block, std::vector<Quad>& faces, vec3i dir, vec3 rotation)
     {
-        auto blockAbove = chunk.GetBlock(block.LocalX + (int)dir.x, block.LocalY + (int)dir.y, block.LocalZ + (int)dir.z);
-        if (blockAbove.GetData().Type != BlockType::Air)
+        // Getting other block
+        auto otherBlockPos = vec3i(block.GetBlockPos().x + dir.x, block.GetBlockPos().y + dir.y, block.GetBlockPos().z + dir.z);
+        // TODO: make this better and just check the next chunk over
+        otherBlockPos.x = std::clamp(otherBlockPos.x, 0, Chunk::Size - 1);
+        otherBlockPos.y = std::clamp(otherBlockPos.y, 0, Chunk::Size - 1);
+        otherBlockPos.z = std::clamp(otherBlockPos.z, 0, Chunk::Size - 1);
+        auto otherBlock = chunk.GetBlock(otherBlockPos);
+        if (otherBlock.GetData().Type != BlockType::Air)
             return;
 
         Quad face;
-        face.Position = block.GetChunkPos() + dir * 0.5f;
+        face.Position = block.GetBlockPos();
+        face.Position += vec3(dir) * 0.5f;
         face.Rotation = rotation;
         face.Shading = vec4(0.0f);
         // TODO: Move shading to function
@@ -156,14 +163,14 @@ namespace Minecraft
                     if (block.GetData().Type == BlockType::Air)
                         continue;
 
-                    AddFaceInDirection(chunk, block, faces, vec3(0, 1, 0), vec3(0, 0, 0));
-                    AddFaceInDirection(chunk, block, faces, vec3(0, -1, 0), vec3(180, 0, 0));
+                    AddFaceInDirection(chunk, block, faces, vec3i(0, 1, 0), vec3(0, 0, 0));
+                    AddFaceInDirection(chunk, block, faces, vec3i(0, -1, 0), vec3(180, 0, 0));
 
-                    AddFaceInDirection(chunk, block, faces, vec3(1, 0, 0), vec3(0, 0, -90));
-                    AddFaceInDirection(chunk, block, faces, vec3(-1, 0, 0), vec3(0, 0, 90));
+                    AddFaceInDirection(chunk, block, faces, vec3i(1, 0, 0), vec3(0, 0, -90));
+                    AddFaceInDirection(chunk, block, faces, vec3i(-1, 0, 0), vec3(0, 0, 90));
 
-                    AddFaceInDirection(chunk, block, faces, vec3(0, 0, 1), vec3(90, 0, 0));
-                    AddFaceInDirection(chunk, block, faces, vec3(0, 0, -1), vec3(-90, 0, 0));
+                    AddFaceInDirection(chunk, block, faces, vec3i(0, 0, 1), vec3(90, 0, 0));
+                    AddFaceInDirection(chunk, block, faces, vec3i(0, 0, -1), vec3(-90, 0, 0));
                 }
             }
         }

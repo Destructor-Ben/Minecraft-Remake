@@ -34,19 +34,19 @@ namespace Minecraft
         // Create meshes
         for (auto& chunk : m_World->Chunks)
         {
-            // TODO: make a function for chunks to do this
-            Renderer->ChunkRenderer->RegenerateMesh(chunk);
+            chunk.RegenerateMesh();
         }
     }
 
     // TODO: make Perlin function and make this use it
     int16 WorldGenerator::GenerateHeightAtBlock(float VerticalScale, float HorizontalScale, uint32 seed, Block& block, double Persistence, double OctaveCount)
     {
-        return Perlin2D(seed, block.GetX() * HorizontalScale, block.GetZ() * HorizontalScale, Persistence, OctaveCount) * VerticalScale + block.GetY() + 3 > 0;
+        return Perlin2D(seed, block.GetWorldPos().x * HorizontalScale, block.GetWorldPos().z * HorizontalScale, Persistence, OctaveCount) * VerticalScale + block.GetWorldPos().y + 3 > 0;
     }
 
     void WorldGenerator::Generate(Chunk& chunk)
     {
+        // TODO: make generation passes
         for (int x = 0; x < Chunk::Size; x++)
         {
             for (int y = 0; y < Chunk::Size; y++)

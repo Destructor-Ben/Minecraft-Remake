@@ -36,8 +36,6 @@ add_executable(Minecraft_Remake
         World/Chunk.h
         World/Block.cpp
         World/Block.h
-        World/Entity.cpp
-        World/Entity.h
         Graphics/Camera.cpp
         Graphics/Camera.h
         World/Transform.cpp

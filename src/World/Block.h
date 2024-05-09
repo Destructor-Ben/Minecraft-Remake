@@ -13,39 +13,20 @@ namespace Minecraft
     class Block
     {
     public:
-        Chunk& Parent;
-
-        // The offset from the chunk coordinates
-        const uint8 LocalX;
-        const uint8 LocalY;
-        const uint8 LocalZ;
-
-        Block(Chunk& chunk, uint8 localX, uint8 localY, uint8 localZ);
+        Block(Chunk& chunk, uint8 blockX, uint8 blockY, uint8 blockZ);
 
         // Index of the block used for accessing the arrays of data in the chunks
-        uint16 GetID() const;
-
-        // Global positions
-        int32 GetX() const;
-        int32 GetY() const;
-        int32 GetZ() const;
-
-        // TODO: make vec3i
-        // TODO: possible make GetWorldPos and GetBlockPos and GetChunkPos which return vec3i or vec3
-        vec3 GetWorldPos() const { return vec3((float)GetX(), (float)GetY(), (float)GetZ()); }
-        vec3 GetChunkPos() const { return vec3((float)LocalX, (float)LocalY, (float)LocalZ); }
-
+        uint32 GetID() const;
+        Chunk& GetChunk() const { return m_Chunk; }
         BlockData& GetData();
 
-        /*/
-        template<typename T>
-        T& GetData();
+        vec3i GetWorldPos() const;
+        vec3i GetBlockPos() const { return {m_BlockX, m_BlockY, m_BlockZ}; }
 
-        template<typename T>
-        T& AddData();
-
-        template<typename T>
-        void RemoveData();
-        //*/
+    private:
+        Chunk& m_Chunk;
+        uint8 m_BlockX;
+        uint8 m_BlockY;
+        uint8 m_BlockZ;
     };
 }

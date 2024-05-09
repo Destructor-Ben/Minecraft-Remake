@@ -19,7 +19,7 @@ namespace Minecraft
         void CreateMesh(Chunk& chunk);
         void SetMesh(Chunk& chunk, const std::vector<float32>& vertices, const std::vector<uint32>& indices);
         void DeleteMesh(Chunk& chunk);
-        void AddFaceInDirection(Chunk& chunk, Block& block, std::vector<Quad>& faces, vec3 dir, vec3 rotation);
+        void AddFaceInDirection(Chunk& chunk, Block& block, std::vector<Quad>& faces, vec3i dir, vec3 rotation);
         std::vector<Quad> GetChunkFaces(Chunk& chunk);
 
         // TODO: make these references
