@@ -4,14 +4,13 @@
 
 namespace Minecraft
 {
-    // TODO: change the way pointers work - unique/shared pointers for ownership, then references/raw pointers for accessing
-    // TODO: use proper typedefs and namespaces, as well as sorted includes
+    // TODO: use correct typedefs, ensure namespaces, sort includes, and use smart pointers for ownership
     // TODO: make Game.h included in Common.h, also make Game.h include common files
-    // TODO: embed resources - use source generator https://stackoverflow.com/a/71906177/12259381 & https://cmake.org/cmake/help/latest/command/configure_file.html
+    // TODO: embed resources - use source generator https://stackoverflow.com/a/71906177/12259381
 
     // TODO: use quaternions for rotation instead of euler angles
     // TODO: blending
-    // TODO: fix frame rate properly and allow options for changing frame rate and tick rate
+    // TODO: fix frame rate properly, time calculations, and allow options for changing frame rate and tick rate
 
     // TODO: fix random crash from glm miscalculation because the window isn't focused - also make the window behave better when not selected - possibly already fixed in camera.cpp
 
@@ -20,6 +19,7 @@ namespace Minecraft
     shared_ptr<class Renderer> Renderer = nullptr;
     shared_ptr<class World> World = nullptr;
 
+    bool Running = true;
     std::thread::id MainThreadID = std::thread::id();
     shared_ptr<std::thread> TickThread = nullptr;
 
@@ -150,10 +150,10 @@ namespace Minecraft
         glfwMakeContextCurrent(Window::Handle);
 
         glfwSetFramebufferSizeCallback(Window::Handle, Resize);
+        glfwSetScrollCallback(Window::Handle, OnScroll);
         glfwSetInputMode(Window::Handle, GLFW_STICKY_KEYS, GLFW_TRUE);
         glfwSetInputMode(Window::Handle, GLFW_STICKY_MOUSE_BUTTONS, GLFW_TRUE);
-        glfwSetScrollCallback(Window::Handle, OnScroll);
-        glfwSwapInterval(1);
+        Window::SetVSyncEnabled(true);
 
         Logger->Info("GLFW Initialized");
     }
@@ -212,16 +212,16 @@ namespace Minecraft
         const auto start = std::chrono::steady_clock::now();
         const auto period = std::chrono::seconds(1);
 
-        while (!glfwWindowShouldClose(Window::Handle))
+        while (Running)
         {
             Tick();
 
             // TODO: delay properly
-            Time::TickCount++;
             auto now = std::chrono::steady_clock::now();
             auto iterations = (now - start) / period;
             auto next_start = start + (iterations + 1) * period;
             std::this_thread::sleep_until(next_start);
+            Time::TickCount++;
         }
 
         Logger->Info("Exited tick thread");
@@ -255,7 +255,7 @@ namespace Minecraft
 
         Logger->Info("Running window...");
 
-        while (!glfwWindowShouldClose(Window::Handle))
+        while (Running)
         {
             Time::WallTime = (float32)glfwGetTime();
 
@@ -267,6 +267,7 @@ namespace Minecraft
             Time::FrameRate = 1.0f / Time::DeltaTime;
             Time::UpdateCount++;
 
+            Running = !glfwWindowShouldClose(Window::Handle);
             glfwSwapBuffers(Window::Handle);
             glfwPollEvents();
         }
@@ -293,6 +294,11 @@ namespace Minecraft
 
     namespace Window
     {
+        float32 TargetFrameRate = 60.0f;
+        float32 TargetTickRate = 10.0f;
+        bool FullScreen = true;
+        bool VSyncEnabled = false;
+
         GLFWwindow* Handle = nullptr;
         int32 Width = 0;
         int32 Height = 0;

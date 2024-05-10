@@ -14,6 +14,7 @@ namespace Minecraft
     extern shared_ptr<Renderer> Renderer;
     extern shared_ptr<World> World;
 
+    extern bool Running;
     extern std::thread::id MainThreadID;
     extern shared_ptr<std::thread> TickThread;
 
@@ -31,17 +32,20 @@ namespace Minecraft
         // User configurable settings - TODO
         extern float32 TargetFrameRate;
         extern float32 TargetTickRate;
-        extern bool StartFullScreen;
-        extern bool UseVSync;
+        extern bool FullScreen;
+        extern bool VSyncEnabled; // Do not modify!
 
         // Updated as the application runs
         extern GLFWwindow* Handle;
         extern int32 Width;
         extern int32 Height;
 
-        inline void Close()
+        inline void Close() { glfwSetWindowShouldClose(Window::Handle, true); }
+
+        inline void SetVSyncEnabled(bool value)
         {
-            glfwSetWindowShouldClose(Window::Handle, true);
+            glfwSwapInterval(value ? 1 : 0);
+            VSyncEnabled = value;
         }
     }
 
