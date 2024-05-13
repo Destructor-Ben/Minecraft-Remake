@@ -4,7 +4,7 @@
 
 namespace Minecraft
 {
-    // TODO: use correct typedefs, ensure namespaces, sort includes, and use smart pointers for ownership
+    // TODO: use correct typedefs, ensure namespaces, sort includes, use smart pointers for ownership, only include if necessary, use more forward declarations
     // TODO: make Game.h included in Common.h, also make Game.h include common files
     // TODO: embed resources - use source generator https://stackoverflow.com/a/71906177/12259381
 
