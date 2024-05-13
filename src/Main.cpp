@@ -2,11 +2,19 @@
 
 using namespace Minecraft;
 
+// Forward declare functions from Game.cpp so they arne't in the header and pollute the namespace
+namespace Minecraft
+{
+    void Initialize();
+    void Run();
+    void Shutdown();
+}
+
 // Super important to null out Logger, since we want it to deallocate and write to the log file
 #define HANDLE_EXCEPTION(function)\
         Logger->function;\
         Logger = nullptr;\
-        return -1;\
+        return -1;                \
 
 int main()
 {

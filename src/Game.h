@@ -9,19 +9,16 @@ namespace Minecraft
 {
     class InputManager;
 
-    extern shared_ptr<LogManager> Logger;
-    extern shared_ptr<InputManager> Input;
-    extern shared_ptr<Renderer> Renderer;
-    extern shared_ptr<World> World;
+    inline shared_ptr<LogManager> Logger = nullptr;
+    inline shared_ptr<InputManager> Input = nullptr;
+    inline shared_ptr<class Renderer> Renderer = nullptr;
+    inline shared_ptr<class World> World = nullptr;
 
-    extern bool Running;
-    extern std::thread::id MainThreadID;
-    extern shared_ptr<std::thread> TickThread;
+    inline bool Running = true;
+    inline std::thread::id MainThreadID = std::thread::id();
+    inline shared_ptr<std::thread> TickThread = nullptr;
 
-    void Initialize();
-    void Run();
-    void Shutdown();
-
+    // TODO: make these inline globals
     namespace Window
     {
         // Initial settings

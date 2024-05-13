@@ -14,14 +14,7 @@ namespace Minecraft
 
     // TODO: fix random crash from glm miscalculation because the window isn't focused - also make the window behave better when not selected - possibly already fixed in camera.cpp
 
-    shared_ptr<LogManager> Logger = nullptr;
-    shared_ptr<InputManager> Input = nullptr;
-    shared_ptr<class Renderer> Renderer = nullptr;
-    shared_ptr<class World> World = nullptr;
-
-    bool Running = true;
-    std::thread::id MainThreadID = std::thread::id();
-    shared_ptr<std::thread> TickThread = nullptr;
+    #pragma region Callbacks
 
     static void GLFWError(int32 code, cstring description)
     {
@@ -119,6 +112,11 @@ namespace Minecraft
             Logger->Warn(logMessage);
     }
 
+    static void OnScroll(GLFWwindow* window, float64 xOffset, float64 yOffset)
+    {
+        Input->UpdateScroll((float32)xOffset, (float32)yOffset);
+    }
+
     static void Resize(GLFWwindow* window, int32 width, int32 height)
     {
         glViewport(0, 0, width, height);
@@ -126,10 +124,9 @@ namespace Minecraft
         Window::Height = height;
     }
 
-    static void OnScroll(GLFWwindow* window, float64 xOffset, float64 yOffset)
-    {
-        Input->UpdateScroll((float32)xOffset, (float32)yOffset);
-    }
+    #pragma endregion
+
+    #pragma region Initialization
 
     static void InitGLFW()
     {
@@ -184,6 +181,49 @@ namespace Minecraft
         Logger->Info("OpenGL Initialized");
     }
 
+    void Initialize()
+    {
+        MainThreadID = std::this_thread::get_id(); // TODO: seems to cause segfault in std::thread::id very rarely
+        Logger = make_shared<LogManager>();
+        Logger->Info(format("Starting Minecraft_Remake version {}...", Version::String));
+
+        InitGLFW();
+        InitGL();
+        stbi_set_flip_vertically_on_load(true);
+        glfwMaximizeWindow(Window::Handle);
+
+        Input = make_shared<InputManager>();
+        Renderer = make_shared<class Renderer>();
+        Renderer->ChunkRenderer = make_shared<ChunkRenderer>(); // TODO: make this set in ctor
+        World = make_shared<class World>();
+
+        Renderer::UnbindAll();
+    }
+
+    void Shutdown()
+    {
+        Logger->Info("Waiting for tick thread to exit...");
+        TickThread->join();
+        TickThread = nullptr;
+
+        Logger->Info("Exiting...");
+
+        Renderer::UnbindAll();
+
+        // We manually null these out because we need to deallocate the objects in a guaranteed order
+        World = nullptr;
+        Renderer = nullptr;
+        Input = nullptr;
+
+        glfwTerminate();
+
+        Logger = nullptr;
+    }
+
+    #pragma endregion
+
+    #pragma region Main Loops
+
     static void Tick()
     {
         World->Tick();
@@ -227,25 +267,6 @@ namespace Minecraft
         Logger->Info("Exited tick thread");
     }
 
-    void Initialize()
-    {
-        MainThreadID = std::this_thread::get_id(); // TODO: seems to cause segfault in std::thread::id very rarely
-        Logger = make_shared<LogManager>();
-        Logger->Info(format("Starting Minecraft_Remake version {}...", Version::String));
-
-        InitGLFW();
-        InitGL();
-        stbi_set_flip_vertically_on_load(true);
-        glfwMaximizeWindow(Window::Handle);
-
-        Input = make_shared<InputManager>();
-        Renderer = make_shared<class Renderer>();
-        Renderer->ChunkRenderer = make_shared<ChunkRenderer>(); // TODO: maybe make a prepare function
-        World = make_shared<class World>();
-
-        Renderer::UnbindAll();
-    }
-
     void Run()
     {
         // TODO: tick thread - https://stackoverflow.com/questions/52260084/how-to-maintain-certain-frame-rate-in-different-threads
@@ -273,24 +294,7 @@ namespace Minecraft
         }
     }
 
-    void Shutdown()
-    {
-        Logger->Info("Waiting for tick thread to exit...");
-        TickThread->join();
-
-        Logger->Info("Exiting...");
-
-        Renderer::UnbindAll();
-
-        // We manually null these out because we need to deallocate the objects in a guaranteed order
-        World = nullptr;
-        Renderer = nullptr;
-        Input = nullptr;
-
-        glfwTerminate();
-
-        Logger = nullptr;
-    }
+    #pragma endregion
 
     namespace Window
     {
