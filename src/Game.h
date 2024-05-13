@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Common.h"
+
+#include "Version.h"
 #include "LogManager.h"
 #include "Graphics/Renderer.h"
 #include "World/World.h"
@@ -58,14 +60,5 @@ namespace Minecraft
 
         // Seconds since the program started
         inline float32 WallTime = 0;
-    }
-
-    namespace Version
-    {
-        // TODO: allow these to be const, also remove the library from CMakeLists.txt and just add to source files
-        extern int32 Major;
-        extern int32 Minor;
-        extern int32 Patch;
-        inline const string String = format("{}.{}.{}", Major, Minor, Patch);
     }
 }

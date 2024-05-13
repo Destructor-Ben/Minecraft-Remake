@@ -1,5 +1,4 @@
 # Auto generates the version info
-configure_file(Version.cpp.in Version.cpp)
-
-add_library(Version STATIC Version.cpp)
-target_link_libraries(Minecraft_Remake Version)
+configure_file(Version.h.in Version.h)
+target_include_directories(Minecraft_Remake PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+list(APPEND MINECRAFT_REMAKE_GENERATED_FILES Version.h)

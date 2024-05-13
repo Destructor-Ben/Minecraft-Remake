@@ -1,0 +1,9 @@
+#include "Common.h"
+
+namespace Minecraft::Version
+{
+    constexpr int32 Major = @CMAKE_PROJECT_VERSION_MAJOR@;
+    constexpr int32 Minor = @CMAKE_PROJECT_VERSION_MINOR@;
+    constexpr int32 Patch = @CMAKE_PROJECT_VERSION_PATCH@;
+    inline const string String = format("{}.{}.{}", Major, Minor, Patch);
+}

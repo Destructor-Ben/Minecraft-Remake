@@ -1,6 +1,0 @@
-namespace Minecraft::Version
-{
-    int Major = @CMAKE_PROJECT_VERSION_MAJOR@;
-    int Minor = @CMAKE_PROJECT_VERSION_MINOR@;
-    int Patch = @CMAKE_PROJECT_VERSION_PATCH@;
-}
