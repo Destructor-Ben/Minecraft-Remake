@@ -295,35 +295,4 @@ namespace Minecraft
     }
 
     #pragma endregion
-
-    namespace Window
-    {
-        float32 TargetFrameRate = 60.0f;
-        float32 TargetTickRate = 10.0f;
-        bool FullScreen = true;
-        bool VSyncEnabled = false;
-
-        GLFWwindow* Handle = nullptr;
-        int32 Width = 0;
-        int32 Height = 0;
-    }
-
-    namespace Time
-    {
-        int32 UpdateCount = 0;
-        int32 TickCount = 0;
-
-        float32 DeltaTime = 0;
-        float32 FixedDeltaTime = 0;
-
-        float32 FrameRate = 0;
-        float32 TickRate = 0;
-
-        float32 WallTime = 0;
-    }
-
-    namespace Version
-    {
-        const string String = format("{}.{}.{}", Major, Minor, Patch);
-    }
 }

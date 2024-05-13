@@ -18,7 +18,7 @@ namespace Minecraft
     inline std::thread::id MainThreadID = std::thread::id();
     inline shared_ptr<std::thread> TickThread = nullptr;
 
-    // TODO: make these inline globals
+    // Application state: Do not modify!
     namespace Window
     {
         // Initial settings
@@ -26,16 +26,15 @@ namespace Minecraft
         const int32 InitialHeight = 720;
         const string Title = "Minecraft Remake";
 
-        // User configurable settings - TODO
-        extern float32 TargetFrameRate;
-        extern float32 TargetTickRate;
-        extern bool FullScreen;
-        extern bool VSyncEnabled; // Do not modify!
+        // User configurable settings - TODO - use TargetFrameRate
+        inline float32 TargetFrameRate = 60.0f;
+        inline float32 TargetTickRate = 10.0f;
+        inline bool VSyncEnabled = false;
 
         // Updated as the application runs
-        extern GLFWwindow* Handle;
-        extern int32 Width;
-        extern int32 Height;
+        inline GLFWwindow* Handle = nullptr;
+        inline int32 Width = 0;
+        inline int32 Height = 0;
 
         inline void Close() { glfwSetWindowShouldClose(Window::Handle, true); }
 
@@ -48,16 +47,17 @@ namespace Minecraft
 
     namespace Time
     {
-        extern int32 UpdateCount;
-        extern int32 TickCount;
+        inline int32 UpdateCount = 0;
+        inline int32 TickCount = 0;
 
-        extern float32 DeltaTime;
-        extern float32 FixedDeltaTime;
+        inline float32 DeltaTime = 0;
+        inline float32 FixedDeltaTime = 0;
 
-        extern float32 FrameRate;
-        extern float32 TickRate;
+        inline float32 FrameRate = 0;
+        inline float32 TickRate = 0;
 
-        extern float32 WallTime; // Seconds since the program started
+        // Seconds since the program started
+        inline float32 WallTime = 0;
     }
 
     namespace Version
@@ -66,6 +66,6 @@ namespace Minecraft
         extern int32 Major;
         extern int32 Minor;
         extern int32 Patch;
-        extern const string String;
+        inline const string String = format("{}.{}.{}", Major, Minor, Patch);
     }
 }
