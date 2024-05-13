@@ -5,12 +5,12 @@
 namespace Minecraft
 {
     // TODO: use correct typedefs, ensure namespaces, sort includes, use smart pointers for ownership, only include if necessary, use more forward declarations
-    // TODO: make Game.h included in Common.h, also make Game.h include common files
     // TODO: embed resources - use source generator https://stackoverflow.com/a/71906177/12259381
 
     // TODO: use quaternions for rotation instead of euler angles
     // TODO: blending
     // TODO: fix frame rate properly, time calculations, and allow options for changing frame rate and tick rate
+    // TODO: fix that weird issue with includes where Time.h can't exist
 
     // TODO: fix random crash from glm miscalculation because the window isn't focused - also make the window behave better when not selected - possibly already fixed in camera.cpp
 
