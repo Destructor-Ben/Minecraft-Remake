@@ -72,7 +72,7 @@ namespace Minecraft
 
     void World::UpdateCamera()
     {
-        const float cameraSpeed = 150.0f;
+        const float cameraSpeed = 10.0f;
         const float sensitivity = 0.1f;
         const float maxAngle = 89.0f;
         float speed = cameraSpeed * Time::DeltaTime;

@@ -24,6 +24,7 @@ namespace Minecraft
     namespace Window
     {
         // Initial settings
+        // TODO - move these?
         const int32 InitialWidth = 1280;
         const int32 InitialHeight = 720;
         const string Title = "Minecraft Remake";

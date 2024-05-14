@@ -278,19 +278,20 @@ namespace Minecraft
 
         while (Running)
         {
-            Time::WallTime = (float32)glfwGetTime();
-
             Update();
             Render();
 
             // TODO: this is wrong, maybe do the calculations at the beginning?
+
+            glfwSwapBuffers(Window::Handle);
+            glfwPollEvents();
+
             Time::DeltaTime = (float32)glfwGetTime() - Time::WallTime;
+            Time::WallTime = (float32)glfwGetTime();
             Time::FrameRate = 1.0f / Time::DeltaTime;
             Time::UpdateCount++;
 
             Running = !glfwWindowShouldClose(Window::Handle);
-            glfwSwapBuffers(Window::Handle);
-            glfwPollEvents();
         }
     }
 
