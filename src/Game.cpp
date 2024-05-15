@@ -141,7 +141,11 @@ namespace Minecraft
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 #endif
 
-        Window::Handle = glfwCreateWindow(Window::InitialWidth, Window::InitialHeight, Window::Title.c_str(), nullptr, nullptr);
+        const int InitialWidth = 1280;
+        const int InitialHeight = 720;
+        Window::Width = InitialWidth;
+        Window::Height = InitialHeight;
+        Window::Handle = glfwCreateWindow(InitialWidth, InitialHeight, "Minecraft Remake", nullptr, nullptr);
         glfwMakeContextCurrent(Window::Handle);
 
         glfwSetFramebufferSizeCallback(Window::Handle, Resize);
@@ -167,7 +171,7 @@ namespace Minecraft
 
         // Viewport settings
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glViewport(0, 0, Window::InitialWidth, Window::InitialHeight);
+        glViewport(0, 0, Window::Width, Window::Height);
 
         // Culling
         glEnable(GL_DEPTH_TEST);

@@ -23,11 +23,6 @@ namespace Minecraft
     // Application state: Do not modify! (apart from target loop rates)
     namespace Window
     {
-        // Initial settings
-        const int32 InitialWidth = 1280;
-        const int32 InitialHeight = 720;
-        const string Title = "Minecraft Remake";
-
         // User configurable settings
         inline float32 TargetFrameRate = 60;
         inline float32 TargetTickRate = 10;
