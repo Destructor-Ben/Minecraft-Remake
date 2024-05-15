@@ -4,8 +4,6 @@
 
 namespace Minecraft
 {
-    // TODO: use cerr/clog instead of cout
-    // TODO: make debug errors only happen in debug builds
     class LogManager
     {
     public:
@@ -24,7 +22,7 @@ namespace Minecraft
         void Catch(const std::exception& exception);
 
     private:
-        void Log(const string& message);
+        void Log(const string& message, bool error = false);
         static string GetMessage(const string& message, const string& logLevel);
 
         std::ofstream m_LogFile = {};

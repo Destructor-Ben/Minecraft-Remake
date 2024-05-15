@@ -9,7 +9,7 @@ namespace Minecraft
     LogManager::LogManager()
     {
         m_LogFile.open("Minecraft_Remake.log", std::ofstream::out | std::ofstream::trunc);
-        m_LogFile << "Minecraft_Remake log file, version " << Version::String << "\n\n";
+        m_LogFile << "Minecraft_Remake log file, version " << Version::String << "\n\n" << std::flush;
     }
 
     LogManager::~LogManager()
@@ -19,7 +19,9 @@ namespace Minecraft
 
     void LogManager::Debug(const string& message)
     {
+#if DEBUG
         Log(GetMessage(message, "DEBUG"));
+#endif
     }
 
     void LogManager::Info(const string& message)
@@ -34,7 +36,7 @@ namespace Minecraft
 
     void LogManager::Error(const string& message)
     {
-        Log(GetMessage(message, "ERROR"));
+        Log(GetMessage(message, "ERROR"), true);
     }
 
     void LogManager::Throw(const string& message)
@@ -55,7 +57,7 @@ namespace Minecraft
 
     void LogManager::Catch(const string& message)
     {
-        Log(GetMessage(message, "FATAL"));
+        Log(GetMessage(message, "FATAL"), true);
     }
 
     void LogManager::Catch(const std::exception& exception)
@@ -63,10 +65,14 @@ namespace Minecraft
         Catch(exception.what());
     }
 
-    void LogManager::Log(const string& message)
+    void LogManager::Log(const string& message, bool error)
     {
-        std::cout << message;
+        (error ? std::cerr : std::cout) << message;
         m_LogFile << message;
+
+        // Flush buffer if it's an error
+        if (error)
+            m_LogFile << std::flush;
     }
 
     string LogManager::GetMessage(const string& message, const string& logLevel)
