@@ -29,8 +29,8 @@ namespace Minecraft
         const string Title = "Minecraft Remake";
 
         // User configurable settings
-        inline float32 TargetFrameRate = 60f;
-        inline float32 TargetTickRate = 10f;
+        inline float32 TargetFrameRate = 60;
+        inline float32 TargetTickRate = 10;
         inline bool VSyncEnabled = false;
 
         // Updated as the application runs
