@@ -4,6 +4,8 @@
 
 namespace Minecraft
 {
+    // TODO: use cerr/clog instead of cout
+    // TODO: make debug errors only happen in debug builds
     class LogManager
     {
     public:
