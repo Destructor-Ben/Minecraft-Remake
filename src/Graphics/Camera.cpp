@@ -20,9 +20,10 @@ namespace Minecraft
     // Perspective projection doesn't remap 0:Width and 0:Height to -1:1 (orthographic does), but this is good because 1 block is 1 metre and fits on screen nicely
     mat4 Camera::GetProjectionMatrix() const
     {
+        // TODO: investoage this - may cause segfault if window not fully initialized
         if (IsPerspective && Window::Width != 0 && Window::Height != 0)
             return glm::perspective(FOV, (float)Window::Width / (float)Window::Height, NearClip, FarClip);
-        
+
         return glm::ortho(0.0f, (float)Window::Width * OrthographicScale, 0.0f, (float)Window::Height * OrthographicScale, NearClip, FarClip);
     }
 }

@@ -43,6 +43,9 @@
 
 namespace Minecraft
 {
+    // Time
+    namespace chrono = std::chrono;
+
     // Strings
     typedef const char* cstring;
 

@@ -20,18 +20,17 @@ namespace Minecraft
     inline std::thread::id MainThreadID = std::thread::id();
     inline shared_ptr<std::thread> TickThread = nullptr;
 
-    // Application state: Do not modify!
+    // Application state: Do not modify! (apart from target loop rates)
     namespace Window
     {
         // Initial settings
-        // TODO - move these?
         const int32 InitialWidth = 1280;
         const int32 InitialHeight = 720;
         const string Title = "Minecraft Remake";
 
-        // User configurable settings - TODO - use TargetFrameRate
-        inline float32 TargetFrameRate = 60.0f;
-        inline float32 TargetTickRate = 10.0f;
+        // User configurable settings
+        inline float32 TargetFrameRate = 60f;
+        inline float32 TargetTickRate = 10f;
         inline bool VSyncEnabled = false;
 
         // Updated as the application runs
@@ -59,7 +58,10 @@ namespace Minecraft
         inline float32 FrameRate = 0;
         inline float32 TickRate = 0;
 
-        // Seconds since the program started
+        // Seconds since the program started - First is used in the update loop, second in the tick loop
         inline float32 WallTime = 0;
+        inline float32 FixedWallTime = 0;
+
+        inline chrono::time_point<chrono::steady_clock> StartTime;
     }
 }

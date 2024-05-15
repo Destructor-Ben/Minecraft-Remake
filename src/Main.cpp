@@ -2,7 +2,8 @@
 
 using namespace Minecraft;
 
-// Forward declare functions from Game.cpp so they arne't in the header and pollute the namespace
+// Forward declare functions from Game.cpp
+// This is so they aren't in Game.h and pollute the namespace
 namespace Minecraft
 {
     void Initialize();
@@ -14,7 +15,7 @@ namespace Minecraft
 #define HANDLE_EXCEPTION(function)\
         Logger->function;\
         Logger = nullptr;\
-        return -1;                \
+        return -1;\
 
 int main()
 {

@@ -9,10 +9,7 @@ namespace Minecraft
 
     // TODO: use quaternions for rotation instead of euler angles
     // TODO: blending
-    // TODO: fix frame rate properly, time calculations, and allow options for changing frame rate and tick rate
     // TODO: fix that weird issue with includes where Time.h can't exist
-
-    // TODO: fix random crash from glm miscalculation because the window isn't focused - also make the window behave better when not selected - possibly already fixed in camera.cpp
 
     #pragma region Callbacks
 
@@ -183,7 +180,8 @@ namespace Minecraft
 
     void Initialize()
     {
-        MainThreadID = std::this_thread::get_id(); // TODO: seems to cause segfault in std::thread::id very rarely
+        // Getting the thread id rarely causes a segfault in std::thread::id, might need investigation
+        MainThreadID = std::this_thread::get_id();
         Logger = make_shared<LogManager>();
         Logger->Info(format("Starting Minecraft_Remake version {}...", Version::String));
 
@@ -245,23 +243,28 @@ namespace Minecraft
         World->Render();
     }
 
+    // There will likely be inaccuracies with the loop delays, so be careful when adjusting this code
+    #define LOOP_DELAY(tickRate)\
+        double iterations = glfwGetTime() * tickRate;\
+        double nextStart = (iterations + 1) / tickRate;\
+        std::this_thread::sleep_until(Time::StartTime + chrono::duration<double>(nextStart));\
+
+    #define UPDATE_LOOP_VARIABLES(wallTime, deltaTime, loopRate, count) \
+        deltaTime = (float32)glfwGetTime() - wallTime;\
+        wallTime = (float32)glfwGetTime();\
+        loopRate = 1.0f / deltaTime;\
+        count++;\
+
     static void RunTickLoop()
     {
         Logger->Info("Running tick thread...");
-
-        const auto start = std::chrono::steady_clock::now();
-        const auto period = std::chrono::seconds(1);
 
         while (Running)
         {
             Tick();
 
-            // TODO: delay properly
-            auto now = std::chrono::steady_clock::now();
-            auto iterations = (now - start) / period;
-            auto next_start = start + (iterations + 1) * period;
-            std::this_thread::sleep_until(next_start);
-            Time::TickCount++;
+            LOOP_DELAY(Window::TargetTickRate)
+            UPDATE_LOOP_VARIABLES(Time::FixedWallTime, Time::FixedDeltaTime, Time::TickRate, Time::TickCount)
         }
 
         Logger->Info("Exited tick thread");
@@ -269,11 +272,9 @@ namespace Minecraft
 
     void Run()
     {
-        // TODO: tick thread - https://stackoverflow.com/questions/52260084/how-to-maintain-certain-frame-rate-in-different-threads
-        // TODO: fix frame rate
-
+        glfwSetTime(0);
+        Time::StartTime = chrono::steady_clock::now();
         TickThread = make_shared<std::thread>(RunTickLoop);
-
         Logger->Info("Running window...");
 
         while (Running)
@@ -281,15 +282,15 @@ namespace Minecraft
             Update();
             Render();
 
-            // TODO: this is wrong, maybe do the calculations at the beginning?
+            if (!Window::VSyncEnabled)
+            {
+                LOOP_DELAY(Window::TargetFrameRate)
+            }
 
             glfwSwapBuffers(Window::Handle);
             glfwPollEvents();
 
-            Time::DeltaTime = (float32)glfwGetTime() - Time::WallTime;
-            Time::WallTime = (float32)glfwGetTime();
-            Time::FrameRate = 1.0f / Time::DeltaTime;
-            Time::UpdateCount++;
+            UPDATE_LOOP_VARIABLES(Time::WallTime, Time::DeltaTime, Time::FrameRate, Time::UpdateCount)
 
             Running = !glfwWindowShouldClose(Window::Handle);
         }
