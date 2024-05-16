@@ -2,15 +2,16 @@
 
 #include "Vertex.h"
 #include "src/Game.h"
+#include "Renderer.h"
 
 namespace Minecraft
 {
-    ChunkRenderer::ChunkRenderer()
+    ChunkRenderer::ChunkRenderer(class Renderer& renderer) : m_Renderer(renderer)
     {
-        m_ChunkTexture = &Renderer->RequestTexture("stone");
-        m_ChunkShader = &Renderer->RequestShader("shader");
+        m_ChunkTexture = &m_Renderer.RequestTexture("stone");
+        m_ChunkShader = &m_Renderer.RequestShader("shader");
         m_ChunkMaterial = new Material(*m_ChunkShader);
-        Renderer->TrackGraphicsResource(m_ChunkMaterial);
+        m_Renderer.TrackGraphicsResource(m_ChunkMaterial);
     }
 
     void ChunkRenderer::RenderChunk(Chunk& chunk)
@@ -21,7 +22,7 @@ namespace Minecraft
 
         Transform transform;
         transform.Position = chunk.GetWorldPos();
-        Renderer->DrawMesh(*m_ChunkMeshes[&chunk], transform.GetTransformationMatrix());
+        m_Renderer.DrawMesh(*m_ChunkMeshes[&chunk], transform.GetTransformationMatrix());
     }
 
     void ChunkRenderer::RegenerateMesh(Chunk& chunk)
@@ -84,21 +85,21 @@ namespace Minecraft
     void ChunkRenderer::CreateMesh(Chunk& chunk)
     {
         auto vertexBuffer = new VertexBuffer();
-        Renderer->TrackGraphicsResource(vertexBuffer);
+        m_Renderer.TrackGraphicsResource(vertexBuffer);
 
         auto indexBuffer = new IndexBuffer();
-        Renderer->TrackGraphicsResource(indexBuffer);
+        m_Renderer.TrackGraphicsResource(indexBuffer);
 
         auto vertexArray = new VertexArray();
         vertexArray->Push(GL_FLOAT, 3);
         vertexArray->Push(GL_FLOAT, 2);
         vertexArray->Push(GL_FLOAT, 4);
         vertexArray->AddBuffer(*vertexBuffer);
-        Renderer->TrackGraphicsResource(vertexArray);
+        m_Renderer.TrackGraphicsResource(vertexArray);
 
         auto mesh = new Mesh(*vertexArray);
         mesh->AddMaterial(m_ChunkMaterial, indexBuffer);
-        Renderer->TrackGraphicsResource(mesh);
+        m_Renderer.TrackGraphicsResource(mesh);
 
         m_ChunkMeshes[&chunk] = mesh;
         m_ChunkVertices[&chunk] = vertexBuffer;

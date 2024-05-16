@@ -5,9 +5,8 @@ namespace Minecraft
 {
     Renderer::Renderer()
     {
-        // Have to initialize here because otherwise the renderer is still null
-        // TODO: fix this
-        // ChunkRenderer = make_shared<class ChunkRenderer>();
+        // Have to initialize here because otherwise of init order
+        ChunkRenderer = make_shared<class ChunkRenderer>(*this);
     }
 
     Renderer::~Renderer()

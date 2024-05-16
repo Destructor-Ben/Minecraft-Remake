@@ -5,12 +5,13 @@
 
 namespace Minecraft
 {
+    class Renderer;
+    
     // TODO: implement greedy meshing - flat, adjacent block faces use the same quad
     class ChunkRenderer
     {
     public:
-        // TODO: take in a renderer as a parameter
-        ChunkRenderer();
+        ChunkRenderer(Renderer& renderer);
 
         void RenderChunk(Chunk& chunk);
         void RegenerateMesh(Chunk& chunk);
@@ -21,6 +22,8 @@ namespace Minecraft
         void DeleteMesh(Chunk& chunk);
         void AddFaceInDirection(Chunk& chunk, Block& block, std::vector<Quad>& faces, vec3i dir, vec3 rotation);
         std::vector<Quad> GetChunkFaces(Chunk& chunk);
+
+        Renderer& m_Renderer;
 
         // TODO: make these references
         std::unordered_map<Chunk*, Mesh*> m_ChunkMeshes;

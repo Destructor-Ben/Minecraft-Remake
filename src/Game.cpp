@@ -197,7 +197,6 @@ namespace Minecraft
 
         Input = make_shared<InputManager>();
         Renderer = make_shared<class Renderer>();
-        Renderer->ChunkRenderer = make_shared<ChunkRenderer>(); // TODO: make this set in ctor
         World = make_shared<class World>();
 
         Renderer::UnbindAll();
