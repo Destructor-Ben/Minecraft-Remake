@@ -2,15 +2,15 @@
 
 namespace Minecraft
 {
-    static const int32 KeyCount = (int32)Key::Count;
-    static const int32 MouseButtonCount = (int32)MouseButton::Count;
+    // TODO: typing input
+    // TODO: getting key names - possibly put it in localization
+    // TODO: make key binds that can be reassigned
 
     static int32 GetGLFWKeyCode(Key key)
     {
         switch (key)
         {
-            // Numbers
-            case Key::Zero:
+            case Key::Zero: // Numbers
                 return GLFW_KEY_0;
             case Key::One:
                 return GLFW_KEY_1;
@@ -31,8 +31,7 @@ namespace Minecraft
             case Key::Nine:
                 return GLFW_KEY_9;
 
-            // Letters
-            case Key::A:
+            case Key::A: // Letters
                 return GLFW_KEY_A;
             case Key::B:
                 return GLFW_KEY_B;
@@ -85,8 +84,7 @@ namespace Minecraft
             case Key::Z:
                 return GLFW_KEY_Z;
 
-            // Punctuation
-            case Key::Grave:
+            case Key::Grave: // Punctuation
                 return GLFW_KEY_GRAVE_ACCENT;
             case Key::Minus:
                 return GLFW_KEY_MINUS;
@@ -109,8 +107,7 @@ namespace Minecraft
             case Key::ForwardSlash:
                 return GLFW_KEY_SLASH;
 
-            // Function keys
-            case Key::Escape:
+            case Key::Escape: // Function keys
                 return GLFW_KEY_ESCAPE;
             case Key::Enter:
                 return GLFW_KEY_ENTER;
@@ -157,8 +154,7 @@ namespace Minecraft
             case Key::RightAlt:
                 return GLFW_KEY_RIGHT_ALT;
 
-            // F keys
-            case Key::F1:
+            case Key::F1: // F keys
                 return GLFW_KEY_F1;
             case Key::F2:
                 return GLFW_KEY_F2;
@@ -209,8 +205,7 @@ namespace Minecraft
             case Key::F25:
                 return GLFW_KEY_F25;
 
-            // Keypad
-            case Key::KeyPad0:
+            case Key::KeyPad0: // Keypad
                 return GLFW_KEY_KP_0;
             case Key::KeyPad1:
                 return GLFW_KEY_KP_1;
@@ -245,8 +240,7 @@ namespace Minecraft
             case Key::KeyPadEnter:
                 return GLFW_KEY_KP_ENTER;
 
-            // Unknown key
-            default:
+            default: // Unknown key
                 return -1;
         }
     }
@@ -270,34 +264,6 @@ namespace Minecraft
         }
     }
 
-    InputManager::InputManager()
-    {
-        m_KeysPressedThisFrame = new bool[KeyCount];
-        m_KeysPressedLastFrame = new bool[KeyCount];
-        m_MouseButtonsPressedThisFrame = new bool[MouseButtonCount];
-        m_MouseButtonsPressedLastFrame = new bool[MouseButtonCount];
-
-        for (int32 i = 0; i < KeyCount; i++)
-        {
-            m_KeysPressedThisFrame[i] = false;
-            m_KeysPressedLastFrame[i] = false;
-        }
-
-        for (int32 i = 0; i < MouseButtonCount; i++)
-        {
-            m_MouseButtonsPressedThisFrame[i] = false;
-            m_MouseButtonsPressedLastFrame[i] = false;
-        }
-    }
-
-    InputManager::~InputManager()
-    {
-        delete[] m_KeysPressedThisFrame;
-        delete[] m_KeysPressedLastFrame;
-        delete[] m_MouseButtonsPressedThisFrame;
-        delete[] m_MouseButtonsPressedLastFrame;
-    }
-
     void InputManager::Update()
     {
         // Cursor
@@ -308,13 +274,15 @@ namespace Minecraft
         m_MousePos.x = (float32)mouseX;
         m_MousePos.y = (float32)mouseY;
 
-        if (!m_OldMousePosInitialized) {
+        if (!m_OldMousePosInitialized)
+        {
             m_OldMousePosInitialized = true;
             m_OldMousePos = m_MousePos;
         }
 
         // Mouse buttons
-        for (int32 i = 0; i < MouseButtonCount; ++i) {
+        for (int32 i = 0; i < MouseButtonCount; ++i)
+        {
             int32 id = GetGLFWMouseButtonCode((MouseButton)i);
 
             if (id == -1)
@@ -325,7 +293,8 @@ namespace Minecraft
         }
 
         // Keys
-        for (int32 i = 0; i < KeyCount; ++i) {
+        for (int32 i = 0; i < KeyCount; ++i)
+        {
             int32 id = GetGLFWKeyCode((Key)i);
 
             if (id == -1)

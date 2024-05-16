@@ -1,20 +1,17 @@
 #pragma once
 
 #include "Common.h"
-#include "Key.h"
-#include "MouseButton.h"
 #include "Game.h"
+#include "Input/Key.h"
+#include "Input/MouseButton.h"
 
 namespace Minecraft
 {
-    // TODO: typing input
-    // TODO: getting key names - possibly put it in localization
-    // TODO: make key binds that can be reassigned
     class InputManager
     {
     public:
-        InputManager();
-        ~InputManager();
+        static constexpr int32 KeyCount = (int32)Key::Count;
+        static constexpr int32 MouseButtonCount = (int32)MouseButton::Count;
 
         vec2 GetMousePos() const { return m_MousePos; }
         vec2 GetMousePosDelta() const { return m_MousePos - m_OldMousePos; }
@@ -50,10 +47,10 @@ namespace Minecraft
         vec2 m_OldMousePos = vec2();
         float32 m_ScrollDelta = 0.0f;
 
-        bool* m_KeysPressedThisFrame = nullptr;
-        bool* m_KeysPressedLastFrame = nullptr;
+        array<bool, KeyCount> m_KeysPressedThisFrame = {};
+        array<bool, KeyCount> m_KeysPressedLastFrame = {};
 
-        bool* m_MouseButtonsPressedThisFrame = nullptr;
-        bool* m_MouseButtonsPressedLastFrame = nullptr;
+        array<bool, MouseButtonCount> m_MouseButtonsPressedThisFrame = {};
+        array<bool, MouseButtonCount> m_MouseButtonsPressedLastFrame = {};
     };
 }

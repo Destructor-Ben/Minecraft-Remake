@@ -1,6 +1,6 @@
 #pragma once
 
-#include "src/Common.h"
+#include "Common.h"
 
 namespace Minecraft
 {
