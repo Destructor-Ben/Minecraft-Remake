@@ -2,8 +2,7 @@
 
 using namespace Minecraft;
 
-// Forward declare functions from Game.cpp
-// This is so they aren't in Game.h and pollute the namespace
+// Forward declare functions from Game.cpp because they aren't in Game.h polluting the namespace
 namespace Minecraft
 {
     void Initialize();
