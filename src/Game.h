@@ -3,6 +3,8 @@
 #include "Common.h"
 
 #include "Version.h"
+
+// TODO: remove these includes
 #include "LogManager.h"
 #include "Graphics/Renderer.h"
 #include "World/World.h"
