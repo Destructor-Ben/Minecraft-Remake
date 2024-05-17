@@ -24,23 +24,27 @@ namespace Minecraft
 
     void World::Tick()
     {
-        for (auto& chunk : Chunks)
+        UpdateChunkList(m_LoadedChunks, 4);
+
+        for (auto chunk : GetLoadedChunks())
         {
-            chunk.Tick();
+            chunk->Tick();
         }
     }
 
     void World::Update()
     {
+        UpdateChunkList(m_RenderedChunks, 6);
+
         if (Input->WasKeyReleased(Key::Escape))
             Window::Close();
 
         if (Input->WasKeyReleased(Key::E))
             SetMouseHidden(!IsMouseHidden());
 
-        for (auto& chunk : Chunks)
+        for (auto chunk : GetRenderedChunks())
         {
-            chunk.Update();
+            chunk->Update();
         }
 
         UpdateCamera();
@@ -48,9 +52,9 @@ namespace Minecraft
 
     void World::Render()
     {
-        for (auto& chunk : Chunks)
+        for (auto chunk : GetRenderedChunks())
         {
-            chunk.Render();
+            chunk->Render();
         }
     }
 
@@ -70,23 +74,33 @@ namespace Minecraft
         return Chunks[0].GetBlock(0, 0, 0); // TODO: finish
     }
 
+    void World::UpdateChunkList(vector<Chunk*>& chunks, int32 radius)
+    {
+        // TODO: update these properly with render distance
+        chunks.clear();
+        for (auto& chunk : Chunks)
+        {
+            chunks.push_back(&chunk);
+        }
+    }
+
     void World::UpdateCamera()
     {
+        if (!m_IsMouseHidden)
+            return;
+        
         const float cameraSpeed = 10.0f;
         const float sensitivity = 0.1f;
         const float maxAngle = 89.0f;
         float speed = cameraSpeed * Time::DeltaTime;
 
         // Rotation
-        if (m_IsMouseHidden)
-        {
-            Camera.Rotation.x -= Input->GetMousePosDelta().y * sensitivity;
-            Camera.Rotation.y += Input->GetMousePosDelta().x * sensitivity;
-            Camera.Rotation.z = 0;
+        Camera.Rotation.x -= Input->GetMousePosDelta().y * sensitivity;
+        Camera.Rotation.y += Input->GetMousePosDelta().x * sensitivity;
+        Camera.Rotation.z = 0;
 
-            float& xRotation = Camera.Rotation.x;
-            xRotation = glm::clamp(xRotation, -maxAngle, maxAngle);
-        }
+        float& xRotation = Camera.Rotation.x;
+        xRotation = glm::clamp(xRotation, -maxAngle, maxAngle);
 
         // Input
         vec3 movementDirection = vec3(0.0f);

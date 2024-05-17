@@ -60,7 +60,8 @@ MINECRAFT_MAKE_HASHABLE(Minecraft::vec3i, t.x, t.y, t.z);
         void Render();
 
         // Interface for chunks
-        // TODO: getter for loaded chunks
+        vector<Chunk*> GetLoadedChunks() { return m_LoadedChunks; }
+        vector<Chunk*> GetRenderedChunks() { return m_RenderedChunks; }
 
         Block GetBlock(int32 x, int32 y, int32 z) { return GetBlock(vec3i(x, y, z)); }
         Block GetBlock(vec3i pos);
@@ -70,7 +71,11 @@ MINECRAFT_MAKE_HASHABLE(Minecraft::vec3i, t.x, t.y, t.z);
         void SetMouseHidden(bool hidden);
 
     private:
+        void UpdateChunkList(vector<Chunk*>& chunks, int32 radius);
         void UpdateCamera();
+
+        vector<Chunk*> m_LoadedChunks = {};
+        vector<Chunk*> m_RenderedChunks = {};
 
         WorldGenerator m_WorldGenerator;
 
