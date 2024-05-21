@@ -27,8 +27,11 @@ namespace Minecraft
         vector<Chunk*> GetLoadedChunks() { return m_LoadedChunks; }
         vector<Chunk*> GetRenderedChunks() { return m_RenderedChunks; }
 
-        Block GetBlock(int32 x, int32 y, int32 z) { return GetBlock(vec3i(x, y, z)); }
-        Block GetBlock(vec3i pos);
+        optional<Chunk*> GetChunk(int32 x, int32 y, int32 z) { return GetChunk(vec3i(x, y, z)); }
+        optional<Chunk*> GetChunk(vec3i pos);
+
+        optional<Block> GetBlock(int32 x, int32 y, int32 z) { return GetBlock(vec3i(x, y, z)); }
+        optional<Block> GetBlock(vec3i pos);
 
         // Mouse hiding
         bool IsMouseHidden() const { return m_IsMouseHidden; }

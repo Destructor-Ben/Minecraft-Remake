@@ -12,6 +12,7 @@ namespace Minecraft
     void WorldGenerator::Generate()
     {
         // Creating initial chunks
+        // TODO: radii with chunks are weird, verify this is good
         const int SpawnRadius = 8;
         for (int x = 0; x < SpawnRadius * 2; ++x)
         {
@@ -38,10 +39,9 @@ namespace Minecraft
         }
     }
 
-    // TODO: make Perlin function and make this use it
-    int16 WorldGenerator::GenerateHeightAtBlock(float VerticalScale, float HorizontalScale, uint32 seed, Block& block, double Persistence, double OctaveCount)
+    void WorldGenerator::GenerateChunksAroundPlayer(vec3 playerPos)
     {
-        return Perlin2D(seed, block.GetWorldPos().x * HorizontalScale, block.GetWorldPos().z * HorizontalScale, Persistence, OctaveCount) * VerticalScale + block.GetWorldPos().y + 3 > 0;
+        // TODO: check the radius of the chunks around the player, and if they don't exit, generate them
     }
 
     void WorldGenerator::Generate(Chunk& chunk)
@@ -67,5 +67,11 @@ namespace Minecraft
                 }
             }
         }
+    }
+
+    // TODO: make Perlin function and make this use it
+    int16 WorldGenerator::GenerateHeightAtBlock(float VerticalScale, float HorizontalScale, uint32 seed, Block& block, double Persistence, double OctaveCount)
+    {
+        return Perlin2D(seed, block.GetWorldPos().x * HorizontalScale, block.GetWorldPos().z * HorizontalScale, Persistence, OctaveCount) * VerticalScale + block.GetWorldPos().y + 3 > 0;
     }
 }

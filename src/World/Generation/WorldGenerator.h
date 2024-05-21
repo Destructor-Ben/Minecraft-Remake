@@ -20,6 +20,9 @@ namespace Minecraft
         // Generates the initial chunks in a world
         void Generate();
 
+        // Makes the world infinite by generating chunks around the player
+        void GenerateChunksAroundPlayer(vec3 playerPos);
+
         // Generates an individual chunk, used above
         // Generation is composed of passes, which run sequentially
         // TODO: make generation passes

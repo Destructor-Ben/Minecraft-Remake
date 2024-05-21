@@ -88,6 +88,10 @@ namespace Minecraft
     using std::make_unique;
     using std::make_shared;
 
+    // Optionals
+    using std::optional;
+    using std::nullopt;
+
     // Collections
     using std::array;
     using std::vector;

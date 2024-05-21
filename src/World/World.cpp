@@ -48,6 +48,7 @@ namespace Minecraft
         }
 
         UpdateCamera();
+        m_WorldGenerator.GenerateChunksAroundPlayer(Camera.Position);
     }
 
     void World::Render()
@@ -65,13 +66,26 @@ namespace Minecraft
         InputManager::SetCursorDisabled(hidden);
     }
 
-    Block World::GetBlock(vec3i pos)
+    optional<Chunk*> World::GetChunk(vec3i pos)
     {
-        // TODO: how to handle chunk/block out of range? check for GetChunk too
-        // TODO: finish + test
+        if (Chunks.contains(pos))
+            return &Chunks.at(pos);
+
+        return std::nullopt;
+    }
+
+    optional<Block> World::GetBlock(vec3i pos)
+    {
         vec3i chunkPos = pos / 16;
+        auto chunk = GetChunk(chunkPos);
+        if (!chunk.has_value())
+            return nullopt;
+
         vec3i blockPos = pos - chunkPos;
-        return Chunk().GetBlock(blockPos);//Chunks[chunkPos].GetBlock(blockPos);
+        if (blockPos.x < 0 || blockPos.y < 0 || blockPos.z < 0 || blockPos.x >= Chunk::Size || blockPos.z >= Chunk::Size || blockPos.y >= Chunk::Size)
+            return nullopt;
+
+        return chunk.value()->GetBlock(blockPos);
     }
 
     void World::UpdateChunkList(vector<Chunk*>& chunks, int32 radius)
