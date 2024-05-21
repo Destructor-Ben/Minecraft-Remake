@@ -6,6 +6,7 @@ add_executable(Minecraft_Remake
     Common.h
     Game.cpp
     Game.h
+    Hash.h
     LogManager.cpp
     LogManager.h
     Main.cpp

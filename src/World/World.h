@@ -2,6 +2,7 @@
 
 #include "Common.h"
 #include "Chunk.h"
+#include "Hash.h"
 #include "Graphics/Renderer.h"
 #include "Graphics/Camera.h"
 #include "Graphics/Texture.h"
@@ -13,44 +14,7 @@ namespace Minecraft
     {
     public:
         Camera Camera;
-        // TODO: make this an unordered_map of Chunk
-        /*
-#pragma once
-
-#include "src/Common.h"
-
-namespace Minecraft
-{
-    // Implementation of an automatic hashing system for unordered_map
-    // Based on https://stackoverflow.com/a/38140932/12259381
-    inline void hash_combine(std::size_t & seed) { }
-
-    template<typename T, typename... Rest>
-    inline void hash_combine(std::size_t & seed, const T& v, Rest ... rest)
-    {
-        std::hash<T> hash;
-        seed ^= hash(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-        hash_combine(seed, rest...);
-    }
-}
-
-// Making types hashable
-#define MINECRAFT_MAKE_HASHABLE(type, ...) \
-    namespace std {\
-        template<>\
-        struct hash<type> {\
-            size_t operator()(const type& t) const {\
-                size_t hash = 0;\
-                Minecraft::hash_combine(hash, __VA_ARGS__);\
-                return hash;\
-            }\
-        };\
-    }
-
-MINECRAFT_MAKE_HASHABLE(Minecraft::vec3i, t.x, t.y, t.z);
-         */
-        //*/
-        vector<Chunk> Chunks;
+        unordered_map<vec3i, Chunk, ChunkKeyHash> Chunks = {};
 
         World();
         ~World();

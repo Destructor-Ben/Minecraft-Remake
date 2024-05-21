@@ -11,6 +11,7 @@
 #include <fstream>
 #include <iostream>
 #include <memory>
+#include <ranges>
 #include <sstream>
 #include <string>
 #include <thread>
@@ -43,8 +44,9 @@
 
 namespace Minecraft
 {
-    // Time
+    // Using std namespace aliases
     namespace chrono = std::chrono;
+    namespace views = std::views;
 
     // Strings
     typedef const char* cstring;

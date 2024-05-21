@@ -11,10 +11,10 @@ namespace Minecraft
 }
 
 // Super important to null out Logger, since we want it to deallocate and write to the log file
-#define HANDLE_EXCEPTION(function)\
+#define HANDLE_EXCEPTION(function) \
         Logger->function;\
         Logger = nullptr;\
-        return -1;\
+        return -1;
 
 int main()
 {

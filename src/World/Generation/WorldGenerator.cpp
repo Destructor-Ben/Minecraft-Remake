@@ -20,19 +20,19 @@ namespace Minecraft
                 for (int y = -1; y <= 1; ++y)
                 {
                     Chunk chunk(x - SpawnRadius, y, z - SpawnRadius);
-                    m_World->Chunks.push_back(chunk);
+                    m_World->Chunks[vec3i(x - SpawnRadius, y, z - SpawnRadius)] = chunk;
                 }
             }
         }
 
         // Generating world
-        for (auto& chunk : m_World->Chunks)
+        for (auto& chunk : m_World->Chunks | views::values)
         {
             Generate(chunk);
         }
 
         // Create meshes
-        for (auto& chunk : m_World->Chunks)
+        for (auto& chunk : m_World->Chunks | views::values)
         {
             chunk.RegenerateMesh();
         }

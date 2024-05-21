@@ -26,7 +26,7 @@ namespace Minecraft
     {
         UpdateChunkList(m_LoadedChunks, 4);
 
-        for (auto chunk : GetLoadedChunks())
+        for (auto* chunk : GetLoadedChunks())
         {
             chunk->Tick();
         }
@@ -42,7 +42,7 @@ namespace Minecraft
         if (Input->WasKeyReleased(Key::E))
             SetMouseHidden(!IsMouseHidden());
 
-        for (auto chunk : GetRenderedChunks())
+        for (auto* chunk : GetRenderedChunks())
         {
             chunk->Update();
         }
@@ -52,7 +52,7 @@ namespace Minecraft
 
     void World::Render()
     {
-        for (auto chunk : GetRenderedChunks())
+        for (auto* chunk : GetRenderedChunks())
         {
             chunk->Render();
         }
@@ -68,17 +68,17 @@ namespace Minecraft
     Block World::GetBlock(vec3i pos)
     {
         // TODO: how to handle chunk/block out of range? check for GetChunk too
-        //vec3i chunkPos = pos / 16;
-        //vec3i blockPos = pos - chunkPos;
-        //return m_Chunks[chunkPos].GetBlock(blockPos);
-        return Chunks[0].GetBlock(0, 0, 0); // TODO: finish
+        // TODO: finish + test
+        vec3i chunkPos = pos / 16;
+        vec3i blockPos = pos - chunkPos;
+        return Chunk().GetBlock(blockPos);//Chunks[chunkPos].GetBlock(blockPos);
     }
 
     void World::UpdateChunkList(vector<Chunk*>& chunks, int32 radius)
     {
         // TODO: update these properly with render distance
         chunks.clear();
-        for (auto& chunk : Chunks)
+        for (auto& chunk : Chunks | views::values)
         {
             chunks.push_back(&chunk);
         }
@@ -88,7 +88,7 @@ namespace Minecraft
     {
         if (!m_IsMouseHidden)
             return;
-        
+
         const float cameraSpeed = 10.0f;
         const float sensitivity = 0.1f;
         const float maxAngle = 89.0f;

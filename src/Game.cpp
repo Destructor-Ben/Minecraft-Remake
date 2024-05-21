@@ -4,7 +4,7 @@
 
 namespace Minecraft
 {
-    // TODO: use correct typedefs, ensure namespaces, sort includes, use smart pointers for ownership, only include if necessary, use more forward declarations
+    // TODO: use correct typedefs, ensure namespaces, sort includes, use smart pointers for ownership, only include if necessary, use more forward declarations, use auto keyword, specify pointers and references with auto keyword
     // TODO: embed resources - use source generator https://stackoverflow.com/a/71906177/12259381
 
     // TODO: use quaternions for rotation instead of euler angles
@@ -248,16 +248,16 @@ namespace Minecraft
     }
 
     // There will likely be inaccuracies with the loop delays, so be careful when adjusting this code
-    #define LOOP_DELAY(tickRate)\
+    #define LOOP_DELAY(tickRate) \
         double iterations = glfwGetTime() * tickRate;\
         double nextStart = (iterations + 1) / tickRate;\
-        std::this_thread::sleep_until(Time::StartTime + chrono::duration<double>(nextStart));\
+        std::this_thread::sleep_until(Time::StartTime + chrono::duration<double>(nextStart));
 
     #define UPDATE_LOOP_VARIABLES(wallTime, deltaTime, loopRate, count) \
         deltaTime = (float32)glfwGetTime() - wallTime;\
         wallTime = (float32)glfwGetTime();\
         loopRate = 1.0f / deltaTime;\
-        count++;\
+        count++;
 
     static void RunTickLoop()
     {
