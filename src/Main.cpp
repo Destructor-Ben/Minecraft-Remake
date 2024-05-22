@@ -16,7 +16,7 @@ namespace Minecraft
         Logger = nullptr;\
         return -1;
 
-int main()
+int32 main()
 {
     try
     {
