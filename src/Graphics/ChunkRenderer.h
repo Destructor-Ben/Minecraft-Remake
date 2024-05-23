@@ -6,11 +6,14 @@
 namespace Minecraft
 {
     class Renderer;
-    
+    class World;
+
     // TODO: implement greedy meshing - flat, adjacent block faces use the same quad
+    // TODO: clean up this mess
     class ChunkRenderer
     {
     public:
+        World* TheWorld = nullptr; // TODO: fix this mess - World isn't initialized yet!
         ChunkRenderer(Renderer& renderer);
 
         void RenderChunk(Chunk& chunk);

@@ -114,13 +114,9 @@ namespace Minecraft
     void ChunkRenderer::AddFaceInDirection(Chunk& chunk, Block& block, std::vector<Quad>& faces, vec3i dir, vec3 rotation)
     {
         // Getting other block
-        auto otherBlockPos = vec3i(block.GetBlockPos().x + dir.x, block.GetBlockPos().y + dir.y, block.GetBlockPos().z + dir.z);
-        // TODO: make this better and just check the next chunk over
-        otherBlockPos.x = std::clamp(otherBlockPos.x, 0, Chunk::Size - 1);
-        otherBlockPos.y = std::clamp(otherBlockPos.y, 0, Chunk::Size - 1);
-        otherBlockPos.z = std::clamp(otherBlockPos.z, 0, Chunk::Size - 1);
-        auto otherBlock = chunk.GetBlock(otherBlockPos);
-        if (otherBlock.GetData().Type != BlockType::Air)
+        auto otherBlockWorldPos = vec3i(block.GetWorldPos().x + dir.x, block.GetWorldPos().y + dir.y, block.GetWorldPos().z + dir.z);
+        auto otherBlock = TheWorld->GetBlock(otherBlockWorldPos);
+        if (!otherBlock.has_value() || otherBlock.value().GetData().Type != BlockType::Air)
             return;
 
         Quad face;
@@ -152,7 +148,6 @@ namespace Minecraft
     {
         std::vector<Quad> faces;
 
-        // TODO: make this work with neighboring chunks - don't forget to update nearby chunks
         // TODO: fix rotations - might be an issue with transforms
         for (int x = 0; x < Chunk::Size; ++x)
         {

@@ -12,6 +12,7 @@ namespace Minecraft
         Renderer->Camera = &Camera;
 
         // TODO: random seed generation
+        Renderer->ChunkRenderer->TheWorld = this; // TODO: temporary
         m_WorldGenerator = WorldGenerator(this);
         m_WorldGenerator.Generate();
     }
@@ -66,23 +67,33 @@ namespace Minecraft
         InputManager::SetCursorDisabled(hidden);
     }
 
-    optional<Chunk*> World::GetChunk(vec3i pos)
+    optional<Chunk*> World::GetChunk(vec3i chunkPos)
     {
-        if (Chunks.contains(pos))
-            return &Chunks.at(pos);
+        if (Chunks.contains(chunkPos))
+            return &Chunks.at(chunkPos);
 
-        return std::nullopt;
+        return nullopt;
     }
 
     optional<Block> World::GetBlock(vec3i pos)
     {
-        vec3i chunkPos = pos / 16;
+        // Calculate coordinates
+        vec3i chunkPos = pos / (int32)Chunk::Size;
+        vec3i blockPos = pos % (int32)Chunk::Size;
+
+        // Adjust for negatives
+        for (int32 i = 0; i < 3; ++i)
+        {
+            if (blockPos[i] < 0)
+            {
+                blockPos[i] += Chunk::Size;
+                chunkPos[i]--;
+            }
+        }
+
+        // Get block from chunk
         auto chunk = GetChunk(chunkPos);
         if (!chunk.has_value())
-            return nullopt;
-
-        vec3i blockPos = pos - chunkPos;
-        if (blockPos.x < 0 || blockPos.y < 0 || blockPos.z < 0 || blockPos.x >= Chunk::Size || blockPos.z >= Chunk::Size || blockPos.y >= Chunk::Size)
             return nullopt;
 
         return chunk.value()->GetBlock(blockPos);

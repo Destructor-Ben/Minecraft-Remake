@@ -27,8 +27,8 @@ namespace Minecraft
         vector<Chunk*> GetLoadedChunks() { return m_LoadedChunks; }
         vector<Chunk*> GetRenderedChunks() { return m_RenderedChunks; }
 
-        optional<Chunk*> GetChunk(int32 x, int32 y, int32 z) { return GetChunk(vec3i(x, y, z)); }
-        optional<Chunk*> GetChunk(vec3i pos);
+        optional<Chunk*> GetChunk(int32 chunkX, int32 chunkY, int32 chunkZ) { return GetChunk(vec3i(chunkX, chunkY, chunkZ)); }
+        optional<Chunk*> GetChunk(vec3i chunkPos);
 
         optional<Block> GetBlock(int32 x, int32 y, int32 z) { return GetBlock(vec3i(x, y, z)); }
         optional<Block> GetBlock(vec3i pos);
