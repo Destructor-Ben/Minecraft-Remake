@@ -9,7 +9,6 @@ namespace Minecraft
 
     // TODO: use quaternions for rotation instead of euler angles
     // TODO: blending
-    // TODO: fix that weird issue with includes where Time.h can't exist
     // TODO: test loops properly
 
     #pragma region Callbacks
