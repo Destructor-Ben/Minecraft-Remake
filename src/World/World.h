@@ -10,6 +10,17 @@
 
 namespace Minecraft
 {
+    // Utility functions to convert between different coordinate systems
+    // TODO: use these in other stuff
+    // TODO: implement
+    inline vec3i WorldPosToChunkPos(vec3 pos);
+    inline vec3i WorldPosToBlockPos(vec3 pos);
+    inline std::pair<vec3i, vec3i> WorldPosToChunkAndBlockPos(vec3 pos);
+
+    inline vec3 ChunkPosToWorldPos(vec3i chunkPos);
+    inline vec3 BlockPosToWorldPos(vec3i blockPos);
+    inline vec3 BlockAndChunkPosToWorldPos(vec3i chunkPos, vec3i blockPos);
+
     class World
     {
     public:

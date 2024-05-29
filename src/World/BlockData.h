@@ -1,14 +1,14 @@
 #pragma once
 
-#include "../Common.h"
+#include "Common.h"
 
-#include "BlockType.h"
+#include "World/BlockType.h"
 
 namespace Minecraft
 {
     class BlockData
     {
     public:
-        BlockType Type;
+        BlockType Type = BlockType::Air;
     };
 }
