@@ -1,25 +1,24 @@
 #pragma once
 
 #include "../Common.h"
-#include "GraphicsResource.h"
 
 namespace Minecraft
 {
-	class IndexBuffer : public GraphicsResource
-	{
-	public:
+    class IndexBuffer
+    {
+    public:
         IndexBuffer();
-		~IndexBuffer();
+        ~IndexBuffer();
 
         void SetData(const uint32* data, uint32 count, GLenum usage = GL_STATIC_DRAW);
 
-		void Bind() const;
+        void Bind() const;
         uint32 GetCount() const;
 
         static void Unbind();
 
-	private:
-		uint32 m_ID = 0;
-		uint32 m_Count = 0;
-	};
+    private:
+        uint32 m_ID = 0;
+        uint32 m_Count = 0;
+    };
 }

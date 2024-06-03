@@ -1,19 +1,18 @@
 #pragma once
 
 #include "../Common.h"
-#include "GraphicsResource.h"
 
 namespace Minecraft
 {
-	class VertexShader : public GraphicsResource
-	{
-	public:
+    class VertexShader
+    {
+    public:
         explicit VertexShader(const string& source);
-		~VertexShader();
+        ~VertexShader();
 
-		uint32 GetID() const;
+        uint32 GetID() const;
 
-	private:
-		uint32 m_ID = 0;
-	};
+    private:
+        uint32 m_ID = 0;
+    };
 }

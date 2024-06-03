@@ -11,6 +11,33 @@ namespace Minecraft
     // TODO: blending
     // TODO: test loops properly
 
+    #pragma region Resources
+
+    string ReadResourceText(string path)
+    {
+        std::ifstream stream(path);
+        if (stream.fail())
+            Logger->Throw("Failed to load resource at path: " + path);
+
+        std::stringstream buffer;
+        buffer << stream.rdbuf();
+        stream.close();
+        return buffer.str();
+    }
+
+    vector<uint8> ReadResourceBytes(string path)
+    {
+        std::ifstream stream(path, std::ios::binary);
+        if (stream.fail())
+            Logger->Throw("Failed to load resource at path: " + path);
+
+        vector<uint8> bytes((std::istreambuf_iterator<char>(stream)), std::istreambuf_iterator<char>());
+        stream.close();
+        return bytes;
+    }
+
+    #pragma endregion
+
     #pragma region Callbacks
 
     static void GLFWError(int32 code, cstring description)

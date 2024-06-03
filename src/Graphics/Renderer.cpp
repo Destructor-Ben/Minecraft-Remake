@@ -9,14 +9,6 @@ namespace Minecraft
         ChunkRenderer = make_shared<class ChunkRenderer>(*this);
     }
 
-    Renderer::~Renderer()
-    {
-        for (auto resource : m_GraphicsResources)
-        {
-            delete resource;
-        }
-    }
-
     void Renderer::Update()
     {
         if (Camera != nullptr)
@@ -48,90 +40,69 @@ namespace Minecraft
         }
     }
 
-    void Renderer::TrackGraphicsResource(GraphicsResource* resource)
+    shared_ptr<Texture> Renderer::RequestTexture(string path, bool mipMap)
     {
-        m_GraphicsResources.push_back(resource);
-    }
-
-    Texture& Renderer::RequestTexture(string path, bool mipMap)
-    {
-        path = "assets/textures/" + path + ".png";
-
         if (m_Textures.contains(path))
-            return *m_Textures[path];
+            return m_Textures[path];
 
         // Load the texture
+        path = "assets/textures/" + path + ".png";
+        auto compressedData = ReadResourceBytes(path);
+
         int32 width, height, channels;
-        uint8* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
+        uint8* data = stbi_load_from_memory(compressedData.data(), (int)compressedData.size(), &width, &height, &channels, 0);
         int32 format = channels == 4 ? GL_RGBA : GL_RGB;
+
         if (!data)
             Logger->Throw("Failed to load texture at path: " + path);
 
         // Set the data
-        auto* texture = new Texture();
+        auto texture = make_shared<Texture>();
         texture->SetFilters(GL_NEAREST); // Prevents smoothing of low-res textures
         texture->SetData(data, width, height, format, mipMap);
         stbi_image_free(data);
 
-        TrackGraphicsResource(texture);
         m_Textures[path] = texture;
-        return *texture;
+        return texture;
     }
 
-    Shader& Renderer::RequestShader(string path)
+    shared_ptr<Shader> Renderer::RequestShader(string path)
     {
         if (m_Shaders.contains(path))
-            return *m_Shaders[path];
+            return m_Shaders[path];
 
-        auto& vert = RequestVertexShader(path);
-        auto& frag = RequestFragmentShader(path);
-        auto* shader = new Shader(vert, frag);
+        auto vert = RequestVertexShader(path);
+        auto frag = RequestFragmentShader(path);
+        auto shader = make_shared<Shader>(*vert, *frag);
 
-        TrackGraphicsResource(shader);
         m_Shaders[path] = shader;
-        return *shader;
+        return shader;
     }
 
-    VertexShader& Renderer::RequestVertexShader(string path)
+    shared_ptr<VertexShader> Renderer::RequestVertexShader(string path)
     {
-        path = "assets/shaders/" + path + ".vert";
-
         if (m_VertexShaders.contains(path))
-            return *m_VertexShaders[path];
+            return m_VertexShaders[path];
 
-        std::ifstream stream(path);
-        if (stream.fail())
-            Logger->Throw("Failed to load vertex shader at path: " + path);
+        path = "assets/shaders/" + path + ".vert";
+        string shaderCode = ReadResourceText(path);
+        auto shader = make_shared<VertexShader>(shaderCode);
 
-        std::stringstream buffer;
-        buffer << stream.rdbuf();
-        stream.close();
-        auto shader = new VertexShader(buffer.str());
-
-        TrackGraphicsResource(shader);
         m_VertexShaders[path] = shader;
-        return *shader;
+        return shader;
     }
 
-    FragmentShader& Renderer::RequestFragmentShader(string path)
+    shared_ptr<FragmentShader> Renderer::RequestFragmentShader(string path)
     {
-        path = "assets/shaders/" + path + ".frag";
-
         if (m_FragmentShaders.contains(path))
-            return *m_FragmentShaders[path];
+            return m_FragmentShaders[path];
 
-        std::ifstream stream(path);
-        if (stream.fail())
-            Logger->Throw("Failed to load fragment shader at path: " + path);
+        path = "assets/shaders/" + path + ".frag";
+        string shaderCode = ReadResourceText(path);
+        auto shader = make_shared<FragmentShader>(shaderCode);
 
-        std::stringstream buffer;
-        buffer << stream.rdbuf();
-        stream.close();
-        auto shader = new FragmentShader(buffer.str());
-
-        TrackGraphicsResource(shader);
         m_FragmentShaders[path] = shader;
-        return *shader;
+        return shader;
     }
 
     void Renderer::Clear()

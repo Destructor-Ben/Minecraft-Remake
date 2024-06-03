@@ -25,6 +25,9 @@ namespace Minecraft
     inline std::thread::id MainThreadID = std::thread::id();
     inline shared_ptr<std::thread> TickThread = nullptr;
 
+    string ReadResourceText(string path);
+    vector<uint8> ReadResourceBytes(string path);
+
     // Application state: Do not modify! (apart from target loop rates)
     namespace Window
     {

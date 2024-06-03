@@ -8,22 +8,22 @@
 namespace Minecraft
 {
     // TODO: functions to set uniforms
-	class Shader : public GraphicsResource
-	{
-	public:
-		Shader(const VertexShader& vertexShader, const FragmentShader& fragmentShader);
-		~Shader();
+    class Shader
+    {
+    public:
+        Shader(const VertexShader& vertexShader, const FragmentShader& fragmentShader);
+        ~Shader();
 
-		void Bind() const;
+        void Bind() const;
 
         void SetUniform(const string& name, const glm::mat4& value);
         void SetUniform(const string& name, int32 value);
 
-		static void Unbind();
+        static void Unbind();
 
-	private:
+    private:
         int GetUniformLocation(const string& name);
 
-		uint32 m_ID = 0;
-	};
+        uint32 m_ID = 0;
+    };
 }

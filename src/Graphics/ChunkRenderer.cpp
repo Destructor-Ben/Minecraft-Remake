@@ -8,10 +8,9 @@ namespace Minecraft
 {
     ChunkRenderer::ChunkRenderer(class Renderer& renderer) : m_Renderer(renderer)
     {
-        m_ChunkTexture = &m_Renderer.RequestTexture("stone");
-        m_ChunkShader = &m_Renderer.RequestShader("shader");
-        m_ChunkMaterial = new Material(*m_ChunkShader);
-        m_Renderer.TrackGraphicsResource(m_ChunkMaterial);
+        m_ChunkTexture = m_Renderer.RequestTexture("stone");
+        m_ChunkShader = m_Renderer.RequestShader("shader");
+        m_ChunkMaterial = make_shared<Material>(*m_ChunkShader);
     }
 
     void ChunkRenderer::RenderChunk(Chunk& chunk)
@@ -85,28 +84,24 @@ namespace Minecraft
     void ChunkRenderer::CreateMesh(Chunk& chunk)
     {
         auto vertexBuffer = new VertexBuffer();
-        m_Renderer.TrackGraphicsResource(vertexBuffer);
 
         auto indexBuffer = new IndexBuffer();
-        m_Renderer.TrackGraphicsResource(indexBuffer);
 
         auto vertexArray = new VertexArray();
         vertexArray->Push(GL_FLOAT, 3);
         vertexArray->Push(GL_FLOAT, 2);
         vertexArray->Push(GL_FLOAT, 4);
         vertexArray->AddBuffer(*vertexBuffer);
-        m_Renderer.TrackGraphicsResource(vertexArray);
 
         auto mesh = new Mesh(*vertexArray);
-        mesh->AddMaterial(m_ChunkMaterial, indexBuffer);
-        m_Renderer.TrackGraphicsResource(mesh);
+        mesh->AddMaterial(&*m_ChunkMaterial, indexBuffer);
 
-        m_ChunkMeshes[&chunk] = mesh;
-        m_ChunkVertices[&chunk] = vertexBuffer;
-        m_ChunkIndices[&chunk] = indexBuffer;
+        m_ChunkMeshes[&chunk] = shared_ptr<Mesh>(mesh);
+        m_ChunkVertices[&chunk] = shared_ptr<VertexBuffer>(vertexBuffer);
+        m_ChunkIndices[&chunk] = shared_ptr<IndexBuffer>(indexBuffer);
     }
 
-    void ChunkRenderer::DeleteMesh(Chunk& chunk)
+    void ChunkRenderer::SetMesh(Chunk& chunk, const vector<float32>& vertices, const vector<uint32>& indices)
     {
 
     }
