@@ -3,6 +3,7 @@
 #define GLFW_INCLUDE_NONE
 #define GLM_ENABLE_EXPERIMENTAL
 
+// Common std includes
 #include <any>
 #include <chrono>
 #include <cmath>
@@ -29,6 +30,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
+// Libraries
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -74,11 +76,13 @@ namespace Minecraft
     typedef glm::vec<3, int32, glm::defaultp> vec3i;
     typedef glm::vec<4, int32, glm::defaultp> vec4i;
 
-    using glm::mat4;
-    using glm::quat;
     using glm::vec2;
     using glm::vec3;
     using glm::vec4;
+    using glm::mat2;
+    using glm::mat3;
+    using glm::mat4;
+    using glm::quat;
 
     // Pointers
     using std::unique_ptr;
