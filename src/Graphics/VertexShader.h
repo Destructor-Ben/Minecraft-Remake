@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Common.h"
+#include "Common.h"
 
 namespace Minecraft
 {
@@ -10,7 +10,7 @@ namespace Minecraft
         explicit VertexShader(const string& source);
         ~VertexShader();
 
-        uint32 GetID() const;
+        uint32 GetID() const { return m_ID; }
 
     private:
         uint32 m_ID = 0;

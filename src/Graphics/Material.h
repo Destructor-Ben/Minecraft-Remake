@@ -1,24 +1,25 @@
 #pragma once
 
-#include "../Common.h"
-
-#include "Shader.h"
+#include "Common.h"
 
 namespace Minecraft
 {
-    // TODO: make this virtual so we can use inheritance to allow more material types
-    // Materials exist so you can set a bunch of fields, then bind will automatically bind it to the shader
+    class Shader;
+
+    // Materials have a bunch of fields that will automatically bind it to the shader
     // It means you don't need to bind the shader to set the uniforms, since the uniforms are bundled with it
     class Material
     {
     public:
-        glm::mat4 Transform;
+        mat4 Transform;
 
-        Material(Shader& shader);
+        Material(shared_ptr<Shader> shader) : m_Shader(shader) { }
 
-        void Bind();
+        shared_ptr<Shader> GetShader() { return m_Shader; }
 
-    private:
-        Shader& m_Shader;
+        virtual void Bind();
+
+    protected:
+        shared_ptr<Shader> m_Shader;
     };
 }

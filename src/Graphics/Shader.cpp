@@ -1,8 +1,8 @@
 #include "Shader.h"
 
-#include "src/Game.h"
-
-#include <fstream>
+#include "Game.h"
+#include "Graphics/VertexShader.h"
+#include "Graphics/FragmentShader.h"
 
 namespace Minecraft
 {
@@ -19,27 +19,53 @@ namespace Minecraft
         glDeleteProgram(m_ID);
     }
 
-    void Shader::Bind() const
+    void Shader::Bind()
     {
         glUseProgram(m_ID);
+        SetUniform("", 0.0f);
     }
 
-    void Shader::SetUniform(const string& name, const glm::mat4& value)
+    #pragma region Uniforms
+
+    template<typename T>
+    void Shader::SetUniform(const string& name, T value)
     {
-        glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &value[0][0]);
+        Logger->Throw("Unsupported data type for setting uniforms");
     }
 
-    void Shader::SetUniform(const string& name, int32 value)
-    {
-        glUniform1i(GetUniformLocation(name), value);
+    #define UNIFORM_FUNCTION(type, function) \
+    template<>\
+    void Shader::SetUniform<type>(const string& name, type value)\
+    {\
+        int32 location = GetUniformLocation(name);\
+        function;\
     }
+
+    UNIFORM_FUNCTION(float32, glUniform1f(location, value))
+    UNIFORM_FUNCTION(int32, glUniform1i(location, value))
+    UNIFORM_FUNCTION(uint32, glUniform1ui(location, value))
+
+    UNIFORM_FUNCTION(vec2, glUniform2fv(location, 1, &value[0]))
+    UNIFORM_FUNCTION(vec2i, glUniform2iv(location, 1, &value[0]))
+
+    UNIFORM_FUNCTION(vec3, glUniform3fv(location, 1, &value[0]))
+    UNIFORM_FUNCTION(vec3i, glUniform3iv(location, 1, &value[0]))
+
+    UNIFORM_FUNCTION(vec4, glUniform4fv(location, 1, &value[0]))
+    UNIFORM_FUNCTION(vec4i, glUniform4iv(location, 1, &value[0]))
+
+    UNIFORM_FUNCTION(mat2, glUniformMatrix2fv(location, 1, false, &value[0][0]))
+    UNIFORM_FUNCTION(mat3, glUniformMatrix3fv(location, 1, false, &value[0][0]))
+    UNIFORM_FUNCTION(mat4, glUniformMatrix4fv(location, 1, false, &value[0][0]))
+
+    #pragma endregion
 
     void Shader::Unbind()
     {
         glUseProgram(0);
     }
 
-    int Shader::GetUniformLocation(const string& name)
+    int32 Shader::GetUniformLocation(const string& name)
     {
         return glGetUniformLocation(m_ID, name.c_str());
     }

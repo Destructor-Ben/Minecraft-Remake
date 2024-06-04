@@ -1,14 +1,16 @@
 #include "Quad.h"
 
+#include "Graphics/Vertex.h"
+
 namespace Minecraft
 {
-    std::vector<Vertex> Quad::ToVertices()
+    vector<Vertex> Quad::ToVertices()
     {
-        std::vector<Vertex> vertices;
+        vector<Vertex> vertices { };
 
-        for (int i = 0; i < 4; ++i)
+        for (int32 i = 0; i < 4; ++i)
         {
-            Vertex vertex;
+            Vertex vertex { };
 
             switch (i)
             {

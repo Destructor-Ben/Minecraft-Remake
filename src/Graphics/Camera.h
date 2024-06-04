@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../Common.h"
+#include "Common.h"
 
-#include "../World/Transform.h"
+#include "World/Transform.h"
 
 namespace Minecraft
 {
@@ -13,11 +13,11 @@ namespace Minecraft
         Camera();
         bool IsPerspective = true;
 
-        float FOV = 45.0f;
-        float OrthographicScale = 1.0f;
+        float32 FOV = 45.0f;
+        float32 OrthographicScale = 1.0f;
 
-        float NearClip = 0.1f;
-        float FarClip = 1000.0f;
+        float32 NearClip = 0.1f;
+        float32 FarClip = 1000.0f;
 
         mat4 GetViewMatrix() const;
         mat4 GetProjectionMatrix() const;

@@ -1,43 +1,45 @@
 #include "ChunkRenderer.h"
 
-#include "Vertex.h"
-#include "src/Game.h"
-#include "Renderer.h"
+#include "Game.h"
+#include "Graphics/IndexBuffer.h"
+#include "Graphics/Renderer.h"
+#include "Graphics/Texture.h"
+#include "Graphics/Shader.h"
+#include "Graphics/Vertex.h"
+#include "Graphics/VertexArray.h"
+#include "Graphics/VertexBuffer.h"
 
 namespace Minecraft
 {
     ChunkRenderer::ChunkRenderer(class Renderer& renderer) : m_Renderer(renderer)
     {
-        m_ChunkTexture = m_Renderer.RequestTexture("stone");
-        m_ChunkShader = m_Renderer.RequestShader("shader");
-        m_ChunkMaterial = make_shared<Material>(*m_ChunkShader);
+        auto texture = m_Renderer.RequestTexture("stone");
+        auto shader = m_Renderer.RequestShader("shader");
+        m_ChunkMaterial = make_shared<ChunkMaterial>(shader);
+        m_ChunkMaterial->Texture = texture;
     }
 
     void ChunkRenderer::RenderChunk(Chunk& chunk)
     {
-        m_ChunkTexture->BindTextureUnit(0);
-        m_ChunkShader->Bind();
-        m_ChunkShader->SetUniform("uTexture", 0);
-
-        Transform transform;
+        Transform transform = { };
         transform.Position = chunk.GetWorldPos();
         m_Renderer.DrawMesh(*m_ChunkMeshes[&chunk], transform.GetTransformationMatrix());
     }
 
     void ChunkRenderer::RegenerateMesh(Chunk& chunk)
     {
-        auto faces = GetChunkFaces(chunk);
-
         if (!m_ChunkMeshes.contains(&chunk))
             CreateMesh(chunk);
+
+        auto faces = GetChunkFaces(chunk);
 
         if (faces.empty())
             return;
 
         // Generating the vertices
         // TODO: move this into a function in another file - renderer
-        auto vertices = std::vector<float>();
-        auto indices = std::vector<uint32>();
+        auto vertices = vector<float32>();
+        auto indices = vector<uint32>();
         for (Quad face : faces)
         {
             // Vertices
@@ -73,40 +75,33 @@ namespace Minecraft
         }
         // End TODO
 
-        // Create the mesh if it doesn't exist
-        // TODO: make the renderer not own stuff, just use shared_ptr, that way we can delete the mesh
-
         // Set the mesh data
-        m_ChunkVertices[&chunk]->SetData(vertices.data(), vertices.size());
-        m_ChunkIndices[&chunk]->SetData(indices.data(), indices.size());
+        SetMeshData(chunk, vertices, indices);
     }
 
     void ChunkRenderer::CreateMesh(Chunk& chunk)
     {
-        auto vertexBuffer = new VertexBuffer();
+        auto vertexBuffer = make_shared<VertexBuffer>();
+        auto indexBuffer = make_shared<IndexBuffer>();
 
-        auto indexBuffer = new IndexBuffer();
+        auto vertexArray = make_shared<VertexArray>();
+        vertexArray->PushFloat(3);
+        vertexArray->PushFloat(2);
+        vertexArray->PushFloat(4);
+        vertexArray->AddBuffer(vertexBuffer);
 
-        auto vertexArray = new VertexArray();
-        vertexArray->Push(GL_FLOAT, 3);
-        vertexArray->Push(GL_FLOAT, 2);
-        vertexArray->Push(GL_FLOAT, 4);
-        vertexArray->AddBuffer(*vertexBuffer);
-
-        auto mesh = new Mesh(*vertexArray);
-        mesh->AddMaterial(&*m_ChunkMaterial, indexBuffer);
-
-        m_ChunkMeshes[&chunk] = shared_ptr<Mesh>(mesh);
-        m_ChunkVertices[&chunk] = shared_ptr<VertexBuffer>(vertexBuffer);
-        m_ChunkIndices[&chunk] = shared_ptr<IndexBuffer>(indexBuffer);
+        auto mesh = make_shared<Mesh>(vertexArray);
+        m_ChunkMeshes[&chunk] = mesh;
+        m_MaterialIDs[&chunk] = mesh->AddMaterial(m_ChunkMaterial, indexBuffer);
     }
 
-    void ChunkRenderer::SetMesh(Chunk& chunk, const vector<float32>& vertices, const vector<uint32>& indices)
+    void ChunkRenderer::SetMeshData(Chunk& chunk, const vector<float32>& vertices, const vector<uint32>& indices)
     {
-
+        m_ChunkMeshes[&chunk]->Vertices->GetBuffer()->SetData(vertices);
+        m_ChunkMeshes[&chunk]->GetMaterial(m_MaterialIDs[&chunk]).Indices->SetData(indices);
     }
 
-    void ChunkRenderer::AddFaceInDirection(Chunk& chunk, Block& block, std::vector<Quad>& faces, vec3i dir, vec3 rotation)
+    void ChunkRenderer::AddFaceInDirection(Chunk& chunk, Block& block, vector<Quad>& faces, vec3i dir, vec3 rotation)
     {
         // Getting other block
         auto otherBlockWorldPos = vec3i(block.GetWorldPos().x + dir.x, block.GetWorldPos().y + dir.y, block.GetWorldPos().z + dir.z);
@@ -114,41 +109,25 @@ namespace Minecraft
         if (!otherBlock.has_value() || otherBlock.value().GetData().Type != BlockType::Air)
             return;
 
-        Quad face;
+        // Creating face
+        Quad face { };
         face.Position = block.GetBlockPos();
         face.Position += vec3(dir) * 0.5f;
         face.Rotation = rotation;
-        face.Shading = vec4(0.0f);
-        // TODO: Move shading to function
-        // TODO: Blocks such as grass and leaves will eventually have grey
-        // textures and use shading to change their colour to suit environment
-        if (dir[0] == 1)
-            face.Shading = abs(vec4(0.3f, 0.3f, 0.3f, 1.0f));
-        else if (dir[1] == 1)
-            face.Shading = abs(vec4(1.0f, 1.0f, 1.0f, 1.0f));
-        else if (dir[2] == 1)
-            face.Shading = abs(vec4(0.4f, 0.4f, 0.4f, 1.0f));
-        else if (dir[0] == -1)
-            face.Shading = abs(vec4(0.5f, 0.5f, 0.5f, 1.0f));
-        else if (dir[1] == -1)
-            face.Shading = abs(vec4(0.2f, 0.2f, 0.2f, 1.0f));
-        else if (dir[2] == -1)
-            face.Shading = abs(vec4(0.6f, 0.6f, 0.6f, 1.0f));
-
-        //face.Shading = abs(vec4(dir[2],dir[1],dir[0],1.0f)); // debugging colours
+        face.Shading = GetFaceShading(dir);
         faces.push_back(face);
     }
 
-    std::vector<Quad> ChunkRenderer::GetChunkFaces(Chunk& chunk)
+    // TODO: fix rotations - might be an issue with transforms
+    vector<Quad> ChunkRenderer::GetChunkFaces(Chunk& chunk)
     {
-        std::vector<Quad> faces;
+        vector<Quad> faces;
 
-        // TODO: fix rotations - might be an issue with transforms
-        for (int x = 0; x < Chunk::Size; ++x)
+        for (int32 x = 0; x < Chunk::Size; ++x)
         {
-            for (int y = 0; y < Chunk::Size; ++y)
+            for (int32 y = 0; y < Chunk::Size; ++y)
             {
-                for (int z = 0; z < Chunk::Size; ++z)
+                for (int32 z = 0; z < Chunk::Size; ++z)
                 {
                     auto block = chunk.GetBlock(x, y, z);
                     if (block.GetData().Type == BlockType::Air)
@@ -167,5 +146,34 @@ namespace Minecraft
         }
 
         return faces;
+    }
+
+    // TODO: blocks such as grass and leaves will eventually have grey - olmarsh
+    vec4 ChunkRenderer::GetFaceShading(vec3i dir)
+    {
+        float32 strength = 0;
+
+        if (dir.x > 0)
+            strength = 0.3f;
+        else if (dir.y > 0)
+            strength = 1.0f;
+        else if (dir.z > 0)
+            strength = 0.4f;
+        else if (dir.x < 0)
+            strength = 0.5f;
+        else if (dir.y < 0)
+            strength = 0.2f;
+        else if (dir.z < 0)
+            strength = 0.6f;
+
+        return vec4(strength, strength, strength, 1.0f);
+    }
+
+    void ChunkRenderer::ChunkMaterial::Bind()
+    {
+        Material::Bind();
+
+        Texture->BindTextureUnit(0);
+        m_Shader->SetUniform("uTexture", 0);
     }
 }

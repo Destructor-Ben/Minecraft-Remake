@@ -6,6 +6,8 @@ namespace Minecraft
     {
         glGenTextures(1, &m_ID);
         Bind();
+        SetWrappingMode(GL_CLAMP_TO_EDGE);
+        SetFilters(GL_NEAREST);
     }
 
     Texture::~Texture()
@@ -27,22 +29,24 @@ namespace Minecraft
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
     }
 
-    void Texture::SetData(uint8* data, int32 width, int32 height, int32 format, bool mipMap)
+    void Texture::GenerateMipMap()
+    {
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+
+    void Texture::SetData(uint8* data, int32 width, int32 height, int32 format)
     {
         Bind();
         glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-
-        if (mipMap)
-            glGenerateMipmap(GL_TEXTURE_2D);
     }
 
-    void Texture::BindTextureUnit(uint8 textureUnit) const
+    void Texture::BindTextureUnit(uint8 textureUnit)
     {
         glActiveTexture(GL_TEXTURE0 + textureUnit);
         Bind();
     }
 
-    void Texture::Bind() const
+    void Texture::Bind()
     {
         glBindTexture(GL_TEXTURE_2D, m_ID);
     }

@@ -1,5 +1,7 @@
 #include "VertexArray.h"
 
+#include "VertexBuffer.h"
+
 namespace Minecraft
 {
     VertexArray::VertexArray()
@@ -13,63 +15,37 @@ namespace Minecraft
         glDeleteVertexArrays(1, &m_ID);
     }
 
-    void VertexArray::Bind() const
+    void VertexArray::Bind()
     {
         glBindVertexArray(m_ID);
+    }
+
+    void VertexArray::PushFloat(int32 count, bool normalized)
+    {
+        int32 attributeSize = sizeof(float) * count;
+        m_Stride += attributeSize;
+        m_Attributes.push_back({ GL_FLOAT, count, attributeSize, normalized });
+    }
+
+    void VertexArray::AddBuffer(shared_ptr<VertexBuffer> buffer)
+    {
+        Bind();
+        buffer->Bind();
+        m_Buffer = buffer;
+
+        int64 offset = 0;
+        for (int i = 0; i < m_Attributes.size(); i++)
+        {
+            auto attribute = m_Attributes.at(i);
+
+            glEnableVertexAttribArray(i);
+            glVertexAttribPointer(i, attribute.Count, attribute.GLType, attribute.Normalized, (int32)m_Stride, (void*)offset);
+            offset += attribute.Size;
+        }
     }
 
     void VertexArray::Unbind()
     {
         glBindVertexArray(0);
-
-    }
-
-    static int GetSizeFromGLType(int type)
-    {
-        switch (type)
-        {
-            case GL_BYTE:
-                return sizeof(GLbyte);
-            case GL_UNSIGNED_BYTE:
-                return sizeof(GLubyte);
-            case GL_SHORT:
-                return sizeof(GLshort);
-            case GL_UNSIGNED_SHORT:
-                return sizeof(GLushort);
-            case GL_INT:
-                return sizeof(GLint);
-            case GL_UNSIGNED_INT:
-                return sizeof(GLuint);
-            case GL_FLOAT:
-                return sizeof(GLfloat);
-            default:
-                return 0;
-        }
-    }
-
-    void VertexArray::Push(int type, int count, bool normalized)
-    {
-        m_Types.push_back(type);
-        m_Counts.push_back(count);
-        m_Normalized.push_back(normalized);
-        m_Stride += GetSizeFromGLType(type) * count;
-        m_Count++;
-    }
-
-    void VertexArray::AddBuffer(const VertexBuffer& buffer)
-    {
-        Bind();
-        buffer.Bind();
-
-        int64 offset = 0;
-        for (int i = 0; i < m_Count; ++i)
-        {
-            int type = m_Types[i];
-            int count = m_Counts[i];
-
-            glEnableVertexAttribArray(i);
-            glVertexAttribPointer(i, count, type, m_Normalized[i] ? GL_TRUE : GL_FALSE, (int)m_Stride, (void*)offset);
-            offset += GetSizeFromGLType(type) * count;
-        }
     }
 }

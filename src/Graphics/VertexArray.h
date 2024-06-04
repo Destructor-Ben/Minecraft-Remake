@@ -1,33 +1,43 @@
 #pragma once
 
-#include "../Common.h"
-
-#include <vector>
-
-#include "VertexBuffer.h"
+#include "Common.h"
 
 namespace Minecraft
 {
+    class VertexBuffer;
+
     class VertexArray
     {
     public:
         VertexArray();
         ~VertexArray();
 
-        void Bind() const;
+        void Bind();
 
-        void Push(int type, int count, bool normalized = false);
-        void AddBuffer(const VertexBuffer& buffer);
+        void PushFloat(int32 count, bool normalized = false);
+        void AddBuffer(shared_ptr<VertexBuffer> buffer);
+
+        uint32 GetID() const { return m_ID; }
+        shared_ptr<VertexBuffer> GetBuffer() const { return m_Buffer; }
 
         static void Unbind();
 
     private:
-        uint32 m_ID = 0;
+        struct VertexAttribute
+        {
+            int32 GLType = 0;
+            int32 Count = 0;
+            int32 Size = 0;
+            bool Normalized = false;
+        };
 
-        uint32 m_Count = 0;
+        uint32 m_ID = 0;
+        shared_ptr<VertexBuffer> m_Buffer;
+
+        // How large one vertex is
         uint32 m_Stride = 0;
-        vector<int> m_Types;
-        vector<int> m_Counts;
-        vector<bool> m_Normalized;
+
+        // The list of the attributes
+        vector<VertexAttribute> m_Attributes;
     };
 }

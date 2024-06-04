@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Common.h"
+#include "Common.h"
 
 namespace Minecraft
 {
@@ -10,9 +10,11 @@ namespace Minecraft
         VertexBuffer();
         ~VertexBuffer();
 
-        void SetData(const float* data, uint32 size, GLenum usage = GL_STATIC_DRAW);
+        void SetData(const vector<float32>& data, GLenum usage = GL_STATIC_DRAW);
+        void SetData(const float32* data, uint32 count, GLenum usage = GL_STATIC_DRAW);
+        void Bind();
 
-        void Bind() const;
+        uint32 GetID() const { return m_ID; }
 
         static void Unbind();
 

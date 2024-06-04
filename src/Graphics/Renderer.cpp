@@ -1,5 +1,16 @@
 #include "Renderer.h"
-#include "src/Game.h"
+
+#include "Game.h"
+#include "Graphics/Camera.h"
+#include "Graphics/ChunkRenderer.h"
+#include "Graphics/FragmentShader.h"
+#include "Graphics/IndexBuffer.h"
+#include "Graphics/Mesh.h"
+#include "Graphics/Shader.h"
+#include "Graphics/Texture.h"
+#include "Graphics/VertexArray.h"
+#include "Graphics/VertexBuffer.h"
+#include "Graphics/VertexShader.h"
 
 namespace Minecraft
 {
@@ -23,24 +34,12 @@ namespace Minecraft
         }
     }
 
-    void Renderer::DrawMesh(const Mesh& mesh, const mat4& transform) const
+    void Renderer::DrawMesh(const Mesh& mesh, mat4 transform)
     {
-        mesh.Vertices.Bind();
-
-        for (int i = 0; i < mesh.MaterialCount; i++)
-        {
-            IndexBuffer& indexBuffer = *mesh.Indices[i];
-            indexBuffer.Bind();
-
-            Material& material = *mesh.Materials[i];
-            material.Transform = ProjectionMatrix * ViewMatrix * transform;
-            material.Bind();
-
-            glDrawElements(GL_TRIANGLES, (int)indexBuffer.GetCount(), GL_UNSIGNED_INT, nullptr);
-        }
+        mesh.Draw(ProjectionMatrix * ViewMatrix * transform);
     }
 
-    shared_ptr<Texture> Renderer::RequestTexture(string path, bool mipMap)
+    shared_ptr<Texture> Renderer::RequestTexture(string path)
     {
         if (m_Textures.contains(path))
             return m_Textures[path];
@@ -50,7 +49,7 @@ namespace Minecraft
         auto compressedData = ReadResourceBytes(path);
 
         int32 width, height, channels;
-        uint8* data = stbi_load_from_memory(compressedData.data(), (int)compressedData.size(), &width, &height, &channels, 0);
+        uint8* data = stbi_load_from_memory(compressedData.data(), (int32)compressedData.size(), &width, &height, &channels, 0);
         int32 format = channels == 4 ? GL_RGBA : GL_RGB;
 
         if (!data)
@@ -58,8 +57,7 @@ namespace Minecraft
 
         // Set the data
         auto texture = make_shared<Texture>();
-        texture->SetFilters(GL_NEAREST); // Prevents smoothing of low-res textures
-        texture->SetData(data, width, height, format, mipMap);
+        texture->SetData(data, width, height, format);
         stbi_image_free(data);
 
         m_Textures[path] = texture;

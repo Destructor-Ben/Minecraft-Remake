@@ -1,40 +1,53 @@
 #pragma once
 
-#include "src/Common.h"
-#include "src/World/Chunk.h"
+#include "Common.h"
+
+#include "Graphics/Material.h"
 
 namespace Minecraft
 {
+    class Chunk;
+    class Block;
+    class Mesh;
+    class Quad;
     class Renderer;
+    class Texture;
+    class VertexBuffer;
     class World;
 
     // TODO: implement greedy meshing - flat, adjacent block faces use the same quad
-    // TODO: clean up this mess
     class ChunkRenderer
     {
     public:
-        World* TheWorld = nullptr; // TODO: fix this mess - World isn't initialized yet!
+        World* TheWorld = nullptr; // TODO: fix this mess - World isn't initialized yet! (also make the hierarchy of everything better - don't take everything in ctor, maybe just make a prepare method since global variables arent initted yet
         ChunkRenderer(Renderer& renderer);
 
         void RenderChunk(Chunk& chunk);
         void RegenerateMesh(Chunk& chunk);
 
     private:
-        void CreateMesh(Chunk& chunk);
-        void SetMesh(Chunk& chunk, const std::vector<float32>& vertices, const std::vector<uint32>& indices);
+        class ChunkMaterial : public Material
+        {
+        public:
+            shared_ptr<Texture> Texture;
 
-        void AddFaceInDirection(Chunk& chunk, Block& block, std::vector<Quad>& faces, vec3i dir, vec3 rotation);
-        std::vector<Quad> GetChunkFaces(Chunk& chunk);
+            ChunkMaterial(shared_ptr<Shader> shader) : Material(shader) { }
+
+            void Bind() override;
+        };
+
+        void CreateMesh(Chunk& chunk);
+        void SetMeshData(Chunk& chunk, const vector<float32>& vertices, const vector<uint32>& indices);
+
+        void AddFaceInDirection(Chunk& chunk, Block& block, vector<Quad>& faces, vec3i dir, vec3 rotation);
+        vector<Quad> GetChunkFaces(Chunk& chunk);
+        vec4 GetFaceShading(vec3i dir);
 
         Renderer& m_Renderer;
 
-        // TODO: some of these can be unique ptrs
-        unordered_map<Chunk*, shared_ptr<Mesh>> m_ChunkMeshes;
-        unordered_map<Chunk*, shared_ptr<VertexBuffer>> m_ChunkVertices;
-        unordered_map<Chunk*, shared_ptr<IndexBuffer>> m_ChunkIndices;
-
-        shared_ptr<Texture> m_ChunkTexture;
-        shared_ptr<Material> m_ChunkMaterial; // TODO: make a chunk material
-        shared_ptr<Shader> m_ChunkShader;
+        // TODO: just use a hash of a chunk instead of using a ptr
+        shared_ptr<ChunkMaterial> m_ChunkMaterial;
+        unordered_map<Chunk*, shared_ptr<Mesh>> m_ChunkMeshes = { };
+        unordered_map<Chunk*, int32> m_MaterialIDs = { };
     };
 }
