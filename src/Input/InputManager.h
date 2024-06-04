@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Common.h"
+
 #include "Game.h"
 #include "Input/Key.h"
 #include "Input/MouseButton.h"
@@ -47,10 +48,10 @@ namespace Minecraft
         vec2 m_OldMousePos = vec2();
         float32 m_ScrollDelta = 0.0f;
 
-        array<bool, KeyCount> m_KeysPressedThisFrame = {};
-        array<bool, KeyCount> m_KeysPressedLastFrame = {};
+        array<bool, KeyCount> m_KeysPressedThisFrame = { };
+        array<bool, KeyCount> m_KeysPressedLastFrame = { };
 
-        array<bool, MouseButtonCount> m_MouseButtonsPressedThisFrame = {};
-        array<bool, MouseButtonCount> m_MouseButtonsPressedLastFrame = {};
+        array<bool, MouseButtonCount> m_MouseButtonsPressedThisFrame = { };
+        array<bool, MouseButtonCount> m_MouseButtonsPressedLastFrame = { };
     };
 }
