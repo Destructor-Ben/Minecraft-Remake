@@ -5,7 +5,6 @@ target_sources(Minecraft_Remake PRIVATE
     ChunkRenderer.h
     FragmentShader.cpp
     FragmentShader.h
-    GraphicsResource.h
     IndexBuffer.cpp
     IndexBuffer.h
     Material.cpp
@@ -20,6 +19,7 @@ target_sources(Minecraft_Remake PRIVATE
     Shader.h
     Texture.cpp
     Texture.h
+    Vertex.cpp
     Vertex.h
     VertexArray.cpp
     VertexArray.h

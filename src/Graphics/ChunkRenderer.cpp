@@ -36,47 +36,8 @@ namespace Minecraft
         if (faces.empty())
             return;
 
-        // Generating the vertices
-        // TODO: move this into a function in another file - renderer
-        auto vertices = vector<float32>();
-        auto indices = vector<uint32>();
-        for (Quad face : faces)
-        {
-            // Vertices
-            // TODO: make a function to do this
-            for (auto vertex : face.ToVertices())
-            {
-                vertices.push_back(vertex.Position.x);
-                vertices.push_back(vertex.Position.y);
-                vertices.push_back(vertex.Position.z);
-                vertices.push_back(vertex.UV.x);
-                vertices.push_back(vertex.UV.y);
-                vertices.push_back(vertex.Shading.x);
-                vertices.push_back(vertex.Shading.y);
-                vertices.push_back(vertex.Shading.z);
-                vertices.push_back(vertex.Shading.w);
-            }
-
-            // Indices
-            // TODO: use a vertex struct to make this maths less convoluted
-            uint32 vertexCount = vertices.size() / 9;
-            uint32 index0 = vertexCount - 4;
-            uint32 index1 = vertexCount - 3;
-            uint32 index2 = vertexCount - 2;
-            uint32 index3 = vertexCount - 1;
-
-            indices.push_back(index2);
-            indices.push_back(index1);
-            indices.push_back(index0);
-
-            indices.push_back(index1);
-            indices.push_back(index2);
-            indices.push_back(index3);
-        }
-        // End TODO
-
-        // Set the mesh data
-        SetMeshData(chunk, vertices, indices);
+        auto vertices = Quad::ToVertices(faces);
+        SetMeshData(chunk, Vertex::ToFloats(vertices), Vertex::ToIndices(vertices));
     }
 
     void ChunkRenderer::CreateMesh(Chunk& chunk)
@@ -91,14 +52,14 @@ namespace Minecraft
         vertexArray->AddBuffer(vertexBuffer);
 
         auto mesh = make_shared<Mesh>(vertexArray);
+        mesh->AddMaterial(m_ChunkMaterial, indexBuffer);
         m_ChunkMeshes[&chunk] = mesh;
-        m_MaterialIDs[&chunk] = mesh->AddMaterial(m_ChunkMaterial, indexBuffer);
     }
 
     void ChunkRenderer::SetMeshData(Chunk& chunk, const vector<float32>& vertices, const vector<uint32>& indices)
     {
         m_ChunkMeshes[&chunk]->Vertices->GetBuffer()->SetData(vertices);
-        m_ChunkMeshes[&chunk]->GetMaterial(m_MaterialIDs[&chunk]).Indices->SetData(indices);
+        m_ChunkMeshes[&chunk]->GetIndexBuffer(m_ChunkMaterial)->SetData(indices);
     }
 
     void ChunkRenderer::AddFaceInDirection(Chunk& chunk, Block& block, vector<Quad>& faces, vec3i dir, vec3 rotation)

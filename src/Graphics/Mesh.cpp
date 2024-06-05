@@ -6,15 +6,14 @@
 
 namespace Minecraft
 {
-    int32 Mesh::AddMaterial(shared_ptr<Material> material, shared_ptr<IndexBuffer> indexBuffer)
+    void Mesh::AddMaterial(shared_ptr<Material> material, shared_ptr<IndexBuffer> indexBuffer)
     {
-        m_Materials.push_back({ material, indexBuffer });
-        return m_Materials.size() - 1;
+        m_Materials[material] = indexBuffer;
     }
 
-    Mesh::MaterialIndicesPair Mesh::GetMaterial(int index)
+    shared_ptr<IndexBuffer> Mesh::GetIndexBuffer(const shared_ptr<Material>& material)
     {
-        return m_Materials.at(index);
+        return m_Materials.at(material);
     }
 
     void Mesh::Draw(mat4 transform) const

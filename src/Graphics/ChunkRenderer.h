@@ -45,9 +45,8 @@ namespace Minecraft
 
         Renderer& m_Renderer;
 
-        // TODO: just use a hash of a chunk instead of using a ptr
         shared_ptr<ChunkMaterial> m_ChunkMaterial;
+        // TODO: just use a hash of a chunk/chunk coordinate instead of using a ptr?
         unordered_map<Chunk*, shared_ptr<Mesh>> m_ChunkMeshes = { };
-        unordered_map<Chunk*, int32> m_MaterialIDs = { };
     };
 }

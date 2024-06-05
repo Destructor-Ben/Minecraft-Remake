@@ -13,5 +13,6 @@ namespace Minecraft
         vec4 Shading = vec4(1.0f);
 
         vector<Vertex> ToVertices();
+        static vector<Vertex> ToVertices(vector<Quad> quads);
     };
 }

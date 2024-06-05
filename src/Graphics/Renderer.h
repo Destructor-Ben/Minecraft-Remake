@@ -37,10 +37,6 @@ namespace Minecraft
         static void Clear();
         static void UnbindAll();
 
-        // TODO: implement these
-        //static vector<float32> VerticesToFloats(const vector<Vertex>& vertices);
-        //static (float32, float32) QuadsToData(const vector<Quad>& quads);
-
     private:
         // Cache resources that are requested multiple times
         unordered_map<string, shared_ptr<Texture>> m_Textures = { };
