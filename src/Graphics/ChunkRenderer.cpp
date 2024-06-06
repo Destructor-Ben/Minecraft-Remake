@@ -110,7 +110,7 @@ namespace Minecraft
         return faces;
     }
 
-    // TODO: blocks such as grass and leaves will eventually have grey - olmarsh
+    // TODO: blocks such as grass and leaves will eventually have grey and will be tinted based on biome colour - olmarsh
     vec4 ChunkRenderer::GetFaceShading(vec3i dir)
     {
         float32 strength = 0;
