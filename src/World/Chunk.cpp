@@ -1,6 +1,7 @@
 #include "Chunk.h"
 
 #include "Game.h"
+#include "Graphics/ChunkRenderer.h"
 
 namespace Minecraft
 {
@@ -11,7 +12,7 @@ namespace Minecraft
         Logger->Assert(blockY < Size);
         Logger->Assert(blockZ < Size);
 
-        return {*this, blockX, blockY, blockZ};
+        return { *this, blockX, blockY, blockZ };
     }
 
     void Chunk::RegenerateMesh()

@@ -2,6 +2,7 @@
 
 #include "Game.h"
 #include "Graphics/IndexBuffer.h"
+#include "Graphics/Quad.h"
 #include "Graphics/Renderer.h"
 #include "Graphics/Texture.h"
 #include "Graphics/Shader.h"
@@ -21,7 +22,7 @@ namespace Minecraft
 
     void ChunkRenderer::RenderChunk(Chunk& chunk)
     {
-        Transform transform = { };
+        Transform transform { };
         transform.Position = chunk.GetWorldPos();
         m_Renderer.DrawMesh(*m_ChunkMeshes[&chunk], transform.GetTransformationMatrix());
     }

@@ -3,6 +3,7 @@
 #include "Common.h"
 #include "Chunk.h"
 #include "Hash.h"
+#include "Graphics/ChunkRenderer.h"
 #include "Graphics/Renderer.h"
 #include "Graphics/Camera.h"
 #include "Graphics/Texture.h"
@@ -25,7 +26,7 @@ namespace Minecraft
     {
     public:
         Camera Camera;
-        unordered_map<vec3i, Chunk, ChunkKeyHash> Chunks = {};
+        unordered_map<vec3i, Chunk, ChunkKeyHash> Chunks = { };
 
         World();
         ~World();
@@ -52,8 +53,8 @@ namespace Minecraft
         void UpdateChunkList(vector<Chunk*>& chunks, int32 radius);
         void UpdateCamera();
 
-        vector<Chunk*> m_LoadedChunks = {};
-        vector<Chunk*> m_RenderedChunks = {};
+        vector<Chunk*> m_LoadedChunks = { };
+        vector<Chunk*> m_RenderedChunks = { };
 
         WorldGenerator m_WorldGenerator;
 
