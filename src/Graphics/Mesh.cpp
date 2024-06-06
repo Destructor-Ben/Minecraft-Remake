@@ -20,7 +20,6 @@ namespace Minecraft
     {
         Vertices->Bind();
 
-        // TODO: check const-ness of things here
         for (auto [material, indexBuffer] : m_Materials)
         {
             indexBuffer->Bind();

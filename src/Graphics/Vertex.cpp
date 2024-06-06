@@ -1,5 +1,6 @@
 #include "Vertex.h"
 
+/*
 namespace Minecraft
 {
     vector<float32> Vertex::ToFloats()
@@ -56,3 +57,4 @@ namespace Minecraft
         return indices;
     }
 }
+*/

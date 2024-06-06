@@ -41,7 +41,7 @@ namespace Minecraft
 
         return vertices;
     }
-
+/*
     vector<Vertex> Quad::ToVertices(vector<Quad> quads)
     {
         auto vertices = vector<Vertex>();
@@ -53,4 +53,5 @@ namespace Minecraft
 
         return vertices;
     }
+    */
 }
