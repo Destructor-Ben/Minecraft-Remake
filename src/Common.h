@@ -12,6 +12,7 @@
 #include <fstream>
 #include <iostream>
 #include <memory>
+#include <numbers>
 #include <ranges>
 #include <sstream>
 #include <string>
