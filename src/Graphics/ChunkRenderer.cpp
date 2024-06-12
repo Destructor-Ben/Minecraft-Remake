@@ -63,7 +63,7 @@ namespace Minecraft
         m_ChunkMeshes[&chunk]->GetIndexBuffer(m_ChunkMaterial)->SetData(indices);
     }
 
-    void ChunkRenderer::AddFaceInDirection(Chunk& chunk, Block& block, vector<Quad>& faces, vec3i dir, vec3 rotation)
+    void ChunkRenderer::AddFaceInDirection(Chunk& chunk, Block& block, vector<Quad>& faces, vec3i dir, quat rotation)
     {
         // Getting other block
         auto otherBlockWorldPos = vec3i(block.GetWorldPos().x + dir.x, block.GetWorldPos().y + dir.y, block.GetWorldPos().z + dir.z);
@@ -95,6 +95,7 @@ namespace Minecraft
                     if (block.GetData().Type == BlockType::Air)
                         continue;
 
+                    // TODO: fix the rotations
                     AddFaceInDirection(chunk, block, faces, vec3i(0, 1, 0), vec3(0, 0, 0));
                     AddFaceInDirection(chunk, block, faces, vec3i(0, -1, 0), vec3(180, 0, 0));
 

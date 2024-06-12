@@ -4,12 +4,6 @@
 
 namespace Minecraft
 {
-    Camera::Camera() : Transform()
-    {
-        // Defaults -90° for yaw because cos(0°) is 1 and cos(90°) is 0 (which we want)
-        Rotation.y = -90.0f;
-    }
-
     mat4 Camera::GetViewMatrix() const
     {
         vec3 forward = GetForwardVector();

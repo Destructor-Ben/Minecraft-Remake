@@ -45,18 +45,18 @@ namespace Minecraft
     UNIFORM_FUNCTION(int32, glUniform1i(location, value))
     UNIFORM_FUNCTION(uint32, glUniform1ui(location, value))
 
-    UNIFORM_FUNCTION(vec2, glUniform2fv(location, 1, &value[0]))
-    UNIFORM_FUNCTION(vec2i, glUniform2iv(location, 1, &value[0]))
+    UNIFORM_FUNCTION(vec2, glUniform2fv(location, 1, glm::value_ptr(value)))
+    UNIFORM_FUNCTION(vec2i, glUniform2iv(location, 1, glm::value_ptr(value)))
 
-    UNIFORM_FUNCTION(vec3, glUniform3fv(location, 1, &value[0]))
-    UNIFORM_FUNCTION(vec3i, glUniform3iv(location, 1, &value[0]))
+    UNIFORM_FUNCTION(vec3, glUniform3fv(location, 1, glm::value_ptr(value)))
+    UNIFORM_FUNCTION(vec3i, glUniform3iv(location, 1, glm::value_ptr(value)))
 
-    UNIFORM_FUNCTION(vec4, glUniform4fv(location, 1, &value[0]))
-    UNIFORM_FUNCTION(vec4i, glUniform4iv(location, 1, &value[0]))
+    UNIFORM_FUNCTION(vec4, glUniform4fv(location, 1, glm::value_ptr(value)))
+    UNIFORM_FUNCTION(vec4i, glUniform4iv(location, 1, glm::value_ptr(value)))
 
-    UNIFORM_FUNCTION(mat2, glUniformMatrix2fv(location, 1, false, &value[0][0]))
-    UNIFORM_FUNCTION(mat3, glUniformMatrix3fv(location, 1, false, &value[0][0]))
-    UNIFORM_FUNCTION(mat4, glUniformMatrix4fv(location, 1, false, &value[0][0]))
+    UNIFORM_FUNCTION(mat2, glUniformMatrix2fv(location, 1, false, glm::value_ptr(value)))
+    UNIFORM_FUNCTION(mat3, glUniformMatrix3fv(location, 1, false, glm::value_ptr(value)))
+    UNIFORM_FUNCTION(mat4, glUniformMatrix4fv(location, 1, false, glm::value_ptr(value)))
 
     #pragma endregion
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Common.h"
+#include "Common.h"
 
 namespace Minecraft
 {
@@ -9,8 +9,7 @@ namespace Minecraft
     {
     public:
         vec3 Position = vec3(0.0f);
-        // TODO: use quaternion for rotation eventually
-        vec3 Rotation = vec3(0.0f); // Degrees, not radians
+        quat Rotation = quat(1.0f, 0.0f, 0.0f, 0.0f);
         vec3 Scale = vec3(1.0f);
 
         vec3 GetForwardVector() const;
