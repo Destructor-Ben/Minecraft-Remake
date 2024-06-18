@@ -83,7 +83,10 @@ namespace Minecraft
     // TODO: fix rotations - might be an issue with transforms
     vector<Quad> ChunkRenderer::GetChunkFaces(Chunk& chunk)
     {
-        vector<Quad> faces;
+        const float Degrees180 = glm::radians(180.0f);
+        const float Degrees90 = glm::radians(90.0f);
+
+        vector <Quad> faces;
 
         for (int32 x = 0; x < Chunk::Size; ++x)
         {
@@ -95,15 +98,15 @@ namespace Minecraft
                     if (block.GetData().Type == BlockType::Air)
                         continue;
 
-                    // TODO: fix the rotations
+                    // TODO: verify that faces are pointig up properly
                     AddFaceInDirection(chunk, block, faces, vec3i(0, 1, 0), vec3(0, 0, 0));
-                    AddFaceInDirection(chunk, block, faces, vec3i(0, -1, 0), vec3(180, 0, 0));
+                    AddFaceInDirection(chunk, block, faces, vec3i(0, -1, 0), vec3(Degrees180, 0, 0));
 
-                    AddFaceInDirection(chunk, block, faces, vec3i(1, 0, 0), vec3(0, 0, -90));
-                    AddFaceInDirection(chunk, block, faces, vec3i(-1, 0, 0), vec3(0, 0, 90));
+                    AddFaceInDirection(chunk, block, faces, vec3i(1, 0, 0), vec3(0, 0, -Degrees90));
+                    AddFaceInDirection(chunk, block, faces, vec3i(-1, 0, 0), vec3(0, 0, Degrees90));
 
-                    AddFaceInDirection(chunk, block, faces, vec3i(0, 0, 1), vec3(90, 0, 0));
-                    AddFaceInDirection(chunk, block, faces, vec3i(0, 0, -1), vec3(-90, 0, 0));
+                    AddFaceInDirection(chunk, block, faces, vec3i(0, 0, 1), vec3(Degrees90, 0, 0));
+                    AddFaceInDirection(chunk, block, faces, vec3i(0, 0, -1), vec3(-Degrees90, 0, 0));
                 }
             }
         }
