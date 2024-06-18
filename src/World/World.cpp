@@ -114,21 +114,15 @@ namespace Minecraft
         if (!m_IsMouseHidden)
             return;
 
-        const float cameraSpeed = 10.0f;
-        const float sensitivity = 0.01f;
-        const float maxAngle = glm::radians(80.0f); // TODO: remember to change this
-        float speed = cameraSpeed * Time::DeltaTime;
+        const float sensitivity = 0.005f;
+        const float maxAngle = glm::radians(89.0f);
+        float speed = 10.0f * Time::DeltaTime;
 
-        // Rotation TODO: make this use quaternion calculations because they're better
-        vec3 cameraEuler = glm::eulerAngles(Camera.Rotation);
-        cameraEuler.x -= Input->GetMousePosDelta().y * sensitivity;
-        cameraEuler.y -= Input->GetMousePosDelta().x * sensitivity;
-        cameraEuler.z = 0;
-
-        float& xRotation = cameraEuler.x;
-        xRotation = glm::clamp(xRotation, -maxAngle, maxAngle);
-
-        Camera.Rotation = glm::quat(cameraEuler);
+        // Rotation
+        m_CameraPitch -= Input->GetMousePosDelta().y * sensitivity;
+        m_CameraYaw -= Input->GetMousePosDelta().x * sensitivity;
+        m_CameraPitch = glm::clamp(m_CameraPitch, -maxAngle, maxAngle);
+        Camera.Rotation = quat(vec3(m_CameraPitch, m_CameraYaw, 0.0f));
 
         // Input
         vec3 movementDirection = vec3(0.0f);
