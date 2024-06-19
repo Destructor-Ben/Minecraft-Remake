@@ -25,6 +25,6 @@ namespace Minecraft
         void Log(const string& message, bool error = false);
         static string GetMessage(const string& message, const string& logLevel);
 
-        std::ofstream m_LogFile = {};
+        std::ofstream m_LogFile = { };
     };
 }

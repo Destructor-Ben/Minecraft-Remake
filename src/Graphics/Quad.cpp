@@ -41,17 +41,17 @@ namespace Minecraft
 
         return vertices;
     }
-/*
-    vector<Vertex> Quad::ToVertices(vector<Quad> quads)
-    {
-        auto vertices = vector<Vertex>();
-
-        for (auto quad : quads)
+    /*
+        vector<Vertex> Quad::ToVertices(vector<Quad> quads)
         {
-            vertices.insert_range(vertices.end(), quad.ToVertices());
-        }
+            auto vertices = vector<Vertex>();
 
-        return vertices;
-    }
-    */
+            for (auto quad : quads)
+            {
+                vertices.insert_range(vertices.end(), quad.ToVertices());
+            }
+
+            return vertices;
+        }
+        */
 }

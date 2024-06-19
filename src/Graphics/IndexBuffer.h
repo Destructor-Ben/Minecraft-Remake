@@ -13,7 +13,7 @@ namespace Minecraft
         void SetData(const vector<uint32>& data, GLenum usage = GL_STATIC_DRAW);
         void SetData(const uint32* data, uint32 count, GLenum usage = GL_STATIC_DRAW);
         void Bind();
-        
+
         uint32 GetID() const { return m_ID; }
         uint32 GetCount() const { return m_Count; }
 

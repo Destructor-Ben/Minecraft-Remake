@@ -18,6 +18,6 @@ namespace Minecraft
 
     vec3i Block::GetWorldPos() const
     {
-        return {m_Chunk.GetWorldPos().x + m_BlockX, m_Chunk.GetWorldPos().y + m_BlockY, m_Chunk.GetWorldPos().z + m_BlockZ};
+        return { m_Chunk.GetWorldPos().x + m_BlockX, m_Chunk.GetWorldPos().y + m_BlockY, m_Chunk.GetWorldPos().z + m_BlockZ };
     }
 }

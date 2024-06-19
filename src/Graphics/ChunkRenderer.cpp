@@ -86,7 +86,7 @@ namespace Minecraft
         const float Degrees180 = glm::radians(180.0f);
         const float Degrees90 = glm::radians(90.0f);
 
-        vector <Quad> faces;
+        vector<Quad> faces;
 
         for (int32 x = 0; x < Chunk::Size; ++x)
         {
