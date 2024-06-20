@@ -14,7 +14,7 @@ namespace Minecraft
 {
     ChunkRenderer::ChunkRenderer(class Renderer& renderer) : m_Renderer(renderer)
     {
-        auto texture = m_Renderer.RequestTexture("stone");
+        auto texture = m_Renderer.RequestTexture("chunk");
         auto shader = m_Renderer.RequestShader("shader");
         m_ChunkMaterial = make_shared<ChunkMaterial>(shader);
         m_ChunkMaterial->Texture = texture;
@@ -77,6 +77,9 @@ namespace Minecraft
         face.Position += vec3(dir) * 0.5f;
         face.Rotation = rotation;
         face.Shading = GetFaceShading(dir);
+        float32 sizeOfOneTexture = 1.0f / 8.0f;
+        face.UVMultiplier = vec2(sizeOfOneTexture);// TODO: don't hardcode texture size!
+        face.UVOffset = vec2(0.0f, 1.0f - sizeOfOneTexture - sizeOfOneTexture); // TODO: make different blocks have different textures | 8 comes from 128 / 16
         faces.push_back(face);
     }
 
