@@ -41,7 +41,8 @@ namespace Minecraft
 
     void LogManager::Throw(const string& message)
     {
-        throw std::runtime_error(format("{}\nStacktrace:\n{}", message, to_string(std::stacktrace::current())));
+        // TODO: stacktrace doesn't work on GCC
+        throw std::runtime_error(format("{}\nStacktrace:\n{}", message, ""));//to_string(std::stacktrace::current())));
     }
 
     void LogManager::Assert(bool condition)

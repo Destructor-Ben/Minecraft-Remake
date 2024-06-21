@@ -43,9 +43,12 @@ namespace Minecraft
         {
             auto data = vector<float32>();
 
+
             for (auto vertex : vertices)
             {
-                data.insert_range(data.end(), vertex.ToFloats());
+                auto floatVertex = vertex.ToFloats();
+
+                data.insert(data.end(), floatVertex.begin(), floatVertex.end());
             }
 
             return data;

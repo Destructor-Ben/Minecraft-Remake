@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.27)
 project(Minecraft_Remake VERSION 0.1.0 LANGUAGES CXX C)
 set(CMAKE_CXX_STANDARD 23)
 
+
 # Adding compiler flags for gcc so this compiled on Linux
 # Enables Microsoft extensions that allow certain variable naming conventions
 if (CMAKE_CXX_COMPILER_ID STREQUAL GNU)
