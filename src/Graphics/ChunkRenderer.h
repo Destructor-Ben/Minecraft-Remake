@@ -39,7 +39,7 @@ namespace Minecraft
         void CreateMesh(Chunk& chunk);
         void SetMeshData(Chunk& chunk, const vector<float32>& vertices, const vector<uint32>& indices);
 
-        void AddFaceInDirection(Chunk& chunk, Block& block, vector<Quad>& faces, vec3i dir, vec3 rotation);
+        void AddFaceInDirection(Chunk& chunk, Block& block, vector<Quad>& faces, vec3i dir, quat rotation);
         vector<Quad> GetChunkFaces(Chunk& chunk);
         vec4 GetFaceShading(vec3i dir);
 

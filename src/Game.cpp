@@ -7,7 +7,7 @@ namespace Minecraft
     // TODO: use correct typedefs, ensure namespaces, sort includes, use smart pointers for ownership, only include if necessary, use more forward declarations, use auto keyword, specify pointers and references with auto keyword
     // TODO: embed resources - use source generator https://stackoverflow.com/a/71906177/12259381
 
-    // TODO: use quaternions for rotation instead of euler angles
+    // TODO: fix the hierarchy structure of objects
     // TODO: blending
     // TODO: test loops properly
 
@@ -163,9 +163,9 @@ namespace Minecraft
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-#if DEBUG
+        #if DEBUG
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
-#endif
+        #endif
 
         const int InitialWidth = 1280;
         const int InitialHeight = 720;
@@ -189,11 +189,11 @@ namespace Minecraft
 
         gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
-#if DEBUG
+        #if DEBUG
         glEnable(GL_DEBUG_OUTPUT);
         glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
         glDebugMessageCallback(GLError, nullptr);
-#endif
+        #endif
 
         // Viewport settings
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);

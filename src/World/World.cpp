@@ -114,18 +114,15 @@ namespace Minecraft
         if (!m_IsMouseHidden)
             return;
 
-        const float cameraSpeed = 10.0f;
-        const float sensitivity = 0.1f;
-        const float maxAngle = 89.0f;
-        float speed = cameraSpeed * Time::DeltaTime;
+        const float sensitivity = 0.005f;
+        const float maxAngle = glm::radians(89.0f);
+        float speed = 10.0f * Time::DeltaTime;
 
         // Rotation
-        Camera.Rotation.x -= Input->GetMousePosDelta().y * sensitivity;
-        Camera.Rotation.y += Input->GetMousePosDelta().x * sensitivity;
-        Camera.Rotation.z = 0;
-
-        float& xRotation = Camera.Rotation.x;
-        xRotation = glm::clamp(xRotation, -maxAngle, maxAngle);
+        m_CameraPitch -= Input->GetMousePosDelta().y * sensitivity;
+        m_CameraYaw -= Input->GetMousePosDelta().x * sensitivity;
+        m_CameraPitch = glm::clamp(m_CameraPitch, -maxAngle, maxAngle);
+        Camera.Rotation = quat(vec3(m_CameraPitch, m_CameraYaw, 0.0f));
 
         // Input
         vec3 movementDirection = vec3(0.0f);
@@ -166,6 +163,9 @@ namespace Minecraft
             // Disable movement on the Y axis from WASD movement
             cameraForward.y = 0.0f;
             cameraForward = glm::normalize(cameraForward);
+
+            cameraRight.y = 0.0f;
+            cameraRight = glm::normalize(cameraRight);
 
             // Moving camera
             Camera.Position += cameraForward * -movementDirection.z * speed; // There is a negative sign here because movement direction -z is forward, but camera forward -z backwards

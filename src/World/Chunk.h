@@ -31,7 +31,7 @@ namespace Minecraft
         BlockData& GetBlockData(Block block) { return m_BlockData[block.GetID()]; }
 
         vec3i GetWorldPos() const { return GetChunkPos() * (int32)Size; }
-        vec3i GetChunkPos() const { return {m_ChunkX, m_ChunkY, m_ChunkZ}; }
+        vec3i GetChunkPos() const { return { m_ChunkX, m_ChunkY, m_ChunkZ }; }
 
         void RegenerateMesh();
 
@@ -44,6 +44,6 @@ namespace Minecraft
         int32 m_ChunkY = 0;
         int32 m_ChunkZ = 0;
 
-        array<BlockData, Volume> m_BlockData = {};
+        array<BlockData, Volume> m_BlockData = { };
     };
 }

@@ -14,7 +14,7 @@ namespace Minecraft
 {
     ChunkRenderer::ChunkRenderer(class Renderer& renderer) : m_Renderer(renderer)
     {
-        auto texture = m_Renderer.RequestTexture("stone");
+        auto texture = m_Renderer.RequestTexture("chunk");
         auto shader = m_Renderer.RequestShader("shader");
         m_ChunkMaterial = make_shared<ChunkMaterial>(shader);
         m_ChunkMaterial->Texture = texture;
@@ -63,7 +63,7 @@ namespace Minecraft
         m_ChunkMeshes[&chunk]->GetIndexBuffer(m_ChunkMaterial)->SetData(indices);
     }
 
-    void ChunkRenderer::AddFaceInDirection(Chunk& chunk, Block& block, vector<Quad>& faces, vec3i dir, vec3 rotation)
+    void ChunkRenderer::AddFaceInDirection(Chunk& chunk, Block& block, vector<Quad>& faces, vec3i dir, quat rotation)
     {
         // Getting other block
         auto otherBlockWorldPos = vec3i(block.GetWorldPos().x + dir.x, block.GetWorldPos().y + dir.y, block.GetWorldPos().z + dir.z);
@@ -77,12 +77,18 @@ namespace Minecraft
         face.Position += vec3(dir) * 0.5f;
         face.Rotation = rotation;
         face.Shading = GetFaceShading(dir);
+        float32 sizeOfOneTexture = 1.0f / 8.0f;
+        face.UVMultiplier = vec2(sizeOfOneTexture);// TODO: don't hardcode texture size!
+        face.UVOffset = vec2(0.0f, 1.0f - sizeOfOneTexture - sizeOfOneTexture); // TODO: make different blocks have different textures | 8 comes from 128 / 16
         faces.push_back(face);
     }
 
     // TODO: fix rotations - might be an issue with transforms
     vector<Quad> ChunkRenderer::GetChunkFaces(Chunk& chunk)
     {
+        const float Degrees180 = glm::radians(180.0f);
+        const float Degrees90 = glm::radians(90.0f);
+
         vector<Quad> faces;
 
         for (int32 x = 0; x < Chunk::Size; ++x)
@@ -95,14 +101,15 @@ namespace Minecraft
                     if (block.GetData().Type == BlockType::Air)
                         continue;
 
+                    // TODO: verify that faces are pointig up properly
                     AddFaceInDirection(chunk, block, faces, vec3i(0, 1, 0), vec3(0, 0, 0));
-                    AddFaceInDirection(chunk, block, faces, vec3i(0, -1, 0), vec3(180, 0, 0));
+                    AddFaceInDirection(chunk, block, faces, vec3i(0, -1, 0), vec3(Degrees180, 0, 0));
 
-                    AddFaceInDirection(chunk, block, faces, vec3i(1, 0, 0), vec3(0, 0, -90));
-                    AddFaceInDirection(chunk, block, faces, vec3i(-1, 0, 0), vec3(0, 0, 90));
+                    AddFaceInDirection(chunk, block, faces, vec3i(1, 0, 0), vec3(0, 0, -Degrees90));
+                    AddFaceInDirection(chunk, block, faces, vec3i(-1, 0, 0), vec3(0, 0, Degrees90));
 
-                    AddFaceInDirection(chunk, block, faces, vec3i(0, 0, 1), vec3(90, 0, 0));
-                    AddFaceInDirection(chunk, block, faces, vec3i(0, 0, -1), vec3(-90, 0, 0));
+                    AddFaceInDirection(chunk, block, faces, vec3i(0, 0, 1), vec3(Degrees90, 0, 0));
+                    AddFaceInDirection(chunk, block, faces, vec3i(0, 0, -1), vec3(-Degrees90, 0, 0));
                 }
             }
         }

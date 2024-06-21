@@ -4,11 +4,7 @@ namespace Minecraft
 {
     vec3 Transform::GetForwardVector() const
     {
-        vec3 forward;
-        forward.x = cos(glm::radians(Rotation.y)) * cos(glm::radians(Rotation.x));
-        forward.y = sin(glm::radians(Rotation.x));
-        forward.z = sin(glm::radians(Rotation.y)) * cos(glm::radians(Rotation.x));
-        return glm::normalize(forward);
+        return glm::rotate(Rotation, vec3(0.0f, 0.0f, -1.0f));
     }
 
     vec3 Transform::GetRightVector() const
@@ -18,7 +14,7 @@ namespace Minecraft
 
     vec3 Transform::GetUpVector() const
     {
-        return glm::normalize(vec3(sin(Rotation.z), cos(Rotation.z), 0));
+        return glm::rotate(Rotation, vec3(0.0f, 1.0f, 0.0f));
     }
 
     vec3 Transform::GetBackwardVector() const
@@ -38,13 +34,9 @@ namespace Minecraft
 
     mat4 Transform::GetTransformationMatrix() const
     {
-        mat4 transform(1.0f);
-        transform = glm::translate(transform, Position);
-        // TODO: test if this is correct - it appears to be, but the transform may have the incorrect default angles +
-        transform = glm::rotate(transform, glm::radians(Rotation.x), vec3(1.0f, 0.0f, 0.0f));
-        transform = glm::rotate(transform, glm::radians(Rotation.y), vec3(0.0f, 1.0f, 0.0f));
-        transform = glm::rotate(transform, glm::radians(Rotation.z), vec3(0.0f, 0.0f, 1.0f));
-        transform = glm::scale(transform, Scale);
-        return transform;
+        mat4 scaleMatrix = glm::scale(Scale);
+        mat4 rotationMatrix = glm::toMat4(Rotation);
+        mat4 translationMatrix = glm::translate(Position);
+        return translationMatrix * rotationMatrix * scaleMatrix;
     }
 }

@@ -10,7 +10,6 @@ namespace Minecraft
     class Camera : public Transform
     {
     public:
-        Camera();
         bool IsPerspective = true;
 
         float32 FOV = 45.0f;

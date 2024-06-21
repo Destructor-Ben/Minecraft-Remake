@@ -21,7 +21,7 @@ namespace Minecraft
         BlockData& GetData();
 
         vec3i GetWorldPos() const;
-        vec3i GetBlockPos() const { return {m_BlockX, m_BlockY, m_BlockZ}; }
+        vec3i GetBlockPos() const { return { m_BlockX, m_BlockY, m_BlockZ }; }
 
     private:
         Chunk& m_Chunk;

@@ -36,22 +36,24 @@ namespace Minecraft
 
             vertex.Position = vec3(GetTransformationMatrix() * vec4(vertex.Position, 1.0f));
             vertex.Shading = Shading;
+            vertex.UV *= UVMultiplier;
+            vertex.UV += UVOffset;
             vertices.push_back(vertex);
         }
 
         return vertices;
     }
-/*
-    vector<Vertex> Quad::ToVertices(vector<Quad> quads)
-    {
-        auto vertices = vector<Vertex>();
-
-        for (auto quad : quads)
+    /*
+        vector<Vertex> Quad::ToVertices(vector<Quad> quads)
         {
-            vertices.insert_range(vertices.end(), quad.ToVertices());
-        }
+            auto vertices = vector<Vertex>();
 
-        return vertices;
-    }
-    */
+            for (auto quad : quads)
+            {
+                vertices.insert_range(vertices.end(), quad.ToVertices());
+            }
+
+            return vertices;
+        }
+        */
 }
