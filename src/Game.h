@@ -9,6 +9,7 @@
 #include "Graphics/Renderer.h"
 #include "World/World.h"
 
+// TODO: the tick loop needs to be on the same thread as the update loop
 namespace Minecraft
 {
     class LogManager;
@@ -25,6 +26,7 @@ namespace Minecraft
     inline std::thread::id MainThreadID = std::thread::id();
     inline shared_ptr<std::thread> TickThread = nullptr;
 
+    // TODO: make a resourcemanager class
     string ReadResourceText(string path);
     vector<uint8> ReadResourceBytes(string path);
 
