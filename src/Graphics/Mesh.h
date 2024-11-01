@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Common.h"
-
 namespace Minecraft
 {
     class Material;

@@ -17,5 +17,8 @@ add_subdirectory(Input)
 add_subdirectory(Noise)
 add_subdirectory(World)
 
+# Auto include Common.h in all files
+target_precompile_headers(Minecraft_Remake PRIVATE "Common.h")
+
 # Allows includes from src e.g. #include "Common.h"
 target_include_directories(Minecraft_Remake PRIVATE .)

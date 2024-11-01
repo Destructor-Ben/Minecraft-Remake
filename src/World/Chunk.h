@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Common.h"
-
 #include "Block.h"
 #include "BlockData.h"
 #include "BlockType.h"
@@ -44,6 +42,6 @@ namespace Minecraft
         int32 m_ChunkY = 0;
         int32 m_ChunkZ = 0;
 
-        array<BlockData, Volume> m_BlockData = { };
+        array <BlockData, Volume> m_BlockData = { };
     };
 }

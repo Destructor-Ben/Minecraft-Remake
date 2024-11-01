@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Common.h"
-
 #include "World/Transform.h"
 
 #include "Vertex.h"
@@ -17,11 +15,11 @@ namespace Minecraft
         vec2 UVMultiplier = vec2(1.0f);
         vec2 UVOffset = vec2(0.0f);
 
-        vector<Vertex> ToVertices();
+        vector <Vertex> ToVertices();
         //static vector<Vertex> ToVertices(vector<Quad> quads);
 
 
-        static vector<Vertex> ToVertices(vector<Quad> quads)
+        static vector <Vertex> ToVertices(vector <Quad> quads)
         {
             auto vertices = vector<Vertex>();
 

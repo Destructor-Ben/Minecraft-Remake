@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Common.h"
-
 #include "World/Chunk.h"
 #include "Noise/Perlin.h"
 #include "LogManager.h"

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "src/Common.h"
-
 #include "Noise.h"
 
 namespace Minecraft

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Common.h"
-
 namespace Minecraft
 {
     // Base + instanced class that handles transformations in a 3D world

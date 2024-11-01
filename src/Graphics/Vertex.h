@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Common.h"
-
 // TODO: what the fuck is wrong with the linker, the actual code for the functions only works when it's in all of the headers - fix in Vertex and Quad
 
 namespace Minecraft
@@ -42,7 +40,6 @@ namespace Minecraft
         static vector<float32> ToFloats(vector<Vertex> vertices)
         {
             auto data = vector<float32>();
-
 
             for (auto vertex : vertices)
             {

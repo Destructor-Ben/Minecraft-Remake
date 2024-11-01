@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Common.h"
-
 // Implementation of an automatic hashing system for unordered_map
 // Based on https://stackoverflow.com/a/38140932/12259381
 

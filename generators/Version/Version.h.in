@@ -1,5 +1,3 @@
-#include "Common.h"
-
 namespace Minecraft::Version
 {
     constexpr int32 Major = @CMAKE_PROJECT_VERSION_MAJOR@;

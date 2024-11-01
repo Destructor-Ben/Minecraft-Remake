@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Common.h"
-
 #include "World/BlockType.h"
 
 namespace Minecraft

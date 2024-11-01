@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Common.h"
-
 #include "Game.h"
 #include "Input/Key.h"
 #include "Input/MouseButton.h"

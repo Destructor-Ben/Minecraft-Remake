@@ -11,6 +11,7 @@ endif ()
 
 # Resources
 file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY data DESTINATION ${CMAKE_BINARY_DIR})
 file(COPY lang DESTINATION ${CMAKE_BINARY_DIR})
 
 # Main executable
