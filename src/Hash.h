@@ -7,10 +7,10 @@
 
 namespace Minecraft
 {
-    inline void HashCombine(std::size_t & seed) { }
+    inline void HashCombine(std::size_t& seed) { }
 
     template<typename T, typename... Rest>
-    inline void HashCombine(std::size_t & seed, const T& v, Rest ... rest)
+    inline void HashCombine(std::size_t& seed, const T& v, Rest ... rest)
     {
         std::hash<T> hash;
         seed ^= hash(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
@@ -29,7 +29,7 @@ namespace Minecraft
     };
 }
 
-/* TODO: get hashes working again
+/* TODO: get auto hashes working again
 // Making types hashable
 #define MINECRAFT_MAKE_HASHABLE(type, ...) \
     template<>\
@@ -41,5 +41,5 @@ namespace Minecraft
         }\
     };
 
-//MINECRAFT_MAKE_HASHABLE(Minecraft::vec3i, t.x, t.y, t.z)
-*/
+MINECRAFT_MAKE_HASHABLE(Minecraft::vec3i, t.x, t.y, t.z)
+//*/
