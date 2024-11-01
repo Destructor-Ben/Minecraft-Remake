@@ -4,6 +4,7 @@
 
 namespace Minecraft
 {
+    // TODO: reorganise folders, probably into Core, Client, Common, and Server
     // TODO: use correct typedefs, ensure namespaces, sort includes, use smart pointers for ownership, only include if necessary, use more forward declarations, use auto keyword, specify pointers and references with auto keyword
     // TODO: embed resources - use source generator https://stackoverflow.com/a/71906177/12259381
 
