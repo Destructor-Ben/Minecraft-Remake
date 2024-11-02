@@ -10,6 +10,10 @@ add_executable(Minecraft_Remake
     LogManager.cpp
     LogManager.h
     Main.cpp
+    Timers.h
+    Transform.cpp
+    Transform.h
+    Window.h
 )
 
 add_subdirectory(Graphics)
@@ -20,5 +24,5 @@ add_subdirectory(World)
 # Auto include Common.h in all files
 target_precompile_headers(Minecraft_Remake PRIVATE "Common.h")
 
-# Allows includes from src e.g. #include "Common.h"
+# Allows includes from src e.g. #include "Game.h"
 target_include_directories(Minecraft_Remake PRIVATE .)

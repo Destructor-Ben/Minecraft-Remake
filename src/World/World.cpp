@@ -1,7 +1,12 @@
 #include "World.h"
 
 #include "Game.h"
+#include "LogManager.h"
+#include "Timers.h"
+#include "Window.h"
 #include "Input/InputManager.h"
+#include "Graphics/Renderers/ChunkRenderer.h"
+#include "Graphics/Renderers/Renderer.h"
 
 namespace Minecraft
 {
@@ -75,7 +80,7 @@ namespace Minecraft
         return nullopt;
     }
 
-    optional<Block> World::GetBlock(vec3i pos)
+    optional <Block> World::GetBlock(vec3i pos)
     {
         // Calculate coordinates
         vec3i chunkPos = pos / (int32)Chunk::Size;
@@ -116,7 +121,7 @@ namespace Minecraft
 
         const float sensitivity = 0.005f;
         const float maxAngle = glm::radians(89.0f);
-        float speed = 10.0f * Time::DeltaTime;
+        float speed = 10.0f * Timers::DeltaTime;
 
         // Rotation
         m_CameraPitch -= Input->GetMousePosDelta().y * sensitivity;

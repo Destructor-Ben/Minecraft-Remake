@@ -3,6 +3,7 @@
 #include <stacktrace>
 
 #include "Game.h"
+#include "Version.h"
 
 namespace Minecraft
 {

@@ -1,11 +1,8 @@
 #pragma once
 
-#include "Chunk.h"
 #include "Hash.h"
-#include "Graphics/ChunkRenderer.h"
-#include "Graphics/Renderer.h"
 #include "Graphics/Camera.h"
-#include "Graphics/Texture.h"
+#include "World/Chunk.h"
 #include "World/Generation/WorldGenerator.h"
 
 namespace Minecraft

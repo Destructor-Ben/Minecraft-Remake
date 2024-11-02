@@ -1,9 +1,8 @@
 #include "Vertex.h"
 
-/*
 namespace Minecraft
 {
-    vector<float32> Vertex::ToFloats()
+    vector <float32> Vertex::ToFloats()
     {
         auto data = vector<float32>();
 
@@ -22,7 +21,7 @@ namespace Minecraft
         return data;
     }
 
-    vector<float32> Vertex::ToFloats(vector<Vertex> vertices)
+    vector <float32> Vertex::ToFloats(vector <Vertex> vertices)
     {
         auto data = vector<float32>();
 
@@ -34,7 +33,7 @@ namespace Minecraft
         return data;
     }
 
-    vector<uint32> Vertex::ToIndices(vector<Vertex> vertices)
+    vector <uint32> Vertex::ToIndices(vector <Vertex> vertices)
     {
         auto indices = vector<uint32>();
 
@@ -57,4 +56,3 @@ namespace Minecraft
         return indices;
     }
 }
-*/

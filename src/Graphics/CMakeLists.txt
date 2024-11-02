@@ -1,10 +1,9 @@
 target_sources(Minecraft_Remake PRIVATE
     Camera.cpp
     Camera.h
-    ChunkRenderer.cpp
-    ChunkRenderer.h
     FragmentShader.cpp
     FragmentShader.h
+    GL.h
     IndexBuffer.cpp
     IndexBuffer.h
     Material.cpp
@@ -13,8 +12,6 @@ target_sources(Minecraft_Remake PRIVATE
     Mesh.h
     Quad.cpp
     Quad.h
-    Renderer.cpp
-    Renderer.h
     Shader.cpp
     Shader.h
     Texture.cpp
@@ -28,3 +25,5 @@ target_sources(Minecraft_Remake PRIVATE
     VertexShader.cpp
     VertexShader.h
 )
+
+add_subdirectory(Renderers)

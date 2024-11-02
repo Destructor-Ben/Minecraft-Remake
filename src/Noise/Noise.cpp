@@ -2,6 +2,7 @@
 
 #include <numbers>
 
+// TODO: redo all noise because I think it's slightly broken?
 namespace Minecraft
 {
     // Hugo Elias hash function

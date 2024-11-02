@@ -1,14 +1,10 @@
 #include "ChunkRenderer.h"
 
-#include "Game.h"
-#include "Graphics/IndexBuffer.h"
-#include "Graphics/Quad.h"
-#include "Graphics/Renderer.h"
-#include "Graphics/Texture.h"
-#include "Graphics/Shader.h"
-#include "Graphics/Vertex.h"
-#include "Graphics/VertexArray.h"
-#include "Graphics/VertexBuffer.h"
+#include "Graphics/GL.h"
+#include "Graphics/Renderers/ChunkMaterial.h"
+#include "Graphics/Renderers/Renderer.h"
+#include "World/Chunk.h"
+#include "World/World.h"
 
 namespace Minecraft
 {
@@ -57,13 +53,13 @@ namespace Minecraft
         m_ChunkMeshes[&chunk] = mesh;
     }
 
-    void ChunkRenderer::SetMeshData(Chunk& chunk, const vector<float32>& vertices, const vector<uint32>& indices)
+    void ChunkRenderer::SetMeshData(Chunk& chunk, const vector <float32>& vertices, const vector <uint32>& indices)
     {
         m_ChunkMeshes[&chunk]->Vertices->GetBuffer()->SetData(vertices);
         m_ChunkMeshes[&chunk]->GetIndexBuffer(m_ChunkMaterial)->SetData(indices);
     }
 
-    void ChunkRenderer::AddFaceInDirection(Chunk& chunk, Block& block, vector<Quad>& faces, vec3i dir, quat rotation)
+    void ChunkRenderer::AddFaceInDirection(Chunk& chunk, Block& block, vector <Quad>& faces, vec3i dir, quat rotation)
     {
         // Getting other block
         auto otherBlockWorldPos = vec3i(block.GetWorldPos().x + dir.x, block.GetWorldPos().y + dir.y, block.GetWorldPos().z + dir.z);
@@ -84,12 +80,12 @@ namespace Minecraft
     }
 
     // TODO: fix rotations - might be an issue with transforms
-    vector<Quad> ChunkRenderer::GetChunkFaces(Chunk& chunk)
+    vector <Quad> ChunkRenderer::GetChunkFaces(Chunk& chunk)
     {
         const float Degrees180 = glm::radians(180.0f);
         const float Degrees90 = glm::radians(90.0f);
 
-        vector<Quad> faces;
+        vector <Quad> faces;
 
         for (int32 x = 0; x < Chunk::Size; ++x)
         {
@@ -138,11 +134,4 @@ namespace Minecraft
         return vec4(strength, strength, strength, 1.0f);
     }
 
-    void ChunkRenderer::ChunkMaterial::Bind()
-    {
-        Material::Bind();
-
-        Texture->BindTextureUnit(0);
-        m_Shader->SetUniform("uTexture", 0);
-    }
 }

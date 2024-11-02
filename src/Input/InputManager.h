@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Game.h"
 #include "Input/Key.h"
 #include "Input/MouseButton.h"
 
@@ -27,14 +26,10 @@ namespace Minecraft
         bool WasKeyPressed(Key key) const { return m_KeysPressedThisFrame[(int32)key] && !m_KeysPressedLastFrame[(int32)key];; }
         bool WasKeyReleased(Key key) const { return !m_KeysPressedThisFrame[(int32)key] && m_KeysPressedLastFrame[(int32)key]; }
 
-        static bool IsCursorDisabled() { return glfwGetInputMode(Window::Handle, GLFW_CURSOR) == GLFW_CURSOR_DISABLED; }
-        static void SetCursorDisabled(bool disabled) { glfwSetInputMode(Window::Handle, GLFW_CURSOR, disabled ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL); }
-        static bool IsRawMouseMotionEnabled() { return glfwGetInputMode(Window::Handle, GLFW_RAW_MOUSE_MOTION) == GLFW_TRUE; }
-        static void SetRawMouseMotion(bool isRaw)
-        {
-            if (glfwRawMouseMotionSupported())
-                glfwSetInputMode(Window::Handle, GLFW_RAW_MOUSE_MOTION, isRaw ? GLFW_TRUE : GLFW_FALSE);
-        }
+        inline static bool IsCursorDisabled();
+        inline static void SetCursorDisabled(bool disabled);
+        inline static bool IsRawMouseMotionEnabled();
+        inline static void SetRawMouseMotion(bool isRaw);
 
         void Update();
         void UpdateScroll(float32 xOffset, float32 yOffset);

@@ -2,8 +2,8 @@
 
 namespace Minecraft
 {
-    class Material;
     class IndexBuffer;
+    class Material;
     class VertexArray;
 
     class Mesh

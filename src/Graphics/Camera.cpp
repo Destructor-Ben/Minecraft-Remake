@@ -1,6 +1,6 @@
 #include "Camera.h"
 
-#include "Game.h"
+#include "Window.h"
 
 namespace Minecraft
 {

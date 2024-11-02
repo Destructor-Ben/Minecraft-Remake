@@ -4,9 +4,9 @@
 
 namespace Minecraft
 {
-    vector<Vertex> Quad::ToVertices()
+    vector <Vertex> Quad::ToVertices()
     {
-        vector<Vertex> vertices { };
+        vector <Vertex> vertices { };
 
         for (int32 i = 0; i < 4; ++i)
         {
@@ -43,17 +43,16 @@ namespace Minecraft
 
         return vertices;
     }
-    /*
-        vector<Vertex> Quad::ToVertices(vector<Quad> quads)
+
+    vector <Vertex> Quad::ToVertices(vector <Quad> quads)
+    {
+        auto vertices = vector<Vertex>();
+
+        for (auto quad : quads)
         {
-            auto vertices = vector<Vertex>();
-
-            for (auto quad : quads)
-            {
-                vertices.insert_range(vertices.end(), quad.ToVertices());
-            }
-
-            return vertices;
+            vertices.insert_range(vertices.end(), quad.ToVertices());
         }
-        */
+
+        return vertices;
+    }
 }

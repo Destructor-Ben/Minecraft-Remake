@@ -20,6 +20,7 @@ namespace Minecraft
         static void Unbind();
 
     private:
+        // TODO: cache uniform locations
         int32 GetUniformLocation(const string& name);
 
         uint32 m_ID = 0;

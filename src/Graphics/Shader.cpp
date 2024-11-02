@@ -1,6 +1,7 @@
 #include "Shader.h"
 
 #include "Game.h"
+#include "LogManager.h"
 #include "Graphics/VertexShader.h"
 #include "Graphics/FragmentShader.h"
 
@@ -22,7 +23,6 @@ namespace Minecraft
     void Shader::Bind()
     {
         glUseProgram(m_ID);
-        SetUniform("", 0.0f);
     }
 
     #pragma region Uniforms
@@ -30,7 +30,7 @@ namespace Minecraft
     template<typename T>
     void Shader::SetUniform(const string& name, T value)
     {
-        Logger->Throw("Unsupported data type for setting uniforms");
+        Logger->Throw("Unsupported data type for shader uniform");
     }
 
     #define UNIFORM_FUNCTION(type, function) \

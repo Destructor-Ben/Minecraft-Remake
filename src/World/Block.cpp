@@ -1,6 +1,6 @@
 #include "Block.h"
 
-#include "Chunk.h"
+#include "World/Chunk.h"
 
 namespace Minecraft
 {

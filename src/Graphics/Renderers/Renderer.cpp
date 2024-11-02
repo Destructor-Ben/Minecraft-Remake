@@ -1,16 +1,9 @@
 #include "Renderer.h"
 
 #include "Game.h"
-#include "Graphics/Camera.h"
-#include "Graphics/ChunkRenderer.h"
-#include "Graphics/FragmentShader.h"
-#include "Graphics/IndexBuffer.h"
-#include "Graphics/Mesh.h"
-#include "Graphics/Shader.h"
-#include "Graphics/Texture.h"
-#include "Graphics/VertexArray.h"
-#include "Graphics/VertexBuffer.h"
-#include "Graphics/VertexShader.h"
+#include "LogManager.h"
+#include "Graphics/GL.h"
+#include "Graphics/Renderers/ChunkRenderer.h"
 
 namespace Minecraft
 {
@@ -39,7 +32,7 @@ namespace Minecraft
         mesh.Draw(ProjectionMatrix * ViewMatrix * transform);
     }
 
-    shared_ptr<Texture> Renderer::RequestTexture(string path)
+    shared_ptr <Texture> Renderer::RequestTexture(string path)
     {
         if (m_Textures.contains(path))
             return m_Textures[path];
@@ -64,7 +57,7 @@ namespace Minecraft
         return texture;
     }
 
-    shared_ptr<Shader> Renderer::RequestShader(string path)
+    shared_ptr <Shader> Renderer::RequestShader(string path)
     {
         if (m_Shaders.contains(path))
             return m_Shaders[path];
@@ -77,7 +70,7 @@ namespace Minecraft
         return shader;
     }
 
-    shared_ptr<VertexShader> Renderer::RequestVertexShader(string path)
+    shared_ptr <VertexShader> Renderer::RequestVertexShader(string path)
     {
         if (m_VertexShaders.contains(path))
             return m_VertexShaders[path];
@@ -90,7 +83,7 @@ namespace Minecraft
         return shader;
     }
 
-    shared_ptr<FragmentShader> Renderer::RequestFragmentShader(string path)
+    shared_ptr <FragmentShader> Renderer::RequestFragmentShader(string path)
     {
         if (m_FragmentShaders.contains(path))
             return m_FragmentShaders[path];

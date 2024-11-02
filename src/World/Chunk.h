@@ -1,11 +1,7 @@
 #pragma once
 
-#include "Block.h"
-#include "BlockData.h"
-#include "BlockType.h"
-#include "Graphics/Mesh.h"
-#include "Graphics/Texture.h"
-#include "Graphics/Quad.h"
+#include "World/Block.h"
+#include "World/BlockData.h"
 
 namespace Minecraft
 {

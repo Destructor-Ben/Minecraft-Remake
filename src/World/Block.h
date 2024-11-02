@@ -1,10 +1,8 @@
 #pragma once
 
-#include "BlockData.h"
-
 namespace Minecraft
 {
-    // Forward declare since we can't include Chunk.h since it includes this file
+    class BlockData;
     class Chunk;
 
     // Blocks are essentially an index to actual data, similar to an ECS

@@ -1,8 +1,6 @@
 #pragma once
 
-#include "World/Transform.h"
-
-#include "Vertex.h"
+#include "Transform.h"
 
 namespace Minecraft
 {
@@ -16,20 +14,6 @@ namespace Minecraft
         vec2 UVOffset = vec2(0.0f);
 
         vector <Vertex> ToVertices();
-        //static vector<Vertex> ToVertices(vector<Quad> quads);
-
-
-        static vector <Vertex> ToVertices(vector <Quad> quads)
-        {
-            auto vertices = vector<Vertex>();
-
-            for (auto quad : quads)
-            {
-                auto quadVertices = quad.ToVertices();
-                vertices.insert(vertices.end(), quadVertices.begin(), quadVertices.end());
-            }
-
-            return vertices;
-        }
+        static vector <Vertex> ToVertices(vector <Quad> quads);
     };
 }

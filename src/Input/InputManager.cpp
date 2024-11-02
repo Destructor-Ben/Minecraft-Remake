@@ -1,5 +1,7 @@
 #include "InputManager.h"
 
+#include "Window.h"
+
 namespace Minecraft
 {
     // TODO: typing input
@@ -264,6 +266,15 @@ namespace Minecraft
         }
     }
 
+    bool InputManager::IsCursorDisabled() { return glfwGetInputMode(Window::Handle, GLFW_CURSOR) == GLFW_CURSOR_DISABLED; }
+    void InputManager::SetCursorDisabled(bool disabled) { glfwSetInputMode(Window::Handle, GLFW_CURSOR, disabled ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL); }
+    bool InputManager::IsRawMouseMotionEnabled() { return glfwGetInputMode(Window::Handle, GLFW_RAW_MOUSE_MOTION) == GLFW_TRUE; }
+    void InputManager::SetRawMouseMotion(bool isRaw)
+    {
+        if (glfwRawMouseMotionSupported())
+            glfwSetInputMode(Window::Handle, GLFW_RAW_MOUSE_MOTION, isRaw ? GLFW_TRUE : GLFW_FALSE);
+    }
+
     void InputManager::Update()
     {
         // Cursor
@@ -305,6 +316,7 @@ namespace Minecraft
         }
     }
 
+    // TODO: x axis scrolling
     void InputManager::UpdateScroll(float32 xOffset, float32 yOffset)
     {
         m_ScrollDelta = yOffset;

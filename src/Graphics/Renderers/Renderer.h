@@ -1,7 +1,5 @@
 #pragma once
 
-// If we wanted to, we could make the graphics framework more bulletproof and add more abstractions for things like enums and checks if methods have already been called, but I'm lazy
-
 namespace Minecraft
 {
     class Camera;

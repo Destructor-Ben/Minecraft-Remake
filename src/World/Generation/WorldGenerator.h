@@ -1,19 +1,16 @@
 #pragma once
 
-#include "World/Chunk.h"
-#include "Noise/Perlin.h"
-#include "LogManager.h"
-
 namespace Minecraft
 {
-    // Forward declare, just in case
+    class Block;
+    class Chunk;
     class World;
 
     class WorldGenerator
     {
     public:
         WorldGenerator() = default;
-        explicit WorldGenerator(class World* world, uint32 seed = 0);
+        explicit WorldGenerator(World* world, uint32 seed = 0);
 
         // Generates the initial chunks in a world
         void Generate();

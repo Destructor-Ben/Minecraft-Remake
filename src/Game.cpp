@@ -1,16 +1,21 @@
 #include "Game.h"
 
+#include "LogManager.h"
+#include "Timers.h"
+#include "Version.h"
+#include "Window.h"
 #include "Input/InputManager.h"
+#include "Graphics/Renderers/Renderer.h"
+#include "World/World.h"
 
 namespace Minecraft
 {
-    // TODO: reorganise folders, probably into Core, Client, Common, and Server
-    // TODO: use correct typedefs, ensure namespaces, sort includes, use smart pointers for ownership, only include if necessary, use more forward declarations, use auto keyword, specify pointers and references with auto keyword
     // TODO: embed resources - use source generator https://stackoverflow.com/a/71906177/12259381
-
     // TODO: fix the hierarchy structure of objects
     // TODO: blending
     // TODO: test loops properly
+    // TODO: the tick loop needs to be on the same thread as the update loop
+    // TODO: make a resourcemanager class
 
     #pragma region Resources
 
@@ -26,13 +31,13 @@ namespace Minecraft
         return buffer.str();
     }
 
-    vector<uint8> ReadResourceBytes(string path)
+    vector <uint8> ReadResourceBytes(string path)
     {
         std::ifstream stream(path, std::ios::binary);
         if (stream.fail())
             Logger->Throw("Failed to load resource at path: " + path);
 
-        vector<uint8> bytes((std::istreambuf_iterator<char>(stream)), std::istreambuf_iterator<char>());
+        vector <uint8> bytes((std::istreambuf_iterator<char>(stream)), std::istreambuf_iterator<char>());
         stream.close();
         return bytes;
     }
@@ -278,7 +283,7 @@ namespace Minecraft
     #define LOOP_DELAY(tickRate) \
         double iterations = glfwGetTime() * tickRate;\
         double nextStart = (iterations + 1) / tickRate;\
-        std::this_thread::sleep_until(Time::StartTime + chrono::duration<double>(nextStart));
+        std::this_thread::sleep_until(Timers::StartTime + chrono::duration<double>(nextStart));
 
     #define UPDATE_LOOP_VARIABLES(wallTime, deltaTime, loopRate, count) \
         deltaTime = (float32)glfwGetTime() - wallTime;\
@@ -295,7 +300,7 @@ namespace Minecraft
             Tick();
 
             LOOP_DELAY(Window::TargetTickRate)
-            UPDATE_LOOP_VARIABLES(Time::FixedWallTime, Time::FixedDeltaTime, Time::TickRate, Time::TickCount)
+            UPDATE_LOOP_VARIABLES(Timers::FixedWallTime, Timers::FixedDeltaTime, Timers::TickRate, Timers::TickCount)
         }
 
         Logger->Info("Exited tick thread");
@@ -304,7 +309,7 @@ namespace Minecraft
     void Run()
     {
         glfwSetTime(0);
-        Time::StartTime = chrono::steady_clock::now();
+        Timers::StartTime = chrono::steady_clock::now();
         TickThread = make_shared<std::thread>(RunTickLoop);
         Logger->Info("Running window...");
 
@@ -321,7 +326,7 @@ namespace Minecraft
             glfwSwapBuffers(Window::Handle);
             glfwPollEvents();
 
-            UPDATE_LOOP_VARIABLES(Time::WallTime, Time::DeltaTime, Time::FrameRate, Time::UpdateCount)
+            UPDATE_LOOP_VARIABLES(Timers::WallTime, Timers::DeltaTime, Timers::FrameRate, Timers::UpdateCount)
 
             Running = !glfwWindowShouldClose(Window::Handle);
         }

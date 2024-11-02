@@ -5,8 +5,6 @@ target_sources(Minecraft_Remake PRIVATE
     BlockType.h
     Chunk.cpp
     Chunk.h
-    Transform.cpp
-    Transform.h
     World.cpp
     World.h
 )
