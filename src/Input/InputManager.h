@@ -26,10 +26,10 @@ namespace Minecraft
         bool WasKeyPressed(Key key) const { return m_KeysPressedThisFrame[(int32)key] && !m_KeysPressedLastFrame[(int32)key];; }
         bool WasKeyReleased(Key key) const { return !m_KeysPressedThisFrame[(int32)key] && m_KeysPressedLastFrame[(int32)key]; }
 
-        inline static bool IsCursorDisabled();
-        inline static void SetCursorDisabled(bool disabled);
-        inline static bool IsRawMouseMotionEnabled();
-        inline static void SetRawMouseMotion(bool isRaw);
+        static bool IsCursorDisabled();
+        static void SetCursorDisabled(bool disabled);
+        static bool IsRawMouseMotionEnabled();
+        static void SetRawMouseMotion(bool isRaw);
 
         void Update();
         void UpdateScroll(float32 xOffset, float32 yOffset);
