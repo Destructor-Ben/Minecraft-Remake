@@ -4,13 +4,12 @@ namespace Minecraft
 {
     class Block;
     class Chunk;
-    class World;
 
     class WorldGenerator
     {
     public:
         WorldGenerator() = default;
-        explicit WorldGenerator(World* world, uint32 seed = 0);
+        explicit WorldGenerator(class World* world, uint32 seed = 0);
 
         // Generates the initial chunks in a world
         void Generate();
@@ -29,7 +28,7 @@ namespace Minecraft
         int16 GenerateHeightAtBlock(float VerticalScale, float HorizontalScale, uint32 seed, Block& block, double Persistence, double OctaveCount);
 
     private:
-        World* m_World = nullptr;
+        class World* m_World = nullptr;
         uint32 m_Seed = 0;
     };
 }
