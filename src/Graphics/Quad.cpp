@@ -4,6 +4,7 @@
 
 namespace Minecraft
 {
+    /*
     vector <Vertex> Quad::ToVertices()
     {
         vector <Vertex> vertices { };
@@ -55,4 +56,5 @@ namespace Minecraft
 
         return vertices;
     }
+     */
 }

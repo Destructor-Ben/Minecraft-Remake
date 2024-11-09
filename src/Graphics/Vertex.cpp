@@ -2,6 +2,7 @@
 
 namespace Minecraft
 {
+    /*
     vector <float32> Vertex::ToFloats()
     {
         auto data = vector<float32>();
@@ -55,4 +56,5 @@ namespace Minecraft
 
         return indices;
     }
+     */
 }
