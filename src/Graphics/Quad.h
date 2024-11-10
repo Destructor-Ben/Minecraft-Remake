@@ -67,7 +67,8 @@ namespace Minecraft
 
             for (auto quad : quads)
             {
-                vertices.insert_range(vertices.end(), quad.ToVertices());
+                auto quadVertices = quad.ToVertices();
+                vertices.insert(vertices.end(), quadVertices.begin(), quadVertices.end());
             }
 
             return vertices;

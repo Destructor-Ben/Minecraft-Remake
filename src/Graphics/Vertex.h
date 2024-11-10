@@ -41,7 +41,8 @@ namespace Minecraft
 
             for (auto vertex : vertices)
             {
-                data.insert_range(data.end(), vertex.ToFloats());
+                auto vertexFloats = vertex.ToFloats();
+                data.insert(data.end(), vertexFloats.begin(), vertexFloats.end());
             }
 
             return data;
