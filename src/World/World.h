@@ -22,7 +22,7 @@ namespace Minecraft
     {
     public:
         Camera Camera;
-        unordered_map <vec3i, Chunk, ChunkKeyHash> Chunks = { };
+        unordered_map <vec3i, Chunk> Chunks = { };
 
         World();
         ~World();

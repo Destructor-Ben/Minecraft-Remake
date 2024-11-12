@@ -14,20 +14,8 @@ namespace Minecraft
         seed ^= hash(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
         HashCombine(seed, rest...);
     }
-
-    // TODO: temporary, can't get hashing for vec3i to work well
-    struct ChunkKeyHash
-    {
-        std::size_t operator ()(const vec3i& t) const
-        {
-            size_t hash = 0;
-            HashCombine(hash, t.x, t.y, t.z);
-            return hash;
-        }
-    };
 }
 
-/* TODO: get auto hashes working again
 // Making types hashable
 #define MINECRAFT_MAKE_HASHABLE(type, ...) \
     template<>\
@@ -40,4 +28,3 @@ namespace Minecraft
     };
 
 MINECRAFT_MAKE_HASHABLE(Minecraft::vec3i, t.x, t.y, t.z)
-//*/
