@@ -8,9 +8,9 @@ namespace Minecraft
         explicit VertexShader(const string& source);
         ~VertexShader();
 
-        uint32 GetID() const { return m_ID; }
+        uint GetID() const { return m_ID; }
 
     private:
-        uint32 m_ID = 0;
+        uint m_ID = 0;
     };
 }

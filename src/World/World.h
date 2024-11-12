@@ -35,10 +35,10 @@ namespace Minecraft
         vector<Chunk*> GetLoadedChunks() { return m_LoadedChunks; }
         vector<Chunk*> GetRenderedChunks() { return m_RenderedChunks; }
 
-        optional<Chunk*> GetChunk(int32 chunkX, int32 chunkY, int32 chunkZ) { return GetChunk(vec3i(chunkX, chunkY, chunkZ)); }
+        optional<Chunk*> GetChunk(int chunkX, int chunkY, int chunkZ) { return GetChunk(vec3i(chunkX, chunkY, chunkZ)); }
         optional<Chunk*> GetChunk(vec3i chunkPos);
 
-        optional <Block> GetBlock(int32 x, int32 y, int32 z) { return GetBlock(vec3i(x, y, z)); }
+        optional <Block> GetBlock(int x, int y, int z) { return GetBlock(vec3i(x, y, z)); }
         optional <Block> GetBlock(vec3i pos);
 
         // Mouse hiding
@@ -46,7 +46,7 @@ namespace Minecraft
         void SetMouseHidden(bool hidden);
 
     private:
-        void UpdateChunkList(vector<Chunk*>& chunks, int32 radius);
+        void UpdateChunkList(vector<Chunk*>& chunks, int radius);
         void UpdateCamera();
 
         vector<Chunk*> m_LoadedChunks = { };

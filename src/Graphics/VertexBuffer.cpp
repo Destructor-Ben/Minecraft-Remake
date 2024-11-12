@@ -18,10 +18,10 @@ namespace Minecraft
         SetData(data.data(), data.size(), usage);
     }
 
-    void VertexBuffer::SetData(const float* data, uint32 count, GLenum usage)
+    void VertexBuffer::SetData(const float* data, uint count, GLenum usage)
     {
         Bind();
-        glBufferData(GL_ARRAY_BUFFER, (int64)(count * sizeof(float)), data, usage);
+        glBufferData(GL_ARRAY_BUFFER, (slong)(count * sizeof(float)), data, usage);
     }
 
     void VertexBuffer::Bind()

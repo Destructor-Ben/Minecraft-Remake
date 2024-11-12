@@ -4,9 +4,9 @@
 
 namespace Minecraft
 {
-    Block::Block(Chunk& chunk, uint8 blockX, uint8 blockY, uint8 blockZ) : m_Chunk(chunk), m_BlockX(blockX), m_BlockY(blockY), m_BlockZ(blockZ) { }
+    Block::Block(Chunk& chunk, byte blockX, byte blockY, byte blockZ) : m_Chunk(chunk), m_BlockX(blockX), m_BlockY(blockY), m_BlockZ(blockZ) { }
 
-    uint32 Block::GetID() const
+    uint Block::GetID() const
     {
         return m_BlockX * Chunk::Size * Chunk::Size + m_BlockY * Chunk::Size + m_BlockZ;
     }

@@ -2,6 +2,6 @@
 
 namespace Minecraft
 {
-    double IntNoise2D(uint32 seed, int32 x, int32 y);
+    double IntNoise2D(uint seed, int x, int y);
     double CosineInterpolate(double a, double b, double x);
 }

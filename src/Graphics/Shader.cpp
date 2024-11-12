@@ -37,13 +37,13 @@ namespace Minecraft
     template<>\
     void Shader::SetUniform<type>(const string& name, type value)\
     {\
-        int32 location = GetUniformLocation(name);\
+        int location = GetUniformLocation(name);\
         function;\
     }
 
     UNIFORM_FUNCTION(float, glUniform1f(location, value))
-    UNIFORM_FUNCTION(int32, glUniform1i(location, value))
-    UNIFORM_FUNCTION(uint32, glUniform1ui(location, value))
+    UNIFORM_FUNCTION(int, glUniform1i(location, value))
+    UNIFORM_FUNCTION(uint, glUniform1ui(location, value))
 
     UNIFORM_FUNCTION(vec2, glUniform2fv(location, 1, glm::value_ptr(value)))
     UNIFORM_FUNCTION(vec2i, glUniform2iv(location, 1, glm::value_ptr(value)))
@@ -65,7 +65,7 @@ namespace Minecraft
         glUseProgram(0);
     }
 
-    int32 Shader::GetUniformLocation(const string& name)
+    int Shader::GetUniformLocation(const string& name)
     {
         return glGetUniformLocation(m_ID, name.c_str());
     }

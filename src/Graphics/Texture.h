@@ -13,16 +13,16 @@ namespace Minecraft
         void SetWrappingMode(GLenum mode);
         void SetFilters(GLenum filter);
         void GenerateMipMap();
-        void SetData(uint8* data, int32 width, int32 height, int32 format = GL_RGB);
+        void SetData(byte* data, int width, int height, int format = GL_RGB);
 
-        void BindTextureUnit(uint8 textureUnit);
+        void BindTextureUnit(byte textureUnit);
         void Bind();
 
-        uint32 GetID() const { return m_ID; }
+        uint GetID() const { return m_ID; }
 
         static void Unbind();
 
     private:
-        uint32 m_ID = 0;
+        uint m_ID = 0;
     };
 }

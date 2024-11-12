@@ -4,7 +4,7 @@
 namespace Minecraft
 {
     // Hugo Elias hash function
-    double IntNoise2D(uint32 seed, int32 x, int32 y)
+    double IntNoise2D(uint seed, int x, int y)
     {
         int n = x + y * 57 + seed;
         n = (n << 13) ^ n;

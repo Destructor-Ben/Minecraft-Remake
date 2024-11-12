@@ -41,9 +41,9 @@ namespace Minecraft
         path = "assets/textures/" + path + ".png";
         auto compressedData = ReadResourceBytes(path);
 
-        int32 width, height, channels;
-        uint8* data = stbi_load_from_memory(compressedData.data(), (int32)compressedData.size(), &width, &height, &channels, 0);
-        int32 format = channels == 4 ? GL_RGBA : GL_RGB;
+        int width, height, channels;
+        byte* data = stbi_load_from_memory(compressedData.data(), (int)compressedData.size(), &width, &height, &channels, 0);
+        int format = channels == 4 ? GL_RGBA : GL_RGB;
 
         if (!data)
             Logger->Throw("Failed to load texture at path: " + path);

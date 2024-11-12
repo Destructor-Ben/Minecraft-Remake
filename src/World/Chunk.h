@@ -13,18 +13,18 @@ namespace Minecraft
     class Chunk
     {
     public:
-        static const uint8 Size = 10;
-        static const uint32 Volume = Size * Size * Size;
+        static const byte Size = 10;
+        static const uint Volume = Size * Size * Size;
 
         // Parameterless ctor only needed for use in unordered_map
         Chunk() = default;
-        Chunk(int32 chunkX, int32 chunkY, int32 chunkZ) : m_ChunkX(chunkX), m_ChunkY(chunkY), m_ChunkZ(chunkZ) { }
+        Chunk(int chunkX, int chunkY, int chunkZ) : m_ChunkX(chunkX), m_ChunkY(chunkY), m_ChunkZ(chunkZ) { }
 
-        Block GetBlock(uint8 blockX, uint8 blockY, uint8 blockZ);
-        Block GetBlock(vec3i blockPos) { return GetBlock((uint8)blockPos.x, (uint8)blockPos.y, (uint8)blockPos.z); }
+        Block GetBlock(byte blockX, byte blockY, byte blockZ);
+        Block GetBlock(vec3i blockPos) { return GetBlock((byte)blockPos.x, (byte)blockPos.y, (byte)blockPos.z); }
         BlockData& GetBlockData(Block block) { return m_BlockData[block.GetID()]; }
 
-        vec3i GetWorldPos() const { return GetChunkPos() * (int32)Size; }
+        vec3i GetWorldPos() const { return GetChunkPos() * (int)Size; }
         vec3i GetChunkPos() const { return { m_ChunkX, m_ChunkY, m_ChunkZ }; }
 
         void RegenerateMesh();
@@ -34,9 +34,9 @@ namespace Minecraft
         void Render();
 
     private:
-        int32 m_ChunkX = 0;
-        int32 m_ChunkY = 0;
-        int32 m_ChunkZ = 0;
+        int m_ChunkX = 0;
+        int m_ChunkY = 0;
+        int m_ChunkZ = 0;
 
         array <BlockData, Volume> m_BlockData = { };
     };

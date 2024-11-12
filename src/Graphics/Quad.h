@@ -25,7 +25,7 @@ namespace Minecraft
         {
             vector <Vertex> vertices { };
 
-            for (int32 i = 0; i < 4; ++i)
+            for (int i = 0; i < 4; ++i)
             {
                 Vertex vertex { };
 

@@ -12,7 +12,7 @@ namespace Minecraft
         ~Shader();
 
         void Bind();
-        uint32 GetID() const { return m_ID; }
+        uint GetID() const { return m_ID; }
 
         template<typename T>
         void SetUniform(const string& name, T value);
@@ -21,17 +21,17 @@ namespace Minecraft
 
     private:
         // TODO: cache uniform locations
-        int32 GetUniformLocation(const string& name);
+        int GetUniformLocation(const string& name);
 
-        uint32 m_ID = 0;
+        uint m_ID = 0;
     };
 
     template<>
     void Shader::SetUniform<float>(const string& name, float value);
     template<>
-    void Shader::SetUniform<int32>(const string& name, int32 value);
+    void Shader::SetUniform<int>(const string& name, int value);
     template<>
-    void Shader::SetUniform<uint32>(const string& name, uint32 value);
+    void Shader::SetUniform<uint>(const string& name, uint value);
 
     template<>
     void Shader::SetUniform<vec2>(const string& name, vec2 value);

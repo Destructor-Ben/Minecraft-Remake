@@ -4,8 +4,8 @@ namespace Minecraft
 {
     namespace Timers
     {
-        inline int32 UpdateCount = 0;
-        inline int32 TickCount = 0;
+        inline int UpdateCount = 0;
+        inline int TickCount = 0;
 
         inline float DeltaTime = 0;
         inline float FixedDeltaTime = 0;

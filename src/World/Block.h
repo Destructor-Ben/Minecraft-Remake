@@ -9,10 +9,10 @@ namespace Minecraft
     class Block
     {
     public:
-        Block(Chunk& chunk, uint8 blockX, uint8 blockY, uint8 blockZ);
+        Block(Chunk& chunk, byte blockX, byte blockY, byte blockZ);
 
         // Index of the block used for accessing the arrays of data in the chunks
-        uint32 GetID() const;
+        uint GetID() const;
         Chunk& GetChunk() const { return m_Chunk; }
         BlockData& GetData();
 
@@ -21,8 +21,8 @@ namespace Minecraft
 
     private:
         Chunk& m_Chunk;
-        uint8 m_BlockX;
-        uint8 m_BlockY;
-        uint8 m_BlockZ;
+        byte m_BlockX;
+        byte m_BlockY;
+        byte m_BlockZ;
     };
 }

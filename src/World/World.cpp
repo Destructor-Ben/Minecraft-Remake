@@ -83,11 +83,11 @@ namespace Minecraft
     optional <Block> World::GetBlock(vec3i pos)
     {
         // Calculate coordinates
-        vec3i chunkPos = pos / (int32)Chunk::Size;
-        vec3i blockPos = pos % (int32)Chunk::Size;
+        vec3i chunkPos = pos / (int)Chunk::Size;
+        vec3i blockPos = pos % (int)Chunk::Size;
 
         // Adjust for negatives
-        for (int32 i = 0; i < 3; ++i)
+        for (int i = 0; i < 3; ++i)
         {
             if (blockPos[i] < 0)
             {
@@ -104,7 +104,7 @@ namespace Minecraft
         return chunk.value()->GetBlock(blockPos);
     }
 
-    void World::UpdateChunkList(vector<Chunk*>& chunks, int32 radius)
+    void World::UpdateChunkList(vector<Chunk*>& chunks, int radius)
     {
         // TODO: update these properly with render distance
         chunks.clear();

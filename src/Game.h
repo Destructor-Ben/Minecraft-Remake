@@ -17,5 +17,5 @@ namespace Minecraft
     inline shared_ptr<std::thread> TickThread = nullptr;
 
     string ReadResourceText(string path);
-    vector<uint8> ReadResourceBytes(string path);
+    vector<byte> ReadResourceBytes(string path);
 }

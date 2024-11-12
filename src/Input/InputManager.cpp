@@ -8,7 +8,7 @@ namespace Minecraft
     // TODO: getting key names - possibly put it in localization
     // TODO: make key binds that can be reassigned
 
-    static int32 GetGLFWKeyCode(Key key)
+    static int GetGLFWKeyCode(Key key)
     {
         switch (key)
         {
@@ -247,7 +247,7 @@ namespace Minecraft
         }
     }
 
-    static int32 GetGLFWMouseButtonCode(MouseButton button)
+    static int GetGLFWMouseButtonCode(MouseButton button)
     {
         switch (button)
         {
@@ -292,9 +292,9 @@ namespace Minecraft
         }
 
         // Mouse buttons
-        for (int32 i = 0; i < MouseButtonCount; ++i)
+        for (int i = 0; i < MouseButtonCount; ++i)
         {
-            int32 id = GetGLFWMouseButtonCode((MouseButton)i);
+            int id = GetGLFWMouseButtonCode((MouseButton)i);
 
             if (id == -1)
                 continue;
@@ -304,9 +304,9 @@ namespace Minecraft
         }
 
         // Keys
-        for (int32 i = 0; i < KeyCount; ++i)
+        for (int i = 0; i < KeyCount; ++i)
         {
-            int32 id = GetGLFWKeyCode((Key)i);
+            int id = GetGLFWKeyCode((Key)i);
 
             if (id == -1)
                 continue;

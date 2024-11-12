@@ -5,7 +5,7 @@
 
 namespace Minecraft
 {
-    WorldGenerator::WorldGenerator(class World* world, uint32 seed) : m_World(world), m_Seed(seed)
+    WorldGenerator::WorldGenerator(class World* world, uint seed) : m_World(world), m_Seed(seed)
     {
     }
 
@@ -47,17 +47,17 @@ namespace Minecraft
     void WorldGenerator::Generate(Chunk& chunk)
     {
         // TODO: make generation passes
-        for (int32 x = 0; x < Chunk::Size; x++)
+        for (int x = 0; x < Chunk::Size; x++)
         {
-            for (int32 z = 0; z < Chunk::Size; z++)
+            for (int z = 0; z < Chunk::Size; z++)
             {
                 // Generate height
                 const float VerticalScale = 8.0f;
                 const float HorizontalScale = 0.1f;
-                int32 height = (int32)GenerateHeight(VerticalScale, HorizontalScale, m_Seed, x + chunk.GetWorldPos().x, z + chunk.GetWorldPos().z, 0.5, 3);
+                int height = (int)GenerateHeight(VerticalScale, HorizontalScale, m_Seed, x + chunk.GetWorldPos().x, z + chunk.GetWorldPos().z, 0.5, 3);
 
                 // Set blocks
-                for (int32 y = 0; y < Chunk::Size; ++y)
+                for (int y = 0; y < Chunk::Size; ++y)
                 {
                     Block block = chunk.GetBlock(x, y, z);
                     BlockType& type = block.GetData().Type;
@@ -73,7 +73,7 @@ namespace Minecraft
         }
     }
 
-    double WorldGenerator::GenerateHeight(float verticalScale, float horizontalScale, uint32 seed, int32 x, int32 z, double persistence, double octaveCount)
+    double WorldGenerator::GenerateHeight(float verticalScale, float horizontalScale, uint seed, int x, int z, double persistence, double octaveCount)
     {
         return Perlin2D(seed, x * horizontalScale, z * horizontalScale, persistence, octaveCount) * verticalScale;
     }

@@ -9,7 +9,7 @@ namespace Minecraft
     {
     public:
         WorldGenerator() = default;
-        explicit WorldGenerator(class World* world, uint32 seed = 0);
+        explicit WorldGenerator(class World* world, uint seed = 0);
 
         // Generates the initial chunks in a world
         void Generate();
@@ -26,9 +26,9 @@ namespace Minecraft
 
     private:
         // Uses noise functions to generate height at single block
-        double GenerateHeight(float verticalScale, float horizontalScale, uint32 seed, int32 x, int32 z, double persistence, double octaveCount);
+        double GenerateHeight(float verticalScale, float horizontalScale, uint seed, int x, int z, double persistence, double octaveCount);
 
         class World* m_World = nullptr;
-        uint32 m_Seed = 0;
+        uint m_Seed = 0;
     };
 }

@@ -24,7 +24,7 @@ namespace Minecraft
 
     private:
         void CreateMesh(Chunk& chunk);
-        void SetMeshData(Chunk& chunk, const vector<float>& vertices, const vector<uint32>& indices);
+        void SetMeshData(Chunk& chunk, const vector<float>& vertices, const vector<uint>& indices);
 
         void AddFaceInDirection(Chunk& chunk, Block& block, vector<Quad>& faces, vec3i dir, quat rotation);
         vector<Quad> GetChunkFaces(Chunk& chunk);

@@ -7,7 +7,7 @@
 
 namespace Minecraft
 {
-    Block Chunk::GetBlock(uint8 blockX, uint8 blockY, uint8 blockZ)
+    Block Chunk::GetBlock(byte blockX, byte blockY, byte blockZ)
     {
         // Can't be smaller than 0 since they're unsigned, only need to check upper bound
         Logger->Assert(blockX < Size);

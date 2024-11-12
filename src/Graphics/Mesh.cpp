@@ -26,7 +26,7 @@ namespace Minecraft
             material->Transform = transform;
             material->Bind();
 
-            glDrawElements(GL_TRIANGLES, (int32)indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+            glDrawElements(GL_TRIANGLES, (int)indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
         }
     }
 }

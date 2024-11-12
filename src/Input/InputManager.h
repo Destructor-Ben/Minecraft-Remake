@@ -8,23 +8,23 @@ namespace Minecraft
     class InputManager
     {
     public:
-        static constexpr int32 KeyCount = (int32)Key::Count;
-        static constexpr int32 MouseButtonCount = (int32)MouseButton::Count;
+        static constexpr int KeyCount = (int)Key::Count;
+        static constexpr int MouseButtonCount = (int)MouseButton::Count;
 
         vec2 GetMousePos() const { return m_MousePos; }
         vec2 GetMousePosDelta() const { return m_MousePos - m_OldMousePos; }
 
         float GetScrollWheelDelta() const { return m_ScrollDelta; }
 
-        bool IsMouseButtonDown(MouseButton button) const { return m_MouseButtonsPressedThisFrame[(int32)button]; }
-        bool IsMouseButtonUp(MouseButton button) const { return !m_MouseButtonsPressedThisFrame[(int32)button]; }
-        bool WasMouseButtonPressed(MouseButton button) const { return m_MouseButtonsPressedThisFrame[(int32)button] && !m_MouseButtonsPressedLastFrame[(int32)button]; }
-        bool WasMouseButtonReleased(MouseButton button) const { return !m_MouseButtonsPressedThisFrame[(int32)button] && m_MouseButtonsPressedLastFrame[(int32)button]; }
+        bool IsMouseButtonDown(MouseButton button) const { return m_MouseButtonsPressedThisFrame[(int)button]; }
+        bool IsMouseButtonUp(MouseButton button) const { return !m_MouseButtonsPressedThisFrame[(int)button]; }
+        bool WasMouseButtonPressed(MouseButton button) const { return m_MouseButtonsPressedThisFrame[(int)button] && !m_MouseButtonsPressedLastFrame[(int)button]; }
+        bool WasMouseButtonReleased(MouseButton button) const { return !m_MouseButtonsPressedThisFrame[(int)button] && m_MouseButtonsPressedLastFrame[(int)button]; }
 
-        bool IsKeyDown(Key key) const { return m_KeysPressedThisFrame[(int32)key]; }
-        bool IsKeyUp(Key key) const { return !m_KeysPressedThisFrame[(int32)key]; }
-        bool WasKeyPressed(Key key) const { return m_KeysPressedThisFrame[(int32)key] && !m_KeysPressedLastFrame[(int32)key];; }
-        bool WasKeyReleased(Key key) const { return !m_KeysPressedThisFrame[(int32)key] && m_KeysPressedLastFrame[(int32)key]; }
+        bool IsKeyDown(Key key) const { return m_KeysPressedThisFrame[(int)key]; }
+        bool IsKeyUp(Key key) const { return !m_KeysPressedThisFrame[(int)key]; }
+        bool WasKeyPressed(Key key) const { return m_KeysPressedThisFrame[(int)key] && !m_KeysPressedLastFrame[(int)key];; }
+        bool WasKeyReleased(Key key) const { return !m_KeysPressedThisFrame[(int)key] && m_KeysPressedLastFrame[(int)key]; }
 
         static bool IsCursorDisabled();
         static void SetCursorDisabled(bool disabled);

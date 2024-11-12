@@ -8,9 +8,9 @@ namespace Minecraft
         explicit FragmentShader(const string& source);
         ~FragmentShader();
 
-        uint32 GetID() const { return m_ID; }
+        uint GetID() const { return m_ID; }
 
     private:
-        uint32 m_ID = 0;
+        uint m_ID = 0;
     };
 }

@@ -11,8 +11,8 @@ namespace Minecraft
 
         // Updated as the application runs
         inline GLFWwindow* Handle = nullptr;
-        inline int32 Width = 0;
-        inline int32 Height = 0;
+        inline int Width = 0;
+        inline int Height = 0;
 
         inline void Close() { glfwSetWindowShouldClose(Window::Handle, true); }
 

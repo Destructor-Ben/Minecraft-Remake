@@ -34,13 +34,13 @@ namespace Minecraft
         glGenerateMipmap(GL_TEXTURE_2D);
     }
 
-    void Texture::SetData(uint8* data, int32 width, int32 height, int32 format)
+    void Texture::SetData(byte* data, int width, int height, int format)
     {
         Bind();
         glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
     }
 
-    void Texture::BindTextureUnit(uint8 textureUnit)
+    void Texture::BindTextureUnit(byte textureUnit)
     {
         glActiveTexture(GL_TEXTURE0 + textureUnit);
         Bind();

@@ -13,16 +13,16 @@ namespace Minecraft
         glDeleteBuffers(1, &m_ID);
     }
 
-    void IndexBuffer::SetData(const vector<uint32>& data, GLenum usage)
+    void IndexBuffer::SetData(const vector <uint>& data, GLenum usage)
     {
         SetData(data.data(), data.size(), usage);
     }
 
-    void IndexBuffer::SetData(const uint32* data, uint32 count, GLenum usage)
+    void IndexBuffer::SetData(const uint* data, uint count, GLenum usage)
     {
         m_Count = count;
         Bind();
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, (int64)(count * sizeof(uint32)), data, usage);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, (slong)(count * sizeof(uint)), data, usage);
     }
 
     void IndexBuffer::Bind()

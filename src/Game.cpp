@@ -31,13 +31,13 @@ namespace Minecraft
         return buffer.str();
     }
 
-    vector <uint8> ReadResourceBytes(string path)
+    vector <byte> ReadResourceBytes(string path)
     {
         std::ifstream stream(path, std::ios::binary);
         if (stream.fail())
             Logger->Throw("Failed to load resource at path: " + path);
 
-        vector <uint8> bytes((std::istreambuf_iterator<char>(stream)), std::istreambuf_iterator<char>());
+        vector <byte> bytes((std::istreambuf_iterator<char>(stream)), std::istreambuf_iterator<char>());
         stream.close();
         return bytes;
     }
@@ -46,7 +46,7 @@ namespace Minecraft
 
     #pragma region Callbacks
 
-    static void GLFWError(int32 code, cstring description)
+    static void GLFWError(int code, cstring description)
     {
         Logger->Error(format("GLFW Error (Code {}): {}", code, description));
     }
@@ -147,7 +147,7 @@ namespace Minecraft
         Input->UpdateScroll((float)xOffset, (float)yOffset);
     }
 
-    static void Resize(GLFWwindow* window, int32 width, int32 height)
+    static void Resize(GLFWwindow* window, int width, int height)
     {
         glViewport(0, 0, width, height);
         Window::Width = width;

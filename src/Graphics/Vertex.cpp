@@ -34,16 +34,16 @@ namespace Minecraft
         return data;
     }
 
-    vector <uint32> Vertex::ToIndices(vector <Vertex> vertices)
+    vector <uint> Vertex::ToIndices(vector <Vertex> vertices)
     {
-        auto indices = vector<uint32>();
+        auto indices = vector<uint>();
 
-        for (int32 i = 0; i < vertices.size(); i += 4)
+        for (int i = 0; i < vertices.size(); i += 4)
         {
-            uint32 index0 = i;
-            uint32 index1 = i + 1;
-            uint32 index2 = i + 2;
-            uint32 index3 = i + 3;
+            uint index0 = i;
+            uint index1 = i + 1;
+            uint index2 = i + 2;
+            uint index3 = i + 3;
 
             indices.push_back(index2);
             indices.push_back(index1);

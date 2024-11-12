@@ -4,7 +4,7 @@
 
 namespace Minecraft
 {
-    double Perlin2D(uint32 seed, double x, double y, double Persistence, double OctaveCount)
+    double Perlin2D(uint seed, double x, double y, double Persistence, double OctaveCount)
     {
         double ret = 0;
         for (int i = 0; i < OctaveCount; i++)
@@ -18,7 +18,7 @@ namespace Minecraft
     }
 
     // Cosine interpolation
-    double InterpolatedNoise(uint32 seed, double x, double y)
+    double InterpolatedNoise(uint seed, double x, double y)
     {
         int integerX = (int)x;
         int integerY = (int)y;
@@ -37,7 +37,7 @@ namespace Minecraft
     }
 
     // 2D smooth noise
-    double SmoothNoise(uint32 seed, double x, double y)
+    double SmoothNoise(uint seed, double x, double y)
     {
         double corners = (IntNoise2D(seed, x + 1, y + 1) + IntNoise2D(seed, x + 1, y - 1) + IntNoise2D(seed, x - 1, y + 1) + IntNoise2D(seed, x - 1, y - 1)) / 16.0f;
         double sides = (IntNoise2D(seed, x, y + 1) + IntNoise2D(seed, x, y - 1) + IntNoise2D(seed, x - 1, y) + IntNoise2D(seed, x + 1, y)) / 8.0f;

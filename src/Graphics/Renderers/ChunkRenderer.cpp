@@ -53,7 +53,7 @@ namespace Minecraft
         m_ChunkMeshes[&chunk] = mesh;
     }
 
-    void ChunkRenderer::SetMeshData(Chunk& chunk, const vector<float>& vertices, const vector <uint32>& indices)
+    void ChunkRenderer::SetMeshData(Chunk& chunk, const vector<float>& vertices, const vector <uint>& indices)
     {
         m_ChunkMeshes[&chunk]->Vertices->GetBuffer()->SetData(vertices);
         m_ChunkMeshes[&chunk]->GetIndexBuffer(m_ChunkMaterial)->SetData(indices);
@@ -92,11 +92,11 @@ namespace Minecraft
 
         vector <Quad> faces;
 
-        for (int32 x = 0; x < Chunk::Size; ++x)
+        for (int x = 0; x < Chunk::Size; ++x)
         {
-            for (int32 y = 0; y < Chunk::Size; ++y)
+            for (int y = 0; y < Chunk::Size; ++y)
             {
-                for (int32 z = 0; z < Chunk::Size; ++z)
+                for (int z = 0; z < Chunk::Size; ++z)
                 {
                     auto block = chunk.GetBlock(x, y, z);
                     if (block.GetData().Type == BlockType::Air)
