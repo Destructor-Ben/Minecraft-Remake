@@ -3,4 +3,6 @@ target_sources(Minecraft_Remake PRIVATE
     Noise.h
     Perlin.cpp
     Perlin.h
+    Random.cpp
+    Random.h
 )

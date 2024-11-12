@@ -18,7 +18,7 @@ add_executable(Minecraft_Remake
 
 add_subdirectory(Graphics)
 add_subdirectory(Input)
-add_subdirectory(Noise)
+add_subdirectory(Random)
 add_subdirectory(World)
 
 # Auto include Common.h in all files

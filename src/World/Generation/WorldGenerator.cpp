@@ -1,6 +1,6 @@
 #include "WorldGenerator.h"
 
-#include "Noise/Perlin.h"
+#include "Random/Perlin.h"
 #include "World/World.h"
 
 namespace Minecraft

@@ -1,5 +1,7 @@
 #include "Perlin.h"
 
+#include "Random/Noise.h"
+
 namespace Minecraft
 {
     double Perlin2D(uint32 seed, double x, double y, double Persistence, double OctaveCount)
