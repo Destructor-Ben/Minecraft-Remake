@@ -47,31 +47,34 @@ namespace Minecraft
     void WorldGenerator::Generate(Chunk& chunk)
     {
         // TODO: make generation passes
-        for (int x = 0; x < Chunk::Size; x++)
+        for (int32 x = 0; x < Chunk::Size; x++)
         {
-            for (int y = 0; y < Chunk::Size; y++)
+            for (int32 z = 0; z < Chunk::Size; z++)
             {
-                for (int z = 0; z < Chunk::Size; z++)
+                // Generate height
+                const float32 VerticalScale = 8.0f;
+                const float32 HorizontalScale = 0.1f;
+                int32 height = (int32)GenerateHeight(VerticalScale, HorizontalScale, m_Seed, x + chunk.GetWorldPos().x, z + chunk.GetWorldPos().z, 0.5, 3);
+
+                // Set blocks
+                for (int32 y = 0; y < Chunk::Size; ++y)
                 {
                     Block block = chunk.GetBlock(x, y, z);
                     BlockType& type = block.GetData().Type;
                     type = BlockType::Air;
 
-                    const float VerticalScale = 8.0f;
-                    const float HorizontalScale = 0.1f;
+                    if (block.GetWorldPos().y <= height)
+                        type = BlockType::Dirt;
 
-                    if (GenerateHeightAtBlock(VerticalScale, HorizontalScale, 0, block, 0.5, 3) > 0)  // TODO: pass seed to function
-                        continue;
-
-                    type = BlockType::Dirt;
+                    if (block.GetWorldPos().y <= height - 2)
+                        type = BlockType::Stone;
                 }
             }
         }
     }
 
-    // TODO: make Perlin function and make this use it
-    int16 WorldGenerator::GenerateHeightAtBlock(float VerticalScale, float HorizontalScale, uint32 seed, Block& block, double Persistence, double OctaveCount)
+    float64 WorldGenerator::GenerateHeight(float32 verticalScale, float32 horizontalScale, uint32 seed, int32 x, int32 z, float64 persistence, float64 octaveCount)
     {
-        return Perlin2D(seed, block.GetWorldPos().x * HorizontalScale, block.GetWorldPos().z * HorizontalScale, Persistence, OctaveCount) * VerticalScale + block.GetWorldPos().y + 3 > 0;
+        return Perlin2D(seed, x * horizontalScale, z * horizontalScale, persistence, octaveCount) * verticalScale;
     }
 }

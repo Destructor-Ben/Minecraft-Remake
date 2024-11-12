@@ -24,10 +24,10 @@ namespace Minecraft
         // - Terrain
         void Generate(Chunk& chunk);
 
-        // Uses noise functions to generate height at single block
-        int16 GenerateHeightAtBlock(float VerticalScale, float HorizontalScale, uint32 seed, Block& block, double Persistence, double OctaveCount);
-
     private:
+        // Uses noise functions to generate height at single block
+        float64 GenerateHeight(float32 verticalScale, float32 horizontalScale, uint32 seed, int32 x, int32 z, float64 persistence, float64 octaveCount);
+
         class World* m_World = nullptr;
         uint32 m_Seed = 0;
     };

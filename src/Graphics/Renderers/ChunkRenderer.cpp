@@ -73,9 +73,14 @@ namespace Minecraft
         face.Position += vec3(dir) * 0.5f;
         face.Rotation = rotation;
         face.Shading = GetFaceShading(dir);
-        float32 sizeOfOneTexture = 1.0f / 8.0f;
+        float32 sizeOfOneTexture = 1.0f / 8.0f; // 8 comes from 128 (atlas size) / 16 (one texture size)
         face.UVMultiplier = vec2(sizeOfOneTexture);// TODO: don't hardcode texture size!
-        face.UVOffset = vec2(0.0f, 1.0f - sizeOfOneTexture - sizeOfOneTexture); // TODO: make different blocks have different textures | 8 comes from 128 / 16
+
+        if (block.GetData().Type == BlockType::Dirt)
+            face.UVOffset = vec2(2 * sizeOfOneTexture, 1.0f - sizeOfOneTexture);
+        else
+            face.UVOffset = vec2(sizeOfOneTexture, 1.0f - sizeOfOneTexture);
+
         faces.push_back(face);
     }
 
