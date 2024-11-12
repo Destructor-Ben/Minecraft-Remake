@@ -97,15 +97,18 @@ namespace Minecraft
                     if (block.GetData().Type == BlockType::Air)
                         continue;
 
-                    // TODO: verify that faces are pointig up properly
+                    // TODO: store these rotations
+                    // Top and bottom
                     AddFaceInDirection(chunk, block, faces, vec3i(0, 1, 0), vec3(0, 0, 0));
-                    AddFaceInDirection(chunk, block, faces, vec3i(0, -1, 0), vec3(Degrees180, 0, 0));
+                    AddFaceInDirection(chunk, block, faces, vec3i(0, -1, 0), vec3(Degrees180, Degrees180, 0));
 
-                    AddFaceInDirection(chunk, block, faces, vec3i(1, 0, 0), vec3(0, 0, -Degrees90));
-                    AddFaceInDirection(chunk, block, faces, vec3i(-1, 0, 0), vec3(0, 0, Degrees90));
+                    // Left and right
+                    AddFaceInDirection(chunk, block, faces, vec3i(1, 0, 0), quat(vec3(Degrees90, 0, 0)) * quat(vec3(0, 0, -Degrees90)));
+                    AddFaceInDirection(chunk, block, faces, vec3i(-1, 0, 0), quat(vec3(Degrees90, 0, 0)) * quat(vec3(0, 0, Degrees90)));
 
+                    // Front and back
                     AddFaceInDirection(chunk, block, faces, vec3i(0, 0, 1), vec3(Degrees90, 0, 0));
-                    AddFaceInDirection(chunk, block, faces, vec3i(0, 0, -1), vec3(-Degrees90, 0, 0));
+                    AddFaceInDirection(chunk, block, faces, vec3i(0, 0, -1), vec3(Degrees90, Degrees180, 0));
                 }
             }
         }
