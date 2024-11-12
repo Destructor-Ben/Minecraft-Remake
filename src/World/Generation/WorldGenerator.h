@@ -26,7 +26,7 @@ namespace Minecraft
 
     private:
         // Uses noise functions to generate height at single block
-        float64 GenerateHeight(float32 verticalScale, float32 horizontalScale, uint32 seed, int32 x, int32 z, float64 persistence, float64 octaveCount);
+        double GenerateHeight(float verticalScale, float horizontalScale, uint32 seed, int32 x, int32 z, double persistence, double octaveCount);
 
         class World* m_World = nullptr;
         uint32 m_Seed = 0;

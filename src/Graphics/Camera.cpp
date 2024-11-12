@@ -15,8 +15,8 @@ namespace Minecraft
     mat4 Camera::GetProjectionMatrix() const
     {
         if (IsPerspective && Window::Width != 0 && Window::Height != 0)
-            return glm::perspective(FOV, (float32)Window::Width / (float32)Window::Height, NearClip, FarClip);
+            return glm::perspective(FOV, (float)Window::Width / (float)Window::Height, NearClip, FarClip);
 
-        return glm::ortho(0.0f, (float32)Window::Width * OrthographicScale, 0.0f, (float32)Window::Height * OrthographicScale, NearClip, FarClip);
+        return glm::ortho(0.0f, (float)Window::Width * OrthographicScale, 0.0f, (float)Window::Height * OrthographicScale, NearClip, FarClip);
     }
 }

@@ -27,7 +27,7 @@ namespace Minecraft
     };
 
     template<>
-    void Shader::SetUniform<float32>(const string& name, float32 value);
+    void Shader::SetUniform<float>(const string& name, float value);
     template<>
     void Shader::SetUniform<int32>(const string& name, int32 value);
     template<>

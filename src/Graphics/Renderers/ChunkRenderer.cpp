@@ -53,7 +53,7 @@ namespace Minecraft
         m_ChunkMeshes[&chunk] = mesh;
     }
 
-    void ChunkRenderer::SetMeshData(Chunk& chunk, const vector <float32>& vertices, const vector <uint32>& indices)
+    void ChunkRenderer::SetMeshData(Chunk& chunk, const vector<float>& vertices, const vector <uint32>& indices)
     {
         m_ChunkMeshes[&chunk]->Vertices->GetBuffer()->SetData(vertices);
         m_ChunkMeshes[&chunk]->GetIndexBuffer(m_ChunkMaterial)->SetData(indices);
@@ -73,7 +73,7 @@ namespace Minecraft
         face.Position += vec3(dir) * 0.5f;
         face.Rotation = rotation;
         face.Shading = GetFaceShading(dir);
-        float32 sizeOfOneTexture = 1.0f / 8.0f; // 8 comes from 128 (atlas size) / 16 (one texture size)
+        float sizeOfOneTexture = 1.0f / 8.0f; // 8 comes from 128 (atlas size) / 16 (one texture size)
         face.UVMultiplier = vec2(sizeOfOneTexture);// TODO: don't hardcode texture size!
 
         if (block.GetData().Type == BlockType::Dirt)
@@ -124,7 +124,7 @@ namespace Minecraft
     // TODO: blocks such as grass and leaves will eventually have grey and will be tinted based on biome colour - olmarsh
     vec4 ChunkRenderer::GetFaceShading(vec3i dir)
     {
-        float32 strength = 0;
+        float strength = 0;
 
         if (dir.x > 0)
             strength = 0.3f;

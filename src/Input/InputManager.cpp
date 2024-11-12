@@ -280,10 +280,10 @@ namespace Minecraft
         // Cursor
         m_OldMousePos = m_MousePos;
 
-        float64 mouseX, mouseY;
+        double mouseX, mouseY;
         glfwGetCursorPos(Window::Handle, &mouseX, &mouseY);
-        m_MousePos.x = (float32)mouseX;
-        m_MousePos.y = (float32)mouseY;
+        m_MousePos.x = (float)mouseX;
+        m_MousePos.y = (float)mouseY;
 
         if (!m_OldMousePosInitialized)
         {
@@ -317,7 +317,7 @@ namespace Minecraft
     }
 
     // TODO: x axis scrolling
-    void InputManager::UpdateScroll(float32 xOffset, float32 yOffset)
+    void InputManager::UpdateScroll(float xOffset, float yOffset)
     {
         m_ScrollDelta = yOffset;
     }

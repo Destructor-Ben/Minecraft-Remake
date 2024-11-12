@@ -3,9 +3,9 @@
 namespace Minecraft
 {
     /*
-    vector <float32> Vertex::ToFloats()
+    vector <float> Vertex::ToFloats()
     {
-        auto data = vector<float32>();
+        auto data = vector<float>();
 
         data.push_back(Position.x);
         data.push_back(Position.y);
@@ -22,9 +22,9 @@ namespace Minecraft
         return data;
     }
 
-    vector <float32> Vertex::ToFloats(vector <Vertex> vertices)
+    vector <float> Vertex::ToFloats(vector <Vertex> vertices)
     {
-        auto data = vector<float32>();
+        auto data = vector<float>();
 
         for (auto vertex : vertices)
         {

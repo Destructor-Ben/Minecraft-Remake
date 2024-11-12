@@ -5,8 +5,8 @@ namespace Minecraft
     namespace Window
     {
         // User configurable settings
-        inline float32 TargetFrameRate = 60;
-        inline float32 TargetTickRate = 10;
+        inline float TargetFrameRate = 60;
+        inline float TargetTickRate = 10;
         inline bool VSyncEnabled = false; // Change with the setter
 
         // Updated as the application runs

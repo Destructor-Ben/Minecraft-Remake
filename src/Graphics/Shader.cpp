@@ -41,7 +41,7 @@ namespace Minecraft
         function;\
     }
 
-    UNIFORM_FUNCTION(float32, glUniform1f(location, value))
+    UNIFORM_FUNCTION(float, glUniform1f(location, value))
     UNIFORM_FUNCTION(int32, glUniform1i(location, value))
     UNIFORM_FUNCTION(uint32, glUniform1ui(location, value))
 

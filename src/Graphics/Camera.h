@@ -11,11 +11,11 @@ namespace Minecraft
     public:
         bool IsPerspective = true;
 
-        float32 FOV = 45.0f;
-        float32 OrthographicScale = 1.0f;
+        float FOV = 45.0f;
+        float OrthographicScale = 1.0f;
 
-        float32 NearClip = 0.1f;
-        float32 FarClip = 1000.0f;
+        float NearClip = 0.1f;
+        float FarClip = 1000.0f;
 
         mat4 GetViewMatrix() const;
         mat4 GetProjectionMatrix() const;

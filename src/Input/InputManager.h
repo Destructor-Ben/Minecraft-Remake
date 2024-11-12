@@ -14,7 +14,7 @@ namespace Minecraft
         vec2 GetMousePos() const { return m_MousePos; }
         vec2 GetMousePosDelta() const { return m_MousePos - m_OldMousePos; }
 
-        float32 GetScrollWheelDelta() const { return m_ScrollDelta; }
+        float GetScrollWheelDelta() const { return m_ScrollDelta; }
 
         bool IsMouseButtonDown(MouseButton button) const { return m_MouseButtonsPressedThisFrame[(int32)button]; }
         bool IsMouseButtonUp(MouseButton button) const { return !m_MouseButtonsPressedThisFrame[(int32)button]; }
@@ -32,14 +32,14 @@ namespace Minecraft
         static void SetRawMouseMotion(bool isRaw);
 
         void Update();
-        void UpdateScroll(float32 xOffset, float32 yOffset);
+        void UpdateScroll(float xOffset, float yOffset);
         void PostUpdate();
 
     private:
         bool m_OldMousePosInitialized = false;
         vec2 m_MousePos = vec2();
         vec2 m_OldMousePos = vec2();
-        float32 m_ScrollDelta = 0.0f;
+        float m_ScrollDelta = 0.0f;
 
         array<bool, KeyCount> m_KeysPressedThisFrame = { };
         array<bool, KeyCount> m_KeysPressedLastFrame = { };

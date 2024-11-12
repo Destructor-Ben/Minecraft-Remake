@@ -10,15 +10,15 @@ namespace Minecraft
         vec4 Shading = vec4(1.0f);
 
         // TODO: fix dodgy linker error
-        //vector<float32> ToFloats();
-        //static vector<float32> ToFloats(vector<Vertex> vertices);
+        //vector<float> ToFloats();
+        //static vector<float> ToFloats(vector<Vertex> vertices);
 
         // Assumes that each set of 4 vertices is a quad
         //static vector<uint32> ToIndices(vector<Vertex> vertices);
 
-        vector <float32> ToFloats()
+        vector<float> ToFloats()
         {
-            auto data = vector<float32>();
+            auto data = vector<float>();
 
             data.push_back(Position.x);
             data.push_back(Position.y);
@@ -35,9 +35,9 @@ namespace Minecraft
             return data;
         }
 
-        static vector <float32> ToFloats(vector <Vertex> vertices)
+        static vector<float> ToFloats(vector<Vertex> vertices)
         {
-            auto data = vector<float32>();
+            auto data = vector<float>();
 
             for (auto vertex : vertices)
             {
@@ -48,7 +48,7 @@ namespace Minecraft
             return data;
         }
 
-        static vector <uint32> ToIndices(vector <Vertex> vertices)
+        static vector<uint32> ToIndices(vector<Vertex> vertices)
         {
             auto indices = vector<uint32>();
 

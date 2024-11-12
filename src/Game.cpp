@@ -142,9 +142,9 @@ namespace Minecraft
             Logger->Warn(logMessage);
     }
 
-    static void OnScroll(GLFWwindow* window, float64 xOffset, float64 yOffset)
+    static void OnScroll(GLFWwindow* window, double xOffset, double yOffset)
     {
-        Input->UpdateScroll((float32)xOffset, (float32)yOffset);
+        Input->UpdateScroll((float)xOffset, (float)yOffset);
     }
 
     static void Resize(GLFWwindow* window, int32 width, int32 height)
@@ -286,8 +286,8 @@ namespace Minecraft
         std::this_thread::sleep_until(Timers::StartTime + chrono::duration<double>(nextStart));
 
     #define UPDATE_LOOP_VARIABLES(wallTime, deltaTime, loopRate, count) \
-        deltaTime = (float32)glfwGetTime() - wallTime;\
-        wallTime = (float32)glfwGetTime();\
+        deltaTime = (float)glfwGetTime() - wallTime;\
+        wallTime = (float)glfwGetTime();\
         loopRate = 1.0f / deltaTime;\
         count++;
 

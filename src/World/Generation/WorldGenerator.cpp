@@ -52,8 +52,8 @@ namespace Minecraft
             for (int32 z = 0; z < Chunk::Size; z++)
             {
                 // Generate height
-                const float32 VerticalScale = 8.0f;
-                const float32 HorizontalScale = 0.1f;
+                const float VerticalScale = 8.0f;
+                const float HorizontalScale = 0.1f;
                 int32 height = (int32)GenerateHeight(VerticalScale, HorizontalScale, m_Seed, x + chunk.GetWorldPos().x, z + chunk.GetWorldPos().z, 0.5, 3);
 
                 // Set blocks
@@ -73,7 +73,7 @@ namespace Minecraft
         }
     }
 
-    float64 WorldGenerator::GenerateHeight(float32 verticalScale, float32 horizontalScale, uint32 seed, int32 x, int32 z, float64 persistence, float64 octaveCount)
+    double WorldGenerator::GenerateHeight(float verticalScale, float horizontalScale, uint32 seed, int32 x, int32 z, double persistence, double octaveCount)
     {
         return Perlin2D(seed, x * horizontalScale, z * horizontalScale, persistence, octaveCount) * verticalScale;
     }
