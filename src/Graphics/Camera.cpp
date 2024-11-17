@@ -1,6 +1,7 @@
 #include "Camera.h"
 
 #include "Window.h"
+#include "Graphics/CameraFrustum.h"
 
 namespace Minecraft
 {
@@ -18,5 +19,10 @@ namespace Minecraft
             return glm::perspective(FOV, (float)Window::Width / (float)Window::Height, NearClip, FarClip);
 
         return glm::ortho(0.0f, (float)Window::Width * OrthographicScale, 0.0f, (float)Window::Height * OrthographicScale, NearClip, FarClip);
+    }
+
+    CameraFrustum Camera::GetFrustum() const
+    {
+        return CameraFrustum(GetProjectionMatrix() * GetViewMatrix());
     }
 }

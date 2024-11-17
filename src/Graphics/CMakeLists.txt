@@ -1,6 +1,8 @@
 target_sources(Minecraft_Remake PRIVATE
     Camera.cpp
     Camera.h
+    CameraFrustum.cpp
+    CameraFrustum.h
     FragmentShader.cpp
     FragmentShader.h
     GL.h

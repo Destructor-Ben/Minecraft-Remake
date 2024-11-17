@@ -2,6 +2,7 @@
 
 #include "Game.h"
 #include "LogManager.h"
+#include "Graphics/CameraFrustum.h"
 #include "Graphics/GL.h"
 #include "Graphics/Renderers/ChunkRenderer.h"
 
@@ -29,6 +30,11 @@ namespace Minecraft
 
     void Renderer::DrawMesh(const Mesh& mesh, mat4 transform)
     {
+        // Frustum culling
+        // TODO: use bounding box
+        if (!Camera->GetFrustum().ContainsPoint(transform * vec4(0.0f, 0.0f, 0.0f, 1.0f)))
+            return;
+
         mesh.Draw(ProjectionMatrix * ViewMatrix * transform);
     }
 

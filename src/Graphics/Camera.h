@@ -5,6 +5,8 @@
 // TODO: make a camera frustum class, bounds class, and make the renderer use frustum culling
 namespace Minecraft
 {
+    class CameraFrustum;
+
     // Handles camera matrices - view and projection
     class Camera : public Transform
     {
@@ -19,5 +21,7 @@ namespace Minecraft
 
         mat4 GetViewMatrix() const;
         mat4 GetProjectionMatrix() const;
+
+        CameraFrustum GetFrustum() const;
     };
 }
