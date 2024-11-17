@@ -36,7 +36,7 @@ namespace Minecraft
         return CosineInterpolate(i1, i2, fractionalY);
     }
 
-    // 2D smooth noise
+    // 2D smooth noise - Gets the value not at a point but average value from the area around the point
     double SmoothNoise(uint seed, double x, double y)
     {
         double corners = (IntNoise2D(seed, x + 1, y + 1) + IntNoise2D(seed, x + 1, y - 1) + IntNoise2D(seed, x - 1, y + 1) + IntNoise2D(seed, x - 1, y - 1)) / 16.0f;
