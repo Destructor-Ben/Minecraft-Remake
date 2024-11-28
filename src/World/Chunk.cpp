@@ -10,16 +10,16 @@ namespace Minecraft
     Block Chunk::GetBlock(byte blockX, byte blockY, byte blockZ)
     {
         // Can't be smaller than 0 since they're unsigned, only need to check upper bound
-        Logger->Assert(blockX < Size);
-        Logger->Assert(blockY < Size);
-        Logger->Assert(blockZ < Size);
+        Instance->Logger->Assert(blockX < Size);
+        Instance->Logger->Assert(blockY < Size);
+        Instance->Logger->Assert(blockZ < Size);
 
         return { *this, blockX, blockY, blockZ };
     }
 
     void Chunk::RegenerateMesh()
     {
-        Renderer->ChunkRenderer->RegenerateMesh(*this);
+        Instance->Graphics->ChunkRenderer->RegenerateMesh(*this);
     }
 
     void Chunk::Tick()
@@ -34,6 +34,6 @@ namespace Minecraft
 
     void Chunk::Render()
     {
-        Renderer->ChunkRenderer->RenderChunk(*this);
+        Instance->Graphics->ChunkRenderer->RenderChunk(*this);
     }
 }

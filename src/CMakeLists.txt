@@ -10,10 +10,10 @@ add_executable(Minecraft_Remake
     LogManager.cpp
     LogManager.h
     Main.cpp
-    Timers.h
+    ResourceManager.cpp
+    ResourceManager.h
     Transform.cpp
     Transform.h
-    Window.h
 )
 
 add_subdirectory(Graphics)

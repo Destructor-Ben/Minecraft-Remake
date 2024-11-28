@@ -2,8 +2,6 @@
 
 #include "Game.h"
 #include "LogManager.h"
-#include "Timers.h"
-#include "Window.h"
 #include "Input/InputManager.h"
 #include "Graphics/Renderers/ChunkRenderer.h"
 #include "Graphics/Renderers/Renderer.h"
@@ -12,20 +10,20 @@ namespace Minecraft
 {
     World::World()
     {
+        Instance->Graphics->Camera = &Camera;
         SetMouseHidden(true);
         Camera.FOV = 70.0f;
-        Renderer->Camera = &Camera;
 
         // TODO: random seed generation
-        Renderer->ChunkRenderer->TheWorld = this; // TODO: temporary
+        Instance->Graphics->ChunkRenderer->TheWorld = this; // TODO: temporary
         m_WorldGenerator = WorldGenerator(this);
         m_WorldGenerator.Generate();
     }
 
     World::~World()
     {
+        Instance->Graphics->Camera = nullptr;
         SetMouseHidden(false);
-        Renderer->Camera = nullptr;
     }
 
     void World::Tick()
@@ -42,10 +40,10 @@ namespace Minecraft
     {
         UpdateChunkList(m_RenderedChunks, 6);
 
-        if (Input->WasKeyReleased(Key::Escape))
-            Window::Close();
+        if (Instance->Input->WasKeyReleased(Key::Escape))
+            Instance->Close();
 
-        if (Input->WasKeyReleased(Key::E))
+        if (Instance->Input->WasKeyReleased(Key::E))
             SetMouseHidden(!IsMouseHidden());
 
         for (auto* chunk : GetRenderedChunks())
@@ -121,33 +119,33 @@ namespace Minecraft
 
         const float sensitivity = 0.005f;
         const float maxAngle = glm::radians(89.0f);
-        float speed = 10.0f * Timers::DeltaTime;
+        float speed = 10.0f * Instance->DeltaTime;
 
         // Rotation
-        m_CameraPitch -= Input->GetMousePosDelta().y * sensitivity;
-        m_CameraYaw -= Input->GetMousePosDelta().x * sensitivity;
+        m_CameraPitch -= Instance->Input->GetMousePosDelta().y * sensitivity;
+        m_CameraYaw -= Instance->Input->GetMousePosDelta().x * sensitivity;
         m_CameraPitch = glm::clamp(m_CameraPitch, -maxAngle, maxAngle);
         Camera.Rotation = quat(vec3(m_CameraPitch, m_CameraYaw, 0.0f));
 
         // Input
         vec3 movementDirection = vec3(0.0f);
 
-        if (Input->IsKeyDown(Key::W))
+        if (Instance->Input->IsKeyDown(Key::W))
             movementDirection.z -= 1;
 
-        if (Input->IsKeyDown(Key::S))
+        if (Instance->Input->IsKeyDown(Key::S))
             movementDirection.z += 1;
 
-        if (Input->IsKeyDown(Key::A))
+        if (Instance->Input->IsKeyDown(Key::A))
             movementDirection.x -= 1;
 
-        if (Input->IsKeyDown(Key::D))
+        if (Instance->Input->IsKeyDown(Key::D))
             movementDirection.x += 1;
 
-        if (Input->IsKeyDown(Key::Space))
+        if (Instance->Input->IsKeyDown(Key::Space))
             movementDirection.y += 1;
 
-        if (Input->IsKeyDown(Key::LeftShift))
+        if (Instance->Input->IsKeyDown(Key::LeftShift))
             movementDirection.y -= 1;
 
         // Vertical movement

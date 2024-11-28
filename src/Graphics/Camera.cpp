@@ -1,6 +1,6 @@
 #include "Camera.h"
 
-#include "Window.h"
+#include "Game.h"
 #include "Graphics/CameraFrustum.h"
 
 namespace Minecraft
@@ -15,10 +15,10 @@ namespace Minecraft
     // Perspective projection doesn't remap 0:Width and 0:Height to -1:1 (orthographic does), but this is good because 1 block is 1 metre and fits on screen nicely
     mat4 Camera::GetProjectionMatrix() const
     {
-        if (IsPerspective && Window::Width != 0 && Window::Height != 0)
-            return glm::perspective(FOV, (float)Window::Width / (float)Window::Height, NearClip, FarClip);
+        if (IsPerspective && Instance->ScreenWidth != 0 && Instance->ScreenHeight != 0)
+            return glm::perspective(FOV, (float)Instance->ScreenWidth / (float)Instance->ScreenHeight, NearClip, FarClip);
 
-        return glm::ortho(0.0f, (float)Window::Width * OrthographicScale, 0.0f, (float)Window::Height * OrthographicScale, NearClip, FarClip);
+        return glm::ortho(0.0f, (float)Instance->ScreenWidth * OrthographicScale, 0.0f, (float)Instance->ScreenHeight * OrthographicScale, NearClip, FarClip);
     }
 
     CameraFrustum Camera::GetFrustum() const

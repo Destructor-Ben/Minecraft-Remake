@@ -1,6 +1,6 @@
 #include "InputManager.h"
 
-#include "Window.h"
+#include "Game.h"
 
 namespace Minecraft
 {
@@ -266,13 +266,13 @@ namespace Minecraft
         }
     }
 
-    bool InputManager::IsCursorDisabled() { return glfwGetInputMode(Window::Handle, GLFW_CURSOR) == GLFW_CURSOR_DISABLED; }
-    void InputManager::SetCursorDisabled(bool disabled) { glfwSetInputMode(Window::Handle, GLFW_CURSOR, disabled ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL); }
-    bool InputManager::IsRawMouseMotionEnabled() { return glfwGetInputMode(Window::Handle, GLFW_RAW_MOUSE_MOTION) == GLFW_TRUE; }
+    bool InputManager::IsCursorDisabled() { return glfwGetInputMode(Instance->Window, GLFW_CURSOR) == GLFW_CURSOR_DISABLED; }
+    void InputManager::SetCursorDisabled(bool disabled) { glfwSetInputMode(Instance->Window, GLFW_CURSOR, disabled ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL); }
+    bool InputManager::IsRawMouseMotionEnabled() { return glfwGetInputMode(Instance->Window, GLFW_RAW_MOUSE_MOTION) == GLFW_TRUE; }
     void InputManager::SetRawMouseMotion(bool isRaw)
     {
         if (glfwRawMouseMotionSupported())
-            glfwSetInputMode(Window::Handle, GLFW_RAW_MOUSE_MOTION, isRaw ? GLFW_TRUE : GLFW_FALSE);
+            glfwSetInputMode(Instance->Window, GLFW_RAW_MOUSE_MOTION, isRaw ? GLFW_TRUE : GLFW_FALSE);
     }
 
     void InputManager::Update()
@@ -281,7 +281,7 @@ namespace Minecraft
         m_OldMousePos = m_MousePos;
 
         double mouseX, mouseY;
-        glfwGetCursorPos(Window::Handle, &mouseX, &mouseY);
+        glfwGetCursorPos(Instance->Window, &mouseX, &mouseY);
         m_MousePos.x = (float)mouseX;
         m_MousePos.y = (float)mouseY;
 
@@ -300,7 +300,7 @@ namespace Minecraft
                 continue;
 
             m_MouseButtonsPressedLastFrame[i] = m_MouseButtonsPressedThisFrame[i];
-            m_MouseButtonsPressedThisFrame[i] = glfwGetMouseButton(Window::Handle, id) == GLFW_PRESS;
+            m_MouseButtonsPressedThisFrame[i] = glfwGetMouseButton(Instance->Window, id) == GLFW_PRESS;
         }
 
         // Keys
@@ -312,7 +312,7 @@ namespace Minecraft
                 continue;
 
             m_KeysPressedLastFrame[i] = m_KeysPressedThisFrame[i];
-            m_KeysPressedThisFrame[i] = glfwGetKey(Window::Handle, id) == GLFW_PRESS;
+            m_KeysPressedThisFrame[i] = glfwGetKey(Instance->Window, id) == GLFW_PRESS;
         }
     }
 

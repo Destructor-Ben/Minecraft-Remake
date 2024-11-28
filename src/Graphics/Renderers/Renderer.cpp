@@ -2,6 +2,7 @@
 
 #include "Game.h"
 #include "LogManager.h"
+#include "ResourceManager.h"
 #include "Graphics/CameraFrustum.h"
 #include "Graphics/GL.h"
 #include "Graphics/Renderers/ChunkRenderer.h"
@@ -31,7 +32,7 @@ namespace Minecraft
     void Renderer::DrawMesh(const Mesh& mesh, mat4 transform)
     {
         // Frustum culling
-        // TODO: use bounding box
+        // TODO: use bounding box from mesh - needs to be added
         if (!Camera->GetFrustum().ContainsPoint(transform * vec4(0.0f, 0.0f, 0.0f, 1.0f)))
             return;
 
@@ -45,14 +46,14 @@ namespace Minecraft
 
         // Load the texture
         path = "assets/textures/" + path + ".png";
-        auto compressedData = ReadResourceBytes(path);
+        auto compressedData = Instance->Resources->ReadResourceBytes(path);
 
         int width, height, channels;
         byte* data = stbi_load_from_memory(compressedData.data(), (int)compressedData.size(), &width, &height, &channels, 0);
         int format = channels == 4 ? GL_RGBA : GL_RGB;
 
         if (!data)
-            Logger->Throw("Failed to load texture at path: " + path);
+            Instance->Logger->Throw("Failed to load texture at path: " + path);
 
         // Set the data
         auto texture = make_shared<Texture>();
@@ -82,7 +83,7 @@ namespace Minecraft
             return m_VertexShaders[path];
 
         path = "assets/shaders/" + path + ".vert";
-        string shaderCode = ReadResourceText(path);
+        string shaderCode = Instance->Resources->ReadResourceText(path);
         auto shader = make_shared<VertexShader>(shaderCode);
 
         m_VertexShaders[path] = shader;
@@ -95,7 +96,7 @@ namespace Minecraft
             return m_FragmentShaders[path];
 
         path = "assets/shaders/" + path + ".frag";
-        string shaderCode = ReadResourceText(path);
+        string shaderCode = Instance->Resources->ReadResourceText(path);
         auto shader = make_shared<FragmentShader>(shaderCode);
 
         m_FragmentShaders[path] = shader;

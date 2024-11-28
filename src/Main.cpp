@@ -3,27 +3,20 @@
 
 using namespace Minecraft;
 
-// Forward declare functions from Game.cpp because they aren't in Game.h polluting the namespace
-namespace Minecraft
-{
-    void Initialize();
-    void Run();
-    void Shutdown();
-}
-
 // Super important to null out Logger, since we want it to deallocate and write to the log file
 #define HANDLE_EXCEPTION(function) \
-        Logger->function;\
-        Logger = nullptr;\
+        Instance->Logger->function;\
+        Instance->Logger = nullptr;\
         return -1;
 
 int main()
 {
     try
     {
-        Initialize();
-        Run();
-        Shutdown();
+        Instance = make_shared<Game>();
+        Instance->Initialize();
+        Instance->Run();
+        Instance->Shutdown();
     }
     catch (const std::exception& exception)
     {

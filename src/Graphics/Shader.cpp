@@ -30,7 +30,7 @@ namespace Minecraft
     template<typename T>
     void Shader::SetUniform(const string& name, T value)
     {
-        Logger->Throw("Unsupported data type for shader uniform");
+        Instance->Logger->Throw("Unsupported data type for shader uniform");
     }
 
     #define UNIFORM_FUNCTION(type, function) \
