@@ -6,19 +6,59 @@ namespace Minecraft
 {
     CameraFrustum::CameraFrustum(mat4 projectionViewMatrix)
     {
-        // Get the planes from the matrix
+        // Left Plane
+        m_Planes[(int)CameraPlane::Left] = glm::vec4(
+            projectionViewMatrix[0][3] + projectionViewMatrix[0][0],
+            projectionViewMatrix[1][3] + projectionViewMatrix[1][0],
+            projectionViewMatrix[2][3] + projectionViewMatrix[2][0],
+            projectionViewMatrix[3][3] + projectionViewMatrix[3][0]
+        );
+
+        // Right Plane
+        m_Planes[(int)CameraPlane::Right] = glm::vec4(
+            projectionViewMatrix[0][3] - projectionViewMatrix[0][0],
+            projectionViewMatrix[1][3] - projectionViewMatrix[1][0],
+            projectionViewMatrix[2][3] - projectionViewMatrix[2][0],
+            projectionViewMatrix[3][3] - projectionViewMatrix[3][0]
+        );
+
+        // Bottom Plane
+        m_Planes[(int)CameraPlane::Bottom] = glm::vec4(
+            projectionViewMatrix[0][3] + projectionViewMatrix[0][1],
+            projectionViewMatrix[1][3] + projectionViewMatrix[1][1],
+            projectionViewMatrix[2][3] + projectionViewMatrix[2][1],
+            projectionViewMatrix[3][3] + projectionViewMatrix[3][1]
+        );
+
+        // Top Plane
+        m_Planes[(int)CameraPlane::Top] = glm::vec4(
+            projectionViewMatrix[0][3] - projectionViewMatrix[0][1],
+            projectionViewMatrix[1][3] - projectionViewMatrix[1][1],
+            projectionViewMatrix[2][3] - projectionViewMatrix[2][1],
+            projectionViewMatrix[3][3] - projectionViewMatrix[3][1]
+        );
+
+        // Near Plane
+        m_Planes[(int)CameraPlane::Near] = glm::vec4(
+            projectionViewMatrix[0][3] + projectionViewMatrix[0][2],
+            projectionViewMatrix[1][3] + projectionViewMatrix[1][2],
+            projectionViewMatrix[2][3] + projectionViewMatrix[2][2],
+            projectionViewMatrix[3][3] + projectionViewMatrix[3][2]
+        );
+
+        // Far Plane
+        m_Planes[(int)CameraPlane::Far] = glm::vec4(
+            projectionViewMatrix[0][3] - projectionViewMatrix[0][2],
+            projectionViewMatrix[1][3] - projectionViewMatrix[1][2],
+            projectionViewMatrix[2][3] - projectionViewMatrix[2][2],
+            projectionViewMatrix[3][3] - projectionViewMatrix[3][2]
+        );
+
+        // Normalize the planes
         for (int i = 0; i < (int)CameraPlane::Count; ++i)
         {
-            // TODO: this might be wrong
-            m_Planes[i] = glm::vec4(
-                projectionViewMatrix[0][3] + (i == (int)CameraPlane::Left ? projectionViewMatrix[0][0] : 0.0f) + (i == (int)CameraPlane::Right ? -projectionViewMatrix[0][0] : 0.0f),
-                projectionViewMatrix[1][3] + (i == (int)CameraPlane::Bottom ? projectionViewMatrix[1][1] : 0.0f) + (i == (int)CameraPlane::Top ? -projectionViewMatrix[1][1] : 0.0f),
-                projectionViewMatrix[2][3] + (i == (int)CameraPlane::Near ? projectionViewMatrix[2][2] : 0.0f) + (i == (int)CameraPlane::Far ? -projectionViewMatrix[2][2] : 0.0f),
-                projectionViewMatrix[3][3]
-            );
-
-            // Normalize the planes
-            m_Planes[i] = glm::normalize(m_Planes[i]);
+            float length = glm::length(glm::vec3(m_Planes[i]));
+            m_Planes[i] /= length; // Normalize plane coefficients
         }
     }
 

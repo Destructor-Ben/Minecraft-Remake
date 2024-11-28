@@ -32,6 +32,7 @@ namespace Minecraft
     void Renderer::DrawMesh(const Mesh& mesh, mat4 transform)
     {
         // Frustum culling
+        // TODO: still has minor issues
         if (!Camera->GetFrustum().ContainsBounds(mesh.Bounds))
             return;
 
