@@ -32,8 +32,7 @@ namespace Minecraft
     void Renderer::DrawMesh(const Mesh& mesh, mat4 transform)
     {
         // Frustum culling
-        // TODO: use bounding box from mesh - needs to be added
-        if (!Camera->GetFrustum().ContainsPoint(transform * vec4(0.0f, 0.0f, 0.0f, 1.0f)))
+        if (!Camera->GetFrustum().ContainsBounds(mesh.Bounds))
             return;
 
         mesh.Draw(ProjectionMatrix * ViewMatrix * transform);

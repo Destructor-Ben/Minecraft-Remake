@@ -48,7 +48,8 @@ namespace Minecraft
         vertexArray->PushFloat(4);
         vertexArray->AddBuffer(vertexBuffer);
 
-        auto mesh = make_shared<Mesh>(vertexArray);
+        auto bounds = BoundingBox(chunk.GetWorldPos(), vec3(chunk.Size));
+        auto mesh = make_shared<Mesh>(vertexArray, bounds);
         mesh->AddMaterial(m_ChunkMaterial, indexBuffer);
         m_ChunkMeshes[&chunk] = mesh;
     }
