@@ -2,13 +2,6 @@ cmake_minimum_required(VERSION 3.27)
 project(Minecraft_Remake VERSION 0.1.0 LANGUAGES CXX C)
 set(CMAKE_CXX_STANDARD 23)
 
-# Adding compiler flags for gcc so this compiled on Linux
-# Enables Microsoft extensions that allow certain variable naming conventions
-if (CMAKE_CXX_COMPILER_ID STREQUAL GNU)
-    set(GCC_COVERAGE_COMPILE_FLAGS "-fms-extensions")
-    add_definitions(${GCC_COVERAGE_COMPILE_FLAGS})
-endif ()
-
 # Resources
 file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
 file(COPY lang DESTINATION ${CMAKE_BINARY_DIR})
