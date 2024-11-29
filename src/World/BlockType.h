@@ -8,6 +8,7 @@ namespace Minecraft
         Air,
         Stone,
         Dirt,
+        Grass,
         Count,
     };
 }

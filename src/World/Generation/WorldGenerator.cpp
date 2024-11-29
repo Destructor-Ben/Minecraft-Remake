@@ -31,12 +31,6 @@ namespace Minecraft
         {
             Generate(chunk);
         }
-
-        // Create meshes
-        for (auto& chunk : m_World->Chunks | views::values)
-        {
-            chunk.RegenerateMesh();
-        }
     }
 
     void WorldGenerator::GenerateChunksAroundPlayer(vec3 playerPos)
@@ -61,12 +55,17 @@ namespace Minecraft
                 {
                     Block block = chunk.GetBlock(x, y, z);
                     BlockType& type = block.GetData().Type;
+                    float yPos = block.GetWorldPos().y;
+
                     type = BlockType::Air;
 
-                    if (block.GetWorldPos().y <= height)
+                    if (yPos == height)
+                        type = BlockType::Grass;
+
+                    if (yPos < height)
                         type = BlockType::Dirt;
 
-                    if (block.GetWorldPos().y <= height - 2)
+                    if (yPos <= height - 2)
                         type = BlockType::Stone;
                 }
             }

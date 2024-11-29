@@ -5,6 +5,7 @@
 #include "Version.h"
 #include "Input/InputManager.h"
 #include "Graphics/Renderers/Renderer.h"
+#include "Graphics/Renderers/ChunkRenderer.h"
 #include "World/World.h"
 
 namespace Minecraft
@@ -24,6 +25,7 @@ namespace Minecraft
         Input = make_shared<InputManager>();
         Resources = make_shared<ResourceManager>();
         Graphics = make_shared<Renderer>();
+        ChunkGraphics = make_shared<ChunkRenderer>();
         CurrentWorld = make_shared<World>();
 
         Renderer::UnbindAll();
@@ -37,6 +39,7 @@ namespace Minecraft
 
         // We manually null these out because we need to deallocate the objects in a guaranteed order
         CurrentWorld = nullptr;
+        ChunkGraphics = nullptr;
         Graphics = nullptr;
         Resources = nullptr;
         Input = nullptr;

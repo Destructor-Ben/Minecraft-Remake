@@ -9,12 +9,6 @@
 
 namespace Minecraft
 {
-    Renderer::Renderer()
-    {
-        // Have to initialize here because otherwise of init order
-        m_ChunkRenderer = make_shared<ChunkRenderer>(*this);
-    }
-
     void Renderer::Update()
     {
         if (Camera != nullptr)

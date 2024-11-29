@@ -6,6 +6,7 @@ namespace Minecraft
     class InputManager;
     class ResourceManager;
     class Renderer;
+    class ChunkRenderer;
     class World;
 
     class Game;
@@ -35,11 +36,12 @@ namespace Minecraft
         int ScreenHeight = 0;
 
         // Managers
-        shared_ptr <LogManager> Logger = nullptr;
-        shared_ptr <InputManager> Input = nullptr;
-        shared_ptr <ResourceManager> Resources = nullptr;
-        shared_ptr <Renderer> Graphics = nullptr;
-        shared_ptr <World> CurrentWorld = nullptr;
+        shared_ptr<LogManager> Logger = nullptr;
+        shared_ptr<InputManager> Input = nullptr;
+        shared_ptr<ResourceManager> Resources = nullptr;
+        shared_ptr<Renderer> Graphics = nullptr;
+        shared_ptr<ChunkRenderer> ChunkGraphics = nullptr;
+        shared_ptr<World> CurrentWorld = nullptr;
 
         void Run();
         void Initialize();

@@ -19,7 +19,7 @@ namespace Minecraft
 
     void Chunk::RegenerateMesh()
     {
-        Instance->Graphics->GetChunkRenderer()->RegenerateMesh(*this);
+        Instance->ChunkGraphics->RegenerateMesh(*this);
     }
 
     void Chunk::Tick()
@@ -34,6 +34,6 @@ namespace Minecraft
 
     void Chunk::Render()
     {
-        Instance->Graphics->GetChunkRenderer()->RenderChunk(*this);
+        Instance->ChunkGraphics->RenderChunk(*this);
     }
 }

@@ -1,5 +1,6 @@
 #include "ChunkRenderer.h"
 
+#include "Game.h"
 #include "Graphics/GL.h"
 #include "Graphics/Renderers/ChunkMaterial.h"
 #include "Graphics/Renderers/Renderer.h"
@@ -8,19 +9,22 @@
 
 namespace Minecraft
 {
-    ChunkRenderer::ChunkRenderer(Renderer& renderer) : m_Renderer(renderer)
+    ChunkRenderer::ChunkRenderer()
     {
-        auto texture = m_Renderer.RequestTexture("chunk");
-        auto shader = m_Renderer.RequestShader("shader");
+        auto shader = Instance->Graphics->RequestShader("shader");
+        m_ChunkTexture = Instance->Graphics->RequestTexture("chunk");
         m_ChunkMaterial = make_shared<ChunkMaterial>(shader);
-        m_ChunkMaterial->Texture = texture;
+        m_ChunkMaterial->Texture = m_ChunkTexture;
     }
 
     void ChunkRenderer::RenderChunk(Chunk& chunk)
     {
+        if (!m_ChunkMeshes.contains(&chunk))
+            RegenerateMesh(chunk);
+
         Transform transform { };
         transform.Position = chunk.GetWorldPos();
-        m_Renderer.DrawMesh(*m_ChunkMeshes[&chunk], transform.GetTransformationMatrix());
+        Instance->Graphics->DrawMesh(*m_ChunkMeshes[&chunk], transform.GetTransformationMatrix());
     }
 
     void ChunkRenderer::RegenerateMesh(Chunk& chunk)
@@ -64,7 +68,7 @@ namespace Minecraft
     {
         // Getting other block
         auto otherBlockWorldPos = vec3i(block.GetWorldPos().x + dir.x, block.GetWorldPos().y + dir.y, block.GetWorldPos().z + dir.z);
-        auto otherBlock = TheWorld->GetBlock(otherBlockWorldPos);
+        auto otherBlock = Instance->CurrentWorld->GetBlock(otherBlockWorldPos);
         if (!otherBlock.has_value() || otherBlock.value().GetData().Type != BlockType::Air)
             return;
 
@@ -74,18 +78,41 @@ namespace Minecraft
         face.Position += vec3(dir) * 0.5f;
         face.Rotation = rotation;
         face.Shading = GetFaceShading(dir);
-        float sizeOfOneTexture = 1.0f / 8.0f; // 8 comes from 128 (atlas size) / 16 (one texture size)
-        face.UVMultiplier = vec2(sizeOfOneTexture);// TODO: don't hardcode texture size!
 
-        if (block.GetData().Type == BlockType::Dirt)
-            face.UVOffset = vec2(2 * sizeOfOneTexture, 1.0f - sizeOfOneTexture);
-        else
-            face.UVOffset = vec2(sizeOfOneTexture, 1.0f - sizeOfOneTexture);
+        // Calculate the UVs
+        float textureSizeX = (float)BlockTextureSize / m_ChunkTexture->GetWidth();
+        float textureSizeY = (float)BlockTextureSize / m_ChunkTexture->GetHeight();
+        face.UVMultiplier = vec2(textureSizeX, textureSizeY);
 
+        int textureIndex = 0;
+        switch (block.GetData().Type)
+        {
+            case BlockType::Stone:
+                textureIndex = 2;
+                break;
+            case BlockType::Dirt:
+                textureIndex = 3;
+                break;
+            case BlockType::Grass:
+                if (dir.y > 0)
+                    textureIndex = 5;
+                else if (dir.y < 0)
+                    textureIndex = 3;
+                else
+                    textureIndex = 4;
+
+                break;
+            default:
+                break;
+        }
+
+        // TODO: handle textureIndex >= width
+        face.UVOffset = vec2(textureIndex * textureSizeX, 1.0f - textureSizeY);
+
+        // Add the face
         faces.push_back(face);
     }
 
-    // TODO: fix rotations - might be an issue with transforms
     vector <Quad> ChunkRenderer::GetChunkFaces(Chunk& chunk)
     {
         const float Degrees180 = glm::radians(180.0f);

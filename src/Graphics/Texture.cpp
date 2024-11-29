@@ -37,6 +37,8 @@ namespace Minecraft
     void Texture::SetData(byte* data, int width, int height, int format)
     {
         Bind();
+        m_Width = width;
+        m_Height = height;
         glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
     }
 
