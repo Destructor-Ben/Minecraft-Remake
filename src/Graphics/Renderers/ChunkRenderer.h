@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Hash.h"
+
 namespace Minecraft
 {
     class Chunk;
@@ -25,16 +27,15 @@ namespace Minecraft
 
     private:
         void CreateMesh(Chunk& chunk);
-        void SetMeshData(Chunk& chunk, const vector<float>& vertices, const vector<uint>& indices);
+        void SetMeshData(Chunk& chunk, const vector<float>& vertices, const vector <uint>& indices);
 
-        void AddFaceInDirection(Chunk& chunk, Block& block, vector<Quad>& faces, vec3i dir, quat rotation);
-        vector<Quad> GetChunkFaces(Chunk& chunk);
+        void AddFaceInDirection(Chunk& chunk, Block& block, vector <Quad>& faces, vec3i dir, quat rotation);
+        vector <Quad> GetChunkFaces(Chunk& chunk);
         vec4 GetFaceShading(vec3i dir); // TODO: make a deferred renderer that doesn't use shading in the mesh
 
-        shared_ptr<Texture> m_ChunkTexture;
-        shared_ptr<ChunkMaterial> m_ChunkMaterial;
+        shared_ptr <Texture> m_ChunkTexture;
+        shared_ptr <ChunkMaterial> m_ChunkMaterial;
 
-        // TODO: just use a hash of a chunk/chunk coordinate instead of using a ptr?
-        unordered_map<Chunk*, shared_ptr<Mesh>> m_ChunkMeshes = { };
+        unordered_map <vec3i, shared_ptr<Mesh>> m_ChunkMeshes = { };
     };
 }

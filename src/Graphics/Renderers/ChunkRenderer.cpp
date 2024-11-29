@@ -19,17 +19,17 @@ namespace Minecraft
 
     void ChunkRenderer::RenderChunk(Chunk& chunk)
     {
-        if (!m_ChunkMeshes.contains(&chunk))
+        if (!m_ChunkMeshes.contains(chunk.GetChunkPos()))
             RegenerateMesh(chunk);
 
         Transform transform { };
         transform.Position = chunk.GetWorldPos();
-        Instance->Graphics->DrawMesh(*m_ChunkMeshes[&chunk], transform.GetTransformationMatrix());
+        Instance->Graphics->DrawMesh(*m_ChunkMeshes[chunk.GetChunkPos()], transform.GetTransformationMatrix());
     }
 
     void ChunkRenderer::RegenerateMesh(Chunk& chunk)
     {
-        if (!m_ChunkMeshes.contains(&chunk))
+        if (!m_ChunkMeshes.contains(chunk.GetChunkPos()))
             CreateMesh(chunk);
 
         auto faces = GetChunkFaces(chunk);
@@ -55,13 +55,13 @@ namespace Minecraft
         auto bounds = BoundingBox(chunk.GetWorldPos(), vec3(chunk.Size));
         auto mesh = make_shared<Mesh>(vertexArray, bounds);
         mesh->AddMaterial(m_ChunkMaterial, indexBuffer);
-        m_ChunkMeshes[&chunk] = mesh;
+        m_ChunkMeshes[chunk.GetChunkPos()] = mesh;
     }
 
     void ChunkRenderer::SetMeshData(Chunk& chunk, const vector<float>& vertices, const vector <uint>& indices)
     {
-        m_ChunkMeshes[&chunk]->Vertices->GetBuffer()->SetData(vertices);
-        m_ChunkMeshes[&chunk]->GetIndexBuffer(m_ChunkMaterial)->SetData(indices);
+        m_ChunkMeshes[chunk.GetChunkPos()]->Vertices->GetBuffer()->SetData(vertices);
+        m_ChunkMeshes[chunk.GetChunkPos()]->GetIndexBuffer(m_ChunkMaterial)->SetData(indices);
     }
 
     void ChunkRenderer::AddFaceInDirection(Chunk& chunk, Block& block, vector <Quad>& faces, vec3i dir, quat rotation)
