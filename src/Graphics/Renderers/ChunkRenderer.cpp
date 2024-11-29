@@ -8,7 +8,7 @@
 
 namespace Minecraft
 {
-    ChunkRenderer::ChunkRenderer(class Renderer& renderer) : m_Renderer(renderer)
+    ChunkRenderer::ChunkRenderer(Renderer& renderer) : m_Renderer(renderer)
     {
         auto texture = m_Renderer.RequestTexture("chunk");
         auto shader = m_Renderer.RequestShader("shader");
