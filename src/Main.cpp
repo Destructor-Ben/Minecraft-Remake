@@ -1,3 +1,5 @@
+#include <csignal>
+
 #include "Game.h"
 #include "LogManager.h"
 
@@ -9,10 +11,20 @@ using namespace Minecraft;
         Instance->Logger = nullptr;\
         return -1;
 
+// Let OSes shut this bitch down
+void SignalHandler(int signal)
+{
+    Instance->Logger->Info(format("Signal received: {}", signal));
+    Instance->Close();
+}
+
 int main()
 {
     try
     {
+        std::signal(SIGINT, SignalHandler);
+        std::signal(SIGTERM, SignalHandler);
+
         Instance = make_shared<Game>();
         Instance->Initialize();
         Instance->Run();
