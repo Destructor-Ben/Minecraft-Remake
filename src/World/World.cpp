@@ -15,7 +15,7 @@ namespace Minecraft
         Camera.FOV = 70.0f;
 
         // TODO: random seed generation
-        Instance->Graphics->ChunkRenderer->TheWorld = this; // TODO: temporary
+        Instance->Graphics->GetChunkRenderer()->TheWorld = this; // TODO: temporary
         m_WorldGenerator = WorldGenerator(this);
         m_WorldGenerator.Generate();
     }

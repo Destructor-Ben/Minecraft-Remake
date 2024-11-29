@@ -12,7 +12,7 @@ namespace Minecraft
     Renderer::Renderer()
     {
         // Have to initialize here because otherwise of init order
-        ChunkRenderer = make_shared<class ChunkRenderer>(*this);
+        m_ChunkRenderer = make_shared<ChunkRenderer>(*this);
     }
 
     void Renderer::Update()
@@ -32,7 +32,7 @@ namespace Minecraft
     void Renderer::DrawMesh(const Mesh& mesh, mat4 transform)
     {
         // Frustum culling
-        // TODO: still has minor issues
+        // TODO: still has minor issues - maybe it's due to bad bounds checking
         if (!Camera->GetFrustum().ContainsBounds(mesh.Bounds))
             return;
 
