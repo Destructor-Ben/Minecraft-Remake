@@ -1,5 +1,7 @@
 #include "WorldGenerator.h"
 
+#include "Game.h"
+#include "LogManager.h"
 #include "Random/Perlin.h"
 #include "World/World.h"
 
@@ -35,7 +37,28 @@ namespace Minecraft
 
     void WorldGenerator::GenerateChunksAroundPlayer(vec3 playerPos)
     {
-        // TODO: check the radius of the chunks around the player, and if they don't exit, generate them
+        const int GenerationRadius = 3;
+        auto playerChunkPos = playerPos / vec3(Chunk::Size); // TODO: convert properly?
+
+        for (int x = playerChunkPos.x; x < GenerationRadius * 2; ++x)
+        {
+            for (int z = playerChunkPos.z; z < GenerationRadius * 2; ++z)
+            {
+                for (int y = -1; y <= 1; ++y)
+                {
+                    // Check if the chunk exists
+                    auto chunkPos = vec3i(x - GenerationRadius, y, z - GenerationRadius);
+                    auto existingChunk = m_World->GetChunk(chunkPos);
+                    if (existingChunk.has_value())
+                        return;
+
+                    // Generate the chunk
+                    Chunk chunk(chunkPos.x, chunkPos.y, chunkPos.z);
+                    Generate(chunk); // Fucking value references get me sometimes, this needs to go BEFORE we set it, otherwise the empty chunk is copied to the Chunks map
+                    m_World->Chunks[chunkPos] = chunk;
+                }
+            }
+        }
     }
 
     void WorldGenerator::Generate(Chunk& chunk)
