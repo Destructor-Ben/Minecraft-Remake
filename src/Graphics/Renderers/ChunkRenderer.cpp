@@ -64,6 +64,7 @@ namespace Minecraft
         m_ChunkMeshes[chunk.GetChunkPos()]->GetIndexBuffer(m_ChunkMaterial)->SetData(indices);
     }
 
+    // TODO: add faces on the top and bottom of the world
     void ChunkRenderer::AddFaceInDirection(Chunk& chunk, Block& block, vector <Quad>& faces, vec3i dir, quat rotation)
     {
         // Getting other block

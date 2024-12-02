@@ -5,9 +5,52 @@
 #include "Input/InputManager.h"
 #include "Graphics/Renderers/ChunkRenderer.h"
 #include "Graphics/Renderers/Renderer.h"
+#include "World/Chunk.h"
 
 namespace Minecraft
 {
+    #pragma region Coordinate Conversion Functions
+
+    static int FloorDivision(int x, int y)
+    {
+        return (x < 0) ? ((x - y + 1) / y) : (x / y);
+    }
+
+    static int Modulus(int x, int y)
+    {
+        return (x % y + y) % y;
+    }
+
+    vec3i WorldToChunkPos(vec3 pos)
+    {
+        return vec3i(
+            FloorDivision((int)std::floor(pos.x), 10),
+            FloorDivision((int)std::floor(pos.y), 10),
+            FloorDivision((int)std::floor(pos.z), 10)
+        );
+    }
+
+    vec3i WorldToBlockPos(vec3 pos)
+    {
+        return vec3i(
+            Modulus((int)std::floor(pos.x), 10),
+            Modulus((int)std::floor(pos.y), 10),
+            Modulus((int)std::floor(pos.z), 10)
+        );
+    }
+
+    vec3 ChunkToWorldPos(vec3i chunkPos)
+    {
+        return vec3(chunkPos) * 10;
+    }
+
+    vec3 BlockAndChunkToWorldPos(vec3i chunkPos, vec3i blockPos)
+    {
+        return ChunkToWorldPos(chunkPos) + vec3(blockPos);
+    }
+
+    #pragma endregion
+
     World::World()
     {
         Instance->Graphics->Camera = &Camera;
@@ -80,18 +123,8 @@ namespace Minecraft
     optional <Block> World::GetBlock(vec3i pos)
     {
         // Calculate coordinates
-        vec3i chunkPos = pos / (int)Chunk::Size;
-        vec3i blockPos = pos % (int)Chunk::Size;
-
-        // Adjust for negatives
-        for (int i = 0; i < 3; ++i)
-        {
-            if (blockPos[i] < 0)
-            {
-                blockPos[i] += Chunk::Size;
-                chunkPos[i]--;
-            }
-        }
+        vec3i chunkPos = WorldToChunkPos(pos);
+        vec3i blockPos = WorldToBlockPos(pos);
 
         // Get block from chunk
         auto chunk = GetChunk(chunkPos);

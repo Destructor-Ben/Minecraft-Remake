@@ -35,10 +35,12 @@ namespace Minecraft
         }
     }
 
+    // TODO: this doesn't work perfectly, only some directions generate chunks
+    // TODO: regenerate the meshes of adjacent chunks too
     void WorldGenerator::GenerateChunksAroundPlayer(vec3 playerPos)
     {
         const int GenerationRadius = 3;
-        auto playerChunkPos = playerPos / vec3(Chunk::Size); // TODO: convert properly?
+        auto playerChunkPos = WorldToChunkPos(playerPos);
 
         for (int x = playerChunkPos.x; x < GenerationRadius * 2; ++x)
         {
