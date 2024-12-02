@@ -1,7 +1,5 @@
 #include "WorldGenerator.h"
 
-#include "Game.h"
-#include "LogManager.h"
 #include "Random/Perlin.h"
 #include "World/World.h"
 
@@ -36,7 +34,6 @@ namespace Minecraft
     }
 
     // TODO: this doesn't work perfectly, only some directions generate chunks
-    // TODO: regenerate the meshes of adjacent chunks too
     void WorldGenerator::GenerateChunksAroundPlayer(vec3 playerPos)
     {
         const int GenerationRadius = 3;
@@ -58,6 +55,33 @@ namespace Minecraft
                     Chunk chunk(chunkPos.x, chunkPos.y, chunkPos.z);
                     Generate(chunk); // Fucking value references get me sometimes, this needs to go BEFORE we set it, otherwise the empty chunk is copied to the Chunks map
                     m_World->Chunks[chunkPos] = chunk;
+
+                    // TODO: add chunk to queue to be remeshed so we don't remesh a lot of chunks
+                    chunk.RegenerateMesh();
+
+                    auto adjacentChunk1 = m_World->GetChunk(chunkPos + vec3i(1, 0, 0));
+                    if (adjacentChunk1.has_value())
+                        adjacentChunk1.value()->RegenerateMesh();
+
+                    adjacentChunk1 = m_World->GetChunk(chunkPos + vec3i(-1, 0, 0));
+                    if (adjacentChunk1.has_value())
+                        adjacentChunk1.value()->RegenerateMesh();
+
+                    adjacentChunk1 = m_World->GetChunk(chunkPos + vec3i(0, 1, 0));
+                    if (adjacentChunk1.has_value())
+                        adjacentChunk1.value()->RegenerateMesh();
+
+                    adjacentChunk1 = m_World->GetChunk(chunkPos + vec3i(0, -1, 0));
+                    if (adjacentChunk1.has_value())
+                        adjacentChunk1.value()->RegenerateMesh();
+
+                    adjacentChunk1 = m_World->GetChunk(chunkPos + vec3i(0, 0, 1));
+                    if (adjacentChunk1.has_value())
+                        adjacentChunk1.value()->RegenerateMesh();
+
+                    adjacentChunk1 = m_World->GetChunk(chunkPos + vec3i(0, 0, -1));
+                    if (adjacentChunk1.has_value())
+                        adjacentChunk1.value()->RegenerateMesh();
                 }
             }
         }
