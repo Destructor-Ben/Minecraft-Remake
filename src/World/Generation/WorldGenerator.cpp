@@ -123,6 +123,7 @@ namespace Minecraft
 
     double WorldGenerator::GenerateHeight(float verticalScale, float horizontalScale, uint seed, int x, int z, double persistence, double octaveCount)
     {
-        return Perlin2D(seed, x * horizontalScale, z * horizontalScale, persistence, octaveCount) * verticalScale;
+        return sin(x * 3.14159265359 * 0.5) * sin(z * 1.5) * 10.0;
+        // return Perlin2D(seed, x * horizontalScale, z * horizontalScale, persistence, octaveCount) * verticalScale;
     }
 }
