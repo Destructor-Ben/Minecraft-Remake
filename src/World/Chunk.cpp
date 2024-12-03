@@ -4,6 +4,7 @@
 #include "LogManager.h"
 #include "Graphics/Renderers/ChunkRenderer.h"
 #include "Graphics/Renderers/Renderer.h"
+#include "World/BlockData.h"
 
 namespace Minecraft
 {
@@ -14,7 +15,16 @@ namespace Minecraft
         Instance->Logger->Assert(blockY < Size);
         Instance->Logger->Assert(blockZ < Size);
 
-        return { *this, blockX, blockY, blockZ };
+        return { *this, blockX, blockY, blockZ, GetBlockData(GetBlockID(blockX, blockY, blockZ)) };
+    }
+    uint Chunk::GetBlockID(byte blockX, byte blockY, byte blockZ)
+    {
+        return blockX * Size * Size + blockY * Size + blockZ;
+    }
+
+    BlockData& Chunk::GetBlockData(uint blockID)
+    {
+        return m_BlockData.at(blockID);
     }
 
     void Chunk::RegenerateMesh()

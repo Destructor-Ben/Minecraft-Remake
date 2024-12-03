@@ -2,6 +2,7 @@
 
 #include "Random/Perlin.h"
 #include "World/World.h"
+#include "World/Blocks/Blocks.h"
 
 namespace Minecraft
 {
@@ -103,19 +104,21 @@ namespace Minecraft
                 for (int y = 0; y < Chunk::Size; ++y)
                 {
                     Block block = chunk.GetBlock(x, y, z);
-                    BlockType& type = block.GetData().Type;
                     float yPos = block.GetWorldPos().y;
 
-                    type = BlockType::Air;
+                    // Set the block type
+                    auto type = &Blocks::Air;
 
                     if (yPos == height)
-                        type = BlockType::Grass;
+                        type = &Blocks::Grass;
 
                     if (yPos < height)
-                        type = BlockType::Dirt;
+                        type = &Blocks::Dirt;
 
                     if (yPos <= height - 2)
-                        type = BlockType::Stone;
+                        type = &Blocks::Stone;
+
+                    block.Data.Type = type;
                 }
             }
         }

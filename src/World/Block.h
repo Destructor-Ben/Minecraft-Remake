@@ -9,13 +9,11 @@ namespace Minecraft
     class Block
     {
     public:
-        Block(Chunk& chunk, byte blockX, byte blockY, byte blockZ);
+        BlockData& Data; // Set when the block is created
 
-        // Index of the block used for accessing the arrays of data in the chunks
-        uint GetID() const;
+        Block(Chunk& chunk, byte blockX, byte blockY, byte blockZ, BlockData& data);
+
         Chunk& GetChunk() const { return m_Chunk; }
-        BlockData& GetData();
-
         vec3i GetWorldPos() const;
         vec3i GetBlockPos() const { return { m_BlockX, m_BlockY, m_BlockZ }; }
 

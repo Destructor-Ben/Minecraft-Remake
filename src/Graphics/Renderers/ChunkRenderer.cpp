@@ -70,7 +70,7 @@ namespace Minecraft
         // Getting other block
         auto otherBlockWorldPos = vec3i(block.GetWorldPos().x + dir.x, block.GetWorldPos().y + dir.y, block.GetWorldPos().z + dir.z);
         auto otherBlock = Instance->CurrentWorld->GetBlock(otherBlockWorldPos);
-        if (!otherBlock.has_value() || otherBlock.value().GetData().Type != BlockType::Air)
+        if (!otherBlock.has_value() || !otherBlock.value().Data.Type->IsTransparent)
             return;
 
         // Creating face
@@ -85,28 +85,7 @@ namespace Minecraft
         float textureSizeY = (float)BlockTextureSize / m_ChunkTexture->GetHeight();
         face.UVMultiplier = vec2(textureSizeX, textureSizeY);
 
-        int textureIndex = 0;
-        switch (block.GetData().Type)
-        {
-            case BlockType::Stone:
-                textureIndex = 2;
-                break;
-            case BlockType::Dirt:
-                textureIndex = 3;
-                break;
-            case BlockType::Grass:
-                if (dir.y > 0)
-                    textureIndex = 5;
-                else if (dir.y < 0)
-                    textureIndex = 3;
-                else
-                    textureIndex = 4;
-
-                break;
-            default:
-                break;
-        }
-
+        int textureIndex = block.Data.Type->GetTextureIndex(dir);
         // TODO: handle textureIndex >= width
         face.UVOffset = vec2(textureIndex * textureSizeX, 1.0f - textureSizeY);
 
@@ -128,7 +107,7 @@ namespace Minecraft
                 for (int z = 0; z < Chunk::Size; ++z)
                 {
                     auto block = chunk.GetBlock(x, y, z);
-                    if (block.GetData().Type == BlockType::Air)
+                    if (block.Data.Type->IsTransparent)
                         continue;
 
                     // TODO: store these rotations

@@ -9,4 +9,5 @@ target_sources(Minecraft_Remake PRIVATE
     World.h
 )
 
+add_subdirectory(Blocks)
 add_subdirectory(Generation)

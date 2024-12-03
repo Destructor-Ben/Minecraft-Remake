@@ -6,10 +6,6 @@
 namespace Minecraft
 {
     // Chunks contain the actual block data and information about it's size, as wel as getters for blocks that access the data
-    // TODO: make some form of static block data
-    // TODO: make block data components
-    // TODO: entities
-    // TODO: getters that return a vector of all blocks/entities
     class Chunk
     {
     public:
@@ -22,7 +18,13 @@ namespace Minecraft
 
         Block GetBlock(byte blockX, byte blockY, byte blockZ);
         Block GetBlock(vec3i blockPos) { return GetBlock((byte)blockPos.x, (byte)blockPos.y, (byte)blockPos.z); }
-        BlockData& GetBlockData(Block block) { return m_BlockData[block.GetID()]; }
+
+        // Index of the block used for accessing the arrays of data in the chunks
+        static uint GetBlockID(Block block) { return GetBlockID(block.GetBlockPos()); }
+        static uint GetBlockID(vec3i blockPos) { return GetBlockID((byte)blockPos.x, (byte)blockPos.y, (byte)blockPos.z); }
+        static uint GetBlockID(byte blockX, byte blockY, byte blockZ);
+
+        BlockData& GetBlockData(uint blockID);
 
         vec3i GetWorldPos() const { return GetChunkPos() * (int)Size; }
         vec3i GetChunkPos() const { return { m_ChunkX, m_ChunkY, m_ChunkZ }; }

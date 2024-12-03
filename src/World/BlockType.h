@@ -2,13 +2,16 @@
 
 namespace Minecraft
 {
-    // TODO: this should be temporary maybe? or we could have a component with the type so we can easily find out what type of block it is. But we will have archetypes anyway
-    enum class BlockType
+    // Block types are handled as a datatype that contains all the info and settings for a specific block type
+    // The instance data is handled in BlockData
+    class BlockType
     {
-        Air,
-        Stone,
-        Dirt,
-        Grass,
-        Count,
+    public:
+        int TextureIndex = 0;
+        bool IsTransparent = false;
+
+        virtual ~BlockType() = default;
+
+        virtual int GetTextureIndex(vec3i dir) { return TextureIndex; }
     };
 }

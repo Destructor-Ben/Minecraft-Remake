@@ -4,17 +4,12 @@
 
 namespace Minecraft
 {
-    Block::Block(Chunk& chunk, byte blockX, byte blockY, byte blockZ) : m_Chunk(chunk), m_BlockX(blockX), m_BlockY(blockY), m_BlockZ(blockZ) { }
-
-    uint Block::GetID() const
-    {
-        return m_BlockX * Chunk::Size * Chunk::Size + m_BlockY * Chunk::Size + m_BlockZ;
-    }
-
-    BlockData& Block::GetData()
-    {
-        return m_Chunk.GetBlockData(*this);
-    }
+    Block::Block(Chunk& chunk, byte blockX, byte blockY, byte blockZ, BlockData& data) :
+        m_Chunk(chunk),
+        m_BlockX(blockX),
+        m_BlockY(blockY),
+        m_BlockZ(blockZ),
+        Data(data) { }
 
     vec3i Block::GetWorldPos() const
     {
