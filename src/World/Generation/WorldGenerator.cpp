@@ -1,11 +1,14 @@
 #include "WorldGenerator.h"
 
+#include "Game.h"
+#include "LogManager.h"
 #include "Random/Perlin.h"
 #include "World/World.h"
 #include "World/Blocks/Blocks.h"
 
 namespace Minecraft
 {
+    // TODO: make min and max world height (in chunks) be stored in World.h
     WorldGenerator::WorldGenerator(World* world, uint seed) : m_World(world), m_Seed(seed)
     {
     }
@@ -44,14 +47,20 @@ namespace Minecraft
         // So we queue them and use a set
         auto regenerateMeshQueue = set<Chunk*>();
 
-        for (int x = playerChunkPos.x; x < GenerationRadius * 2; ++x)
+        // TODO: verify that this isn't being weird with chunk radii
+        for (int x = -GenerationRadius + 1; x < GenerationRadius; ++x)
         {
-            for (int z = playerChunkPos.z; z < GenerationRadius * 2; ++z)
+            for (int z = -GenerationRadius + 1; z < GenerationRadius; ++z)
             {
                 for (int y = -1; y <= 1; ++y)
                 {
+                    // Calculate chunk pos
+                    auto chunkPos = vec3i(x, y, z);
+                    // TODO: in the future, just chunkPos += playerChunkPos, current impl makes it easier to test
+                    chunkPos.x += playerChunkPos.x;
+                    chunkPos.z += playerChunkPos.z;
+
                     // Check if the chunk exists
-                    auto chunkPos = vec3i(x - GenerationRadius, y, z - GenerationRadius);
                     auto existingChunk = m_World->GetChunk(chunkPos);
                     if (existingChunk.has_value())
                         return;
