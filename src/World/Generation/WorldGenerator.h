@@ -26,6 +26,8 @@ namespace Minecraft
         void Generate(Chunk& chunk);
 
     private:
+        void AddChunkIfExists(set<Chunk*>& chunks, vec3i chunkPos);
+
         // Uses noise functions to generate height at single block
         double GenerateHeight(float verticalScale, float horizontalScale, uint seed, int x, int z, double persistence, double octaveCount);
 

@@ -40,6 +40,10 @@ namespace Minecraft
         const int GenerationRadius = 3;
         auto playerChunkPos = WorldToChunkPos(playerPos);
 
+        // When generating chunks side by side, many chunks will probably get re-meshed multiple times
+        // So we queue them and use a set
+        auto regenerateMeshQueue = set<Chunk*>();
+
         for (int x = playerChunkPos.x; x < GenerationRadius * 2; ++x)
         {
             for (int z = playerChunkPos.z; z < GenerationRadius * 2; ++z)
@@ -57,35 +61,33 @@ namespace Minecraft
                     Generate(chunk); // Fucking value references get me sometimes, this needs to go BEFORE we set it, otherwise the empty chunk is copied to the Chunks map
                     m_World->Chunks[chunkPos] = chunk;
 
-                    // TODO: add chunk to queue to be remeshed so we don't remesh a lot of chunks
-                    chunk.RegenerateMesh();
+                    // Add chunks to re-mesh queue
+                    AddChunkIfExists(regenerateMeshQueue, chunkPos);
 
-                    auto adjacentChunk1 = m_World->GetChunk(chunkPos + vec3i(1, 0, 0));
-                    if (adjacentChunk1.has_value())
-                        adjacentChunk1.value()->RegenerateMesh();
+                    AddChunkIfExists(regenerateMeshQueue, chunkPos + vec3i(1, 0, 0));
+                    AddChunkIfExists(regenerateMeshQueue, chunkPos + vec3i(-1, 0, 0));
 
-                    adjacentChunk1 = m_World->GetChunk(chunkPos + vec3i(-1, 0, 0));
-                    if (adjacentChunk1.has_value())
-                        adjacentChunk1.value()->RegenerateMesh();
+                    AddChunkIfExists(regenerateMeshQueue, chunkPos + vec3i(0, 1, 0));
+                    AddChunkIfExists(regenerateMeshQueue, chunkPos + vec3i(0, -1, 0));
 
-                    adjacentChunk1 = m_World->GetChunk(chunkPos + vec3i(0, 1, 0));
-                    if (adjacentChunk1.has_value())
-                        adjacentChunk1.value()->RegenerateMesh();
-
-                    adjacentChunk1 = m_World->GetChunk(chunkPos + vec3i(0, -1, 0));
-                    if (adjacentChunk1.has_value())
-                        adjacentChunk1.value()->RegenerateMesh();
-
-                    adjacentChunk1 = m_World->GetChunk(chunkPos + vec3i(0, 0, 1));
-                    if (adjacentChunk1.has_value())
-                        adjacentChunk1.value()->RegenerateMesh();
-
-                    adjacentChunk1 = m_World->GetChunk(chunkPos + vec3i(0, 0, -1));
-                    if (adjacentChunk1.has_value())
-                        adjacentChunk1.value()->RegenerateMesh();
+                    AddChunkIfExists(regenerateMeshQueue, chunkPos + vec3i(0, 0, 1));
+                    AddChunkIfExists(regenerateMeshQueue, chunkPos + vec3i(0, 0, -1));
                 }
             }
         }
+
+        // Regenerate chunk meshes
+        for (auto chunk : regenerateMeshQueue)
+        {
+            chunk->RegenerateMesh();
+        }
+    }
+
+    void WorldGenerator::AddChunkIfExists(set<Chunk*>& chunks, vec3i chunkPos)
+    {
+        auto chunk = m_World->GetChunk(chunkPos);
+        if (chunk.has_value())
+            chunks.insert(chunk.value());
     }
 
     void WorldGenerator::Generate(Chunk& chunk)
