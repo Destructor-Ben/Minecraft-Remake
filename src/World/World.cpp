@@ -7,9 +7,13 @@
 #include "Graphics/Renderers/Renderer.h"
 #include "World/Chunk.h"
 
+// TODO: make getting a chunk outside of the min and max height fail
 namespace Minecraft
 {
     #pragma region Coordinate Conversion Functions
+
+    #pragma clang diagnostic push
+    #pragma ide diagnostic ignored "ConstantParameter"
 
     static int FloorDivision(int x, int y)
     {
@@ -21,10 +25,14 @@ namespace Minecraft
         return (x % y + y) % y;
     }
 
+    #pragma clang diagnostic pop
+
+    // TODO: Chunk::Size can't be used here for some reason, the linker whines about it
+
     vec3i WorldToChunkPos(vec3 pos)
     {
         return vec3i(
-            FloorDivision((int)std::floor(pos.x), 10),
+            FloorDivision((int)std::floor(pos.x), Chunk::Size),
             FloorDivision((int)std::floor(pos.y), 10),
             FloorDivision((int)std::floor(pos.z), 10)
         );
@@ -59,7 +67,7 @@ namespace Minecraft
 
         // TODO: random seed generation
         m_WorldGenerator = WorldGenerator(this);
-        m_WorldGenerator.Generate();
+        m_WorldGenerator.Generate(SpawnRadius, MinSpawnHeight, MaxSpawnHeight);
     }
 
     World::~World()
@@ -70,7 +78,7 @@ namespace Minecraft
 
     void World::Tick()
     {
-        UpdateChunkList(m_LoadedChunks, 4);
+        UpdateChunkList(m_LoadedChunks, SimulationDistance);
 
         for (auto* chunk : GetLoadedChunks())
         {
@@ -80,7 +88,7 @@ namespace Minecraft
 
     void World::Update()
     {
-        UpdateChunkList(m_RenderedChunks, 6);
+        UpdateChunkList(m_RenderedChunks, RenderDistance);
 
         if (Instance->Input->WasKeyReleased(Key::Escape))
             Instance->Close();
@@ -94,7 +102,7 @@ namespace Minecraft
         }
 
         UpdateCamera();
-        m_WorldGenerator.GenerateChunksAroundPlayer(Camera.Position);
+        m_WorldGenerator.GenerateChunksAroundPlayer(Camera.Position, GenerationDistance);
     }
 
     void World::Render()
@@ -114,10 +122,13 @@ namespace Minecraft
 
     optional<Chunk*> World::GetChunk(vec3i chunkPos)
     {
-        if (Chunks.contains(chunkPos))
-            return &Chunks.at(chunkPos);
+        if (chunkPos.y > MaxHeight || chunkPos.y < MinHeight)
+            return nullopt;
 
-        return nullopt;
+        if (!Chunks.contains(chunkPos))
+            return nullopt;
+        
+        return &Chunks.at(chunkPos);
     }
 
     optional <Block> World::GetBlock(vec3i pos)
@@ -136,7 +147,7 @@ namespace Minecraft
 
     void World::UpdateChunkList(vector<Chunk*>& chunks, int radius)
     {
-        // TODO: update these properly with render distance
+        // TODO: update these properly with the given distance
         chunks.clear();
         for (auto& chunk : Chunks | views::values)
         {

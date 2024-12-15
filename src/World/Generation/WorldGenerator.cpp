@@ -8,62 +8,47 @@
 
 namespace Minecraft
 {
-    // TODO: make min and max world height (in chunks) be stored in World.h
-    WorldGenerator::WorldGenerator(World* world, uint seed) : m_World(world), m_Seed(seed)
-    {
-    }
+    WorldGenerator::WorldGenerator(World* world, uint seed) : m_World(world), m_Seed(seed) { }
 
-    void WorldGenerator::Generate()
+    void WorldGenerator::Generate(int spawnRadius, int minHeight, int maxHeight)
     {
-        // Creating initial chunks
-        // TODO: radii with chunks are weird, verify this is good
-        const int SpawnRadius = 8;
-        for (int x = 0; x < SpawnRadius * 2; ++x)
+        for (int x = -spawnRadius + 1; x < spawnRadius; ++x)
         {
-            for (int z = 0; z < SpawnRadius * 2; ++z)
+            for (int z = -spawnRadius + 1; z < spawnRadius; ++z)
             {
-                for (int y = -1; y <= 1; ++y)
+                for (int y = minHeight; y <= maxHeight; ++y)
                 {
-                    Chunk chunk(x - SpawnRadius, y, z - SpawnRadius);
-                    m_World->Chunks[vec3i(x - SpawnRadius, y, z - SpawnRadius)] = chunk;
+                    auto chunkPos = vec3i(x, y, z);
+                    Chunk chunk(x, y, z);
+                    Generate(chunk);
+                    m_World->Chunks[chunkPos] = chunk;
                 }
             }
         }
-
-        // Generating world
-        for (auto& chunk : m_World->Chunks | views::values)
-        {
-            Generate(chunk);
-        }
     }
 
-    // TODO: this doesn't work perfectly, only some directions generate chunks
-    void WorldGenerator::GenerateChunksAroundPlayer(vec3 playerPos)
+    void WorldGenerator::GenerateChunksAroundPlayer(vec3 playerPos, int radius)
     {
-        const int GenerationRadius = 3;
         auto playerChunkPos = WorldToChunkPos(playerPos);
 
         // When generating chunks side by side, many chunks will probably get re-meshed multiple times
         // So we queue them and use a set
         auto regenerateMeshQueue = set<Chunk*>();
 
-        // TODO: verify that this isn't being weird with chunk radii
-        for (int x = -GenerationRadius + 1; x < GenerationRadius; ++x)
+        for (int x = -radius + 1; x < radius; ++x)
         {
-            for (int z = -GenerationRadius + 1; z < GenerationRadius; ++z)
+            for (int z = -radius + 1; z < radius; ++z)
             {
-                for (int y = -1; y <= 1; ++y)
+                for (int y = -radius + 1; y < radius; ++y)
                 {
                     // Calculate chunk pos
                     auto chunkPos = vec3i(x, y, z);
-                    // TODO: in the future, just chunkPos += playerChunkPos, current impl makes it easier to test because no y axis
-                    chunkPos.x += playerChunkPos.x;
-                    chunkPos.z += playerChunkPos.z;
+                    chunkPos += playerChunkPos;
 
                     // Check if the chunk exists
                     auto existingChunk = m_World->GetChunk(chunkPos);
                     if (existingChunk.has_value())
-                        return;
+                        continue;
 
                     // Generate the chunk
                     Chunk chunk(chunkPos.x, chunkPos.y, chunkPos.z);

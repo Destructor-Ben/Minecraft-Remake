@@ -13,10 +13,10 @@ namespace Minecraft
         explicit WorldGenerator(World* world, uint seed = 0);
 
         // Generates the initial chunks in a world
-        void Generate();
+        void Generate(int spawnRadius, int minHeight, int maxHeight);
 
         // Makes the world infinite by generating chunks around the player
-        void GenerateChunksAroundPlayer(vec3 playerPos);
+        void GenerateChunksAroundPlayer(vec3 playerPos, int radius);
 
         // Generates an individual chunk, used above
         // Generation is composed of passes, which run sequentially

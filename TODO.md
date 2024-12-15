@@ -5,3 +5,7 @@
 - Transparency & blending
 - Implement an ECS for entities and blocks
 - Entities
+- Make all chunk loops that use radii circle instead of squares
+- Maybe make chunk positions (origins) their center instead of corner
+    - Blocks already are, also check that they are done correctly
+- Why is it so laggy when under the world?
