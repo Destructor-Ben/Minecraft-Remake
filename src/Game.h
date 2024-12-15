@@ -36,11 +36,14 @@ namespace Minecraft
         int ScreenHeight = 0;
 
         // Managers
+        // TODO: maybe unique ptrs make more sense, since reference counting isn't needed? (except for world ofc)
         shared_ptr<LogManager> Logger = nullptr;
         shared_ptr<InputManager> Input = nullptr;
         shared_ptr<ResourceManager> Resources = nullptr;
+
         shared_ptr<Renderer> Graphics = nullptr;
         shared_ptr<ChunkRenderer> ChunkGraphics = nullptr;
+
         shared_ptr<World> CurrentWorld = nullptr;
 
         void Run();
