@@ -7,7 +7,6 @@
 #include "Graphics/Renderers/Renderer.h"
 #include "World/Chunk.h"
 
-// TODO: make getting a chunk outside of the min and max height fail
 namespace Minecraft
 {
     #pragma region Coordinate Conversion Functions
