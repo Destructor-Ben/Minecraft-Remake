@@ -15,8 +15,8 @@ namespace Minecraft
 
     private:
         void CreateMesh();
-    };
 
-    //shared_ptr <Mesh> m_SkyMesh;
-    //shared_ptr <SkyMaterial> m_SkyMaterial;
+        shared_ptr <Mesh> m_SkyMesh;
+        shared_ptr <SkyMaterial> m_SkyMaterial;
+    };
 }

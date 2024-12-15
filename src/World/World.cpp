@@ -107,12 +107,12 @@ namespace Minecraft
 
     void World::Render()
     {
-        Instance->SkyGraphics->Render();
-
         for (auto* chunk : GetRenderedChunks())
         {
             chunk->Render();
         }
+        
+        Instance->SkyGraphics->Render();
     }
 
     void World::SetMouseHidden(bool hidden)
