@@ -67,9 +67,7 @@ namespace Minecraft
         for (int i = 0; i < (int)CameraPlane::Count; ++i)
         {
             if (glm::dot(glm::vec3(m_Planes[i]), point) + m_Planes[i].w < 0.0f)
-            {
                 return false;
-            }
         }
 
         return true;
@@ -80,28 +78,23 @@ namespace Minecraft
         vec3 min = bounds.Origin;
         vec3 max = bounds.Origin + bounds.Size;
 
-        // Iterate over all 8 corners of the bounding box
-        for (int x = 0; x < 2; ++x)
+        for (auto plane : m_Planes)
         {
-            for (int y = 0; y < 2; ++y)
-            {
-                for (int z = 0; z < 2; ++z)
-                {
-                    vec3 corner = {
-                        x == 0 ? min.x : max.x,
-                        y == 0 ? min.y : max.y,
-                        z == 0 ? min.z : max.z
-                    };
+            // Get plane normal and distance
+            vec3 normal = vec3(plane);
+            float d = plane.w;
 
-                    // If any corner is inside, return true
-                    if (ContainsPoint(corner))
-                    {
-                        return true;
-                    }
-                }
-            }
+            // Calculate vertices relative to plane
+            vec3 negative { };
+            negative.x = (normal.x >= 0) ? min.x : max.x;
+            negative.y = (normal.y >= 0) ? min.y : max.y;
+            negative.z = (normal.z >= 0) ? min.z : max.z;
+
+            // Test the negative vertex
+            if (glm::dot(normal, negative) + d > 0)
+                return false;
         }
 
-        return false;
+        return true;
     }
 }
