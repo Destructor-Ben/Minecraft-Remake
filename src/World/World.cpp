@@ -5,6 +5,7 @@
 #include "Input/InputManager.h"
 #include "Graphics/Renderers/ChunkRenderer.h"
 #include "Graphics/Renderers/Renderer.h"
+#include "Graphics/Renderers/SkyRenderer.h"
 #include "World/Chunk.h"
 
 namespace Minecraft
@@ -106,6 +107,8 @@ namespace Minecraft
 
     void World::Render()
     {
+        Instance->SkyGraphics->Render();
+
         for (auto* chunk : GetRenderedChunks())
         {
             chunk->Render();
@@ -126,7 +129,7 @@ namespace Minecraft
 
         if (!Chunks.contains(chunkPos))
             return nullopt;
-        
+
         return &Chunks.at(chunkPos);
     }
 

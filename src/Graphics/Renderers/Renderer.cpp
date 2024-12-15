@@ -27,7 +27,7 @@ namespace Minecraft
     {
         // Frustum culling
         // TODO: still has minor issues - maybe it's due to bad bounds checking
-        if (!Camera->GetFrustum().ContainsBounds(mesh.Bounds))
+        if (mesh.Bounds.has_value() && !Camera->GetFrustum().ContainsBounds(mesh.Bounds.value()))
             return;
 
         mesh.Draw(ProjectionMatrix * ViewMatrix * transform);

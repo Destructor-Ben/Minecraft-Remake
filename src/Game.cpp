@@ -6,6 +6,7 @@
 #include "Input/InputManager.h"
 #include "Graphics/Renderers/Renderer.h"
 #include "Graphics/Renderers/ChunkRenderer.h"
+#include "Graphics/Renderers/SkyRenderer.h"
 #include "World/World.h"
 
 namespace Minecraft
@@ -26,6 +27,7 @@ namespace Minecraft
         Resources = make_shared<ResourceManager>();
         Graphics = make_shared<Renderer>();
         ChunkGraphics = make_shared<ChunkRenderer>();
+        SkyGraphics = make_shared<SkyRenderer>();
         CurrentWorld = make_shared<World>();
 
         Renderer::UnbindAll();
