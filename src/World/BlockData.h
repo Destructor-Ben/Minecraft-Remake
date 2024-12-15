@@ -9,6 +9,6 @@ namespace Minecraft
     class BlockData
     {
     public:
-        BlockType* Type = &Blocks::Air;
+        BlockType* Type = Blocks::Air.get();
     };
 }

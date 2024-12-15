@@ -9,7 +9,6 @@ namespace Minecraft
     public:
         GrassBlock(int textureIndex) : SolidBlock(textureIndex) { }
 
-        // TODO: polymorphism isn't working and this isnt being called
         int GetTextureIndex(vec3i dir) override
         {
             if (dir.y > 0)

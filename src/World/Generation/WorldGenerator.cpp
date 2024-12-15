@@ -56,7 +56,7 @@ namespace Minecraft
                 {
                     // Calculate chunk pos
                     auto chunkPos = vec3i(x, y, z);
-                    // TODO: in the future, just chunkPos += playerChunkPos, current impl makes it easier to test
+                    // TODO: in the future, just chunkPos += playerChunkPos, current impl makes it easier to test because no y axis
                     chunkPos.x += playerChunkPos.x;
                     chunkPos.z += playerChunkPos.z;
 
@@ -118,16 +118,16 @@ namespace Minecraft
                     float yPos = block.GetWorldPos().y;
 
                     // Set the block type
-                    auto type = &Blocks::Air;
+                    auto type = Blocks::Air.get();
 
                     if (yPos == height)
-                        type = &Blocks::Grass;
+                        type = Blocks::Grass.get();
 
                     if (yPos < height)
-                        type = &Blocks::Dirt;
+                        type = Blocks::Dirt.get();
 
                     if (yPos <= height - 2)
-                        type = &Blocks::Stone;
+                        type = Blocks::Stone.get();
 
                     block.Data.Type = type;
                 }

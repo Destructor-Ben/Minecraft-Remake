@@ -7,8 +7,8 @@
 
 namespace Minecraft::Blocks
 {
-    inline BlockType Air = AirBlock();
-    inline BlockType Stone = SolidBlock(2);
-    inline BlockType Dirt = SolidBlock(3);
-    inline BlockType Grass = GrassBlock(3);
+    inline unique_ptr<BlockType> Air = make_unique<AirBlock>();
+    inline unique_ptr<BlockType> Stone = make_unique<SolidBlock>(2);
+    inline unique_ptr<BlockType> Dirt = make_unique<SolidBlock>(3);
+    inline unique_ptr<BlockType> Grass = make_unique<GrassBlock>(3);
 }
