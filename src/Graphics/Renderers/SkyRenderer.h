@@ -2,6 +2,9 @@
 
 #include "Graphics/Renderers/SkyMaterial.h"
 
+// TODO: make the sky more minecraft lick
+// TODO: sun and moon
+// TODO: stars
 namespace Minecraft
 {
     class Mesh;
