@@ -14,7 +14,7 @@ namespace Minecraft
         Block(Chunk& chunk, byte blockX, byte blockY, byte blockZ, BlockData& data);
 
         Chunk& GetChunk() const { return m_Chunk; }
-        vec3i GetWorldPos() const;
+        vec3 GetWorldPos() const;
         vec3i GetBlockPos() const { return { m_BlockX, m_BlockY, m_BlockZ }; }
 
     private:

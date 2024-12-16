@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Random/NoiseGenerator.h"
+
 namespace Minecraft
 {
     class Block;
@@ -29,9 +31,10 @@ namespace Minecraft
         void AddChunkIfExists(set<Chunk*>& chunks, vec3i chunkPos);
 
         // Uses noise functions to generate height at single block
-        double GenerateHeight(float verticalScale, float horizontalScale, uint seed, int x, int z, double persistence, double octaveCount);
+        double GenerateHeight(float x, float z);
 
         World* m_World = nullptr;
         uint m_Seed = 0;
+        NoiseGenerator m_Noise;
     };
 }

@@ -2,13 +2,15 @@
 
 #include "Game.h"
 #include "LogManager.h"
-#include "Random/Perlin.h"
 #include "World/World.h"
 #include "World/Blocks/Blocks.h"
 
 namespace Minecraft
 {
-    WorldGenerator::WorldGenerator(World* world, uint seed) : m_World(world), m_Seed(seed) { }
+    WorldGenerator::WorldGenerator(World* world, uint seed) :
+        m_World(world),
+        m_Seed(seed),
+        m_Noise(seed) { }
 
     void WorldGenerator::Generate(int spawnRadius, int minHeight, int maxHeight)
     {
@@ -92,9 +94,8 @@ namespace Minecraft
             for (int z = 0; z < Chunk::Size; z++)
             {
                 // Generate height
-                const float VerticalScale = 8.0f;
-                const float HorizontalScale = 0.1f;
-                int height = (int)GenerateHeight(VerticalScale, HorizontalScale, m_Seed, x + chunk.GetWorldPos().x, z + chunk.GetWorldPos().z, 0.5, 3);
+                float noiseValue = GenerateHeight(x + chunk.GetWorldPos().x, z + chunk.GetWorldPos().z);
+                int height = (int)(noiseValue * 10.0f);
 
                 // Set blocks
                 for (int y = 0; y < Chunk::Size; ++y)
@@ -120,9 +121,8 @@ namespace Minecraft
         }
     }
 
-    double WorldGenerator::GenerateHeight(float verticalScale, float horizontalScale, uint seed, int x, int z, double persistence, double octaveCount)
+    double WorldGenerator::GenerateHeight(float x, float z)
     {
-        return sin(x * 3.14159265359 * 0.5) * sin(z * 1.5) * 10.0;
-        // return Perlin2D(seed, x * horizontalScale, z * horizontalScale, persistence, octaveCount) * verticalScale;
+        return m_Noise.White2D(x, z);
     }
 }
