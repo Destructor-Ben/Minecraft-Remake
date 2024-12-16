@@ -61,7 +61,7 @@ namespace Minecraft
 
     World::World()
     {
-        Instance->Graphics->Camera = &PlayerCamera;
+        Instance->Graphics->SceneCamera = &PlayerCamera;
         SetMouseHidden(true);
         PlayerCamera.FOV = 70.0f;
 
@@ -72,7 +72,7 @@ namespace Minecraft
 
     World::~World()
     {
-        Instance->Graphics->Camera = nullptr;
+        Instance->Graphics->SceneCamera = nullptr;
         SetMouseHidden(false);
     }
 

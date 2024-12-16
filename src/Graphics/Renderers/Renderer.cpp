@@ -3,7 +3,6 @@
 #include "Game.h"
 #include "LogManager.h"
 #include "ResourceManager.h"
-#include "Graphics/CameraFrustum.h"
 #include "Graphics/GL.h"
 #include "Graphics/Renderers/ChunkRenderer.h"
 
@@ -11,10 +10,10 @@ namespace Minecraft
 {
     void Renderer::Update()
     {
-        if (Camera != nullptr)
+        if (SceneCamera != nullptr)
         {
-            ViewMatrix = Camera->GetViewMatrix();
-            ProjectionMatrix = Camera->GetProjectionMatrix();
+            ViewMatrix = SceneCamera->GetViewMatrix();
+            ProjectionMatrix = SceneCamera->GetProjectionMatrix();
         }
         else
         {
@@ -27,7 +26,7 @@ namespace Minecraft
     {
         // Frustum culling
         // TODO: still has minor issues - maybe it's due to bad bounds checking
-        if (mesh.Bounds.has_value() && !Camera->GetFrustum().ContainsBounds(mesh.Bounds.value()))
+        if (mesh.Bounds.has_value() && !SceneCamera->GetFrustum().ContainsBounds(mesh.Bounds.value()))
             return;
 
         mesh.Draw(ProjectionMatrix * ViewMatrix * transform);
