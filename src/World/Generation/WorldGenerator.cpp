@@ -86,16 +86,26 @@ namespace Minecraft
             chunks.insert(chunk.value());
     }
 
+    // TODO: fractal noise
+    // TODO: make generation passes
     void WorldGenerator::Generate(Chunk& chunk)
     {
-        // TODO: make generation passes
+        const int NoiseScale = 25.0f;
+        const int Height = 10.0f;
+
         for (int x = 0; x < Chunk::Size; x++)
         {
             for (int z = 0; z < Chunk::Size; z++)
             {
                 // Generate height
-                float noiseValue = GenerateHeight(x + chunk.GetWorldPos().x, z + chunk.GetWorldPos().z);
-                int height = (int)(noiseValue * 10.0f);
+                float xCoord = x + chunk.GetWorldPos().x;
+                float zCoord = z + chunk.GetWorldPos().z;
+
+                xCoord /= NoiseScale;
+                zCoord /= NoiseScale;
+
+                float noiseValue = m_Noise.Perlin2D(xCoord, zCoord);;
+                int height = (int)(noiseValue * Height);
 
                 // Set blocks
                 for (int y = 0; y < Chunk::Size; ++y)
@@ -119,10 +129,5 @@ namespace Minecraft
                 }
             }
         }
-    }
-
-    double WorldGenerator::GenerateHeight(float x, float z)
-    {
-        return m_Noise.White2D(x, z);
     }
 }

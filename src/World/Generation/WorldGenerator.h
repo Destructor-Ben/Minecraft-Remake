@@ -22,16 +22,10 @@ namespace Minecraft
 
         // Generates an individual chunk, used above
         // Generation is composed of passes, which run sequentially
-        // TODO: make generation passes
-        // - Biomes
-        // - Terrain
         void Generate(Chunk& chunk);
 
     private:
         void AddChunkIfExists(set<Chunk*>& chunks, vec3i chunkPos);
-
-        // Uses noise functions to generate height at single block
-        double GenerateHeight(float x, float z);
 
         World* m_World = nullptr;
         uint m_Seed = 0;
