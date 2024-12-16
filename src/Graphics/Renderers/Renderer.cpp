@@ -80,6 +80,9 @@ namespace Minecraft
         auto cubeMap = make_shared<CubeMap>();
         m_CubeMaps[path] = cubeMap;
 
+        // Disable image flipping (I don't know why but I need to)
+        stbi_set_flip_vertically_on_load(false);
+
         // Set the data for each face
         for (auto [i, faceName] : views::enumerate(m_CubeMapFaceNames))
         {
@@ -94,6 +97,9 @@ namespace Minecraft
             // Free the memory
             stbi_image_free(data);
         }
+
+        // Re-enable flipping
+        stbi_set_flip_vertically_on_load(true);
 
         return cubeMap;
     }

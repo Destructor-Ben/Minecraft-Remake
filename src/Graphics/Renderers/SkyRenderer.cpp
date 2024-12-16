@@ -4,7 +4,6 @@
 #include "Graphics/GL.h"
 #include "Graphics/Renderers/Renderer.h"
 
-// TODO: use cube map for skybox
 namespace Minecraft
 {
     SkyRenderer::SkyRenderer()
