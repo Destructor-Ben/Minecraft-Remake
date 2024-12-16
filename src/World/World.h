@@ -31,7 +31,7 @@ namespace Minecraft
         const int MinSpawnHeight = MinHeight;
         const int MaxSpawnHeight = MaxHeight;
 
-        Camera Camera;
+        Camera PlayerCamera;
         unordered_map <vec3i, Chunk> Chunks = { };
 
         World();

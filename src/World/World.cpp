@@ -61,9 +61,9 @@ namespace Minecraft
 
     World::World()
     {
-        Instance->Graphics->Camera = &Camera;
+        Instance->Graphics->Camera = &PlayerCamera;
         SetMouseHidden(true);
-        Camera.FOV = 70.0f;
+        PlayerCamera.FOV = 70.0f;
 
         // TODO: random seed generation
         m_WorldGenerator = WorldGenerator(this);
@@ -102,7 +102,7 @@ namespace Minecraft
         }
 
         UpdateCamera();
-        m_WorldGenerator.GenerateChunksAroundPlayer(Camera.Position, GenerationDistance);
+        m_WorldGenerator.GenerateChunksAroundPlayer(PlayerCamera.Position, GenerationDistance);
     }
 
     void World::Render()
@@ -170,7 +170,7 @@ namespace Minecraft
         m_CameraPitch -= Instance->Input->GetMousePosDelta().y * sensitivity;
         m_CameraYaw -= Instance->Input->GetMousePosDelta().x * sensitivity;
         m_CameraPitch = glm::clamp(m_CameraPitch, -maxAngle, maxAngle);
-        Camera.Rotation = quat(vec3(m_CameraPitch, m_CameraYaw, 0.0f));
+        PlayerCamera.Rotation = quat(vec3(m_CameraPitch, m_CameraYaw, 0.0f));
 
         // Input
         vec3 movementDirection = vec3(0.0f);
@@ -194,7 +194,7 @@ namespace Minecraft
             movementDirection.y -= 1;
 
         // Vertical movement
-        Camera.Position.y += movementDirection.y * speed;
+        PlayerCamera.Position.y += movementDirection.y * speed;
 
         // Horizontal movement
         if (movementDirection.x != 0 || movementDirection.z != 0)
@@ -205,8 +205,8 @@ namespace Minecraft
             movementDirection.z = horizontalDirection.y;
 
             // Calculating forward and right vectors
-            vec3 cameraForward = Camera.GetForwardVector();
-            vec3 cameraRight = Camera.GetRightVector();
+            vec3 cameraForward = PlayerCamera.GetForwardVector();
+            vec3 cameraRight = PlayerCamera.GetRightVector();
 
             // Disable movement on the Y axis from WASD movement
             cameraForward.y = 0.0f;
@@ -216,8 +216,8 @@ namespace Minecraft
             cameraRight = glm::normalize(cameraRight);
 
             // Moving camera
-            Camera.Position += cameraForward * -movementDirection.z * speed; // There is a negative sign here because movement direction -z is forward, but camera forward -z backwards
-            Camera.Position += cameraRight * movementDirection.x * speed;
+            PlayerCamera.Position += cameraForward * -movementDirection.z * speed; // There is a negative sign here because movement direction -z is forward, but camera forward -z backwards
+            PlayerCamera.Position += cameraRight * movementDirection.x * speed;
         }
     }
 }
