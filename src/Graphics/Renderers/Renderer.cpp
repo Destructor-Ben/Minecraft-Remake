@@ -33,6 +33,23 @@ namespace Minecraft
         mesh.Draw(ProjectionMatrix * ViewMatrix * transform);
     }
 
+    byte* Renderer::LoadImageData(string path, int& width, int& height, int& format)
+    {
+        // Get the data
+        auto compressedData = Instance->Resources->ReadResourceBytes(path);
+
+        // Load it and calculate the format
+        int channels;
+        byte* data = stbi_load_from_memory(compressedData.data(), (int)compressedData.size(), &width, &height, &channels, 0);
+        format = channels == 4 ? GL_RGBA : GL_RGB;
+
+        // Validate the data
+        if (!data)
+            Instance->Logger->Throw("Failed to load texture at path: " + path);
+
+        return data;
+    }
+
     shared_ptr <Texture> Renderer::RequestTexture(string path)
     {
         if (m_Textures.contains(path))
@@ -40,22 +57,45 @@ namespace Minecraft
 
         // Load the texture
         path = "assets/textures/" + path + ".png";
-        auto compressedData = Instance->Resources->ReadResourceBytes(path);
-
-        int width, height, channels;
-        byte* data = stbi_load_from_memory(compressedData.data(), (int)compressedData.size(), &width, &height, &channels, 0);
-        int format = channels == 4 ? GL_RGBA : GL_RGB;
-
-        if (!data)
-            Instance->Logger->Throw("Failed to load texture at path: " + path);
+        int width, height, format;
+        byte* data = LoadImageData(path, width, height, format);
 
         // Set the data
         auto texture = make_shared<Texture>();
         texture->SetData(data, width, height, format);
+        m_Textures[path] = texture;
+
+        // Free the memory
         stbi_image_free(data);
 
-        m_Textures[path] = texture;
         return texture;
+    }
+
+    shared_ptr <CubeMap> Renderer::RequestCubeMap(string path)
+    {
+        if (m_CubeMaps.contains(path))
+            return m_CubeMaps[path];
+
+        // Create the cubemap
+        auto cubeMap = make_shared<CubeMap>();
+        m_CubeMaps[path] = cubeMap;
+
+        // Set the data for each face
+        for (auto [i, faceName] : views::enumerate(m_CubeMapFaceNames))
+        {
+            // Load the data
+            string facePath = "assets/textures/" + path + "/" + faceName + ".png";
+            int width, height, format;
+            byte* data = LoadImageData(facePath, width, height, format);
+
+            // Set the data
+            cubeMap->SetFace(data, width, height, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, format);
+
+            // Free the memory
+            stbi_image_free(data);
+        }
+
+        return cubeMap;
     }
 
     shared_ptr <Shader> Renderer::RequestShader(string path)

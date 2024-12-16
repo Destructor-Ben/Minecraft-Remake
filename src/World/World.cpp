@@ -111,7 +111,7 @@ namespace Minecraft
         {
             chunk->Render();
         }
-        
+
         Instance->SkyGraphics->Render();
     }
 

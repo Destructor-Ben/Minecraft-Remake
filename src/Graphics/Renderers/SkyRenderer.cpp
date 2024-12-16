@@ -35,7 +35,9 @@ namespace Minecraft
     {
         // Create the material
         auto shader = Instance->Graphics->RequestShader("sky");
+        auto cubeMap = Instance->Graphics->RequestCubeMap("sky");
         m_SkyMaterial = make_shared<SkyMaterial>(shader);
+        m_SkyMaterial->Texture = cubeMap;
 
         // Create the vertex and index buffers
         auto vertexBuffer = make_shared<VertexBuffer>();
