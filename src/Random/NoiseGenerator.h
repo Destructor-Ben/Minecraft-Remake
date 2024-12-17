@@ -23,6 +23,12 @@ namespace Minecraft
         float Perlin3D(float x, float y, float z);
         float Perlin2D(vec3 v) { return Perlin3D(v.x, v.y, v.z); }
 
+        float Fractal1D(float x);
+        float Fractal2D(float x, float y);
+        float Fractal2D(vec2 v) { return Perlin2D(v.x, v.y); }
+        float Fractal3D(float x, float y, float z);
+        float Fractal2D(vec3 v) { return Perlin3D(v.x, v.y, v.z); }
+
     private:
         float HashToFloat(ulong value);
 

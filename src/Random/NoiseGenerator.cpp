@@ -87,7 +87,7 @@ namespace Minecraft
 
         int A = m_Permutations[X], B = m_Permutations[X + 1];
 
-        return Lerp(Grad(A, x), Grad(B, x - 1), u);
+        return Lerp(Grad(A, x), Grad(B, x - 1), u) * 0.5f + 0.5f;
     }
 
     float NoiseGenerator::Perlin2D(float x, float y)
@@ -108,7 +108,7 @@ namespace Minecraft
                          Grad(m_Permutations[B], x - 1, y), u),
                     Lerp(Grad(m_Permutations[A + 1], x, y - 1),
                          Grad(m_Permutations[B + 1], x - 1, y - 1), u),
-                    v);
+                    v) * 0.5f + 0.5f;
     }
 
     float NoiseGenerator::Perlin3D(float x, float y, float z)
@@ -138,7 +138,26 @@ namespace Minecraft
                          Lerp(Grad(m_Permutations[AB + 1], x, y - 1, z - 1),
                               Grad(m_Permutations[BB + 1], x - 1, y - 1, z - 1), u),
                          v),
-                    w);
+                    w) * 0.5f + 0.5f;
+    }
+
+    #pragma endregion
+
+    #pragma region Fractal Noise
+
+    float NoiseGenerator::Fractal1D(float x)
+    {
+        return 0;
+    }
+
+    float NoiseGenerator::Fractal2D(float x, float y)
+    {
+        return 0;
+    }
+
+    float NoiseGenerator::Fractal3D(float x, float y, float z)
+    {
+        return 0;
     }
 
     #pragma endregion
