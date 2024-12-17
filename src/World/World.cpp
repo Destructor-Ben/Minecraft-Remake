@@ -102,7 +102,7 @@ namespace Minecraft
         }
 
         UpdateCamera();
-        m_WorldGenerator.GenerateChunksAroundPlayer(PlayerCamera.Position, GenerationDistance);
+        m_WorldGenerator.GenerateChunksAroundPlayer(PlayerCamera.Position, GenerationDistance, MinHeight, MaxHeight);
     }
 
     void World::Render()
@@ -124,9 +124,6 @@ namespace Minecraft
 
     optional<Chunk*> World::GetChunk(vec3i chunkPos)
     {
-        if (chunkPos.y > MaxHeight || chunkPos.y < MinHeight)
-            return nullopt;
-
         if (!Chunks.contains(chunkPos))
             return nullopt;
 

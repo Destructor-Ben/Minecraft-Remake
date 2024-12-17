@@ -18,7 +18,7 @@ namespace Minecraft
         void Generate(int spawnRadius, int minHeight, int maxHeight);
 
         // Makes the world infinite by generating chunks around the player
-        void GenerateChunksAroundPlayer(vec3 playerPos, int radius);
+        void GenerateChunksAroundPlayer(vec3 playerPos, int radius, int minHeight, int maxHeight);
 
         // Generates an individual chunk, used above
         // Generation is composed of passes, which run sequentially

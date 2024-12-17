@@ -29,7 +29,7 @@ namespace Minecraft
         }
     }
 
-    void WorldGenerator::GenerateChunksAroundPlayer(vec3 playerPos, int radius)
+    void WorldGenerator::GenerateChunksAroundPlayer(vec3 playerPos, int radius, int minHeight, int maxHeight)
     {
         auto playerChunkPos = WorldToChunkPos(playerPos);
 
@@ -39,13 +39,17 @@ namespace Minecraft
 
         for (int x = -radius + 1; x < radius; ++x)
         {
-            for (int z = -radius + 1; z < radius; ++z)
+            for (int y = -radius + 1; y < radius; ++y)
             {
-                for (int y = -radius + 1; y < radius; ++y)
+                for (int z = -radius + 1; z < radius; ++z)
                 {
                     // Calculate chunk pos
                     auto chunkPos = vec3i(x, y, z);
                     chunkPos += playerChunkPos;
+
+                    // Check if the y position is out of bounds
+                    if (chunkPos.y < minHeight || chunkPos.y > maxHeight)
+                        continue;
 
                     // Check if the chunk exists
                     auto existingChunk = m_World->GetChunk(chunkPos);
@@ -104,7 +108,7 @@ namespace Minecraft
                 xCoord /= NoiseScale;
                 zCoord /= NoiseScale;
 
-                float noiseValue = m_Noise.Perlin2D(xCoord, zCoord);;
+                float noiseValue = m_Noise.Perlin2D(xCoord, zCoord);
                 int height = (int)(noiseValue * Height);
 
                 // Set blocks
