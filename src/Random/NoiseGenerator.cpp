@@ -145,19 +145,64 @@ namespace Minecraft
 
     #pragma region Fractal Noise
 
-    float NoiseGenerator::Fractal1D(float x)
+    float NoiseGenerator::Fractal1D(float x, float amplitude, float frequency, int octaves, float persistence, float lacunarity)
     {
-        return 0;
+        float noiseValue = 0.0f;
+        float maxAmplitude = 0.0f; // Used to normalize to between 0 and 1
+
+        for (int i = 0; i < octaves; ++i)
+        {
+            // Needs remapping to -1 to 1 so it adds properly and doesn't bias to larger values
+            float perlinValue = 2.0f * Perlin1D(x * frequency) - 1.0f;
+
+            noiseValue += amplitude * perlinValue;
+            maxAmplitude += amplitude;
+            amplitude *= persistence;
+            frequency *= lacunarity;
+        }
+
+        // Normalize the result to 0 - 1
+        return (noiseValue / maxAmplitude + 1.0f) / 2.0f;
     }
 
-    float NoiseGenerator::Fractal2D(float x, float y)
+    float NoiseGenerator::Fractal2D(float x, float y, float amplitude, float frequency, int octaves, float persistence, float lacunarity)
     {
-        return 0;
+        float noiseValue = 0.0f;
+        float maxAmplitude = 0.0f; // Used to normalize to between 0 and 1
+
+        for (int i = 0; i < octaves; ++i)
+        {
+            // Needs remapping to -1 to 1 so it adds properly and doesn't bias to larger values
+            float perlinValue = 2.0f * Perlin2D(x * frequency, y * frequency) - 1.0f;
+
+            noiseValue += amplitude * perlinValue;
+            maxAmplitude += amplitude;
+            amplitude *= persistence;
+            frequency *= lacunarity;
+        }
+
+        // Normalize the result to 0 - 1
+        return (noiseValue / maxAmplitude + 1.0f) / 2.0f;
     }
 
-    float NoiseGenerator::Fractal3D(float x, float y, float z)
+    float NoiseGenerator::Fractal3D(float x, float y, float z, float amplitude, float frequency, int octaves, float persistence, float lacunarity)
     {
-        return 0;
+        float noiseValue = 0.0f;
+        float maxAmplitude = 0.0f; // Used to normalize to between 0 and 1
+
+        for (int i = 0; i < octaves; ++i)
+        {
+            // Needs remapping to -1 to 1 so it adds properly and doesn't bias to larger values
+            float perlinValue = 2.0f * Perlin3D(x * frequency, y * frequency, z * frequency) - 1.0f;
+
+            noiseValue += amplitude * perlinValue;
+            maxAmplitude += amplitude;
+            amplitude *= persistence;
+            frequency *= lacunarity;
+        }
+
+        // Normalize the result to 0 - 1
+        return (noiseValue / maxAmplitude + 1.0f) / 2.0f;
     }
 
     #pragma endregion

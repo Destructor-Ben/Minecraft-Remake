@@ -23,11 +23,19 @@ namespace Minecraft
         float Perlin3D(float x, float y, float z);
         float Perlin2D(vec3 v) { return Perlin3D(v.x, v.y, v.z); }
 
-        float Fractal1D(float x);
-        float Fractal2D(float x, float y);
-        float Fractal2D(vec2 v) { return Perlin2D(v.x, v.y); }
-        float Fractal3D(float x, float y, float z);
-        float Fractal2D(vec3 v) { return Perlin3D(v.x, v.y, v.z); }
+        float Fractal1D(float x, float amplitude = 1.0f, float frequency = 1.0f, int octaves = 3, float persistence = 0.5f, float lacunarity = 2.0f);
+
+        float Fractal2D(float x, float y, float amplitude = 1.0f, float frequency = 1.0f, int octaves = 3, float persistence = 0.5f, float lacunarity = 2.0f);
+        float Fractal2D(vec2 v, float amplitude = 1.0f, float frequency = 1.0f, int octaves = 3, float persistence = 0.5f, float lacunarity = 2.0f)
+        {
+            return Fractal2D(v.x, v.y, amplitude, frequency, octaves, persistence, lacunarity);
+        }
+
+        float Fractal3D(float x, float y, float z, float amplitude = 1.0f, float frequency = 1.0f, int octaves = 3, float persistence = 0.5f, float lacunarity = 2.0f);
+        float Fractal2D(vec3 v, float amplitude = 1.0f, float frequency = 1.0f, int octaves = 3, float persistence = 0.5f, float lacunarity = 2.0f)
+        {
+            return Fractal3D(v.x, v.y, v.z, amplitude, frequency, octaves, persistence, lacunarity);
+        }
 
     private:
         float HashToFloat(ulong value);

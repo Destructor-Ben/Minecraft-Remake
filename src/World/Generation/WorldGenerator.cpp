@@ -90,12 +90,11 @@ namespace Minecraft
             chunks.insert(chunk.value());
     }
 
-    // TODO: fractal noise
     // TODO: make generation passes
     void WorldGenerator::Generate(Chunk& chunk)
     {
         const int NoiseScale = 25.0f;
-        const int Height = 10.0f;
+        const int Height = 25.0f;
 
         for (int x = 0; x < Chunk::Size; x++)
         {
@@ -108,7 +107,7 @@ namespace Minecraft
                 xCoord /= NoiseScale;
                 zCoord /= NoiseScale;
 
-                float noiseValue = m_Noise.Perlin2D(xCoord, zCoord);
+                float noiseValue = m_Noise.Fractal2D(xCoord, zCoord);
                 int height = (int)(noiseValue * Height);
 
                 // Set blocks
