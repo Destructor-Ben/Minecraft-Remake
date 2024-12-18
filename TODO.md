@@ -12,6 +12,7 @@ inline string format(string __fmt, _Args&& ... __args) { return "[FORMAT PLACEHO
 
 - Make the libraries submodules instead of directly embedded
 - Embed resources - use source generator https://stackoverflow.com/a/71906177/12259381
+- Statically link all libraries
 - Transparency & blending
 - Implement an ECS for entities and blocks
 - Entities
@@ -34,6 +35,7 @@ inline string format(string __fmt, _Args&& ... __args) { return "[FORMAT PLACEHO
     - Same with the util functions in World for positions
     - Also make GetChunk and GetBlock faster
 - Transform::GetTransformMatrix is slow
+    - TODO: figure out how to optimize
 
 ### Loading
 
@@ -46,12 +48,11 @@ inline string format(string __fmt, _Args&& ... __args) { return "[FORMAT PLACEHO
     - Probably cache the frustum instead of retrieving it every draw call
         - Do similarly to how the view and projection matrices are obtained
     - Allow CameraFrustum::GetFrustum to take in the matrices to avoid recalculating them
-- Chunk Meshing is horribly slow
-    - TODO: investigate further
+- Chunk Meshing
+    - TODO: investigate speed of chunk meshing
+    - Cache the quaternions used in face calculation
 
 ### Updating
 
 - Generating chunks around the player
-    - Slow because of the chunk meshing
-    - TODO: investigate why so much chunk remeshing happens while underneath the world?
-    - TODO: consider moving the remeshing queue to the renderer so it doesn't affect this function
+    - Consider moving the remeshing queue to the renderer so it doesn't affect this function
