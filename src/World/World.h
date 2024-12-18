@@ -18,18 +18,18 @@ namespace Minecraft
     {
     public:
         // World size (vertical)
-        const int MinHeight = -1;
-        const int MaxHeight = 1;
+        static const int MinHeight = -1;
+        static const int MaxHeight = 1;
 
         // Distances for rendering, simulating, etc.
-        const int RenderDistance = 5;
-        const int SimulationDistance = 5;
-        const int GenerationDistance = 3;
+        static const int RenderDistance = 5;
+        static const int SimulationDistance = 5;
+        static const int GenerationDistance = 3;
 
         // Spawn size
-        const int SpawnRadius = 8;
-        const int MinSpawnHeight = MinHeight;
-        const int MaxSpawnHeight = MaxHeight;
+        static const int SpawnRadius = 8;
+        static const int MinSpawnHeight = MinHeight;
+        static const int MaxSpawnHeight = MaxHeight;
 
         Camera PlayerCamera;
         unordered_map <vec3i, Chunk> Chunks = { };

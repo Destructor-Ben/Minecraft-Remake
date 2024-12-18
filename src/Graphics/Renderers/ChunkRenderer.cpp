@@ -64,13 +64,19 @@ namespace Minecraft
         m_ChunkMeshes[chunk.GetChunkPos()]->GetIndexBuffer(m_ChunkMaterial)->SetData(indices);
     }
 
-    // TODO: add faces on the top and bottom of the world
     void ChunkRenderer::AddFaceInDirection(Chunk& chunk, Block& block, vector <Quad>& faces, vec3i dir, quat rotation)
     {
         // Getting other block
         auto otherBlockWorldPos = vec3i(block.GetWorldPos().x + dir.x, block.GetWorldPos().y + dir.y, block.GetWorldPos().z + dir.z);
         auto otherBlock = Instance->CurrentWorld->GetBlock(otherBlockWorldPos);
-        if (!otherBlock.has_value() || !otherBlock.value().Data.Type->IsTransparent)
+
+        // Only create faces next to transparent blocks
+        bool isOtherBlockTransparent = !otherBlock.has_value() || !otherBlock.value().Data.Type->IsTransparent;
+        auto otherBlockChunkPos = WorldToChunkPos(otherBlockWorldPos);
+        bool isInWorldLimits = otherBlockChunkPos.y <= World::MaxHeight && otherBlockChunkPos.y >= World::MinHeight;
+        // We want the top and bottom blocks of the world to have faces there otherwise it is ugly
+        // So we only return if the adjacent block is in the world limits so the ones outside are treated as solid
+        if (isOtherBlockTransparent && isInWorldLimits)
             return;
 
         // Creating face
