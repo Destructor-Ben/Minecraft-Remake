@@ -9,6 +9,7 @@ namespace Minecraft
 {
     class Vertex;
 
+    // TODO: quad and vertex abstractions are kinda shit, probably redo
     struct Quad : public Transform
     {
         // TODO: more elegant way of handling extra data

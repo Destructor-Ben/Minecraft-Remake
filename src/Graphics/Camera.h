@@ -2,7 +2,6 @@
 
 #include "Transform.h"
 
-// TODO: make a camera frustum class, bounds class, and make the renderer use frustum culling
 namespace Minecraft
 {
     class CameraFrustum;

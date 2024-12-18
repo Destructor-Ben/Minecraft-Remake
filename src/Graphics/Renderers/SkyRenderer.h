@@ -2,9 +2,10 @@
 
 #include "Graphics/Renderers/SkyMaterial.h"
 
-// TODO: make the sky more minecraft lick
+// TODO: make the sky more minecraft with a gradient
 // TODO: sun and moon
 // TODO: stars
+// Time can probably be done by just rotating the cube? idk, color does change too
 namespace Minecraft
 {
     class Mesh;
