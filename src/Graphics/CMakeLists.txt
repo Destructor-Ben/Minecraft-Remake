@@ -3,6 +3,8 @@ target_sources(Minecraft_Remake PRIVATE
     Camera.h
     CameraFrustum.cpp
     CameraFrustum.h
+    CubeMap.cpp
+    CubeMap.h
     FragmentShader.cpp
     FragmentShader.h
     GL.h

@@ -26,7 +26,7 @@ namespace Minecraft
 
         BlockData& GetBlockData(uint blockID);
 
-        vec3i GetWorldPos() const { return GetChunkPos() * (int)Size; }
+        vec3 GetWorldPos() const { return vec3(GetChunkPos() * (int)Size); }
         vec3i GetChunkPos() const { return { m_ChunkX, m_ChunkY, m_ChunkZ }; }
 
         void RegenerateMesh();

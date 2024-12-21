@@ -17,7 +17,21 @@ namespace Minecraft
     class World
     {
     public:
-        Camera Camera;
+        // World size (vertical)
+        static const int MinHeight = -1;
+        static const int MaxHeight = 1;
+
+        // Distances for rendering, simulating, etc.
+        static const int RenderDistance = 5;
+        static const int SimulationDistance = 5;
+        static const int GenerationDistance = 3;
+
+        // Spawn size
+        static const int SpawnRadius = 8;
+        static const int MinSpawnHeight = MinHeight;
+        static const int MaxSpawnHeight = MaxHeight;
+
+        Camera PlayerCamera;
         unordered_map <vec3i, Chunk> Chunks = { };
 
         World();

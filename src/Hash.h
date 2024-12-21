@@ -22,6 +22,12 @@ namespace Minecraft
         HashCombine(hash, values...);
         return hash;
     }
+
+    template<typename T>
+    inline ulong Hash(T value)
+    {
+        return std::hash<T> { }(value);
+    }
 }
 
 // Making types hashable

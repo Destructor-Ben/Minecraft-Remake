@@ -5,11 +5,15 @@
 #include "Input/InputManager.h"
 #include "Graphics/Renderers/ChunkRenderer.h"
 #include "Graphics/Renderers/Renderer.h"
+#include "Graphics/Renderers/SkyRenderer.h"
 #include "World/Chunk.h"
 
 namespace Minecraft
 {
     #pragma region Coordinate Conversion Functions
+
+    #pragma clang diagnostic push
+    #pragma ide diagnostic ignored "ConstantParameter"
 
     static int FloorDivision(int x, int y)
     {
@@ -21,10 +25,14 @@ namespace Minecraft
         return (x % y + y) % y;
     }
 
+    #pragma clang diagnostic pop
+
+    // TODO: Chunk::Size can't be used here for some reason, the linker whines about it
+
     vec3i WorldToChunkPos(vec3 pos)
     {
         return vec3i(
-            FloorDivision((int)std::floor(pos.x), 10),
+            FloorDivision((int)std::floor(pos.x), Chunk::Size),
             FloorDivision((int)std::floor(pos.y), 10),
             FloorDivision((int)std::floor(pos.z), 10)
         );
@@ -53,24 +61,24 @@ namespace Minecraft
 
     World::World()
     {
-        Instance->Graphics->Camera = &Camera;
+        Instance->Graphics->SceneCamera = &PlayerCamera;
         SetMouseHidden(true);
-        Camera.FOV = 70.0f;
+        PlayerCamera.FOV = 70.0f;
 
         // TODO: random seed generation
         m_WorldGenerator = WorldGenerator(this);
-        m_WorldGenerator.Generate();
+        m_WorldGenerator.Generate(SpawnRadius, MinSpawnHeight, MaxSpawnHeight);
     }
 
     World::~World()
     {
-        Instance->Graphics->Camera = nullptr;
+        Instance->Graphics->SceneCamera = nullptr;
         SetMouseHidden(false);
     }
 
     void World::Tick()
     {
-        UpdateChunkList(m_LoadedChunks, 4);
+        UpdateChunkList(m_LoadedChunks, SimulationDistance);
 
         for (auto* chunk : GetLoadedChunks())
         {
@@ -80,7 +88,7 @@ namespace Minecraft
 
     void World::Update()
     {
-        UpdateChunkList(m_RenderedChunks, 6);
+        UpdateChunkList(m_RenderedChunks, RenderDistance);
 
         if (Instance->Input->WasKeyReleased(Key::Escape))
             Instance->Close();
@@ -94,7 +102,7 @@ namespace Minecraft
         }
 
         UpdateCamera();
-        m_WorldGenerator.GenerateChunksAroundPlayer(Camera.Position);
+        m_WorldGenerator.GenerateChunksAroundPlayer(PlayerCamera.Position, GenerationDistance, MinHeight, MaxHeight);
     }
 
     void World::Render()
@@ -103,6 +111,8 @@ namespace Minecraft
         {
             chunk->Render();
         }
+
+        Instance->SkyGraphics->Render();
     }
 
     void World::SetMouseHidden(bool hidden)
@@ -114,10 +124,10 @@ namespace Minecraft
 
     optional<Chunk*> World::GetChunk(vec3i chunkPos)
     {
-        if (Chunks.contains(chunkPos))
-            return &Chunks.at(chunkPos);
+        if (!Chunks.contains(chunkPos))
+            return nullopt;
 
-        return nullopt;
+        return &Chunks.at(chunkPos);
     }
 
     optional <Block> World::GetBlock(vec3i pos)
@@ -136,7 +146,7 @@ namespace Minecraft
 
     void World::UpdateChunkList(vector<Chunk*>& chunks, int radius)
     {
-        // TODO: update these properly with render distance
+        // TODO: update these properly with the given distance
         chunks.clear();
         for (auto& chunk : Chunks | views::values)
         {
@@ -157,7 +167,7 @@ namespace Minecraft
         m_CameraPitch -= Instance->Input->GetMousePosDelta().y * sensitivity;
         m_CameraYaw -= Instance->Input->GetMousePosDelta().x * sensitivity;
         m_CameraPitch = glm::clamp(m_CameraPitch, -maxAngle, maxAngle);
-        Camera.Rotation = quat(vec3(m_CameraPitch, m_CameraYaw, 0.0f));
+        PlayerCamera.Rotation = quat(vec3(m_CameraPitch, m_CameraYaw, 0.0f));
 
         // Input
         vec3 movementDirection = vec3(0.0f);
@@ -181,7 +191,7 @@ namespace Minecraft
             movementDirection.y -= 1;
 
         // Vertical movement
-        Camera.Position.y += movementDirection.y * speed;
+        PlayerCamera.Position.y += movementDirection.y * speed;
 
         // Horizontal movement
         if (movementDirection.x != 0 || movementDirection.z != 0)
@@ -192,8 +202,8 @@ namespace Minecraft
             movementDirection.z = horizontalDirection.y;
 
             // Calculating forward and right vectors
-            vec3 cameraForward = Camera.GetForwardVector();
-            vec3 cameraRight = Camera.GetRightVector();
+            vec3 cameraForward = PlayerCamera.GetForwardVector();
+            vec3 cameraRight = PlayerCamera.GetRightVector();
 
             // Disable movement on the Y axis from WASD movement
             cameraForward.y = 0.0f;
@@ -203,8 +213,8 @@ namespace Minecraft
             cameraRight = glm::normalize(cameraRight);
 
             // Moving camera
-            Camera.Position += cameraForward * -movementDirection.z * speed; // There is a negative sign here because movement direction -z is forward, but camera forward -z backwards
-            Camera.Position += cameraRight * movementDirection.x * speed;
+            PlayerCamera.Position += cameraForward * -movementDirection.z * speed; // There is a negative sign here because movement direction -z is forward, but camera forward -z backwards
+            PlayerCamera.Position += cameraRight * movementDirection.x * speed;
         }
     }
 }

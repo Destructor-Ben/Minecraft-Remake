@@ -12,9 +12,9 @@ namespace Minecraft
     {
     public:
         shared_ptr <VertexArray> Vertices;
-        BoundingBox Bounds;
+        optional <BoundingBox> Bounds;
 
-        Mesh(shared_ptr <VertexArray> vertexArray, BoundingBox bounds) : Vertices(vertexArray), Bounds(bounds) { }
+        Mesh(shared_ptr <VertexArray> vertexArray, optional <BoundingBox> bounds = nullopt) : Vertices(vertexArray), Bounds(bounds) { }
 
         void AddMaterial(shared_ptr <Material> material, shared_ptr <IndexBuffer> indexBuffer);
         shared_ptr <IndexBuffer> GetIndexBuffer(const shared_ptr <Material>& material);
