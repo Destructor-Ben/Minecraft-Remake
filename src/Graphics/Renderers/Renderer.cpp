@@ -83,10 +83,10 @@ namespace Minecraft
         stbi_set_flip_vertically_on_load(false);
 
         // Set the data for each face
-        for (auto [i, faceName] : views::enumerate(m_CubeMapFaceNames))
+        for (int i = 0; i < m_CubeMapFaceNames.size(); i++)
         {
             // Load the data
-            string facePath = "assets/textures/" + path + "/" + faceName + ".png";
+            string facePath = "assets/textures/" + path + "/" + m_CubeMapFaceNames[i] + ".png";
             int width, height, format;
             byte* data = LoadImageData(facePath, width, height, format);
 
