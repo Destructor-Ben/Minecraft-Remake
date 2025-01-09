@@ -14,7 +14,7 @@ namespace Minecraft
         auto shader = Instance->Graphics->RequestShader("chunk");
         m_ChunkTexture = Instance->Graphics->RequestTexture("chunk");
         m_ChunkMaterial = make_shared<ChunkMaterial>(shader);
-        m_ChunkMaterial->Texture = m_ChunkTexture;
+        m_ChunkMaterial->ChunkTexture = m_ChunkTexture;
     }
 
     void ChunkRenderer::RenderChunk(Chunk& chunk)

@@ -9,7 +9,7 @@ namespace Minecraft
     {
         Material::Bind();
 
-        Texture->BindTextureUnit(0);
+        ChunkTexture->BindTextureUnit(0);
         m_Shader->SetUniform("uTexture", 0);
     }
 }

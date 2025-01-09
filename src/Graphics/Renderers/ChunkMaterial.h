@@ -9,7 +9,7 @@ namespace Minecraft
     class ChunkMaterial : public Material
     {
     public:
-        shared_ptr <Texture> Texture;
+        shared_ptr <Texture> ChunkTexture;
 
         ChunkMaterial(shared_ptr <Shader> shader) : Material(shader) { }
 
