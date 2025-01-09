@@ -155,5 +155,4 @@ namespace Minecraft
 
         return vec4(strength, strength, strength, 1.0f);
     }
-
 }
