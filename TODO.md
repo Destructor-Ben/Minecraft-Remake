@@ -9,6 +9,7 @@
 - Implement an ECS for entities and blocks
 - Entities
 - Make all chunk loops that use radii circle instead of squares
+- Process segfaults on linux when exiting
 - Maybe make chunk positions (origins) their center instead of corner
     - Blocks already are, also check that they are done correctly
 
