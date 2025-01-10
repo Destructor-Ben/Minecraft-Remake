@@ -18,7 +18,10 @@ namespace Minecraft
         else
             ProjectionMatrix = glm::ortho(0.0f, (float)Instance->ScreenWidth * OrthographicScale, 0.0f, (float)Instance->ScreenHeight * OrthographicScale, NearClip, FarClip);
 
+        // Multiply projection and view matrix together
+        ProjectionViewMatrix = ProjectionMatrix * ViewMatrix;
+
         // Calculate frustum
-        Frustum = CameraFrustum(ProjectionMatrix * ViewMatrix);
+        Frustum = CameraFrustum(ProjectionViewMatrix);
     }
 }

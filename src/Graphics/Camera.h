@@ -22,6 +22,7 @@ namespace Minecraft
 
         mat4 ViewMatrix = mat4(1.0f);
         mat4 ProjectionMatrix = mat4(1.0f);
+        mat4 ProjectionViewMatrix = mat4(1.0f);
         CameraFrustum Frustum = CameraFrustum(mat4(1.0f));
 
         void Update();

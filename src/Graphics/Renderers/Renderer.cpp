@@ -21,7 +21,7 @@ namespace Minecraft
         if (mesh.Bounds.has_value() && !SceneCamera->Frustum.ContainsBounds(mesh.Bounds.value()))
             return;
 
-        mesh.Draw(SceneCamera->ProjectionMatrix * SceneCamera->ViewMatrix * transform);
+        mesh.Draw(SceneCamera->ProjectionViewMatrix * transform);
     }
 
     byte* Renderer::LoadImageData(string path, int& width, int& height, int& format)
