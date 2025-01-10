@@ -1,6 +1,6 @@
 #include "LogManager.h"
 
-#include <stacktrace>
+// TODO: use boost for stacktraces #include <stacktrace>
 
 #include "Version.h"
 
@@ -45,7 +45,7 @@ namespace Minecraft
         #if GCC
         throw std::runtime_error(message);
         #else
-        throw std::runtime_error(format("{}\nStacktrace:\n{}", message, to_string(std::stacktrace::current())));
+        throw std::runtime_error(placeholder_format("{}\nStacktrace:\n{}", message, to_string(std::stacktrace::current())));
         #endif
     }
 
@@ -84,8 +84,8 @@ namespace Minecraft
     {
         // TODO: this is the wrong timezone
         auto time = chrono::system_clock::now();
-        string timeString = format("{:%H:%M:}{:%S}", time, chrono::duration_cast<chrono::milliseconds>(time.time_since_epoch()));
+        string timeString = placeholder_format("{:%H:%M:}{:%S}", time, chrono::duration_cast<chrono::milliseconds>(time.time_since_epoch()));
 
-        return format("[{}] [{}] {}\n", timeString, logLevel, message);
+        return placeholder_format("[{}] [{}] {}\n", timeString, logLevel, message);
     }
 }

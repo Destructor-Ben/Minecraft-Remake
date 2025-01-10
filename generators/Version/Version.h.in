@@ -3,5 +3,5 @@ namespace Minecraft::Version
     constexpr int Major = @CMAKE_PROJECT_VERSION_MAJOR@;
     constexpr int Minor = @CMAKE_PROJECT_VERSION_MINOR@;
     constexpr int Patch = @CMAKE_PROJECT_VERSION_PATCH@;
-    inline const string String = format("{}.{}.{}", Major, Minor, Patch);
+    inline const string String = placeholder_format("{}.{}.{}", Major, Minor, Patch);
 }

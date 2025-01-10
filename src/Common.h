@@ -8,7 +8,7 @@
 #include <chrono>
 #include <cmath>
 #include <exception>
-#include <format>
+// TODO: use boost for format? #include <format>
 #include <fstream>
 #include <iostream>
 #include <memory>
@@ -71,7 +71,9 @@ namespace Minecraft
 
     using std::string;
     using std::to_string;
-    using std::format;
+    // TODO: format fixes for linux: using std::format; also the below
+    template<typename... _Args>
+    inline string placeholder_format(string __fmt, _Args&& ... __args) { return "[FORMAT PLACEHOLDER]"; }
 
     // Numbers
     typedef int8_t sbyte;

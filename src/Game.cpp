@@ -16,7 +16,7 @@ namespace Minecraft
     void Game::Initialize()
     {
         Logger = make_shared<LogManager>();
-        Logger->Info(format("Starting Minecraft_Remake version {}...", Version::String));
+        Logger->Info(placeholder_format("Starting Minecraft_Remake version {}...", Version::String));
 
         InitGLFW();
         InitGL();
@@ -185,7 +185,7 @@ namespace Minecraft
 
     void Game::GLFWError(int code, cstring description)
     {
-        Instance->Logger->Error(format("GLFW Error (Code {}): {}", code, description));
+        Instance->Logger->Error(placeholder_format("GLFW Error (Code {}): {}", code, description));
     }
 
     void Game::GLError(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, cstring message, const void* userParam)
@@ -271,7 +271,7 @@ namespace Minecraft
                 break;
         }
 
-        string logMessage = format("GL Error: {}\n  Source: {}\n  Type: {}\n  Severity: {}\n  ID: {}", message, sourceString, typeString, severityString, id);
+        string logMessage = placeholder_format("GL Error: {}\n  Source: {}\n  Type: {}\n  Severity: {}\n  ID: {}", message, sourceString, typeString, severityString, id);
 
         if (severity == GL_DEBUG_SEVERITY_HIGH)
             Instance->Logger->Error(logMessage);
