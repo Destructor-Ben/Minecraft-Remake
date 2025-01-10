@@ -13,8 +13,8 @@ namespace Minecraft
 
     void SkyRenderer::Render()
     {
-        mat4 projection = Instance->Graphics->ProjectionMatrix;
-        mat4 view = Instance->Graphics->ViewMatrix;
+        mat4 projection = Instance->Graphics->SceneCamera->ProjectionMatrix;
+        mat4 view = Instance->Graphics->SceneCamera->ViewMatrix;
         view = mat4(mat3(view)); // Remove translation
         mat4 transform = projection * view;
 

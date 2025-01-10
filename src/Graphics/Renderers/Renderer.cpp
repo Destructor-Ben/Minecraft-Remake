@@ -11,25 +11,17 @@ namespace Minecraft
     void Renderer::Update()
     {
         if (SceneCamera != nullptr)
-        {
-            ViewMatrix = SceneCamera->GetViewMatrix();
-            ProjectionMatrix = SceneCamera->GetProjectionMatrix();
-        }
-        else
-        {
-            ViewMatrix = mat4(1.0f);
-            ProjectionMatrix = mat4(1.0f);
-        }
+            SceneCamera->Update();
     }
 
     void Renderer::DrawMesh(const Mesh& mesh, mat4 transform)
     {
         // Frustum culling
         // TODO: still has minor issues - maybe it's due to bad bounds checking
-        if (mesh.Bounds.has_value() && !SceneCamera->GetFrustum().ContainsBounds(mesh.Bounds.value()))
+        if (mesh.Bounds.has_value() && !SceneCamera->Frustum.ContainsBounds(mesh.Bounds.value()))
             return;
 
-        mesh.Draw(ProjectionMatrix * ViewMatrix * transform);
+        mesh.Draw(SceneCamera->ProjectionMatrix * SceneCamera->ViewMatrix * transform);
     }
 
     byte* Renderer::LoadImageData(string path, int& width, int& height, int& format)
@@ -154,5 +146,6 @@ namespace Minecraft
         IndexBuffer::Unbind();
         Shader::Unbind();
         Texture::Unbind();
+        CubeMap::Unbind();
     }
 }

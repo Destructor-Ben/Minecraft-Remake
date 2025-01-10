@@ -2,6 +2,8 @@
 
 #include "Transform.h"
 
+#include "Graphics/CameraFrustum.h"
+
 namespace Minecraft
 {
     class CameraFrustum;
@@ -18,9 +20,10 @@ namespace Minecraft
         float NearClip = 0.1f;
         float FarClip = 1000.0f;
 
-        mat4 GetViewMatrix() const;
-        mat4 GetProjectionMatrix() const;
+        mat4 ViewMatrix = mat4(1.0f);
+        mat4 ProjectionMatrix = mat4(1.0f);
+        CameraFrustum Frustum = CameraFrustum(mat4(1.0f));
 
-        CameraFrustum GetFrustum() const;
+        void Update();
     };
 }

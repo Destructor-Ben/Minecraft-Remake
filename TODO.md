@@ -35,10 +35,6 @@
 
 ### Rendering
 
-- CameraFrustum class is very slow
-    - Probably cache the frustum instead of retrieving it every draw call
-        - Do similarly to how the view and projection matrices are obtained
-    - Allow CameraFrustum::GetFrustum to take in the matrices to avoid recalculating them
 - Chunk Meshing
     - TODO: investigate speed of chunk meshing
     - Cache the quaternions used in face calculation
