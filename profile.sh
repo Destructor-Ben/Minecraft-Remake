@@ -1,6 +1,7 @@
 #!/bin/bash
 
-sudo perf record -g build/Minecraft_Remake
+cd build
+sudo perf record -g ./Minecraft_Remake
 
 echo "Press any key to exit..."
 read -n 1 -s
