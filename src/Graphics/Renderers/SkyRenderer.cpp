@@ -5,6 +5,7 @@
 #include "Graphics/Materials/SkyMaterial.h"
 #include "Graphics/Materials/SkyObjectMaterial.h"
 #include "Graphics/Renderers/Renderer.h"
+#include "Random/NoiseGenerator.h"
 #include "World/World.h"
 
 namespace Minecraft
@@ -37,25 +38,32 @@ namespace Minecraft
 
         // Draw the sky
         // Don't use Renderer.Draw, it is for normal objects
-
+        // TODO: for every matrix below, it should probably be calculated in the prepare function to avoid wasting performance
         // TODO: finish making the sky look good - use lookup texture for the colors
         m_SkyMesh->Draw(transform * glm::eulerAngleZ(-(float)numbers::pi / 2));
 
         // Draw the stars
         // TODO: use instanced rendering for stars
-        //m_SkyObjectMaterial->ObjectTexture = m_StarTexture;
-        //m_SkyObjectMesh->Draw(transform * glm::translate(vec3(-2.1f, 0.0f, 0.0f)));
+        // TODO: maybe make stars move at a different speed to the sun + moon?
+        constexpr float StarScale = 0.0025f;
+        m_SkyObjectMaterial->ObjectTexture = m_StarTexture;
+        for (auto starPos : m_StarPositions)
+        {
+            m_SkyObjectMesh->Draw(transform * glm::translate(starPos) * mat4(mat3(glm::lookAt(starPos, vec3(0), vec3(0, 1, 0)))) * glm::translate(vec3(0, 0, -1.0f / StarScale)));
+        }
 
         // Sun and moon
         constexpr float SunScale = 0.1f;
         m_SkyObjectMaterial->ObjectTexture = m_SunTexture;
         m_SkyObjectMesh->Draw(transform * glm::eulerAngleY((float)-numbers::pi / 2.0f) * glm::translate(vec3(0, 0, -1.0f / SunScale)));
 
+        // TODO: moon phases
         // TODO: maybe make the moon travel slightly faster than the sun, especially if I add moon phases
         constexpr float MoonScale = 0.075f;
         m_SkyObjectMaterial->ObjectTexture = m_MoonTexture;
         m_SkyObjectMesh->Draw(transform * glm::eulerAngleY((float)numbers::pi / 2.0f) * glm::translate(vec3(0, 0, -1.0f / MoonScale)));
 
+        // Reset GL state
         glDepthMask(true);
         glDepthFunc(GL_LESS);
     }
@@ -127,6 +135,15 @@ namespace Minecraft
 
     void SkyRenderer::PrepareSkyObjects()
     {
+        // Init star positions
+        constexpr int StarCount = 500;
+        NoiseGenerator starRandom = { };
+        for (int i = 0; i < StarCount; ++i)
+        {
+            // TODO: proper random
+            m_StarPositions.push_back(vec3(starRandom.White1D(i) * 2 - 1, starRandom.White1D(i + 1024) * 2 - 1, starRandom.White1D(i + 2048) * 2 - 1));
+        }
+
         // Request textures
         m_SunTexture = Instance->Graphics->RequestTexture("sky/sun");
         m_MoonTexture = Instance->Graphics->RequestTexture("sky/moon");

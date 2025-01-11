@@ -18,6 +18,8 @@ namespace Minecraft
         void PrepareSky();
         void PrepareSkyObjects();
 
+        vector<vec3> m_StarPositions;
+
         shared_ptr <Mesh> m_SkyMesh;
         shared_ptr <SkyMaterial> m_SkyMaterial;
 
