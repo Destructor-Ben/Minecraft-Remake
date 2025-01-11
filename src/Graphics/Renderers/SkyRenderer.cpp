@@ -25,8 +25,8 @@ namespace Minecraft
         // Rotate the skybox while time changes
         // Z axis is east and west
         float timeProgress = Instance->CurrentWorld->WorldTime / World::MaxWorldTime;
-        quat skyboxRotation = quat(vec3(0, 0, numbers::pi * 2 * timeProgress));
-        //transform *= mat4(skyboxRotation);
+        float skyboxAngle = numbers::pi * 2 * timeProgress;
+        transform *= mat4(glm::eulerAngleZ(skyboxAngle));
 
         // Since we draw after the scene, we use a trick to make sure the depth value is always 1
         // This means we need to change the depth function though because otherwise we won't be able to actually write to the pixels
@@ -39,7 +39,7 @@ namespace Minecraft
         // Don't use Renderer.Draw, it is for normal objects
 
         // TODO: finish making the sky look good - use lookup texture for the colors
-        m_SkyMesh->Draw(transform);
+        m_SkyMesh->Draw(transform * glm::eulerAngleZ(-(float)numbers::pi / 2));
 
         // Draw the stars
         // TODO: use instanced rendering for stars
@@ -51,6 +51,7 @@ namespace Minecraft
         m_SkyObjectMaterial->ObjectTexture = m_SunTexture;
         m_SkyObjectMesh->Draw(transform * glm::eulerAngleY((float)-numbers::pi / 2.0f) * glm::translate(vec3(0, 0, -1.0f / SunScale)));
 
+        // TODO: maybe make the moon travel slightly faster than the sun, especially if I add moon phases
         constexpr float MoonScale = 0.075f;
         m_SkyObjectMaterial->ObjectTexture = m_MoonTexture;
         m_SkyObjectMesh->Draw(transform * glm::eulerAngleY((float)numbers::pi / 2.0f) * glm::translate(vec3(0, 0, -1.0f / MoonScale)));
