@@ -1,15 +1,13 @@
 # To Do List
 
-- Use boost for stacktrace and format, or some other library
-
 - Make the libraries submodules instead of directly embedded
-- Embed resources - use source generator https://stackoverflow.com/a/71906177/12259381
 - Statically link all libraries
+- Embed resources - use source generator https://stackoverflow.com/a/71906177/12259381
 - Transparency & blending
 - Implement an ECS for entities and blocks
 - Entities
 - Make all chunk loops that use radii circle instead of squares
-- Process segfaults on linux when exiting
+- The process segfaults on linux when exiting
 - Maybe make chunk positions (origins) their center instead of corner
     - Blocks already are, also check that they are done correctly
 
@@ -18,6 +16,7 @@
 - Multithreading
     - Chunk meshing can be made to run in parallel
     - World generation can also be in parallel for certain passes, idk about stuff like tree placement, race conditions could affect things like that
+        - No it wont, since chunks needs to generate independently anyway
     - Ticking and rendering should be separate processes? It's annoying when one blocks the same thread as the window
 - Chunk and block pos getters are slow
     - Probably just calculate the positions in ctor then store, also just avoid function calls entirely
