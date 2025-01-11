@@ -93,8 +93,10 @@ namespace Minecraft
         face.UVMultiplier = vec2(textureSizeX, textureSizeY);
 
         int textureIndex = block.Data.Type->GetTextureIndex(dir);
-        // TODO: handle textureIndex >= width
-        face.UVOffset = vec2(textureIndex * textureSizeX, 1.0f - textureSizeY);
+        int texturesPerWidth = m_ChunkTexture->GetWidth() / BlockTextureSize;
+        int textureX = textureIndex % texturesPerWidth;
+        int textureY = textureIndex / texturesPerWidth;
+        face.UVOffset = vec2(textureX * textureSizeX, 1.0f - (textureY + 1) * textureSizeY);
 
         // Add the face
         faces.push_back(face);

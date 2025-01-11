@@ -5,6 +5,7 @@
 #include "World/Blocks/GrassBlock.h"
 #include "World/Blocks/SolidBlock.h"
 #include "World/Blocks/TallGrassBlock.h"
+#include "World/Blocks/WoodBlock.h"
 
 namespace Minecraft::Blocks
 {
@@ -13,6 +14,6 @@ namespace Minecraft::Blocks
     inline unique_ptr<BlockType> Dirt = make_unique<SolidBlock>(3);
     inline unique_ptr<BlockType> Grass = make_unique<GrassBlock>(3);
     inline unique_ptr<BlockType> TallGrass = make_unique<TallGrassBlock>(6);
-    inline unique_ptr<BlockType> Wood = make_unique<SolidBlock>(7);
-    inline unique_ptr<BlockType> Leaves = make_unique<SolidBlock>(8);
+    inline unique_ptr<BlockType> Wood = make_unique<WoodBlock>(7);
+    inline unique_ptr<BlockType> Leaves = make_unique<SolidBlock>(9);
 }

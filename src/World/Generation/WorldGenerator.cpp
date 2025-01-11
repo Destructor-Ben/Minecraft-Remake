@@ -197,7 +197,75 @@ namespace Minecraft
                     if (m_Noise.White3D(x + 1024, yAbove + 1024, z + 1024) > Chance)
                         continue;
 
-                    blockAbove.Data.Type = Blocks::Dirt.get();
+                    int height = round(glm::lerp(5.0f, 7.0f, m_Noise.White3D(x + 2048, y + 2048, z + 2048)));
+
+                    // Trunk
+                    for (int yTrunk = 1; yTrunk <= height; ++yTrunk)
+                    {
+                        // TODO: fix across chunk borders
+                        if (y + yTrunk >= Chunk::Size)
+                            continue;
+
+                        Block trunkBlock = chunk.GetBlock(x, y + yTrunk, z);
+                        trunkBlock.Data.Type = Blocks::Wood.get();
+                    }
+
+                    // Leaves
+                    for (int leafX = -1; leafX <= 1; ++leafX)
+                    {
+                        for (int leafZ = -1; leafZ <= 1; ++leafZ)
+                        {
+                            for (int leafY = -1; leafY <= 1; ++leafY)
+                            {
+                                int leafFinalX = x + leafX;
+                                int leafFinalY = y + height + leafY;
+                                int leafFinalZ = z + leafZ;
+
+                                // TODO: fix across chunk borders
+                                if (leafFinalX >= Chunk::Size || leafFinalX < 0)
+                                    continue;
+
+                                if (leafFinalY >= Chunk::Size || leafFinalY < 0)
+                                    continue;
+
+                                if (leafFinalZ >= Chunk::Size || leafFinalZ < 0)
+                                    continue;
+
+                                Block leafBlock = chunk.GetBlock(leafFinalX, leafFinalY, leafFinalZ);
+
+                                if (leafBlock.Data.Type->IsTransparent)
+                                    leafBlock.Data.Type = Blocks::Leaves.get();
+                            }
+                        }
+                    }
+
+                    for (int leafX = -2; leafX <= 2; ++leafX)
+                    {
+                        for (int leafZ = -2; leafZ <= 2; ++leafZ)
+                        {
+                            for (int leafY = -2; leafY <= -1; ++leafY)
+                            {
+                                int leafFinalX = x + leafX;
+                                int leafFinalY = y + height + leafY;
+                                int leafFinalZ = z + leafZ;
+
+                                // TODO: fix across chunk borders
+                                if (leafFinalX >= Chunk::Size || leafFinalX < 0)
+                                    continue;
+
+                                if (leafFinalY >= Chunk::Size || leafFinalY < 0)
+                                    continue;
+
+                                if (leafFinalZ >= Chunk::Size || leafFinalZ < 0)
+                                    continue;
+
+                                Block leafBlock = chunk.GetBlock(leafFinalX, leafFinalY, leafFinalZ);
+
+                                if (leafBlock.Data.Type->IsTransparent)
+                                    leafBlock.Data.Type = Blocks::Leaves.get();
+                            }
+                        }
+                    }
                 }
             }
         }

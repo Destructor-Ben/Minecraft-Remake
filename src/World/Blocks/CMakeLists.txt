@@ -4,4 +4,5 @@ target_sources(Minecraft_Remake PRIVATE
     GrassBlock.h
     SolidBlock.h
     TallGrassBlock.h
+    WoodBlock.h
 )
