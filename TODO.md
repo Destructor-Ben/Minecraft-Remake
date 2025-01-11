@@ -28,11 +28,7 @@
     - Also make GetChunk and GetBlock faster
 - Transform::GetTransformMatrix is slow
     - TODO: figure out how to optimize
-
-### Loading
-
-- Loading the skybox is very slow, maybe downsize it?
-    - Could remove it entirely, it is just a placeholder
+    - Cache the matrix?
 
 ### Rendering
 
