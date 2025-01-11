@@ -3,4 +3,6 @@ target_sources(Minecraft_Remake PRIVATE
     ChunkMaterial.h
     SkyMaterial.cpp
     SkyMaterial.h
+    SkyObjectMaterial.cpp
+    SkyObjectMaterial.h
 )

@@ -4,8 +4,6 @@
 
 namespace Minecraft
 {
-    class CubeMap;
-
     class SkyMaterial : public Material
     {
     public:
