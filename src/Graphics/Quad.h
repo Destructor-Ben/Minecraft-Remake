@@ -13,7 +13,7 @@ namespace Minecraft
     struct Quad : public Transform
     {
         // TODO: more elegant way of handling extra data
-        vec4 Shading = vec4(1.0f);
+        vec3 Shading = vec4(1.0f);
         vec2 UVMultiplier = vec2(1.0f);
         vec2 UVOffset = vec2(0.0f);
 

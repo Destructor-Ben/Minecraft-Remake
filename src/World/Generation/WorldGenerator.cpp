@@ -239,7 +239,7 @@ namespace Minecraft
 
                                 Block leafBlock = chunk.GetBlock(leafFinalX, leafFinalY, leafFinalZ);
 
-                                if (leafBlock.Data.Type->IsTransparent)
+                                if (leafBlock.Data.Type == Blocks::Air.get())
                                     leafBlock.Data.Type = Blocks::Leaves.get();
                             }
                         }
@@ -267,7 +267,7 @@ namespace Minecraft
 
                                 Block leafBlock = chunk.GetBlock(leafFinalX, leafFinalY, leafFinalZ);
 
-                                if (leafBlock.Data.Type->IsTransparent)
+                                if (leafBlock.Data.Type == Blocks::Air.get())
                                     leafBlock.Data.Type = Blocks::Leaves.get();
                             }
                         }

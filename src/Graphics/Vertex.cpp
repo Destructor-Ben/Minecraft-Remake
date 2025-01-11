@@ -17,7 +17,6 @@ namespace Minecraft
         data.push_back(Shading.r);
         data.push_back(Shading.g);
         data.push_back(Shading.b);
-        data.push_back(Shading.a);
 
         return data;
     }

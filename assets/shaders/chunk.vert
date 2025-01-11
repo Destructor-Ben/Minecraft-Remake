@@ -2,12 +2,12 @@
 
 layout (location = 0) in vec4 iPosition;
 layout (location = 1) in vec2 iTexCoord;
-layout (location = 2) in vec4 iShading;
+layout (location = 2) in vec3 iShading;
 
 uniform mat4 uTransform;
 
 out vec2 TexCoord;
-out vec4 Shading;
+out vec3 Shading;
 
 void main()
 {

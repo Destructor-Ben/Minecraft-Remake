@@ -7,7 +7,7 @@ namespace Minecraft
         vec3 Position = vec3(0.0f);
         vec2 UV = vec2(0.0f);
         // TODO: more elegant way of handling extra data
-        vec4 Shading = vec4(1.0f);
+        vec3 Shading = vec4(1.0f);
 
         // TODO: fix dodgy linker error
         //vector<float> ToFloats();
@@ -30,7 +30,6 @@ namespace Minecraft
             data.push_back(Shading.r);
             data.push_back(Shading.g);
             data.push_back(Shading.b);
-            data.push_back(Shading.a);
 
             return data;
         }

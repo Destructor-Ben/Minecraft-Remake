@@ -7,16 +7,16 @@ namespace Minecraft
     class GrassBlock : public SolidBlock
     {
     public:
-        GrassBlock(int textureIndex) : SolidBlock(textureIndex) { }
+        GrassBlock(vec2i textureCoords) : SolidBlock(textureCoords) { }
 
-        int GetTextureIndex(vec3i dir) override
+        vec2i GetTextureCoords(vec3i dir) override
         {
             if (dir.y > 0)
-                return TextureIndex + 2;
+                return TextureCoords + vec2i(2, 0);
             else if (dir.y < 0)
-                return TextureIndex;
+                return TextureCoords;
             else
-                return TextureIndex + 1;
+                return TextureCoords + vec2i(1, 0);
         }
     };
 }

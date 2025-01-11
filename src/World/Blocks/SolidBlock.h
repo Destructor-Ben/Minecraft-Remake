@@ -7,10 +7,9 @@ namespace Minecraft
     class SolidBlock : public BlockType
     {
     public:
-        SolidBlock(int textureIndex)
+        SolidBlock(vec2i textureCoords)
         {
-            TextureIndex = textureIndex;
-            IsTransparent = false;
+            TextureCoords = textureCoords;
         }
     };
 }

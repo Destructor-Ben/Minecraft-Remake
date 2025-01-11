@@ -9,7 +9,7 @@ namespace Minecraft
     public:
         AirBlock()
         {
-            IsTransparent = true;
+            MeshType = BlockMeshType::None;
         }
     };
 }

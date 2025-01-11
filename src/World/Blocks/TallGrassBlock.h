@@ -7,10 +7,10 @@ namespace Minecraft
     class TallGrassBlock : public BlockType
     {
     public:
-        TallGrassBlock(int textureIndex)
+        TallGrassBlock(vec2i textureCoords)
         {
-            TextureIndex = textureIndex;
-            IsTransparent = true;
+            TextureCoords = textureCoords;
+            MeshType = BlockMeshType::GrassPlant;
         }
     };
 }

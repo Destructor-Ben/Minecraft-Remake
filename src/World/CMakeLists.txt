@@ -2,6 +2,7 @@ target_sources(Minecraft_Remake PRIVATE
     Block.cpp
     Block.h
     BlockData.h
+    BlockMeshType.h
     BlockType.h
     Chunk.cpp
     Chunk.h

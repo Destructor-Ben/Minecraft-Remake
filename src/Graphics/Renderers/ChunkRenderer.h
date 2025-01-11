@@ -29,9 +29,12 @@ namespace Minecraft
         void CreateMesh(Chunk& chunk);
         void SetMeshData(Chunk& chunk, const vector<float>& vertices, const vector <uint>& indices);
 
-        void AddFaceInDirection(Chunk& chunk, Block& block, vector <Quad>& faces, vec3i dir, quat rotation);
         vector <Quad> GetChunkFaces(Chunk& chunk);
-        vec4 GetFaceShading(vec3i dir); // TODO: make a deferred renderer that doesn't use shading in the mesh
+        void AddFaceInDirection(Chunk& chunk, Block& block, vector <Quad>& faces, vec3i dir, quat rotation);
+        void SetFaceTexture(Quad& face, vec3i dir, vec2i textureCoords);
+        vec3 GetFaceTint(vec3i dir);
+
+        vec2 m_BlockTextureSizeInUVCoords;
 
         shared_ptr <Texture> m_ChunkTexture;
         shared_ptr <ChunkMaterial> m_ChunkMaterial;

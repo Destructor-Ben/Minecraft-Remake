@@ -1,5 +1,7 @@
 #pragma once
 
+#include "World/BlockMeshType.h"
+
 namespace Minecraft
 {
     // Block types are handled as a datatype that contains all the info and settings for a specific block type
@@ -7,11 +9,14 @@ namespace Minecraft
     class BlockType
     {
     public:
-        int TextureIndex = 0;
-        bool IsTransparent = false;
+        BlockMeshType MeshType = BlockMeshType::SolidCube;
+        vec2i TextureCoords = vec2i(0);
+
+        // TODO: IsReplaceableInWorldGen
+        // TODO: CollisionType
 
         virtual ~BlockType() = default;
 
-        virtual int GetTextureIndex(vec3i dir) { return TextureIndex; }
+        virtual vec2i GetTextureCoords(vec3i dir) { return TextureCoords; }
     };
 }
