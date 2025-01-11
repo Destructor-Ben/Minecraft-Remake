@@ -54,13 +54,6 @@
 #define DEBUG false
 #endif
 
-// GCC macro
-#ifdef __GNUC__
-#define GCC true
-#else
-#define GCC false
-#endif
-
 namespace Minecraft
 {
     // Using std namespace aliases

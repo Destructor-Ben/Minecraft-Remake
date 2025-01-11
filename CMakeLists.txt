@@ -13,18 +13,21 @@ add_subdirectory(src)
 add_subdirectory(generators/Version)
 
 # Adding libraries
+add_subdirectory(lib/cpptrace)
 add_subdirectory(lib/fmt)
 add_subdirectory(lib/stb_image)
 add_subdirectory(lib/glad)
 add_subdirectory(lib/glm/glm)
 add_subdirectory(lib/glfw)
 
+target_include_directories(Minecraft_Remake PRIVATE lib/cpptrace/include)
 target_include_directories(Minecraft_Remake PRIVATE lib/fmt/include)
 target_include_directories(Minecraft_Remake PRIVATE lib/stb_image)
 target_include_directories(Minecraft_Remake PRIVATE lib/glad/include)
 target_include_directories(Minecraft_Remake PRIVATE lib/glm)
 target_include_directories(Minecraft_Remake PRIVATE lib/glfw/include)
 
+target_link_libraries(Minecraft_Remake cpptrace::cpptrace)
 target_link_libraries(Minecraft_Remake fmt)
 target_link_libraries(Minecraft_Remake stb_image)
 target_link_libraries(Minecraft_Remake glad)

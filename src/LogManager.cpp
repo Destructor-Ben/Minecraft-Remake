@@ -1,6 +1,6 @@
 #include "LogManager.h"
 
-// TODO: use boost for stacktraces #include <stacktrace>
+#include <cpptrace/cpptrace.hpp>
 
 #include "Version.h"
 
@@ -41,12 +41,7 @@ namespace Minecraft
 
     void LogManager::Throw(const string& message)
     {
-        // TODO: stacktrace doesn't work on GCC
-        #if GCC
-        throw std::runtime_error(message);
-        #else
-        throw std::runtime_error(format("{}\nStacktrace:\n{}", message, to_string(std::stacktrace::current())));
-        #endif
+        throw std::runtime_error(format("{}\n{}", message, cpptrace::generate_trace()));
     }
 
     void LogManager::Assert(bool condition)
