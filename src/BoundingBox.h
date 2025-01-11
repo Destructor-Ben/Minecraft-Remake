@@ -9,6 +9,9 @@ namespace Minecraft
 
         BoundingBox(vec3 origin, vec3 size) : Origin(origin), Size(size) { }
 
-        bool ContainsPoint(vec3 point);
+        bool ContainsPoint(vec3 point) const;
+
+        vec3 GetMin() const { return Origin; }
+        vec3 GetMax() const { return Origin + Size; }
     };
 }

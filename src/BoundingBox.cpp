@@ -2,9 +2,9 @@
 
 namespace Minecraft
 {
-    bool BoundingBox::ContainsPoint(glm::vec3 point)
+    bool BoundingBox::ContainsPoint(glm::vec3 point) const
     {
-        auto max = Origin + Size;
+        auto max = GetMax();
 
         return point.x >= Origin.x
                && point.y >= Origin.y

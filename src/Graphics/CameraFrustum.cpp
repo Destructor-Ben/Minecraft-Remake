@@ -62,14 +62,13 @@ namespace Minecraft
         }
     }
 
+    // Thx to ChatGPT for explaining how these algorithms work and why planes are a 4D vector
     bool CameraFrustum::ContainsPoint(vec3 point) const
     {
         for (int i = 0; i < (int)CameraPlane::Count; ++i)
         {
-            if (glm::dot(glm::vec3(m_Planes[i]), point) + m_Planes[i].w < 0.0f)
-            {
+            if (glm::dot(vec3(m_Planes[i]), point) + m_Planes[i].w < 0.0f)
                 return false;
-            }
         }
 
         return true;
@@ -77,31 +76,36 @@ namespace Minecraft
 
     bool CameraFrustum::ContainsBounds(const BoundingBox& bounds)
     {
-        vec3 min = bounds.Origin;
-        vec3 max = bounds.Origin + bounds.Size;
-
-        // Iterate over all 8 corners of the bounding box
-        for (int x = 0; x < 2; ++x)
+        for (const auto& plane : m_Planes)
         {
-            for (int y = 0; y < 2; ++y)
-            {
-                for (int z = 0; z < 2; ++z)
-                {
-                    vec3 corner = {
-                        x == 0 ? min.x : max.x,
-                        y == 0 ? min.y : max.y,
-                        z == 0 ? min.z : max.z
-                    };
+            // Compute the positive and negative vertices relative to the plane normal
+            vec3 positiveVertex = bounds.GetMin();
+            vec3 negativeVertex = bounds.GetMax();
+            vec3 normal = vec3(plane);
 
-                    // If any corner is inside, return true
-                    if (ContainsPoint(corner))
-                    {
-                        return true;
-                    }
-                }
+            if (normal.x >= 0)
+            {
+                positiveVertex.x = bounds.GetMax().x;
+                negativeVertex.x = bounds.GetMin().x;
             }
+
+            if (normal.y >= 0)
+            {
+                positiveVertex.y = bounds.GetMax().y;
+                negativeVertex.y = bounds.GetMin().y;
+            }
+
+            if (normal.z >= 0)
+            {
+                positiveVertex.z = bounds.GetMax().z;
+                negativeVertex.z = bounds.GetMin().z;
+            }
+
+            // Check if the AABB is completely outside the plane
+            if (glm::dot(normal, positiveVertex) + plane.w < 0)
+                return false;
         }
 
-        return false;
+        return true;
     }
 }
