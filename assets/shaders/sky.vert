@@ -4,11 +4,11 @@ layout (location = 0) in vec4 iPosition;
 
 uniform mat4 uTransform;
 
-out vec3 TexCoord;
+out vec3 FragCoord;
 
 void main()
 {
-    TexCoord = vec3(iPosition);
+    FragCoord = vec3(iPosition);
     vec4 position = uTransform * iPosition;
 
     // This trick makes the depth value always 1, since z is the depth

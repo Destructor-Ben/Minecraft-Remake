@@ -8,7 +8,7 @@ namespace Minecraft
 {
     SkyRenderer::SkyRenderer()
     {
-        CreateMesh();
+        Prepare();
     }
 
     void SkyRenderer::Render()
@@ -30,20 +30,17 @@ namespace Minecraft
         glDepthFunc(GL_LESS);
     }
 
-    void SkyRenderer::CreateMesh()
+    void SkyRenderer::Prepare()
     {
         // Create the material
         auto shader = Instance->Graphics->RequestShader("sky");
-        auto cubeMap = Instance->Graphics->RequestCubeMap("sky");
         m_SkyMaterial = make_shared<SkyMaterial>(shader);
-        m_SkyMaterial->Texture = cubeMap;
 
         // Create the vertex and index buffers
         auto vertexBuffer = make_shared<VertexBuffer>();
         auto indexBuffer = make_shared<IndexBuffer>();
 
         // Set the mesh data
-        // ChatGPT made this for me, and I think the z value of every vertex is negated
         vertexBuffer->SetData(
             {
                 // Front face (positive Z)
