@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Graphics/Renderers/SkyMaterial.h"
-
 // TODO: make the sky more minecraft with a gradient
 // TODO: sun and moon
 // TODO: stars
@@ -10,6 +8,7 @@
 namespace Minecraft
 {
     class Mesh;
+    class SkyMaterial;
 
     class SkyRenderer
     {
@@ -21,13 +20,13 @@ namespace Minecraft
     private:
         void Prepare();
 
-        shared_ptr <Mesh> m_SkyMesh;
-        shared_ptr <SkyMaterial> m_SkyMaterial;
+        shared_ptr<Mesh> m_SkyMesh;
+        shared_ptr<SkyMaterial> m_SkyMaterial;
 
         // TODO: implement these
-        shared_ptr <Mesh> m_QuadMesh;
-        shared_ptr <SkyMaterial> m_SunMaterial;
-        shared_ptr <SkyMaterial> m_MoonMaterial;
-        shared_ptr <SkyMaterial> m_StarMaterial;
+        shared_ptr<Mesh> m_QuadMesh;
+        shared_ptr<SkyMaterial> m_SunMaterial;
+        shared_ptr<SkyMaterial> m_MoonMaterial;
+        shared_ptr<SkyMaterial> m_StarMaterial;
     };
 }

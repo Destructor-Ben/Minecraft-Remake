@@ -2,7 +2,7 @@
 
 #include "Game.h"
 #include "Graphics/GL.h"
-#include "Graphics/Renderers/ChunkMaterial.h"
+#include "Graphics/Materials/ChunkMaterial.h"
 #include "Graphics/Renderers/Renderer.h"
 #include "World/Chunk.h"
 #include "World/World.h"

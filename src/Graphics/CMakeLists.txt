@@ -30,4 +30,5 @@ target_sources(Minecraft_Remake PRIVATE
     VertexShader.h
 )
 
+add_subdirectory(Materials)
 add_subdirectory(Renderers)

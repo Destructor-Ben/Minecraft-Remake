@@ -2,6 +2,7 @@
 
 #include "Game.h"
 #include "Graphics/GL.h"
+#include "Graphics/Materials/SkyMaterial.h"
 #include "Graphics/Renderers/Renderer.h"
 
 namespace Minecraft
