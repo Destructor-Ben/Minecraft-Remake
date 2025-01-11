@@ -45,6 +45,7 @@ namespace Minecraft
         // Draw the stars
         // TODO: use instanced rendering for stars
         // TODO: maybe make stars move at a different speed to the sun + moon?
+        // TODO: make night objects fade with brightness
         constexpr float StarScale = 0.0025f;
         m_SkyObjectMaterial->ObjectTexture = m_StarTexture;
         for (auto starPos : m_StarPositions)
