@@ -70,9 +70,6 @@ namespace Minecraft
 
     vector <Quad> ChunkRenderer::GetChunkFaces(Chunk& chunk)
     {
-        const float Degrees180 = glm::radians(180.0f);
-        const float Degrees90 = glm::radians(90.0f);
-
         vector <Quad> faces;
 
         for (int x = 0; x < Chunk::Size; ++x)
@@ -83,38 +80,17 @@ namespace Minecraft
                 {
                     auto block = chunk.GetBlock(x, y, z);
 
-                    // TODO: move this into BlockType
-                    if (block.Data.Type == Blocks::TallGrass.get())
+                    switch (block.Data.Type->MeshType)
                     {
-                        for (int i = 0; i < 4; ++i)
-                        {
-                            Quad face { };
-                            face.Position = block.GetBlockPos();
-                            face.Rotation = quat(vec3(Degrees90, Degrees90 / 2.0f + Degrees90 * i, 0.0f));
-                            SetFaceTexture(face, vec3(0), block.Data.Type->GetTextureCoords(vec3(0)));
-
-                            // Add the face
-                            faces.push_back(face);
-                        }
-
-                        continue;
+                        case BlockMeshType::None:
+                            break;
+                        case BlockMeshType::SolidCube:
+                            SolidCubeMesh(block, faces);
+                            break;
+                        case BlockMeshType::GrassPlant:
+                            GrassPlantMesh(block, faces);
+                            break;
                     }
-
-                    if (block.Data.Type == Blocks::Air.get())
-                        continue;
-
-                    // TODO: store these rotations
-                    // Top and bottom
-                    AddFaceInDirection(chunk, block, faces, vec3i(0, 1, 0), vec3(0, 0, 0));
-                    AddFaceInDirection(chunk, block, faces, vec3i(0, -1, 0), vec3(Degrees180, Degrees180, 0));
-
-                    // Left and right
-                    AddFaceInDirection(chunk, block, faces, vec3i(1, 0, 0), quat(vec3(Degrees90, 0, 0)) * quat(vec3(0, 0, -Degrees90)));
-                    AddFaceInDirection(chunk, block, faces, vec3i(-1, 0, 0), quat(vec3(Degrees90, 0, 0)) * quat(vec3(0, 0, Degrees90)));
-
-                    // Front and back
-                    AddFaceInDirection(chunk, block, faces, vec3i(0, 0, 1), vec3(Degrees90, 0, 0));
-                    AddFaceInDirection(chunk, block, faces, vec3i(0, 0, -1), vec3(Degrees90, Degrees180, 0));
                 }
             }
         }
@@ -122,7 +98,39 @@ namespace Minecraft
         return faces;
     }
 
-    void ChunkRenderer::AddFaceInDirection(Chunk& chunk, Block& block, vector <Quad>& faces, vec3i dir, quat rotation)
+    void ChunkRenderer::SolidCubeMesh(Block& block, vector <Quad>& faces)
+    {
+        // Top and bottom
+        AddFaceInDirection(block, faces, vec3i(0, 1, 0), m_BlockFaceDirections[0]);
+        AddFaceInDirection(block, faces, vec3i(0, -1, 0), m_BlockFaceDirections[1]);
+
+        // Left and right
+        AddFaceInDirection(block, faces, vec3i(1, 0, 0), m_BlockFaceDirections[2]);
+        AddFaceInDirection(block, faces, vec3i(-1, 0, 0), m_BlockFaceDirections[3]);
+
+        // Front and back
+        AddFaceInDirection(block, faces, vec3i(0, 0, 1), m_BlockFaceDirections[4]);
+        AddFaceInDirection(block, faces, vec3i(0, 0, -1), m_BlockFaceDirections[5]);
+    }
+
+    void ChunkRenderer::GrassPlantMesh(Block& block, vector <Quad>& faces)
+    {
+        // TODO: should the backfaces mirror instead of being flipped?
+        for (int i = 0; i < 4; ++i)
+        {
+            // TODO: proper direction
+            vec3i dir = vec3i();
+
+            Quad face { };
+            face.Position = block.GetBlockPos();
+            face.Rotation = m_GrassPlantFaceRotation * quat(glm::eulerAngleZ(Degrees90 * i));
+            SetFaceTexture(face, dir, block.Data.Type->GetTextureCoords(dir));
+
+            faces.push_back(face);
+        }
+    }
+
+    void ChunkRenderer::AddFaceInDirection(Block& block, vector <Quad>& faces, vec3i dir, quat rotation)
     {
         // Getting other block
         auto otherBlockWorldPos = vec3i(block.GetWorldPos().x + dir.x, block.GetWorldPos().y + dir.y, block.GetWorldPos().z + dir.z);
