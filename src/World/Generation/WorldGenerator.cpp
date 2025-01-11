@@ -93,6 +93,7 @@ namespace Minecraft
     // TODO: make generation passes
     void WorldGenerator::Generate(Chunk& chunk)
     {
+        // Generate terrain
         const int NoiseScale = 25.0f;
         const int Height = 25.0f;
 
@@ -129,6 +130,74 @@ namespace Minecraft
                         type = Blocks::Stone.get();
 
                     block.Data.Type = type;
+                }
+            }
+        }
+
+        // Generate trees and grass
+        for (int x = 0; x < Chunk::Size; x++)
+        {
+            for (int z = 0; z < Chunk::Size; z++)
+            {
+                for (int y = 0; y < Chunk::Size; y++)
+                {
+                    // Find a dirt or grass block with air above it
+                    Block block = chunk.GetBlock(x, y, z);
+
+                    auto blockType = block.Data.Type;
+                    if (blockType != Blocks::Dirt.get() && blockType != Blocks::Grass.get())
+                        continue;
+
+                    int yAbove = y + 1;
+                    // TODO: fix across chunk borders
+                    if (yAbove >= Chunk::Size)
+                        continue;
+
+                    Block blockAbove = chunk.GetBlock(x, yAbove, z);
+                    if (blockAbove.Data.Type != Blocks::Air.get())
+                        continue;
+
+                    // Place the thing
+                    // TODO: proper random chances
+                    const float Chance = 0.1f;
+                    if (m_Noise.White3D(x, yAbove, z) > Chance)
+                        continue;
+
+                    blockAbove.Data.Type = Blocks::TallGrass.get();
+                }
+            }
+        }
+
+        // TODO: avoid copy paste
+        for (int x = 0; x < Chunk::Size; x++)
+        {
+            for (int z = 0; z < Chunk::Size; z++)
+            {
+                for (int y = 0; y < Chunk::Size; y++)
+                {
+                    // Find a dirt or grass block with air above it
+                    Block block = chunk.GetBlock(x, y, z);
+
+                    auto blockType = block.Data.Type;
+                    if (blockType != Blocks::Dirt.get() && blockType != Blocks::Grass.get())
+                        continue;
+
+                    int yAbove = y + 1;
+                    // TODO: fix across chunk borders
+                    if (yAbove >= Chunk::Size)
+                        continue;
+
+                    Block blockAbove = chunk.GetBlock(x, yAbove, z);
+                    if (blockAbove.Data.Type != Blocks::Air.get())
+                        continue;
+
+                    // Place the thing
+                    // TODO: proper random chances - Since this uses the same noise map as the grass, it will fail to place when the chances are the same
+                    const float Chance = 0.01f;
+                    if (m_Noise.White3D(x + 1024, yAbove + 1024, z + 1024) > Chance)
+                        continue;
+
+                    blockAbove.Data.Type = Blocks::Dirt.get();
                 }
             }
         }

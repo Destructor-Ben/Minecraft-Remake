@@ -64,6 +64,7 @@ namespace Minecraft
         m_ChunkMeshes[chunk.GetChunkPos()]->GetIndexBuffer(m_ChunkMaterial)->SetData(indices);
     }
 
+    // TODO: create face function as well
     void ChunkRenderer::AddFaceInDirection(Chunk& chunk, Block& block, vector <Quad>& faces, vec3i dir, quat rotation)
     {
         // Getting other block
@@ -113,6 +114,34 @@ namespace Minecraft
                 for (int z = 0; z < Chunk::Size; ++z)
                 {
                     auto block = chunk.GetBlock(x, y, z);
+
+                    // TODO: move this into BlockType
+                    if (block.Data.Type == Blocks::TallGrass.get())
+                    {
+                        for (int i = 0; i < 4; ++i)
+                        {
+                            Quad face { };
+                            face.Position = block.GetBlockPos();
+                            face.Rotation = quat(vec3(Degrees90, Degrees90 / 2.0f + Degrees90 * i, 0.0f));
+                            // TODO: shading
+                            face.Shading = vec4(1.0f);
+
+                            // Calculate the UVs
+                            float textureSizeX = (float)BlockTextureSize / m_ChunkTexture->GetWidth();
+                            float textureSizeY = (float)BlockTextureSize / m_ChunkTexture->GetHeight();
+                            face.UVMultiplier = vec2(textureSizeX, textureSizeY);
+
+                            int textureIndex = block.Data.Type->GetTextureIndex(vec3i(0));
+                            // TODO: handle textureIndex >= width
+                            face.UVOffset = vec2(textureIndex * textureSizeX, 1.0f - textureSizeY);
+
+                            // Add the face
+                            faces.push_back(face);
+                        }
+
+                        continue;
+                    }
+
                     if (block.Data.Type->IsTransparent)
                         continue;
 
