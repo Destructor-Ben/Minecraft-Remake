@@ -4,6 +4,7 @@
 #include "Graphics/GL.h"
 #include "Graphics/Materials/SkyMaterial.h"
 #include "Graphics/Renderers/Renderer.h"
+#include "World/World.h"
 
 namespace Minecraft
 {
@@ -18,6 +19,12 @@ namespace Minecraft
         mat4 view = Instance->Graphics->SceneCamera->ViewMatrix;
         view = mat4(mat3(view)); // Remove translation
         mat4 transform = projection * view;
+
+        // Rotate the skybox while time changes
+        // Z axis is east and west
+        float timeProgress = Instance->CurrentWorld->WorldTime / World::MaxWorldTime;
+        quat skyboxRotation = quat(vec3(0, 0, std::numbers::pi * 2 * timeProgress));
+        transform *= mat4(skyboxRotation);
 
         // Since we draw after the scene, we use a trick to make sure the depth value is always 1
         // This means we need to change the depth function though because otherwise we won't be able to actually write to the pixels

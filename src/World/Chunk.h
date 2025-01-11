@@ -9,8 +9,8 @@ namespace Minecraft
     class Chunk
     {
     public:
-        static const byte Size = 10;
-        static const uint Volume = Size * Size * Size;
+        static constexpr byte Size = 10;
+        static constexpr uint Volume = Size * Size * Size;
 
         // Parameterless ctor only needed for use in unordered_map
         Chunk() = default;

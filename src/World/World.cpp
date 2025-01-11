@@ -84,6 +84,8 @@ namespace Minecraft
         {
             chunk->Tick();
         }
+
+        TickTime();
     }
 
     void World::Update()
@@ -152,6 +154,14 @@ namespace Minecraft
         {
             chunks.push_back(&chunk);
         }
+    }
+
+    void World::TickTime()
+    {
+        WorldTime += Instance->FixedDeltaTime;
+
+        if (WorldTime >= MaxWorldTime)
+            WorldTime -= MaxWorldTime;
     }
 
     void World::UpdateCamera()

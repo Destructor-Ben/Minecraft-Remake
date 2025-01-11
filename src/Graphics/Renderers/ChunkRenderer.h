@@ -18,7 +18,7 @@ namespace Minecraft
     class ChunkRenderer
     {
     public:
-        const int BlockTextureSize = 16;
+        static constexpr int BlockTextureSize = 16;
 
         ChunkRenderer();
 

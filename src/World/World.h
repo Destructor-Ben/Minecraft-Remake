@@ -18,21 +18,24 @@ namespace Minecraft
     {
     public:
         // World size (vertical)
-        static const int MinHeight = -1;
-        static const int MaxHeight = 1;
+        static constexpr int MinHeight = -1;
+        static constexpr int MaxHeight = 1;
 
         // Distances for rendering, simulating, etc.
-        static const int RenderDistance = 5;
-        static const int SimulationDistance = 5;
-        static const int GenerationDistance = 3;
+        static constexpr int RenderDistance = 5;
+        static constexpr int SimulationDistance = 5;
+        static constexpr int GenerationDistance = 3;
 
         // Spawn size
-        static const int SpawnRadius = 8;
-        static const int MinSpawnHeight = MinHeight;
-        static const int MaxSpawnHeight = MaxHeight;
+        static constexpr int SpawnRadius = 8;
+        static constexpr int MinSpawnHeight = MinHeight;
+        static constexpr int MaxSpawnHeight = MaxHeight;
 
         Camera PlayerCamera;
         unordered_map <vec3i, Chunk> Chunks = { };
+
+        float WorldTime = 0;
+        static constexpr float MaxWorldTime = 30.0f;
 
         World();
         ~World();
@@ -57,6 +60,9 @@ namespace Minecraft
 
     private:
         void UpdateChunkList(vector<Chunk*>& chunks, int radius);
+
+        void TickTime();
+
         void UpdateCamera();
 
         vector<Chunk*> m_LoadedChunks = { };
