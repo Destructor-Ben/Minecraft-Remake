@@ -14,7 +14,7 @@ using namespace Minecraft;
 // Let OSes shut this bitch down
 void SignalHandler(int signal)
 {
-    Instance->Logger->Info(placeholder_format("Signal received: {}", signal));
+    Instance->Logger->Info(format("Signal received: {}", signal));
     Instance->Close();
 }
 
