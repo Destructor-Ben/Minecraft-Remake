@@ -25,38 +25,37 @@ namespace Minecraft
         // Rotate the skybox while time changes
         // Z axis is east and west
         float timeProgress = Instance->CurrentWorld->WorldTime / World::MaxWorldTime;
-        quat skyboxRotation = quat(vec3(0, 0, std::numbers::pi * 2 * timeProgress));
-        transform *= mat4(skyboxRotation);
+        quat skyboxRotation = quat(vec3(0, 0, numbers::pi * 2 * timeProgress));
+        //transform *= mat4(skyboxRotation);
 
         // Since we draw after the scene, we use a trick to make sure the depth value is always 1
         // This means we need to change the depth function though because otherwise we won't be able to actually write to the pixels
         // But we still need depth testing
-        // Also whether we write to the depth mask doesn't matter, since we would be overwriting 1 (existing value) with 1 (new value)
+        // Also disable depth buffer writing to prevent z-fighting from writing an inaccurate z value
         glDepthFunc(GL_LEQUAL);
+        glDepthMask(false);
 
         // Draw the sky
         // Don't use Renderer.Draw, it is for normal objects
-        // Also disable depth buffer writing to prevent z-fighting
-        glDepthMask(false);
 
-        // TODO: finish making the sky look good
+        // TODO: finish making the sky look good - use lookup texture for the colors
         m_SkyMesh->Draw(transform);
 
-        glDepthMask(true);
-
-        // Draw the sky objects
-        mat4 scale = glm::scale(vec3(0.1f));
-
-        m_SkyObjectMaterial->ObjectTexture = m_SunTexture;
-        m_SkyObjectMesh->Draw(transform * scale);
-
-        m_SkyObjectMaterial->ObjectTexture = m_MoonTexture;
-        m_SkyObjectMesh->Draw(transform * mat4(quat(vec3(0, std::numbers::pi / 2.0f, 0))) * scale);
-
+        // Draw the stars
         // TODO: use instanced rendering for stars
-        m_SkyObjectMaterial->ObjectTexture = m_StarTexture;
-        m_SkyObjectMesh->Draw(transform * mat4(quat(vec3(0, std::numbers::pi, 0))) * scale);
+        //m_SkyObjectMaterial->ObjectTexture = m_StarTexture;
+        //m_SkyObjectMesh->Draw(transform * glm::translate(vec3(-2.1f, 0.0f, 0.0f)));
 
+        // Sun and moon
+        constexpr float SunScale = 0.1f;
+        m_SkyObjectMaterial->ObjectTexture = m_SunTexture;
+        m_SkyObjectMesh->Draw(transform * glm::eulerAngleY((float)-numbers::pi / 2.0f) * glm::translate(vec3(0, 0, -1.0f / SunScale)));
+
+        constexpr float MoonScale = 0.075f;
+        m_SkyObjectMaterial->ObjectTexture = m_MoonTexture;
+        m_SkyObjectMesh->Draw(transform * glm::eulerAngleY((float)numbers::pi / 2.0f) * glm::translate(vec3(0, 0, -1.0f / MoonScale)));
+
+        glDepthMask(true);
         glDepthFunc(GL_LESS);
     }
 

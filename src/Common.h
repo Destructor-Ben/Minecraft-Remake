@@ -65,6 +65,7 @@ namespace Minecraft
     // Using std namespace aliases
     namespace chrono = std::chrono;
     namespace views = std::views;
+    namespace numbers = std::numbers;
 
     // Strings
     typedef const char* cstring;
