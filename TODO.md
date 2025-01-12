@@ -39,3 +39,5 @@
 
 - Generating chunks around the player
     - Consider moving the remeshing queue to the renderer so it doesn't affect this function
+- World generation
+    - Consider remeshing the world here, or possibly in a dedicated step, since otherwise it appears in the render function in profiles
