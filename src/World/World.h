@@ -22,9 +22,9 @@ namespace Minecraft
         static constexpr int MaxHeight = 1;
 
         // Distances for rendering, simulating, etc.
-        static constexpr int RenderDistance = 5;
-        static constexpr int SimulationDistance = 5;
-        static constexpr int GenerationDistance = 3;
+        static constexpr int RenderDistance = 8;
+        static constexpr int SimulationDistance = 8;
+        static constexpr int GenerationDistance = 8;
 
         // Spawn size
         static constexpr int SpawnRadius = 8;
