@@ -24,12 +24,6 @@ namespace Minecraft
         view = mat4(mat3(view)); // Remove translation
         mat4 transform = projection * view;
 
-        // Rotate the sky while time changes
-        // Z axis is east and west
-        float timeProgress = Instance->CurrentWorld->WorldTime / World::MaxWorldTime;
-        float skyboxAngle = numbers::pi * 2 * timeProgress;
-        transform *= mat4(glm::eulerAngleZ(skyboxAngle));
-
         // Since we draw after the scene, we use a trick to make sure the depth value is always 1
         // This means we need to change the depth function though because otherwise we won't be able to actually write to the pixels
         // But we still need depth testing
@@ -40,10 +34,13 @@ namespace Minecraft
         // TODO: for every matrix below, it should probably be calculated in the prepare function to avoid wasting performance
 
         // Calculate the time value for the sky
-        float skyGradientTime = Instance->CurrentWorld->WorldTime / World::MaxWorldTime;
+        // TODO: timeProgress should be replaced with a getter in world
+        // World should also have an IsDay bool
+        // Also constants for when Dawn, Noon, Dusk, and Midnight are
+        float timeProgress = Instance->CurrentWorld->WorldTime / World::MaxWorldTime;
+        float skyGradientTime = timeProgress;
 
-        // TODO: smooth this and make it's change very steep
-        // TODO: maybe stop making the sky itself rotate
+        // TODO: smooth this and make it's change it to be very steep to be more realistic to how light hardly changes much throughout the day
 
         // Shift input by 0.25 so noon and midnight line up with the darkest times
         skyGradientTime -= 0.25f;
@@ -59,7 +56,12 @@ namespace Minecraft
 
         // Draw the sky
         // Don't use Renderer.Draw, it is for normal objects
-        m_SkyMesh->Draw(transform * glm::eulerAngleZ(-(float)numbers::pi / 2));
+        m_SkyMesh->Draw(transform);// * glm::eulerAngleZ(-(float)numbers::pi / 2));
+
+        // Rotate the sky objects while time changes
+        // Z axis is east and west
+        float skyboxAngle = timeProgress * 2 * numbers::pi;
+        transform *= mat4(glm::eulerAngleZ(skyboxAngle));
 
         // Draw the stars
         // TODO: use instanced rendering for stars
