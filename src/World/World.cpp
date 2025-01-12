@@ -175,10 +175,17 @@ namespace Minecraft
 
     void World::TickTime()
     {
-        WorldTime += Instance->FixedDeltaTime;
+        Time += Instance->FixedDeltaTime;
 
-        if (WorldTime >= MaxWorldTime)
-            WorldTime -= MaxWorldTime;
+        // New days start after dawn, not midnight
+        if (Time >= DayLength)
+        {
+            Time -= DayLength;
+            DayCount++;
+        }
+
+        TimePercent = Time / DayLength;
+        IsDay = Time >= Dawn && Time < Dusk;
     }
 
     void World::UpdateCamera()

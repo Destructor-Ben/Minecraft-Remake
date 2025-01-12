@@ -34,11 +34,8 @@ namespace Minecraft
         // TODO: for every matrix below, it should probably be calculated in the prepare function to avoid wasting performance
 
         // Calculate the time value for the sky
-        // TODO: timeProgress should be replaced with a getter in world
-        // World should also have an IsDay bool
-        // Also constants for when Dawn, Noon, Dusk, and Midnight are
-        float timeProgress = Instance->CurrentWorld->WorldTime / World::MaxWorldTime;
-        float skyGradientTime = timeProgress;
+        // TODO: the "sky gradient time" should be calculated as a brightness value of the day in World, and also used as a brightness value in the chunk renderer
+        float skyGradientTime = Instance->CurrentWorld->TimePercent;
 
         // TODO: smooth this and make it's change it to be very steep to be more realistic to how light hardly changes much throughout the day
 
@@ -56,11 +53,11 @@ namespace Minecraft
 
         // Draw the sky
         // Don't use Renderer.Draw, it is for normal objects
-        m_SkyMesh->Draw(transform);// * glm::eulerAngleZ(-(float)numbers::pi / 2));
+        m_SkyMesh->Draw(transform);
 
         // Rotate the sky objects while time changes
         // Z axis is east and west
-        float skyboxAngle = timeProgress * 2 * numbers::pi;
+        float skyboxAngle = Instance->CurrentWorld->TimePercent * 2 * numbers::pi;
         transform *= mat4(glm::eulerAngleZ(skyboxAngle));
 
         // Draw the stars
