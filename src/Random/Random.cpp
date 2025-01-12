@@ -26,11 +26,26 @@ namespace Minecraft
         if (min > max)
             throw std::runtime_error("min cannot be larger than max in NextFloat");
 
-        return min + NextSeed() / ULONG_LONG_MAX * (max - min);
+        return min + (float)NextSeed() / (float)ULONG_LONG_MAX * (max - min);
     }
 
     bool Random::NextBool()
     {
         return NextSeed() >> 16 & 1;
+    }
+
+    vec3 Random::NextPointOnSphere()
+    {
+        // Generate random angles
+        double phi = NextFloat(0, 2 * numbers::pi);
+        double cosTheta = NextFloat(-1, 1);
+        double sinTheta = std::sqrt(1 - cosTheta * cosTheta);
+
+        // Convert to Cartesian coordinates
+        double x = sinTheta * std::cos(phi);
+        double y = sinTheta * std::sin(phi);
+        double z = cosTheta;
+
+        return glm::normalize(vec3(x, y, z));
     }
 }

@@ -19,5 +19,6 @@ namespace Minecraft
         int NextInt(int min = 0, int max = 1);
         float NextFloat(float min = 0.0f, float max = 1.0f);
         bool NextBool();
+        vec3 NextPointOnSphere();
     };
 }

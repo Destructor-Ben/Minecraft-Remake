@@ -15,19 +15,29 @@ namespace Minecraft
         void Render();
 
     private:
+        struct Star
+        {
+            vec3 Position = vec3(0);
+            float Rotation = 0;
+            float Scale = 1;
+            float Temperature = 0; // TODO: implement temperature
+        };
+
         void PrepareSky();
         void PrepareSkyObjects();
+        void PrepareStars();
 
-        vector<vec3> m_StarPositions;
+        vector<Star> m_Stars;
 
-        shared_ptr <Mesh> m_SkyMesh;
-        shared_ptr <SkyMaterial> m_SkyMaterial;
+        shared_ptr<Mesh> m_SkyMesh;
+        shared_ptr<SkyMaterial> m_SkyMaterial;
 
-        shared_ptr <Mesh> m_SkyObjectMesh;
-        shared_ptr <SkyObjectMaterial> m_SkyObjectMaterial;
+        // TODO: rework how sky objects work, maybe make sun and moon use the same shader and stars can have a separate one?
+        shared_ptr<Mesh> m_SkyObjectMesh;
+        shared_ptr<SkyObjectMaterial> m_SkyObjectMaterial;
 
-        shared_ptr <Texture> m_SunTexture;
-        shared_ptr <Texture> m_MoonTexture;
-        shared_ptr <Texture> m_StarTexture;
+        shared_ptr<Texture> m_SunTexture;
+        shared_ptr<Texture> m_MoonTexture;
+        shared_ptr<Texture> m_StarTexture;
     };
 }

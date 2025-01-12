@@ -5,7 +5,7 @@
 #include "Graphics/Materials/SkyMaterial.h"
 #include "Graphics/Materials/SkyObjectMaterial.h"
 #include "Graphics/Renderers/Renderer.h"
-#include "Random/NoiseGenerator.h"
+#include "Random/Random.h"
 #include "World/World.h"
 
 namespace Minecraft
@@ -14,6 +14,7 @@ namespace Minecraft
     {
         PrepareSky();
         PrepareSkyObjects();
+        PrepareStars();
     }
 
     void SkyRenderer::Render()
@@ -23,7 +24,7 @@ namespace Minecraft
         view = mat4(mat3(view)); // Remove translation
         mat4 transform = projection * view;
 
-        // Rotate the skybox while time changes
+        // Rotate the sky while time changes
         // Z axis is east and west
         float timeProgress = Instance->CurrentWorld->WorldTime / World::MaxWorldTime;
         float skyboxAngle = numbers::pi * 2 * timeProgress;
@@ -36,28 +37,54 @@ namespace Minecraft
         glDepthFunc(GL_LEQUAL);
         glDepthMask(false);
 
+        // TODO: for every matrix below, it should probably be calculated in the prepare function to avoid wasting performance
+
+        // Calculate the time value for the sky
+        float skyGradientTime = Instance->CurrentWorld->WorldTime / World::MaxWorldTime;
+
+        // Shift input by 0.25 so noon and midnight line up with the darkest times
+        skyGradientTime -= 0.25f;
+        if (skyGradientTime > 1)
+            skyGradientTime -= 1;
+
+        // Remap 01 to 010
+        skyGradientTime *= 2;
+        if (skyGradientTime > 1)
+            skyGradientTime = 2 - skyGradientTime;
+
+        m_SkyMaterial->Time = skyGradientTime;
+
         // Draw the sky
         // Don't use Renderer.Draw, it is for normal objects
-        // TODO: for every matrix below, it should probably be calculated in the prepare function to avoid wasting performance
-        // TODO: finish making the sky look good - use lookup texture for the colors
         m_SkyMesh->Draw(transform * glm::eulerAngleZ(-(float)numbers::pi / 2));
 
         // Draw the stars
         // TODO: use instanced rendering for stars
         // TODO: maybe make stars move at a different speed to the sun + moon?
         // TODO: make night objects fade with brightness
-        constexpr float StarScale = 0.0025f;
+        constexpr float StarScale = 0.003f;
         m_SkyObjectMaterial->ObjectTexture = m_StarTexture;
-        for (auto starPos : m_StarPositions)
+        for (auto star : m_Stars)
         {
-            m_SkyObjectMesh->Draw(transform * glm::translate(starPos) * mat4(mat3(glm::lookAt(starPos, vec3(0), vec3(0, 1, 0)))) * glm::translate(vec3(0, 0, -1.0f / StarScale)));
+            m_SkyObjectMesh->Draw(
+                transform
+                // Position
+                * glm::translate(star.Position)
+                // Make it face the center of the world
+                * mat4(mat3(glm::lookAt(star.Position, vec3(0), vec3(0, 1, 0))))
+                // Rotate slightly
+                * glm::eulerAngleZ(star.Rotation)
+                // Scale
+                * glm::translate(vec3(0, 0, -1.0f / (StarScale * star.Scale)))
+            );
         }
 
-        // Sun and moon
+        // Sun
         constexpr float SunScale = 0.1f;
         m_SkyObjectMaterial->ObjectTexture = m_SunTexture;
         m_SkyObjectMesh->Draw(transform * glm::eulerAngleY((float)-numbers::pi / 2.0f) * glm::translate(vec3(0, 0, -1.0f / SunScale)));
 
+        // Moon
         // TODO: moon phases
         // TODO: maybe make the moon travel slightly faster than the sun, especially if I add moon phases
         constexpr float MoonScale = 0.075f;
@@ -71,9 +98,17 @@ namespace Minecraft
 
     void SkyRenderer::PrepareSky()
     {
+        // Request textures
+        // TODO: sunset gradient
+        // TODO: higher res gradients, possibly go into 1048?
+        auto skyDayGradient = Instance->Graphics->RequestTexture("sky/day-color");
+        auto skyNightGradient = Instance->Graphics->RequestTexture("sky/night-color");
+
         // Create the material
         auto shader = Instance->Graphics->RequestShader("sky");
         m_SkyMaterial = make_shared<SkyMaterial>(shader);
+        m_SkyMaterial->DayGradient = skyDayGradient;
+        m_SkyMaterial->NightGradient = skyNightGradient;
 
         // Create the vertex and index buffers
         auto vertexBuffer = make_shared<VertexBuffer>();
@@ -136,15 +171,6 @@ namespace Minecraft
 
     void SkyRenderer::PrepareSkyObjects()
     {
-        // Init star positions
-        constexpr int StarCount = 500;
-        NoiseGenerator starRandom = { };
-        for (int i = 0; i < StarCount; ++i)
-        {
-            // TODO: proper random
-            m_StarPositions.push_back(vec3(starRandom.White1D(i) * 2 - 1, starRandom.White1D(i + 1024) * 2 - 1, starRandom.White1D(i + 2048) * 2 - 1));
-        }
-
         // Request textures
         m_SunTexture = Instance->Graphics->RequestTexture("sky/sun");
         m_MoonTexture = Instance->Graphics->RequestTexture("sky/moon");
@@ -188,5 +214,24 @@ namespace Minecraft
         // Create the meshes
         m_SkyObjectMesh = make_shared<Mesh>(vertexArray);
         m_SkyObjectMesh->AddMaterial(m_SkyObjectMaterial, indexBuffer);
+    }
+
+    void SkyRenderer::PrepareStars()
+    {
+        constexpr int StarCount = 500;
+        constexpr ulong StarSeed = 0xf63a0f1fc91367d8;
+
+        // TODO: appropriate random number generator, perhaps wrap Random around NoiseGenerator?
+        Random starRandom(StarSeed);
+
+        for (int i = 0; i < StarCount; ++i)
+        {
+            vec3 position = starRandom.NextPointOnSphere();
+            float rotation = starRandom.NextFloat() * numbers::pi * 2;
+            float scale = starRandom.NextFloat(0.75f, 1.25f);
+            float temperature = starRandom.NextFloat(-1, 1);
+
+            m_Stars.push_back(Star(position, rotation, scale, temperature));
+        }
     }
 }
