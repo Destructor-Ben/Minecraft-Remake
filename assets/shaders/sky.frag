@@ -13,8 +13,8 @@ void main()
     vec3 coord = normalize(FragCoord);
 
     // Lerp the color based on y value of the coord
-    // TODO: why a negative in the y?
-    vec2 gradientCoord = vec2(-coord.y * 0.5 + 0.5, 0.5);
+    // Idk why but the y at the top is negative
+    vec2 gradientCoord = vec2(1 - clamp(0, 1, coord.y), 0.5);
     vec3 dayCol = texture(uDayGradient, gradientCoord).rgb;
     vec3 nightCol = texture(uNightGradient, gradientCoord).rgb;
     vec3 col = mix(dayCol, nightCol, uTime);
