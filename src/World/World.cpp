@@ -148,11 +148,28 @@ namespace Minecraft
 
     void World::UpdateChunkList(vector<Chunk*>& chunks, int radius)
     {
-        // TODO: update these properly with the given distance
         chunks.clear();
-        for (auto& chunk : Chunks | views::values)
+
+        auto playerChunkPos = WorldToChunkPos(PlayerCamera.Position);
+
+        for (int x = -radius + 1; x < radius; ++x)
         {
-            chunks.push_back(&chunk);
+            for (int y = -radius + 1; y < radius; ++y)
+            {
+                for (int z = -radius + 1; z < radius; ++z)
+                {
+                    // Calculate chunk pos
+                    auto chunkPos = vec3i(x, y, z);
+                    chunkPos += playerChunkPos;
+
+                    // Add the chunk
+                    auto chunk = GetChunk(chunkPos);
+                    if (!chunk.has_value())
+                        continue;
+
+                    chunks.push_back(chunk.value());
+                }
+            }
         }
     }
 
