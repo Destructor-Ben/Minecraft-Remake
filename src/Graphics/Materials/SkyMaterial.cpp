@@ -16,5 +16,8 @@ namespace Minecraft
 
         NightGradient->BindTextureUnit(1);
         m_Shader->SetUniform("uNightGradient", 1);
+
+        SunsetGradient->BindTextureUnit(2);
+        m_Shader->SetUniform("uSunsetGradient", 2);
     }
 }

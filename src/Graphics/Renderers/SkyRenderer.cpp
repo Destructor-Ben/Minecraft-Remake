@@ -35,20 +35,8 @@ namespace Minecraft
 
         // Calculate the time value for the sky
         // TODO: the "sky gradient time" should be calculated as a brightness value of the day in World, and also used as a brightness value in the chunk renderer
-        float skyGradientTime = Instance->CurrentWorld->TimePercent;
-
         // TODO: smooth this and make it's change it to be very steep to be more realistic to how light hardly changes much throughout the day
-
-        // Shift input by 0.25 so noon and midnight line up with the darkest times
-        skyGradientTime -= 0.25f;
-        if (skyGradientTime < 0)
-            skyGradientTime += 1;
-
-        // Remap 01 to 010
-        skyGradientTime *= 2;
-        if (skyGradientTime > 1)
-            skyGradientTime = 2 - skyGradientTime;
-
+        float skyGradientTime = Instance->CurrentWorld->TimePercent;
         m_SkyMaterial->Time = skyGradientTime;
 
         // Draw the sky
@@ -101,17 +89,19 @@ namespace Minecraft
     void SkyRenderer::PrepareSky()
     {
         // Request textures
-        // TODO: sunset gradient
         auto skyDayGradient = Instance->Graphics->RequestTexture("sky/day-color");
         auto skyNightGradient = Instance->Graphics->RequestTexture("sky/night-color");
+        auto sunsetGradient = Instance->Graphics->RequestTexture("sky/sunset-sunrise-color");
         skyDayGradient->SetFilters(GL_LINEAR);
         skyNightGradient->SetFilters(GL_LINEAR);
+        sunsetGradient->SetFilters(GL_LINEAR);
 
         // Create the material
         auto shader = Instance->Graphics->RequestShader("sky");
         m_SkyMaterial = make_shared<SkyMaterial>(shader);
         m_SkyMaterial->DayGradient = skyDayGradient;
         m_SkyMaterial->NightGradient = skyNightGradient;
+        m_SkyMaterial->SunsetGradient = sunsetGradient;
 
         // Create the vertex and index buffers
         auto vertexBuffer = make_shared<VertexBuffer>();

@@ -12,6 +12,7 @@ namespace Minecraft
         float Time;
         shared_ptr <Texture> DayGradient;
         shared_ptr <Texture> NightGradient;
+        shared_ptr <Texture> SunsetGradient;
 
         SkyMaterial(shared_ptr <Shader> shader) : Material(shader) { }
 
