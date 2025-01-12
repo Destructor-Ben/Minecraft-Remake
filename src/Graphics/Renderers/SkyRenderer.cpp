@@ -42,10 +42,13 @@ namespace Minecraft
         // Calculate the time value for the sky
         float skyGradientTime = Instance->CurrentWorld->WorldTime / World::MaxWorldTime;
 
+        // TODO: smooth this and make it's change very steep
+        // TODO: maybe stop making the sky itself rotate
+
         // Shift input by 0.25 so noon and midnight line up with the darkest times
         skyGradientTime -= 0.25f;
-        if (skyGradientTime > 1)
-            skyGradientTime -= 1;
+        if (skyGradientTime < 0)
+            skyGradientTime += 1;
 
         // Remap 01 to 010
         skyGradientTime *= 2;
@@ -100,7 +103,6 @@ namespace Minecraft
     {
         // Request textures
         // TODO: sunset gradient
-        // TODO: higher res gradients, possibly go into 1048?
         auto skyDayGradient = Instance->Graphics->RequestTexture("sky/day-color");
         auto skyNightGradient = Instance->Graphics->RequestTexture("sky/night-color");
         skyDayGradient->SetFilters(GL_LINEAR);
