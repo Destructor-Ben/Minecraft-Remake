@@ -103,6 +103,8 @@ namespace Minecraft
         // TODO: higher res gradients, possibly go into 1048?
         auto skyDayGradient = Instance->Graphics->RequestTexture("sky/day-color");
         auto skyNightGradient = Instance->Graphics->RequestTexture("sky/night-color");
+        skyDayGradient->SetFilters(GL_LINEAR);
+        skyNightGradient->SetFilters(GL_LINEAR);
 
         // Create the material
         auto shader = Instance->Graphics->RequestShader("sky");
