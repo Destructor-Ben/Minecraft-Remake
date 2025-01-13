@@ -4,21 +4,25 @@
 #include "Graphics/GL.h"
 #include "Graphics/Materials/SkyMaterial.h"
 #include "Graphics/Materials/SkyObjectMaterial.h"
+#include "Graphics/Materials/StarMaterial.h"
 #include "Graphics/Renderers/Renderer.h"
 #include "Random/Random.h"
 #include "World/World.h"
+
+#include "LogManager.h"
 
 namespace Minecraft
 {
     SkyRenderer::SkyRenderer()
     {
         PrepareSky();
-        PrepareSkyObjects();
         PrepareStars();
+        PrepareSkyObjects();
     }
 
     void SkyRenderer::Render()
     {
+        // Calculate a custom matrix that doesn't include movement
         mat4 projection = Instance->Graphics->SceneCamera->ProjectionMatrix;
         mat4 view = Instance->Graphics->SceneCamera->ViewMatrix;
         view = mat4(mat3(view)); // Remove translation
@@ -49,25 +53,9 @@ namespace Minecraft
         transform *= mat4(glm::eulerAngleZ(skyboxAngle));
 
         // Draw the stars
-        // TODO: use instanced rendering for stars
         // TODO: maybe make stars move at a different speed to the sun + moon?
         // TODO: make night objects fade with brightness
-        constexpr float StarScale = 0.003f;
-        m_SkyObjectMaterial->ObjectTexture = m_StarTexture;
-        for (auto star : m_Stars)
-        {
-            m_SkyObjectMesh->Draw(
-                transform
-                // Position
-                * glm::translate(star.Position)
-                // Make it face the center of the world
-                * mat4(mat3(glm::lookAt(star.Position, vec3(0), vec3(0, 1, 0))))
-                // Rotate slightly
-                * glm::eulerAngleZ(star.Rotation)
-                // Scale
-                * glm::translate(vec3(0, 0, -1.0f / (StarScale * star.Scale)))
-            );
-        }
+        m_StarMesh->DrawInstanced(transform, m_StarCount);
 
         // Sun
         constexpr float SunScale = 0.1f;
@@ -162,12 +150,97 @@ namespace Minecraft
         m_SkyMesh->AddMaterial(m_SkyMaterial, indexBuffer);
     }
 
+    void SkyRenderer::PrepareStars()
+    {
+        // Create the material
+        auto shader = Instance->Graphics->RequestShader("star");
+        m_StarMaterial = make_shared<StarMaterial>(shader);
+        m_StarMaterial->StarTexture = Instance->Graphics->RequestTexture("sky/star");
+
+        // Create the stars
+        constexpr int StarCount = 500;
+        // TODO: temporary, only for debugging star rotation
+        constexpr float StarScale = 0.05f;//0.003f;
+        constexpr ulong StarSeed = 0xf63a0f1fc91367d8;
+
+        m_StarCount = StarCount;
+        vector <mat4> starMatrices;
+        vector<float> starTemperatures;
+
+        // TODO: appropriate random number generator, perhaps wrap Random around NoiseGenerator?
+        Random starRandom(StarSeed);
+
+        for (int i = 0; i < StarCount; ++i)
+        {
+            vec3 position = starRandom.NextPointOnSphere();
+            float rotation = starRandom.NextFloat() * numbers::pi * 2;
+            float scale = starRandom.NextFloat(0.75f, 1.25f);
+            float temperature = starRandom.NextFloat();
+
+            // Position
+            // TODO: check that these transforms are working
+            mat4 transform = glm::translate(position);
+            // Make it face the center of the world
+            transform *= mat4(mat3(glm::lookAt(position, vec3(0), vec3(0, 1, 0))));
+            // Rotate slightly
+            transform *= glm::eulerAngleZ(rotation);
+            // Scale
+            transform *= glm::translate(vec3(0, 0, -1.0f / (StarScale * scale)));
+
+            starMatrices.push_back(transform);
+            starTemperatures.push_back(temperature);
+        }
+
+        // Create the mesh
+        auto vertexBuffer = CreateQuadVertices();
+        auto indexBuffer = CreateQuadIndices();
+
+        auto vertexArray = make_shared<VertexArray>();
+        vertexArray->PushFloat(3);
+        vertexArray->PushFloat(2);
+        vertexArray->AddBuffer(vertexBuffer);
+
+        // TODO: abstract all this fancy instancing stuff away
+        vertexArray->Bind();
+
+        m_StarMatricesBuffer = make_shared<VertexBuffer>();
+        m_StarMatricesBuffer->SetData((const float*)starMatrices.data(), starMatrices.size() * 16); // 16 floats per matrix
+
+        m_StarTemperatureBuffer = make_shared<VertexBuffer>();
+        m_StarTemperatureBuffer->SetData(starTemperatures.data(), starTemperatures.size());
+
+        m_StarMatricesBuffer->Bind();
+
+        for (int i = 0; i < 4; i++)
+        {
+            glEnableVertexAttribArray(2 + i);
+            glVertexAttribPointer(
+                2 + i,               // Attribute location
+                4,                   // vec4 per column
+                GL_FLOAT,            // Data type
+                GL_FALSE,            // Normalized
+                sizeof(glm::mat4),   // Stride (mat4 is 4 vec4s)
+                (void*)(i * sizeof(glm::vec4)) // Offset for each column
+            );
+            glVertexAttribDivisor(2 + i, 1); // Update once per instance
+        }
+
+        m_StarTemperatureBuffer->Bind();
+        glEnableVertexAttribArray(2);
+        glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
+        glVertexAttribDivisor(2, 1);
+
+        m_StarMesh = make_shared<Mesh>(vertexArray);
+        m_StarMesh->AddMaterial(m_StarMaterial, indexBuffer);
+
+        VertexArray::Unbind();
+    }
+
     void SkyRenderer::PrepareSkyObjects()
     {
         // Request textures
         m_SunTexture = Instance->Graphics->RequestTexture("sky/sun");
         m_MoonTexture = Instance->Graphics->RequestTexture("sky/moon");
-        m_StarTexture = Instance->Graphics->RequestTexture("sky/star");
 
         // Create the material
         auto shader = Instance->Graphics->RequestShader("sky-object");
@@ -209,22 +282,37 @@ namespace Minecraft
         m_SkyObjectMesh->AddMaterial(m_SkyObjectMaterial, indexBuffer);
     }
 
-    void SkyRenderer::PrepareStars()
+    shared_ptr <VertexBuffer> SkyRenderer::CreateQuadVertices()
     {
-        constexpr int StarCount = 500;
-        constexpr ulong StarSeed = 0xf63a0f1fc91367d8;
+        auto vertexBuffer = make_shared<VertexBuffer>();
 
-        // TODO: appropriate random number generator, perhaps wrap Random around NoiseGenerator?
-        Random starRandom(StarSeed);
+        vertexBuffer->SetData(
+            {
+                -1.0f, 1.0f, -1.0f,
+                0.0f, 1.0f,
+                -1.0f, -1.0f, -1.0f,
+                0.0f, 0.0f,
+                1.0f, -1.0f, -1.0f,
+                1.0f, 0.0f,
+                1.0f, 1.0f, -1.0f,
+                1.0f, 1.0f,
+            }
+        );
 
-        for (int i = 0; i < StarCount; ++i)
-        {
-            vec3 position = starRandom.NextPointOnSphere();
-            float rotation = starRandom.NextFloat() * numbers::pi * 2;
-            float scale = starRandom.NextFloat(0.75f, 1.25f);
-            float temperature = starRandom.NextFloat(-1, 1);
+        return vertexBuffer;
+    }
 
-            m_Stars.push_back(Star(position, rotation, scale, temperature));
-        }
+    shared_ptr <IndexBuffer> SkyRenderer::CreateQuadIndices()
+    {
+        auto indexBuffer = make_shared<IndexBuffer>();
+
+        indexBuffer->SetData(
+            {
+                0, 1, 2,
+                0, 2, 3,
+            }
+        );
+
+        return indexBuffer;
     }
 }

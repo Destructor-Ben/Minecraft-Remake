@@ -3,9 +3,12 @@
 namespace Minecraft
 {
     class Mesh;
+    class Texture;
+    class IndexBuffer;
+    class VertexBuffer;
     class SkyMaterial;
     class SkyObjectMaterial;
-    class Texture;
+    class StarMaterial;
 
     class SkyRenderer
     {
@@ -15,29 +18,27 @@ namespace Minecraft
         void Render();
 
     private:
-        struct Star
-        {
-            vec3 Position = vec3(0);
-            float Rotation = 0;
-            float Scale = 1;
-            float Temperature = 0; // TODO: implement temperature
-        };
-
         void PrepareSky();
-        void PrepareSkyObjects();
         void PrepareStars();
+        void PrepareSkyObjects();
 
-        vector<Star> m_Stars;
+        static shared_ptr <VertexBuffer> CreateQuadVertices();
+        static shared_ptr <IndexBuffer> CreateQuadIndices();
 
-        shared_ptr<Mesh> m_SkyMesh;
-        shared_ptr<SkyMaterial> m_SkyMaterial;
+        shared_ptr <Mesh> m_SkyMesh;
+        shared_ptr <SkyMaterial> m_SkyMaterial;
+
+        int m_StarCount = 0;
+        shared_ptr <Mesh> m_StarMesh;
+        shared_ptr <StarMaterial> m_StarMaterial;
+        shared_ptr <VertexBuffer> m_StarMatricesBuffer;
+        shared_ptr <VertexBuffer> m_StarTemperatureBuffer;
 
         // TODO: rework how sky objects work, maybe make sun and moon use the same shader and stars can have a separate one?
-        shared_ptr<Mesh> m_SkyObjectMesh;
-        shared_ptr<SkyObjectMaterial> m_SkyObjectMaterial;
+        shared_ptr <Mesh> m_SkyObjectMesh;
+        shared_ptr <SkyObjectMaterial> m_SkyObjectMaterial;
 
-        shared_ptr<Texture> m_SunTexture;
-        shared_ptr<Texture> m_MoonTexture;
-        shared_ptr<Texture> m_StarTexture;
+        shared_ptr <Texture> m_SunTexture;
+        shared_ptr <Texture> m_MoonTexture;
     };
 }

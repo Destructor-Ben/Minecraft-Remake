@@ -20,6 +20,7 @@ namespace Minecraft
         shared_ptr <IndexBuffer> GetIndexBuffer(const shared_ptr <Material>& material);
 
         void Draw(mat4 transform) const;
+        void DrawInstanced(mat4 transform, int count) const;
 
     private:
         unordered_map <shared_ptr<Material>, shared_ptr<IndexBuffer>> m_Materials;

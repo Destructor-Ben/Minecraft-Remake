@@ -7,7 +7,6 @@ namespace Minecraft
     VertexArray::VertexArray()
     {
         glGenVertexArrays(1, &m_ID);
-        Bind();
     }
 
     VertexArray::~VertexArray()
@@ -42,6 +41,8 @@ namespace Minecraft
             glVertexAttribPointer(i, attribute.Count, attribute.GLType, attribute.Normalized, (int)m_Stride, (void*)offset);
             offset += attribute.Size;
         }
+
+        Unbind();
     }
 
     void VertexArray::Unbind()

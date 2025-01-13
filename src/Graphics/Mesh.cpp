@@ -28,5 +28,23 @@ namespace Minecraft
 
             glDrawElements(GL_TRIANGLES, (int)indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
         }
+
+        VertexArray::Unbind();
+    }
+
+    void Mesh::DrawInstanced(mat4 transform, int count) const
+    {
+        Vertices->Bind();
+
+        for (auto [material, indexBuffer] : m_Materials)
+        {
+            indexBuffer->Bind();
+            material->Transform = transform;
+            material->Bind();
+
+            glDrawElementsInstanced(GL_TRIANGLES, (int)indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr, count);
+        }
+
+        VertexArray::Unbind();
     }
 }
