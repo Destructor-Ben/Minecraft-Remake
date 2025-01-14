@@ -12,6 +12,9 @@ namespace Minecraft
 
         void Bind();
 
+        // TODO: make more PushXX functions
+        // TODO: make AddBuffer also clear the stride and attributes
+        // This is so multiple buffers can be added
         void PushFloat(int count, bool normalized = false);
         void AddBuffer(shared_ptr<VertexBuffer> buffer);
 
