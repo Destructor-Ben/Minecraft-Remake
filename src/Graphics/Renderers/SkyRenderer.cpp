@@ -18,15 +18,90 @@ namespace Minecraft
         PrepareSkyObjects();
     }
 
-    // TODO: split the updating and rendering into separate parts
-    void SkyRenderer::Render()
+    void SkyRenderer::Update()
     {
+        float timePercent = Instance->CurrentWorld->TimePercent;
+
         // Calculate a custom matrix that doesn't include movement
         mat4 projection = Instance->Graphics->SceneCamera->ProjectionMatrix;
         mat4 view = Instance->Graphics->SceneCamera->ViewMatrix;
         view = mat4(mat3(view)); // Remove translation
-        mat4 transform = projection * view;
+        m_Transform = projection * view;
 
+        // Rotate the sky objects while time changes
+        // Z axis is east and west
+        float skyboxAngle = timePercent * 2 * numbers::pi;
+        m_TransformRotated = m_Transform * mat4(glm::eulerAngleZ(skyboxAngle));
+
+        // Update the sky values
+        UpdateSkyDarkness(timePercent);
+        UpdateSunsetStrength(timePercent);
+    }
+
+    // TODO: smooth?
+    // TODO: possibly clean up
+    // TODO: tweak fade time
+    void SkyRenderer::UpdateSkyDarkness(float timePercent)
+    {
+        // The night gets darker after dusk, and gets light before dawn
+        constexpr float FadeTime = 0.05f;
+
+        // While at night
+        m_SkyDarkness = 1;
+
+        // After dusk start fading in
+        if (0.5f < timePercent && timePercent < 0.5f + FadeTime)
+            m_SkyDarkness = (1 / FadeTime) * timePercent + -1 / (2 * FadeTime);
+
+        // Before dawn start fading out
+        if (1 - FadeTime < timePercent && timePercent < 1)
+            m_SkyDarkness = (-1 / FadeTime) * timePercent + 1 / FadeTime;
+
+        // Don't show during the day
+        if (0 <= timePercent && timePercent <= 0.5f)
+            m_SkyDarkness = 0;
+    }
+
+    void SkyRenderer::UpdateSunsetStrength(float timePercent)
+    {
+        // Sunsets will fade in linearly, stay for a bit, then fade out
+        constexpr float FadeTime = 0.075;
+        constexpr float SunsetTime = 0.025f;
+        constexpr float HalfSunsetTime = SunsetTime / 2.0f;
+
+        // No sunset
+        m_SunsetStrength = 0;
+
+        // Yes sunset
+        if (timePercent <= HalfSunsetTime || timePercent >= 1 - HalfSunsetTime || (timePercent >= 0.5f - HalfSunsetTime && timePercent <= 0.5f + HalfSunsetTime))
+            m_SunsetStrength = 1;
+
+        // Common linear equation values
+        float gradient = 1 / FadeTime;
+        float interceptSunsetStart = 1 - gradient * (0.5 - HalfSunsetTime);
+        float interceptSunsetEnd = 1 + gradient * (0.5 + HalfSunsetTime);
+        float interceptSunriseStart = 1 - gradient * (1 - HalfSunsetTime);
+        float interceptSunriseEnd = 1 + gradient * (HalfSunsetTime);
+
+        // Starting sunset
+        if (timePercent > 0.5f - HalfSunsetTime - FadeTime && timePercent < 0.5f - HalfSunsetTime)
+            m_SunsetStrength = gradient * timePercent + interceptSunsetStart;
+
+        // Ending sunset
+        if (timePercent < 0.5f + HalfSunsetTime + FadeTime && timePercent > 0.5f + HalfSunsetTime)
+            m_SunsetStrength = -gradient * timePercent + interceptSunsetEnd;
+
+        // Starting sunrise
+        if (timePercent > 1.0f - HalfSunsetTime - FadeTime && timePercent < 1.0f - HalfSunsetTime)
+            m_SunsetStrength = gradient * timePercent + interceptSunriseStart;
+
+        // Ending sunrise
+        if (timePercent < 0.0f + HalfSunsetTime + FadeTime && timePercent > 0.0f + HalfSunsetTime)
+            m_SunsetStrength = -gradient * timePercent + interceptSunriseEnd;
+    }
+
+    void SkyRenderer::Render()
+    {
         // Since we draw after the scene, we use a trick to make sure the depth value is always 1
         // This means we need to change the depth function though because otherwise we won't be able to actually write to the pixels
         // But we still need depth testing
@@ -34,56 +109,30 @@ namespace Minecraft
         glDepthFunc(GL_LEQUAL);
         glDepthMask(false);
 
-        // Calculate the time value for the sky
-        // TODO: the "sky gradient time" should be calculated as a brightness value of the day in World, and also used as a brightness value in the chunk renderer
-        // TODO: smooth this and make it's change it to be very steep to be more realistic to how light hardly changes much throughout the day
-        float timePercent = Instance->CurrentWorld->TimePercent;
-        float skyGradientTime = timePercent;
-        m_SkyMaterial->Time = skyGradientTime;
-
         // Draw the sky
         // Don't use Renderer.Draw, it is for normal objects
-        m_SkyMesh->Draw(transform);
-
-        // Rotate the sky objects while time changes
-        // Z axis is east and west
-        float skyboxAngle = Instance->CurrentWorld->TimePercent * 2 * numbers::pi;
-        transform *= mat4(glm::eulerAngleZ(skyboxAngle));
+        m_SkyMaterial->SkyDarkness = m_SkyDarkness;
+        m_SkyMaterial->SunsetStrength = m_SunsetStrength;
+        m_SkyMesh->Draw(m_Transform);
 
         // Draw the stars
-        // TODO: make night objects fade with brightness properly
-        constexpr float StarFadeTime = 0.05f;
+        m_StarMaterial->SkyDarkness = m_SkyDarkness;
+        m_StarMesh->DrawInstanced(m_TransformRotated, m_StarCount);
 
-        // While at night
-        float skyDarkness = 1;
-
-        // After dusk start fading in
-        if (0.5f < timePercent && timePercent < 0.5f + StarFadeTime)
-            skyDarkness = (1 / StarFadeTime) * timePercent + -1 / (2 * StarFadeTime);
-
-        // Before dawn start fading out
-        if (1 - StarFadeTime < timePercent && timePercent < 1)
-            skyDarkness = (-1 / StarFadeTime) * timePercent + 1 / StarFadeTime;
-
-        // Don't show during the day
-        if (0 <= timePercent && timePercent <= 0.5f)
-            skyDarkness = 0;
-
-        m_StarMaterial->SkyDarkness = skyDarkness;
-        m_StarMesh->DrawInstanced(transform, m_StarCount);
-
+        // TODO: redo sun and moon rendering
         // Sun
         // TODO: for every matrix below, it should probably be calculated in the prepare function to avoid wasting performance
         constexpr float SunScale = 0.1f;
         m_SkyObjectMaterial->ObjectTexture = m_SunTexture;
-        m_SkyObjectMesh->Draw(transform * glm::eulerAngleY((float)-numbers::pi / 2.0f) * glm::translate(vec3(0, 0, -1.0f / SunScale)));
+        m_SkyObjectMesh->Draw(m_TransformRotated * glm::eulerAngleY((float)-numbers::pi / 2.0f) * glm::translate(vec3(0, 0, -1.0f / SunScale)));
 
         // Moon
         // TODO: moon phases
         // TODO: maybe make the moon travel slightly faster than the sun, especially if I add moon phases
+        // TODO: make moon fade with brightness
         constexpr float MoonScale = 0.075f;
         m_SkyObjectMaterial->ObjectTexture = m_MoonTexture;
-        m_SkyObjectMesh->Draw(transform * glm::eulerAngleY((float)numbers::pi / 2.0f) * glm::translate(vec3(0, 0, -1.0f / MoonScale)));
+        m_SkyObjectMesh->Draw(m_TransformRotated * glm::eulerAngleY((float)numbers::pi / 2.0f) * glm::translate(vec3(0, 0, -1.0f / MoonScale)));
 
         // Reset GL state
         glDepthMask(true);

@@ -105,6 +105,8 @@ namespace Minecraft
 
         UpdateCamera();
         m_WorldGenerator.GenerateChunksAroundPlayer(PlayerCamera.Position, GenerationDistance, MinHeight, MaxHeight);
+
+        Instance->SkyGraphics->Update();
     }
 
     void World::Render()

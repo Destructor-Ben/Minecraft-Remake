@@ -9,7 +9,8 @@ namespace Minecraft
     {
         Material::Bind();
 
-        m_Shader->SetUniform("uTime", Time);
+        m_Shader->SetUniform("uSkyDarkness", SkyDarkness);
+        m_Shader->SetUniform("uSunsetStrength", SunsetStrength);
 
         DayGradient->BindTextureUnit(0);
         m_Shader->SetUniform("uDayGradient", 0);

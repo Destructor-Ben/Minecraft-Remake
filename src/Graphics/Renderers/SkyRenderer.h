@@ -15,6 +15,7 @@ namespace Minecraft
     public:
         SkyRenderer();
 
+        void Update();
         void Render();
 
     private:
@@ -22,8 +23,16 @@ namespace Minecraft
         void PrepareStars();
         void PrepareSkyObjects();
 
+        void UpdateSkyDarkness(float timePercent);
+        void UpdateSunsetStrength(float timePercent);
+
         static shared_ptr <VertexBuffer> CreateQuadVertices();
         static shared_ptr <IndexBuffer> CreateQuadIndices();
+
+        float m_SkyDarkness = 0;
+        float m_SunsetStrength = 0;
+        mat4 m_Transform;
+        mat4 m_TransformRotated;
 
         shared_ptr <Mesh> m_SkyMesh;
         shared_ptr <SkyMaterial> m_SkyMaterial;

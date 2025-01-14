@@ -1,7 +1,7 @@
 #version 330 core
 
 in vec2 TexCoord;
-in float Brightness;
+in float Brightness; // TODO: make brightness look good
 in float Temperature;
 
 uniform float uSkyDarkness;
