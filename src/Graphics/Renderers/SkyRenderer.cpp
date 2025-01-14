@@ -161,8 +161,9 @@ namespace Minecraft
         constexpr ulong StarSeed = 0xf63a0f1fc91367d8;
 
         m_StarCount = StarCount;
-        vector <mat4> starMatrices;
-        vector<float> starTemperatures;
+        vector <mat4> starMatrix;
+        vector<float> starBrightness;
+        vector<float> starTemperature;
 
         // TODO: appropriate random number generator, perhaps wrap Random around NoiseGenerator?
         Random starRandom(StarSeed);
@@ -180,13 +181,14 @@ namespace Minecraft
             transform *= glm::eulerAngleZ(rotation); // Rotate
             transform *= glm::scale(vec3((StarScale * scale))); // Scale
 
-            starMatrices.push_back(transform);
+            starMatrix.push_back(transform);
 
-            // Temperature and brightness
+            // Brightness and temperature
+            float brightness = starRandom.NextFloat();
             float temperature = starRandom.NextFloat();
-            // TODO: brightness
 
-            starTemperatures.push_back(temperature);
+            starBrightness.push_back(brightness);
+            starTemperature.push_back(temperature);
         }
 
         // Create the mesh
@@ -201,13 +203,16 @@ namespace Minecraft
         // TODO: abstract all this fancy instancing stuff away
         vertexArray->Bind();
 
-        m_StarMatricesBuffer = make_shared<VertexBuffer>();
-        m_StarMatricesBuffer->SetData((const float*)starMatrices.data(), starMatrices.size() * 16); // 16 floats per matrix
+        m_StarMatrixBuffer = make_shared<VertexBuffer>();
+        m_StarMatrixBuffer->SetData((const float*)starMatrix.data(), starMatrix.size() * 16); // 16 floats per matrix
+
+        m_StarBrightnessBuffer = make_shared<VertexBuffer>();
+        m_StarBrightnessBuffer->SetData(starBrightness.data(), starBrightness.size());
 
         m_StarTemperatureBuffer = make_shared<VertexBuffer>();
-        m_StarTemperatureBuffer->SetData(starTemperatures.data(), starTemperatures.size());
+        m_StarTemperatureBuffer->SetData(starTemperature.data(), starTemperature.size());
 
-        m_StarMatricesBuffer->Bind();
+        m_StarMatrixBuffer->Bind();
 
         for (int i = 0; i < 4; i++)
         {
@@ -223,10 +228,15 @@ namespace Minecraft
             glVertexAttribDivisor(2 + i, 1); // Update once per instance
         }
 
-        m_StarTemperatureBuffer->Bind();
+        m_StarBrightnessBuffer->Bind();
         glEnableVertexAttribArray(6);
         glVertexAttribPointer(6, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
         glVertexAttribDivisor(6, 1);
+
+        m_StarTemperatureBuffer->Bind();
+        glEnableVertexAttribArray(7);
+        glVertexAttribPointer(7, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
+        glVertexAttribDivisor(7, 1);
 
         m_StarMesh = make_shared<Mesh>(vertexArray);
         m_StarMesh->AddMaterial(m_StarMaterial, indexBuffer);
