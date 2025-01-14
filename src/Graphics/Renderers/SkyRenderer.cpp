@@ -9,8 +9,6 @@
 #include "Random/Random.h"
 #include "World/World.h"
 
-#include "LogManager.h"
-
 namespace Minecraft
 {
     SkyRenderer::SkyRenderer()
@@ -159,8 +157,7 @@ namespace Minecraft
 
         // Create the stars
         constexpr int StarCount = 500;
-        // TODO: temporary, only for debugging star rotation
-        constexpr float StarScale = 0.05f;//0.003f;
+        constexpr float StarScale = 0.005f;
         constexpr ulong StarSeed = 0xf63a0f1fc91367d8;
 
         m_StarCount = StarCount;
@@ -172,22 +169,23 @@ namespace Minecraft
 
         for (int i = 0; i < StarCount; ++i)
         {
+            // Transform
             vec3 position = starRandom.NextPointOnSphere();
             float rotation = starRandom.NextFloat() * numbers::pi * 2;
             float scale = starRandom.NextFloat(0.75f, 1.25f);
-            float temperature = starRandom.NextFloat();
 
-            // Position
-            // TODO: check that these transforms are working
-            mat4 transform = glm::translate(position);
-            // Make it face the center of the world
-            transform *= mat4(mat3(glm::lookAt(position, vec3(0), vec3(0, 1, 0))));
-            // Rotate slightly
-            transform *= glm::eulerAngleZ(rotation);
-            // Scale
-            transform *= glm::translate(vec3(0, 0, -1.0f / (StarScale * scale)));
+            mat4 transform = mat4(1.0f);
+            transform *= glm::translate(position); // Position
+            transform *= glm::toMat4(glm::quatLookAt(glm::normalize(position), vec3(0, 1, 0))); // Face the world center
+            transform *= glm::eulerAngleZ(rotation); // Rotate
+            transform *= glm::scale(vec3((StarScale * scale))); // Scale
 
             starMatrices.push_back(transform);
+
+            // Temperature and brightness
+            float temperature = starRandom.NextFloat();
+            // TODO: brightness
+
             starTemperatures.push_back(temperature);
         }
 
@@ -226,9 +224,9 @@ namespace Minecraft
         }
 
         m_StarTemperatureBuffer->Bind();
-        glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
-        glVertexAttribDivisor(2, 1);
+        glEnableVertexAttribArray(6);
+        glVertexAttribPointer(6, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
+        glVertexAttribDivisor(6, 1);
 
         m_StarMesh = make_shared<Mesh>(vertexArray);
         m_StarMesh->AddMaterial(m_StarMaterial, indexBuffer);
@@ -288,13 +286,13 @@ namespace Minecraft
 
         vertexBuffer->SetData(
             {
-                -1.0f, 1.0f, -1.0f,
+                -1.0f, 1.0f, 0.0f,
                 0.0f, 1.0f,
-                -1.0f, -1.0f, -1.0f,
+                -1.0f, -1.0f, 0.0f,
                 0.0f, 0.0f,
-                1.0f, -1.0f, -1.0f,
+                1.0f, -1.0f, 0.0f,
                 1.0f, 0.0f,
-                1.0f, 1.0f, -1.0f,
+                1.0f, 1.0f, 0.0f,
                 1.0f, 1.0f,
             }
         );
