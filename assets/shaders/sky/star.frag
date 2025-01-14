@@ -13,14 +13,18 @@ out vec4 FragColor;
 void main()
 {
     FragColor = texture(uTexture, TexCoord);
-    FragColor.rgb *= texture(uTemperatureGradient, vec2(Temperature, 0.5)).rgb; // Temperature
-    FragColor.rgb *= 1.1; // Bloom (makes temperaure look less harsh)
 
     if (FragColor.a == 0) {
         discard;
     }
 
-    FragColor.a = Brightness * 0.5 + 0.5; // Fading in and out
+    // Temperature
+    vec3 temperatureCol = texture(uTemperatureGradient, vec2(Temperature, 0.5)).rgb;
+    FragColor.rgb = mix(FragColor.rgb, temperatureCol, 0.25);
+
+    // Fading in and out
+    FragColor.a = mix(0.0, 0.75, uSkyDarkness - 1 + Brightness);
+    FragColor.a = clamp(1.0, 0.0, FragColor.a);
 
     if (FragColor.a == 0) {
         discard;

@@ -18,6 +18,7 @@ namespace Minecraft
         PrepareSkyObjects();
     }
 
+    // TODO: split the updating and rendering into separate parts
     void SkyRenderer::Render()
     {
         // Calculate a custom matrix that doesn't include movement
@@ -33,12 +34,11 @@ namespace Minecraft
         glDepthFunc(GL_LEQUAL);
         glDepthMask(false);
 
-        // TODO: for every matrix below, it should probably be calculated in the prepare function to avoid wasting performance
-
         // Calculate the time value for the sky
         // TODO: the "sky gradient time" should be calculated as a brightness value of the day in World, and also used as a brightness value in the chunk renderer
         // TODO: smooth this and make it's change it to be very steep to be more realistic to how light hardly changes much throughout the day
-        float skyGradientTime = Instance->CurrentWorld->TimePercent;
+        float timePercent = Instance->CurrentWorld->TimePercent;
+        float skyGradientTime = timePercent;
         m_SkyMaterial->Time = skyGradientTime;
 
         // Draw the sky
@@ -52,10 +52,28 @@ namespace Minecraft
 
         // Draw the stars
         // TODO: make night objects fade with brightness properly
-        m_StarMaterial->SkyDarkness = 0.0f;
+        constexpr float StarFadeTime = 0.05f;
+
+        // While at night
+        float skyDarkness = 1;
+
+        // After dusk start fading in
+        if (0.5f < timePercent && timePercent < 0.5f + StarFadeTime)
+            skyDarkness = (1 / StarFadeTime) * timePercent + -1 / (2 * StarFadeTime);
+
+        // Before dawn start fading out
+        if (1 - StarFadeTime < timePercent && timePercent < 1)
+            skyDarkness = (-1 / StarFadeTime) * timePercent + 1 / StarFadeTime;
+
+        // Don't show during the day
+        if (0 <= timePercent && timePercent <= 0.5f)
+            skyDarkness = 0;
+
+        m_StarMaterial->SkyDarkness = skyDarkness;
         m_StarMesh->DrawInstanced(transform, m_StarCount);
 
         // Sun
+        // TODO: for every matrix below, it should probably be calculated in the prepare function to avoid wasting performance
         constexpr float SunScale = 0.1f;
         m_SkyObjectMaterial->ObjectTexture = m_SunTexture;
         m_SkyObjectMesh->Draw(transform * glm::eulerAngleY((float)-numbers::pi / 2.0f) * glm::translate(vec3(0, 0, -1.0f / SunScale)));
@@ -83,7 +101,7 @@ namespace Minecraft
         sunsetGradient->SetFilters(GL_LINEAR);
 
         // Create the material
-        auto shader = Instance->Graphics->RequestShader("sky");
+        auto shader = Instance->Graphics->RequestShader("sky/sky");
         m_SkyMaterial = make_shared<SkyMaterial>(shader);
         m_SkyMaterial->DayGradient = skyDayGradient;
         m_SkyMaterial->NightGradient = skyNightGradient;
@@ -151,7 +169,7 @@ namespace Minecraft
     void SkyRenderer::PrepareStars()
     {
         // Create the material
-        auto shader = Instance->Graphics->RequestShader("star");
+        auto shader = Instance->Graphics->RequestShader("sky/star");
         m_StarMaterial = make_shared<StarMaterial>(shader);
         m_StarMaterial->StarTexture = Instance->Graphics->RequestTexture("sky/star");
         m_StarMaterial->TemperatureGradient = Instance->Graphics->RequestTexture("sky/star-temperature");
@@ -252,7 +270,7 @@ namespace Minecraft
         m_MoonTexture = Instance->Graphics->RequestTexture("sky/moon");
 
         // Create the material
-        auto shader = Instance->Graphics->RequestShader("sky-object");
+        auto shader = Instance->Graphics->RequestShader("sky/sky-object");
         m_SkyObjectMaterial = make_shared<SkyObjectMaterial>(shader);
 
         // Create the vertex and index buffers
