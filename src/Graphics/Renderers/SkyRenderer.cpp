@@ -51,8 +51,8 @@ namespace Minecraft
         transform *= mat4(glm::eulerAngleZ(skyboxAngle));
 
         // Draw the stars
-        // TODO: maybe make stars move at a different speed to the sun + moon?
-        // TODO: make night objects fade with brightness
+        // TODO: make night objects fade with brightness properly
+        m_StarMaterial->SkyDarkness = 0.0f;
         m_StarMesh->DrawInstanced(transform, m_StarCount);
 
         // Sun
@@ -154,6 +154,7 @@ namespace Minecraft
         auto shader = Instance->Graphics->RequestShader("star");
         m_StarMaterial = make_shared<StarMaterial>(shader);
         m_StarMaterial->StarTexture = Instance->Graphics->RequestTexture("sky/star");
+        m_StarMaterial->TemperatureGradient = Instance->Graphics->RequestTexture("sky/star-temperature");
 
         // Create the stars
         constexpr int StarCount = 500;
