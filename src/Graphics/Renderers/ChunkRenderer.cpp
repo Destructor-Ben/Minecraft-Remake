@@ -64,8 +64,8 @@ namespace Minecraft
 
     void ChunkRenderer::SetMeshData(Chunk& chunk, const vector<float>& vertices, const vector <uint>& indices)
     {
-        m_ChunkMeshes[chunk.GetChunkPos()]->Vertices->GetBuffer()->SetData(vertices);
-        m_ChunkMeshes[chunk.GetChunkPos()]->GetIndexBuffer(m_ChunkMaterial)->SetData(indices);
+        m_ChunkMeshes[chunk.GetChunkPos()]->Vertices->GetBuffer()->SetData(vertices, GL_DYNAMIC_DRAW);
+        m_ChunkMeshes[chunk.GetChunkPos()]->GetIndexBuffer(m_ChunkMaterial)->SetData(indices, GL_DYNAMIC_DRAW);
     }
 
     vector <Quad> ChunkRenderer::GetChunkFaces(Chunk& chunk)
