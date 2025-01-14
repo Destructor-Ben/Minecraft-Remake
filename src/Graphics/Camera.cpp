@@ -9,8 +9,7 @@ namespace Minecraft
     {
         // Calculate view matrix
         vec3 forward = GetForwardVector();
-        vec3 up = GetUpVector();
-        ViewMatrix = glm::lookAt(Position, Position + forward, up);
+        ViewMatrix = glm::lookAt(Position, Position + forward, vec3(0, 1, 0));
 
         // Calculate projection matrix
         if (IsPerspective && Instance->ScreenWidth != 0 && Instance->ScreenHeight != 0)
