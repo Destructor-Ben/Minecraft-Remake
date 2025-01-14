@@ -38,9 +38,6 @@ namespace Minecraft
         UpdateSunsetStrength(timePercent);
     }
 
-    // TODO: smooth?
-    // TODO: possibly clean up
-    // TODO: tweak fade time
     void SkyRenderer::UpdateSkyDarkness(float timePercent)
     {
         // The night gets darker after dusk, and gets light before dawn
@@ -49,17 +46,22 @@ namespace Minecraft
         // While at night
         m_SkyDarkness = 1;
 
+        // Don't show during the day
+        if (timePercent <= 0.5f)
+            m_SkyDarkness = 0;
+
+        // Common linear equation values
+        float gradient = 1 / FadeTime;
+        float interceptNightStart = -gradient * 0.5;
+        float interceptNightEnd = gradient;
+
         // After dusk start fading in
         if (0.5f < timePercent && timePercent < 0.5f + FadeTime)
-            m_SkyDarkness = (1 / FadeTime) * timePercent + -1 / (2 * FadeTime);
+            m_SkyDarkness = gradient * timePercent + interceptNightStart;
 
         // Before dawn start fading out
         if (1 - FadeTime < timePercent && timePercent < 1)
-            m_SkyDarkness = (-1 / FadeTime) * timePercent + 1 / FadeTime;
-
-        // Don't show during the day
-        if (0 <= timePercent && timePercent <= 0.5f)
-            m_SkyDarkness = 0;
+            m_SkyDarkness = -gradient * timePercent + interceptNightEnd;
     }
 
     void SkyRenderer::UpdateSunsetStrength(float timePercent)
@@ -116,10 +118,14 @@ namespace Minecraft
         m_SkyMesh->Draw(m_Transform);
 
         // Draw the stars
-        m_StarMaterial->SkyDarkness = m_SkyDarkness;
-        m_StarMesh->DrawInstanced(m_TransformRotated, m_StarCount);
+        if (m_SkyDarkness != 0)
+        {
+            m_StarMaterial->SkyDarkness = m_SkyDarkness;
+            m_StarMesh->DrawInstanced(m_TransformRotated, m_StarCount);
+        }
 
         // TODO: redo sun and moon rendering
+        // TODO: add glow to the sun and moon
         // Sun
         // TODO: for every matrix below, it should probably be calculated in the prepare function to avoid wasting performance
         constexpr float SunScale = 0.1f;
@@ -130,6 +136,7 @@ namespace Minecraft
         // TODO: moon phases
         // TODO: maybe make the moon travel slightly faster than the sun, especially if I add moon phases
         // TODO: make moon fade with brightness
+        // TODO: dont render the moon when its alpha would be zero anyway
         constexpr float MoonScale = 0.075f;
         m_SkyObjectMaterial->ObjectTexture = m_MoonTexture;
         m_SkyObjectMesh->Draw(m_TransformRotated * glm::eulerAngleY((float)numbers::pi / 2.0f) * glm::translate(vec3(0, 0, -1.0f / MoonScale)));
@@ -220,11 +227,13 @@ namespace Minecraft
         // Create the material
         auto shader = Instance->Graphics->RequestShader("sky/star");
         m_StarMaterial = make_shared<StarMaterial>(shader);
+        m_StarMaterial->TemperatureStrength = 0.3;
+        m_StarMaterial->MaxBrightness = 0.9;
         m_StarMaterial->StarTexture = Instance->Graphics->RequestTexture("sky/star");
         m_StarMaterial->TemperatureGradient = Instance->Graphics->RequestTexture("sky/star-temperature");
 
         // Create the stars
-        constexpr int StarCount = 500;
+        constexpr int StarCount = 750;
         constexpr float StarScale = 0.005f;
         constexpr ulong StarSeed = 0xf63a0f1fc91367d8;
 
@@ -233,7 +242,6 @@ namespace Minecraft
         vector<float> starBrightness;
         vector<float> starTemperature;
 
-        // TODO: appropriate random number generator, perhaps wrap Random around NoiseGenerator?
         Random starRandom(StarSeed);
 
         for (int i = 0; i < StarCount; ++i)

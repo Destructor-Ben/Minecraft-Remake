@@ -7,6 +7,8 @@
 #include "World/Chunk.h"
 #include "World/World.h"
 
+// TODO: fix chunk bounding boxes - blocks are centered on their positions but the bounds dont account for that
+// - Should also center chunks while at it?
 namespace Minecraft
 {
     ChunkRenderer::ChunkRenderer()

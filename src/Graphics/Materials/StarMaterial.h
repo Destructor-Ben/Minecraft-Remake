@@ -10,6 +10,8 @@ namespace Minecraft
     {
     public:
         float SkyDarkness = 0;
+        float TemperatureStrength = 1;
+        float MaxBrightness = 1;
         shared_ptr <Texture> StarTexture;
         shared_ptr <Texture> TemperatureGradient;
 
