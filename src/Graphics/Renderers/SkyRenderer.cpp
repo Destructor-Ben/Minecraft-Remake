@@ -35,7 +35,7 @@ namespace Minecraft
 
         // Update the sky values
         UpdateSkyDarkness(timePercent);
-        UpdateSunsetStrength(timePercent);
+        UpdateSunset(timePercent);
     }
 
     void SkyRenderer::UpdateSkyDarkness(float timePercent)
@@ -64,8 +64,19 @@ namespace Minecraft
             m_SkyDarkness = -gradient * timePercent + interceptNightEnd;
     }
 
-    void SkyRenderer::UpdateSunsetStrength(float timePercent)
+    void SkyRenderer::UpdateSunset(float timePercent)
     {
+        // Update the sunset direction and coverage
+        // TODO: No idea why but this angle calculation isn't perfect, but I don't care
+        constexpr float Angle = glm::radians(60.0f);
+        m_SkyMaterial->SunsetCoverage = 0.25; // TODO: change this line
+        // TODO: change the coverage and angle dynamically
+        m_SunsetDirection = vec3(-cos(Angle), -sin(Angle), 0);
+
+        // Adjust for east/west with rise/set
+        m_SunsetDirection.x *= timePercent <= 0.75f && timePercent >= 0.25 ? 1 : -1;
+
+        // Update the strength
         // Sunsets will fade in linearly, stay for a bit, then fade out
         constexpr float FadeTime = 0.075;
         constexpr float SunsetTime = 0.025f;
@@ -100,6 +111,9 @@ namespace Minecraft
         // Ending sunrise
         if (timePercent < 0.0f + HalfSunsetTime + FadeTime && timePercent > 0.0f + HalfSunsetTime)
             m_SunsetStrength = -gradient * timePercent + interceptSunriseEnd;
+
+        // Make the sunset more visible
+        m_SunsetStrength *= 2;
     }
 
     void SkyRenderer::Render()
@@ -115,6 +129,7 @@ namespace Minecraft
         // Don't use Renderer.Draw, it is for normal objects
         m_SkyMaterial->SkyDarkness = m_SkyDarkness;
         m_SkyMaterial->SunsetStrength = m_SunsetStrength;
+        m_SkyMaterial->SunsetDirection = m_SunsetDirection;
         m_SkyMesh->Draw(m_Transform);
 
         // Draw the stars
@@ -159,9 +174,9 @@ namespace Minecraft
         // Create the material
         auto shader = Instance->Graphics->RequestShader("sky/sky");
         m_SkyMaterial = make_shared<SkyMaterial>(shader);
+        m_SkyMaterial->SunsetColor = vec3(251.0f / 255.0f, 130.0f / 255.0f, 9.0f / 255.0f);
         m_SkyMaterial->DayGradient = skyDayGradient;
         m_SkyMaterial->NightGradient = skyNightGradient;
-        m_SkyMaterial->SunsetGradient = sunsetGradient;
 
         // Create the vertex and index buffers
         auto vertexBuffer = make_shared<VertexBuffer>();

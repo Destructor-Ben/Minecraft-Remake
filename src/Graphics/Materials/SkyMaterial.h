@@ -11,9 +11,11 @@ namespace Minecraft
     public:
         float SkyDarkness = 0;
         float SunsetStrength = 0;
+        float SunsetCoverage = 0;
+        vec3 SunsetColor;
+        vec3 SunsetDirection;
         shared_ptr <Texture> DayGradient;
         shared_ptr <Texture> NightGradient;
-        shared_ptr <Texture> SunsetGradient;
 
         SkyMaterial(shared_ptr <Shader> shader) : Material(shader) { }
 

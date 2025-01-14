@@ -24,13 +24,14 @@ namespace Minecraft
         void PrepareSkyObjects();
 
         void UpdateSkyDarkness(float timePercent);
-        void UpdateSunsetStrength(float timePercent);
+        void UpdateSunset(float timePercent);
 
         static shared_ptr <VertexBuffer> CreateQuadVertices();
         static shared_ptr <IndexBuffer> CreateQuadIndices();
 
         float m_SkyDarkness = 0;
         float m_SunsetStrength = 0;
+        vec3 m_SunsetDirection;
         mat4 m_Transform;
         mat4 m_TransformRotated;
 
