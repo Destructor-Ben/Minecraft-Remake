@@ -166,10 +166,8 @@ namespace Minecraft
         // Request textures
         auto skyDayGradient = Instance->Graphics->RequestTexture("sky/day-color");
         auto skyNightGradient = Instance->Graphics->RequestTexture("sky/night-color");
-        auto sunsetGradient = Instance->Graphics->RequestTexture("sky/sunset-sunrise-color");
         skyDayGradient->SetFilters(GL_LINEAR);
         skyNightGradient->SetFilters(GL_LINEAR);
-        sunsetGradient->SetFilters(GL_LINEAR);
 
         // Create the material
         auto shader = Instance->Graphics->RequestShader("sky/sky");
@@ -246,6 +244,7 @@ namespace Minecraft
         m_StarMaterial->MaxBrightness = 0.9;
         m_StarMaterial->StarTexture = Instance->Graphics->RequestTexture("sky/star");
         m_StarMaterial->TemperatureGradient = Instance->Graphics->RequestTexture("sky/star-temperature");
+        m_StarMaterial->TemperatureGradient->SetFilters(GL_LINEAR);
 
         // Create the stars
         constexpr int StarCount = 750;
