@@ -4,7 +4,6 @@ set(CMAKE_CXX_STANDARD 23)
 
 # Resources
 file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
-file(COPY lang DESTINATION ${CMAKE_BINARY_DIR})
 
 # Main executable
 add_subdirectory(src)
