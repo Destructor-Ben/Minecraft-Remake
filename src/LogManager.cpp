@@ -41,7 +41,7 @@ namespace Minecraft
 
     void LogManager::Throw(const string& message)
     {
-        throw std::runtime_error(format("{}\n{}", message, cpptrace::generate_trace()));
+        throw std::runtime_error(format("{}\n{}", message, cpptrace::generate_trace().to_string()));
     }
 
     void LogManager::Assert(bool condition)
