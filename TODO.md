@@ -1,15 +1,27 @@
 # To Do List
 
+- Worldgen border fixes + steps - look at how minecraft does it
+- The process segfaults on linux when exiting
+- Make visualizers for bounds objects and also points
+- Fix chunk meshing speed
+    - Redo coordinate stuff
+        - ChunkOffset
+        - BlockOffset
+        - BlockPos
+        - WorldPos
+        - Maybe make chunk positions (origins) their center instead of corner
+            - Blocks already are, also check that they are done correctly
+
+- Partial transparency support for blocks
+- Entities
+- ECS for entities and blocks
+- Make all chunk loops that use radii circle instead of squares
+
+## Build System
+
 - Make the libraries submodules instead of directly embedded
 - Statically link all libraries
-- Embed resources - use source generator https://stackoverflow.com/a/71906177/12259381
-- Transparency & blending
-- Implement an ECS for entities and blocks
-- Entities
-- Make all chunk loops that use radii circle instead of squares
-- The process segfaults on linux when exiting
-- Maybe make chunk positions (origins) their center instead of corner
-    - Blocks already are, also check that they are done correctly
+- Make assets use an asset bundle
 
 ## Optimizations
 
@@ -33,7 +45,6 @@
 
 - Chunk Meshing
     - TODO: investigate speed of chunk meshing
-    - Cache the quaternions used in face calculation
 
 ### Updating
 
@@ -41,3 +52,6 @@
     - Consider moving the remeshing queue to the renderer so it doesn't affect this function
 - World generation
     - Consider remeshing the world here, or possibly in a dedicated step, since otherwise it appears in the render function in profiles
+- For the above two, its probably a good idea to just push chunks to a remeshing queue in the renderer
+    - It makes more sense for it to be there
+    - Also makes it easier to throttle the chunk meshing so only one mesh is updated per frame for example to prevent massive lagspikes
