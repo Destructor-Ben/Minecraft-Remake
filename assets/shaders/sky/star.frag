@@ -27,7 +27,7 @@ void main()
     // Fading in and out
     // Normally we would think to just add brightness, but it means the stars are visibile during the day
     // So subtract the max star brightness, which also makes the less bright stars visibily less bright
-    FragColor.a = mix(0.0, uMaxBrightness, uSkyDarkness - 1 + Brightness);
+    FragColor.a = mix(0.0, FragColor.a * uMaxBrightness, uSkyDarkness - 1 + Brightness);
     FragColor.a = clamp(FragColor.a, 0.0, uMaxBrightness);
 
     if (FragColor.a == 0) {
