@@ -3,6 +3,7 @@
 - Worldgen border fixes + steps - look at how minecraft does it
 - The process segfaults on linux when exiting
 - Make visualizers for bounds objects and also points
+    - Also a wireframe mode
 - Fix chunk meshing speed
     - Redo coordinate stuff
         - ChunkOffset
