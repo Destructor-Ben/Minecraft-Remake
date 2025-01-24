@@ -23,6 +23,17 @@ namespace Minecraft
         m_BlockTextureSizeInUVCoords.y = (float)BlockTextureSize / m_ChunkTexture->GetHeight();
     }
 
+    void ChunkRenderer::RenderDebugChunkBorders()
+    {
+        auto playerPos = Instance->CurrentWorld->PlayerCamera.Position;
+        auto playerChunkPos = WorldToChunkPos(playerPos);
+        if (!m_ChunkMeshes.contains(playerChunkPos))
+            return;
+
+        auto chunkBounds = m_ChunkMeshes.at(playerChunkPos)->Bounds;
+        Instance->Graphics->DebugDrawBounds(chunkBounds.value(), vec3(1, 1, 0));
+    }
+
     void ChunkRenderer::RenderChunk(Chunk& chunk)
     {
         if (!m_ChunkMeshes.contains(chunk.GetChunkPos()))
@@ -30,7 +41,7 @@ namespace Minecraft
 
         Transform transform { };
         transform.Position = chunk.GetWorldPos();
-        Instance->Graphics->DrawMesh(*m_ChunkMeshes[chunk.GetChunkPos()], transform.GetTransformationMatrix());
+        Instance->Graphics->DrawMesh(*m_ChunkMeshes[chunk.GetChunkPos()], transform.GetTransformationMatrix()); // TODO: just use glm::translate
     }
 
     void ChunkRenderer::RegenerateMesh(Chunk& chunk)

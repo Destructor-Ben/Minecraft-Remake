@@ -44,6 +44,7 @@ namespace Minecraft
     UNIFORM_FUNCTION(float, glUniform1f(location, value))
     UNIFORM_FUNCTION(int, glUniform1i(location, value))
     UNIFORM_FUNCTION(uint, glUniform1ui(location, value))
+    UNIFORM_FUNCTION(bool, glUniform1i(location, value)) // Booleans are actually ints in OpenGL
 
     UNIFORM_FUNCTION(vec2, glUniform2fv(location, 1, glm::value_ptr(value)))
     UNIFORM_FUNCTION(vec2i, glUniform2iv(location, 1, glm::value_ptr(value)))

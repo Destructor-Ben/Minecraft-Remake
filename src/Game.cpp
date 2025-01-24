@@ -139,8 +139,12 @@ namespace Minecraft
     {
         Renderer::Clear();
 
+        Graphics->PreRender();
+
         if (CurrentWorld)
             CurrentWorld->Render();
+
+        Graphics->PostRender();
     }
 
     #pragma endregion

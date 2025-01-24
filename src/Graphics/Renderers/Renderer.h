@@ -7,6 +7,7 @@ namespace Minecraft
     class Camera;
     class ChunkRenderer;
     class CubeMap;
+    class DebugMaterial;
     class FragmentShader;
     class Mesh;
     class Shader;
@@ -17,10 +18,19 @@ namespace Minecraft
     {
     public:
         Camera* SceneCamera = nullptr;
+        bool DrawWireframes = false;
+
+        Renderer();
 
         void Update();
+        void PreRender();
+        void PostRender();
 
         void DrawMesh(const Mesh& mesh, mat4 transform);
+
+        void InitDebugMeshes();
+        void DebugDrawPoint(vec3 point, vec3 color);
+        void DebugDrawBounds(BoundingBox bounds, vec3 color);
 
         // Don't forget to free the data after you use it
         byte* LoadImageData(string path, int& width, int& height, int& format);
@@ -35,6 +45,10 @@ namespace Minecraft
         static void UnbindAll();
 
     private:
+        shared_ptr <Mesh> m_DebugPointMesh;
+        shared_ptr <Mesh> m_DebugBoundsMesh;
+        shared_ptr <DebugMaterial> m_DebugMaterial;
+
         // Order in this matters!
         vector <string> m_CubeMapFaceNames = {
             "right",

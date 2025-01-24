@@ -20,10 +20,14 @@ namespace Minecraft
     public:
         static constexpr int BlockTextureSize = 16;
 
+        bool DrawChunkBorders = false;
+
         ChunkRenderer();
 
         void RenderChunk(Chunk& chunk);
         void RegenerateMesh(Chunk& chunk);
+
+        void RenderDebugChunkBorders();
 
     private:
         void CreateMesh(Chunk& chunk);

@@ -98,6 +98,12 @@ namespace Minecraft
         if (Instance->Input->WasKeyReleased(Key::E))
             SetMouseHidden(!IsMouseHidden());
 
+        if (Instance->Input->WasKeyReleased(Key::B))
+            Instance->ChunkGraphics->DrawChunkBorders = !Instance->ChunkGraphics->DrawChunkBorders;
+
+        if (Instance->Input->WasKeyReleased(Key::G))
+            Instance->Graphics->DrawWireframes = !Instance->Graphics->DrawWireframes;
+
         for (auto* chunk : GetRenderedChunks())
         {
             chunk->Update();
@@ -115,6 +121,9 @@ namespace Minecraft
         {
             chunk->Render();
         }
+
+        if (Instance->ChunkGraphics->DrawChunkBorders)
+            Instance->ChunkGraphics->RenderDebugChunkBorders();
 
         Instance->SkyGraphics->Render();
     }

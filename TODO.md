@@ -2,8 +2,6 @@
 
 - Worldgen border fixes + steps - look at how minecraft does it
 - The process segfaults on linux when exiting
-- Make visualizers for bounds objects and also points
-    - Also a wireframe mode
 - Fix chunk meshing speed
     - Redo coordinate stuff
         - ChunkOffset
@@ -19,6 +17,7 @@
 - Make all chunk loops that use radii circle instead of squares
 - Finish the sky renderer
 - Cloud renderer
+- Make all materials automatically request their shaders? it makes no sense to make them not do it since it is passed in anyway
 
 ## Build System
 

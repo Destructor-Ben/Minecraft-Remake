@@ -32,6 +32,8 @@ namespace Minecraft
     void Shader::SetUniform<int>(const string& name, int value);
     template<>
     void Shader::SetUniform<uint>(const string& name, uint value);
+    template<>
+    void Shader::SetUniform<bool>(const string& name, bool value);
 
     template<>
     void Shader::SetUniform<vec2>(const string& name, vec2 value);
