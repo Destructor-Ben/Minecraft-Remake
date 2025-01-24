@@ -17,6 +17,8 @@
 - Entities
 - ECS for entities and blocks
 - Make all chunk loops that use radii circle instead of squares
+- Finish the sky renderer
+- Cloud renderer
 
 ## Build System
 
@@ -25,6 +27,9 @@
 - Make assets use an asset bundle
 
 ## Optimizations
+
+- What exactly changes in release builds that improves performance so much?
+- Debug + Release options for linux, since inlining happens with the release build which prevents profiling effectively (I assume this is the issue)
 
 - Multithreading
     - Chunk meshing can be made to run in parallel
