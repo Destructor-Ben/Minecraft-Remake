@@ -2,6 +2,7 @@
 
 #include "Random/NoiseGenerator.h"
 
+// TODO: make chunk remeshing done in the chunk renderer
 namespace Minecraft
 {
     class Block;
@@ -21,7 +22,6 @@ namespace Minecraft
         void GenerateChunksAroundPlayer(vec3 playerPos, int radius, int minHeight, int maxHeight);
 
         // Generates an individual chunk, used above
-        // Generation is composed of passes, which run sequentially
         void Generate(Chunk& chunk);
 
     private:

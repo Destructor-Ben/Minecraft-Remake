@@ -90,13 +90,14 @@ namespace Minecraft
             chunks.insert(chunk.value());
     }
 
-    // TODO: make generation passes
+    // TODO: make multiple cpp files for this to simplify this file
     // TODO: to avoid issues with chunk borders, possibly just make the game just ask each block what type it should be
     // And do this repeatedly
     // To handle structures, just generate a bunch of points beforehand
     // TODO: make random number/bool generation easier with a util method that offsets the input coordinates
     // This is to stop a single block always getting a good random value
     // This would mean chests that spawn tend to be filled with good loot
+    // TODO: make a NoiseMap object that will store the parameters and can be sampled easily?
     void WorldGenerator::Generate(Chunk& chunk)
     {
         // Generate terrain
