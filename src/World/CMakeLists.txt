@@ -1,4 +1,5 @@
 target_sources(Minecraft_Remake PRIVATE
+    Biome.h
     Block.cpp
     Block.h
     BlockData.h
@@ -10,5 +11,6 @@ target_sources(Minecraft_Remake PRIVATE
     World.h
 )
 
+add_subdirectory(Biomes)
 add_subdirectory(Blocks)
 add_subdirectory(Generation)
