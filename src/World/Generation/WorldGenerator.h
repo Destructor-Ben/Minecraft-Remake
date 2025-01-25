@@ -6,6 +6,7 @@
 // TODO: finish world generation
 namespace Minecraft
 {
+    class Biome;
     class Block;
     class Chunk;
     class World;
@@ -39,6 +40,8 @@ namespace Minecraft
         void GenerateStructures(Chunk& chunk);
         // Generate decorations, such as grass, trees, etc.
         void GenerateDecorations(Chunk& chunk);
+
+        Biome* CalculateBiome(Block& block);
 
         World* m_World = nullptr;
         uint m_Seed = 0;

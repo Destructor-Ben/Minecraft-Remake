@@ -51,6 +51,10 @@ namespace Minecraft
                     // Find a dirt or grass block with air above it
                     Block block = chunk.GetBlock(x, y, z);
 
+                    // Biome check
+                    if (block.Data.Biome != Biomes::Forest.get())
+                        continue;
+
                     auto blockType = block.Data.Type;
                     if (blockType != Blocks::Dirt.get() && blockType != Blocks::Grass.get())
                         continue;
