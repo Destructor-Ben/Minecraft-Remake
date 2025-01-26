@@ -6,7 +6,7 @@
 
 namespace Minecraft
 {
-    NoiseGenerator::NoiseGenerator(ulong seed) : Seed(seed)
+    NoiseGenerator::NoiseGenerator(ulong seed) : m_Seed(seed)
     {
         CreatePermutations();
     }
@@ -38,6 +38,7 @@ namespace Minecraft
     #pragma region Perlin Noise
 
     // Thanks to ChatGPT for writing this code for me <3
+    // I half understand how Perlin noise works
 
     float NoiseGenerator::Fade(float t)
     {
@@ -67,7 +68,7 @@ namespace Minecraft
         }
 
         // Shuffle
-        std::mt19937 generator(Seed);
+        std::mt19937 generator(m_Seed);
         std::shuffle(basePermutation.begin(), basePermutation.end(), generator);
 
         // Duplicate the table to avoid overflow when indexing
@@ -145,6 +146,7 @@ namespace Minecraft
 
     #pragma region Fractal Noise
 
+    // TODO: use macros to clean this up
     float NoiseGenerator::Fractal1D(float x, float amplitude, float frequency, int octaves, float persistence, float lacunarity)
     {
         float noiseValue = 0.0f;

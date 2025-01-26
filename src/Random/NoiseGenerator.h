@@ -2,15 +2,16 @@
 
 namespace Minecraft
 {
+    // TODO: make sure all noise functions are good
+    // TODO: consider amplitude and frequency params, structs for params, and either min and max values or 0 to 1 and -1 to 1
     class NoiseGenerator
     {
     public:
-        ulong Seed = 0;
-
         NoiseGenerator() = default;
         NoiseGenerator(ulong seed);
 
-        // All go between 0 and 1
+        // All noise functions go between 0 and 1
+
         float White1D(float x);
         float White2D(float x, float y);
         float White2D(vec2 v) { return White2D(v.x, v.y); }
@@ -40,13 +41,15 @@ namespace Minecraft
     private:
         float HashToFloat(ulong value);
 
-        float Fade(float t);
-        float Lerp(float a, float b, float t);
-        float Grad(int hash, float x, float y = 0.0f, float z = 0.0f);
+        static float Fade(float t);
+        static float Lerp(float a, float b, float t);
+        static float Grad(int hash, float x, float y = 0.0f, float z = 0.0f);
 
         void CreatePermutations();
 
-        // Used in the perlin algorithm, shuffled based on seed to change with seed
+        ulong m_Seed = 0;
+
+        // Used in the perlin algorithm, shuffled based on seed
         vector<int> m_Permutations { };
     };
 }
