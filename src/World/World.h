@@ -18,16 +18,16 @@ namespace Minecraft
     {
     public:
         // World size (vertical)
-        static constexpr int MinHeight = -1;
-        static constexpr int MaxHeight = 1;
+        static constexpr int MinHeight = -3;
+        static constexpr int MaxHeight = 3;
 
         // Distances for rendering, simulating, etc.
-        static constexpr int RenderDistance = 8;
-        static constexpr int SimulationDistance = 8;
-        static constexpr int GenerationDistance = 8;
+        static constexpr int RenderDistance = 12;
+        static constexpr int SimulationDistance = 12;
+        static constexpr int GenerationDistance = 12;
 
         // Spawn size
-        static constexpr int SpawnRadius = 8;
+        static constexpr int SpawnRadius = GenerationDistance;
         static constexpr int MinSpawnHeight = MinHeight;
         static constexpr int MaxSpawnHeight = MaxHeight;
 
