@@ -7,7 +7,10 @@ namespace Minecraft
     WorldGenerator::WorldGenerator(World* world, uint seed) :
         m_World(world),
         m_Seed(seed),
-        m_Noise(seed) { }
+        m_Noise(seed)
+    {
+        InitBiomeMap();
+    }
 
     void WorldGenerator::Generate(int spawnRadius, int minHeight, int maxHeight)
     {

@@ -14,6 +14,9 @@ namespace Minecraft::Blocks
     inline unique_ptr<BlockType> Dirt = make_unique<SolidBlock>(vec2i(1, 1));
     inline unique_ptr<BlockType> Grass = make_unique<GrassBlock>(vec2i(1, 1));
     inline unique_ptr<BlockType> TallGrass = make_unique<TallGrassBlock>(vec2i(4, 1));
+    inline unique_ptr<BlockType> Sand = make_unique<SolidBlock>(vec2i(5, 1));
+    inline unique_ptr<BlockType> Clay = make_unique<SolidBlock>(vec2i(6, 1));
+    inline unique_ptr<BlockType> IronOre = make_unique<SolidBlock>(vec2i(7, 1));
     inline unique_ptr<BlockType> Wood = make_unique<WoodBlock>(vec2i(0, 2));
     inline unique_ptr<BlockType> Leaves = make_unique<SolidBlock>(vec2i(2, 2));
 }

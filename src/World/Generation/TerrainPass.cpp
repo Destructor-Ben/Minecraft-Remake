@@ -34,7 +34,20 @@ namespace Minecraft
                     auto type = Blocks::Air.get();
 
                     if (yPos == height)
-                        type = Blocks::Grass.get();
+                    {
+                        if (block.Data.Biome == Biomes::Grassland.get())
+                            type = Blocks::Grass.get();
+                        else if (block.Data.Biome == Biomes::Forest.get())
+                            type = Blocks::Wood.get();
+                        else if (block.Data.Biome == Biomes::Desert.get())
+                            type = Blocks::Sand.get();
+                        else if (block.Data.Biome == Biomes::Jungle.get())
+                            type = Blocks::Leaves.get();
+                        else if (block.Data.Biome == Biomes::Tundra.get())
+                            type = Blocks::IronOre.get();
+                        else if (block.Data.Biome == Biomes::SnowyForest.get())
+                            type = Blocks::Clay.get();
+                    }
 
                     if (yPos < height)
                         type = Blocks::Dirt.get();
@@ -46,6 +59,5 @@ namespace Minecraft
                 }
             }
         }
-
     }
 }

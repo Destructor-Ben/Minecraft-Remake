@@ -41,7 +41,17 @@ namespace Minecraft
         // Generate decorations, such as grass, trees, etc.
         void GenerateDecorations(Chunk& chunk);
 
+        #pragma region Biomes
+
+        void InitBiomeMap();
         Biome* CalculateBiome(Block& block);
+        float SampleTemperatureMap(vec2 coords);
+        float SampleMoistureMap(vec2 coords);
+
+        static constexpr int m_BiomeMapSize = 4;
+        array <array<Biome*, m_BiomeMapSize>, m_BiomeMapSize> m_BiomeMap;
+
+        #pragma endregion
 
         World* m_World = nullptr;
         uint m_Seed = 0;

@@ -6,6 +6,32 @@
 // TODO: make a macro for looping over all blocks in a chunk + also a chunk range loop for stuff like render distance
 namespace Minecraft
 {
+    void WorldGenerator::InitBiomeMap()
+    {
+        // Cold
+        m_BiomeMap[0][0] = Biomes::Tundra.get();
+        m_BiomeMap[0][1] = Biomes::Tundra.get();
+        m_BiomeMap[0][2] = Biomes::SnowyForest.get();
+        m_BiomeMap[0][3] = Biomes::SnowyForest.get();
+
+        // Temperature
+        m_BiomeMap[1][0] = Biomes::Grassland.get();
+        m_BiomeMap[1][1] = Biomes::Grassland.get();
+        m_BiomeMap[2][0] = Biomes::Grassland.get();
+        m_BiomeMap[2][1] = Biomes::Grassland.get();
+
+        m_BiomeMap[1][2] = Biomes::Forest.get();
+        m_BiomeMap[1][3] = Biomes::Forest.get();
+        m_BiomeMap[2][2] = Biomes::Forest.get();
+        m_BiomeMap[2][3] = Biomes::Forest.get();
+
+        // Hot
+        m_BiomeMap[3][0] = Biomes::Desert.get();
+        m_BiomeMap[3][1] = Biomes::Desert.get();
+        m_BiomeMap[3][2] = Biomes::Jungle.get();
+        m_BiomeMap[3][3] = Biomes::Jungle.get();
+    }
+
     void WorldGenerator::GenerateBiomes(Chunk& chunk)
     {
         for (int x = 0; x < Chunk::Size; ++x)
@@ -23,17 +49,29 @@ namespace Minecraft
 
     Biome* WorldGenerator::CalculateBiome(Block& block)
     {
-        // TODO: weird issue where the input position can't be a whole number?
-        const float TemperatureMapScale = 1.0f / 100.0f;
-        const float MoistureMapScale = 1.0f / 100.0f;
-        const float HeightMapScale = 1.0f / 100.0f;
-        const float CrazyMapScale = 1.0f / 100.0f;
+        // Sample the maps
+        vec2 samplePos = vec2(block.GetWorldPos().x, block.GetWorldPos().z);
+        float temperature = SampleTemperatureMap(samplePos);
+        float moisture = SampleMoistureMap(samplePos);
 
-        float temperature = m_Noise.Fractal3D(block.GetWorldPos() * TemperatureMapScale);
-        float moisture = m_Noise.Fractal3D(block.GetWorldPos() * MoistureMapScale + vec3(73487, 8456, 3247));
-        float height = m_Noise.Fractal3D(block.GetWorldPos() * MoistureMapScale + vec3(73487, 8456, 3247));
-        float craziness = m_Noise.Fractal3D(block.GetWorldPos() * MoistureMapScale + vec3(73487, 8456, 3247));
+        // Calculate biome from the lookup table
+        int temperatureIndex = m_BiomeMapSize - round(temperature * m_BiomeMapSize);
+        int moistureIndex = m_BiomeMapSize - round(moisture * m_BiomeMapSize);
 
-        return temperature >= 0.5f && moisture >= 0.5f ? Biomes::Forest.get() : Biomes::Grassland.get();
+        return m_BiomeMap[temperatureIndex][moistureIndex];
+    }
+
+    // TODO: weird issue where the input position can't be a whole number?
+    float WorldGenerator::SampleTemperatureMap(vec2 coords)
+    {
+        const float TemperatureMapScale = 1.0f / 10.0f;
+        return m_Noise.Fractal2D(coords * TemperatureMapScale);
+    }
+
+    float WorldGenerator::SampleMoistureMap(vec2 coords)
+    {
+        const float MoistureMapScale = 1.0f / 10.0f;
+        // TODO: more elegant way of handling offsets, probably just use a special seed for each map and modify the sample pos with it
+        return m_Noise.Fractal2D(coords * MoistureMapScale + vec2(79487.193f, 3247123.00939f));
     }
 }
