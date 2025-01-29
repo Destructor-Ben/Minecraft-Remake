@@ -1,5 +1,9 @@
 #pragma once
 
+// TODO: reuse shaders and meshes more, i did design this so i can
+// TODO: delete copy ctors of grapihcs resources
+// TODO: don't randomly bind stuff
+
 // Includes all utils from the GL folder
 #include "Camera.h"
 #include "CameraFrustum.h"
@@ -15,6 +19,3 @@
 #include "VertexArray.h"
 #include "VertexBuffer.h"
 #include "VertexShader.h"
-
-// Random note:
-// If I wanted to, we could make the graphics framework more bulletproof and add more abstractions for things like enums and checks if methods have already been called, but I'm lazy

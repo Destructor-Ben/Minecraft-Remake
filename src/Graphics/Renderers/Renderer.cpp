@@ -44,7 +44,7 @@ namespace Minecraft
     void Renderer::InitDebugMeshes()
     {
         // Create debug material
-        auto shader = RequestShader("debug");
+        auto shader = Instance->Resources->RequestShader("debug");
         m_DebugMaterial = make_shared<DebugMaterial>(shader);
 
         // Create point mesh
@@ -146,121 +146,6 @@ namespace Minecraft
         glEnable(GL_CULL_FACE);
         if (!DrawWireframes)
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    }
-
-    byte* Renderer::LoadImageData(string path, int& width, int& height, int& format)
-    {
-        // Get the data
-        auto compressedData = Instance->Resources->ReadResourceBytes(path);
-
-        // Load it and calculate the format
-        int channels;
-        byte* data = stbi_load_from_memory(compressedData.data(), (int)compressedData.size(), &width, &height, &channels, 0);
-        format = channels == 4 ? GL_RGBA : GL_RGB;
-
-        // Validate the data
-        if (!data)
-            Instance->Logger->Throw("Failed to load texture at path: " + path);
-
-        return data;
-    }
-
-    shared_ptr <Texture> Renderer::RequestTexture(string path)
-    {
-        if (m_Textures.contains(path))
-            return m_Textures[path];
-
-        // Load the texture
-        path = "assets/textures/" + path + ".png";
-        int width, height, format;
-        byte* data = LoadImageData(path, width, height, format);
-
-        // Set the data
-        auto texture = make_shared<Texture>();
-        texture->SetData(data, width, height, format);
-        m_Textures[path] = texture;
-
-        // Free the memory
-        stbi_image_free(data);
-
-        return texture;
-    }
-
-    shared_ptr <CubeMap> Renderer::RequestCubeMap(string path)
-    {
-        if (m_CubeMaps.contains(path))
-            return m_CubeMaps[path];
-
-        // Create the cubemap
-        auto cubeMap = make_shared<CubeMap>();
-        m_CubeMaps[path] = cubeMap;
-
-        // Disable image flipping (I don't know why but I need to)
-        stbi_set_flip_vertically_on_load(false);
-
-        // Set the data for each face
-        for (int i = 0; i < m_CubeMapFaceNames.size(); i++)
-        {
-            // Load the data
-            string facePath = "assets/textures/" + path + "/" + m_CubeMapFaceNames[i] + ".png";
-            int width, height, format;
-            byte* data = LoadImageData(facePath, width, height, format);
-
-            // Set the data
-            cubeMap->SetFace(data, width, height, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, format);
-
-            // Free the memory
-            stbi_image_free(data);
-        }
-
-        // Re-enable flipping
-        stbi_set_flip_vertically_on_load(true);
-
-        return cubeMap;
-    }
-
-    shared_ptr <Shader> Renderer::RequestShader(string path)
-    {
-        if (m_Shaders.contains(path))
-            return m_Shaders[path];
-
-        auto vert = RequestVertexShader(path);
-        auto frag = RequestFragmentShader(path);
-        auto shader = make_shared<Shader>(*vert, *frag);
-
-        m_Shaders[path] = shader;
-        return shader;
-    }
-
-    shared_ptr <VertexShader> Renderer::RequestVertexShader(string path)
-    {
-        if (m_VertexShaders.contains(path))
-            return m_VertexShaders[path];
-
-        path = "assets/shaders/" + path + ".vert";
-        string shaderCode = Instance->Resources->ReadResourceText(path);
-        auto shader = make_shared<VertexShader>(shaderCode);
-
-        m_VertexShaders[path] = shader;
-        return shader;
-    }
-
-    shared_ptr <FragmentShader> Renderer::RequestFragmentShader(string path)
-    {
-        if (m_FragmentShaders.contains(path))
-            return m_FragmentShaders[path];
-
-        path = "assets/shaders/" + path + ".frag";
-        string shaderCode = Instance->Resources->ReadResourceText(path);
-        auto shader = make_shared<FragmentShader>(shaderCode);
-
-        m_FragmentShaders[path] = shader;
-        return shader;
-    }
-
-    void Renderer::Clear()
-    {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
     void Renderer::UnbindAll()

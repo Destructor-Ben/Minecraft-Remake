@@ -186,7 +186,7 @@ namespace Minecraft
 
     void World::TickTime()
     {
-        Time += Instance->FixedDeltaTime;
+        Time += Instance->TickDeltaTime;
 
         // New days start after dawn, not midnight
         if (Time >= DayLength)

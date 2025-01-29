@@ -26,7 +26,7 @@ namespace Minecraft
         int TickCount = 0;
 
         float DeltaTime = 0;
-        float FixedDeltaTime = 0;
+        float TickDeltaTime = 0;
 
         float TargetFrameRate = 60;
         float TargetTickRate = 10;
@@ -58,7 +58,7 @@ namespace Minecraft
         void Render();
 
         float GetFrameRate() const { return 1.0 / DeltaTime; }
-        float GetTickRate() const { return 1.0 / FixedDeltaTime; }
+        float GetTickRate() const { return 1.0 / TickDeltaTime; }
 
         void Close() const { glfwSetWindowShouldClose(Window, true); }
 

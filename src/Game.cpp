@@ -137,7 +137,7 @@ namespace Minecraft
 
     void Game::Render()
     {
-        Renderer::Clear();
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         Graphics->PreRender();
 
@@ -182,7 +182,7 @@ namespace Minecraft
 
             // Temporary until I make ticking separate to updates
             TickCount = UpdateCount;
-            FixedDeltaTime = DeltaTime;
+            TickDeltaTime = DeltaTime;
 
             Running = !glfwWindowShouldClose(Window);
         }

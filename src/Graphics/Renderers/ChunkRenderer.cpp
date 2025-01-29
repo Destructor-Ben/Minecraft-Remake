@@ -1,6 +1,7 @@
 #include "ChunkRenderer.h"
 
 #include "Game.h"
+#include "ResourceManager.h"
 #include "Graphics/GL.h"
 #include "Graphics/Materials/ChunkMaterial.h"
 #include "Graphics/Renderers/Renderer.h"
@@ -11,8 +12,8 @@ namespace Minecraft
 {
     ChunkRenderer::ChunkRenderer()
     {
-        auto shader = Instance->Graphics->RequestShader("chunk");
-        m_ChunkTexture = Instance->Graphics->RequestTexture("chunk");
+        auto shader = Instance->Resources->RequestShader("chunk");
+        m_ChunkTexture = Instance->Resources->RequestTexture("chunk");
         m_ChunkMaterial = make_shared<ChunkMaterial>(shader);
         m_ChunkMaterial->ChunkTexture = m_ChunkTexture;
 
