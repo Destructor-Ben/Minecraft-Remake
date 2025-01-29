@@ -3,6 +3,8 @@
 in vec2 TexCoord;
 in float Brightness;
 in float Temperature;
+in float TwinkleOffset;
+flat in int TextureIndex;
 
 uniform float uSkyDarkness;
 uniform float uTemperatureStrength;
@@ -14,11 +16,11 @@ out vec4 FragColor;
 
 void main()
 {
-    FragColor = texture(uTexture, TexCoord);
-
-    if (FragColor.a == 0) {
-        discard;
-    }
+    // Sample the correct texture
+    vec2 texCoord = TexCoord;
+    texCoord.x /= 3.0;
+    texCoord.x += float(TextureIndex) / 3.0;
+    FragColor = texture(uTexture, texCoord);
 
     // Temperature
     vec3 temperatureCol = texture(uTemperatureGradient, vec2(Temperature, 0.5)).rgb;
@@ -27,7 +29,7 @@ void main()
     // Fading in and out
     // Normally we would think to just add brightness, but it means the stars are visibile during the day
     // So subtract the max star brightness, which also makes the less bright stars visibily less bright
-    FragColor.a = mix(0.0, FragColor.a * uMaxBrightness, uSkyDarkness - 1 + Brightness);
+    FragColor.a *= uMaxBrightness * (uSkyDarkness - 1 + Brightness);
     FragColor.a = clamp(FragColor.a, 0.0, uMaxBrightness);
 
     if (FragColor.a == 0) {

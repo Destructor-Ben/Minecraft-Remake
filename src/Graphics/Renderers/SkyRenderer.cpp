@@ -117,7 +117,7 @@ namespace Minecraft
         // Create the material
         auto shader = Instance->Graphics->RequestShader("sky/star");
         m_StarMaterial = make_shared<StarMaterial>(shader);
-        m_StarMaterial->TemperatureStrength = 0.3;
+        m_StarMaterial->TemperatureStrength = 0.35;
         m_StarMaterial->MaxBrightness = 0.9;
         m_StarMaterial->StarTexture = Instance->Graphics->RequestTexture("sky/star");
         m_StarMaterial->TemperatureGradient = Instance->Graphics->RequestTexture("sky/star-temperature");
@@ -132,6 +132,8 @@ namespace Minecraft
         vector <mat4> starMatrix;
         vector<float> starBrightness;
         vector<float> starTemperature;
+        vector<float> starTwinkleOffset;
+        vector<float> starTextureIndex; // TODO: make this buffer an int buffer
 
         Random starRandom(StarSeed);
 
@@ -150,12 +152,16 @@ namespace Minecraft
 
             starMatrix.push_back(transform);
 
-            // Brightness and temperature
+            // Other values
             float brightness = starRandom.NextFloat();
             float temperature = starRandom.NextFloat();
+            float twinkleOffset = starRandom.NextFloat();
+            int textureIndex = starRandom.NextInt(0, 2);
 
             starBrightness.push_back(brightness);
             starTemperature.push_back(temperature);
+            starTwinkleOffset.push_back(twinkleOffset);
+            starTextureIndex.push_back(textureIndex);
         }
 
         // Create the mesh
@@ -178,6 +184,12 @@ namespace Minecraft
 
         m_StarTemperatureBuffer = make_shared<VertexBuffer>();
         m_StarTemperatureBuffer->SetData(starTemperature.data(), starTemperature.size());
+
+        m_StarTwinkleOffsetBuffer = make_shared<VertexBuffer>();
+        m_StarTwinkleOffsetBuffer->SetData(starTwinkleOffset.data(), starTwinkleOffset.size());
+
+        m_StarTextureIndexBuffer = make_shared<VertexBuffer>();
+        m_StarTextureIndexBuffer->SetData(starTextureIndex.data(), starTextureIndex.size());
 
         m_StarMatrixBuffer->Bind();
 
@@ -204,6 +216,16 @@ namespace Minecraft
         glEnableVertexAttribArray(7);
         glVertexAttribPointer(7, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
         glVertexAttribDivisor(7, 1);
+
+        m_StarTwinkleOffsetBuffer->Bind();
+        glEnableVertexAttribArray(8);
+        glVertexAttribPointer(8, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
+        glVertexAttribDivisor(8, 1);
+
+        m_StarTextureIndexBuffer->Bind();
+        glEnableVertexAttribArray(9);
+        glVertexAttribPointer(9, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
+        glVertexAttribDivisor(9, 1);
 
         m_StarMesh = make_shared<Mesh>(vertexArray);
         m_StarMesh->AddMaterial(m_StarMaterial, indexBuffer);

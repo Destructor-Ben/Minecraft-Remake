@@ -32,8 +32,8 @@ namespace Minecraft
         void UpdateSkyDarkness(float timePercent);
         void UpdateSunset(float timePercent);
 
-        static shared_ptr <VertexBuffer> CreateQuadVertices();
-        static shared_ptr <IndexBuffer> CreateQuadIndices();
+        static shared_ptr<VertexBuffer> CreateQuadVertices();
+        static shared_ptr<IndexBuffer> CreateQuadIndices();
 
         float m_SkyDarkness = 0;
         float m_SunsetStrength = 0;
@@ -44,17 +44,19 @@ namespace Minecraft
         mat4 m_SunTransform;
         mat4 m_MoonTransform;
 
-        shared_ptr <Mesh> m_SkyMesh;
-        shared_ptr <SkyMaterial> m_SkyMaterial;
+        shared_ptr<Mesh> m_SkyMesh;
+        shared_ptr<SkyMaterial> m_SkyMaterial;
 
         int m_StarCount = 0;
-        shared_ptr <Mesh> m_StarMesh;
-        shared_ptr <StarMaterial> m_StarMaterial;
-        shared_ptr <VertexBuffer> m_StarMatrixBuffer;
-        shared_ptr <VertexBuffer> m_StarBrightnessBuffer;
-        shared_ptr <VertexBuffer> m_StarTemperatureBuffer;
+        shared_ptr<Mesh> m_StarMesh;
+        shared_ptr<StarMaterial> m_StarMaterial;
+        shared_ptr<VertexBuffer> m_StarMatrixBuffer;
+        shared_ptr<VertexBuffer> m_StarBrightnessBuffer;
+        shared_ptr<VertexBuffer> m_StarTemperatureBuffer;
+        shared_ptr<VertexBuffer> m_StarTwinkleOffsetBuffer;
+        shared_ptr<VertexBuffer> m_StarTextureIndexBuffer;
 
-        shared_ptr <Mesh> m_SunAndMoonMesh;
-        shared_ptr <SunMoonMaterial> m_SunAndMoonMaterial;
+        shared_ptr<Mesh> m_SunAndMoonMesh;
+        shared_ptr<SunMoonMaterial> m_SunAndMoonMaterial;
     };
 }
