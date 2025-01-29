@@ -8,7 +8,10 @@ namespace Minecraft
 {
     static constexpr int TestCount = 10000;
     static constexpr int RangeTestCount = 10;
-    static constexpr float AcceptableError = 0.1f;
+    static constexpr float AcceptableError = 0.05f;
+
+    // Occasionally there is unacceptable error for large ranges
+    // That's fine though because it is expected for something like that
 
     static void TestBools(Random& random)
     {
@@ -84,7 +87,6 @@ namespace Minecraft
         TestFloats(random);
     }
 
-    // TODO: make sure random values generated in a row aren't too similar - gradually increase the test count and ensure that the error changes as expected
     void RunRandomTests()
     {
         // Run multiple times on different seeds
