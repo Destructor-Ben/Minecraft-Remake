@@ -1,14 +1,20 @@
 #pragma once
 
+// TODO: moon phases
+// TODO: maybe make the moon travel slightly faster than the sun, especially if I add moon phases
+// TODO: star twinkling
+// TODO: multiple star textures
+// TODO: glow for sun and moon
 namespace Minecraft
 {
     class Mesh;
     class Texture;
     class IndexBuffer;
     class VertexBuffer;
+
     class SkyMaterial;
-    class SkyObjectMaterial;
     class StarMaterial;
+    class SunMoonMaterial;
 
     class SkyRenderer
     {
@@ -21,7 +27,7 @@ namespace Minecraft
     private:
         void PrepareSky();
         void PrepareStars();
-        void PrepareSkyObjects();
+        void PrepareSunAndMoon();
 
         void UpdateSkyDarkness(float timePercent);
         void UpdateSunset(float timePercent);
@@ -32,8 +38,11 @@ namespace Minecraft
         float m_SkyDarkness = 0;
         float m_SunsetStrength = 0;
         vec3 m_SunsetDirection;
+
         mat4 m_Transform;
         mat4 m_TransformRotated;
+        mat4 m_SunTransform;
+        mat4 m_MoonTransform;
 
         shared_ptr <Mesh> m_SkyMesh;
         shared_ptr <SkyMaterial> m_SkyMaterial;
@@ -45,11 +54,7 @@ namespace Minecraft
         shared_ptr <VertexBuffer> m_StarBrightnessBuffer;
         shared_ptr <VertexBuffer> m_StarTemperatureBuffer;
 
-        // TODO: rework how sky objects work, maybe make sun and moon use the same shader and stars can have a separate one?
-        shared_ptr <Mesh> m_SkyObjectMesh;
-        shared_ptr <SkyObjectMaterial> m_SkyObjectMaterial;
-
-        shared_ptr <Texture> m_SunTexture;
-        shared_ptr <Texture> m_MoonTexture;
+        shared_ptr <Mesh> m_SunAndMoonMesh;
+        shared_ptr <SunMoonMaterial> m_SunAndMoonMaterial;
     };
 }

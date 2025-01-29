@@ -3,7 +3,7 @@
 #include "Game.h"
 #include "Graphics/GL.h"
 #include "Graphics/Materials/SkyMaterial.h"
-#include "Graphics/Materials/SkyObjectMaterial.h"
+#include "Graphics/Materials/SunMoonMaterial.h"
 #include "Graphics/Materials/StarMaterial.h"
 #include "Graphics/Renderers/Renderer.h"
 #include "Random/Random.h"
@@ -15,7 +15,7 @@ namespace Minecraft
     {
         PrepareSky();
         PrepareStars();
-        PrepareSkyObjects();
+        PrepareSunAndMoon();
     }
 
     void SkyRenderer::Update()
@@ -36,129 +36,6 @@ namespace Minecraft
         // Update the sky values
         UpdateSkyDarkness(timePercent);
         UpdateSunset(timePercent);
-    }
-
-    void SkyRenderer::UpdateSkyDarkness(float timePercent)
-    {
-        // The night gets darker after dusk, and gets light before dawn
-        constexpr float FadeTime = 0.05f;
-
-        // While at night
-        m_SkyDarkness = 1;
-
-        // Don't show during the day
-        if (timePercent <= 0.5f)
-            m_SkyDarkness = 0;
-
-        // Common linear equation values
-        float gradient = 1 / FadeTime;
-        float interceptNightStart = -gradient * 0.5;
-        float interceptNightEnd = gradient;
-
-        // After dusk start fading in
-        if (0.5f < timePercent && timePercent < 0.5f + FadeTime)
-            m_SkyDarkness = gradient * timePercent + interceptNightStart;
-
-        // Before dawn start fading out
-        if (1 - FadeTime < timePercent && timePercent < 1)
-            m_SkyDarkness = -gradient * timePercent + interceptNightEnd;
-    }
-
-    void SkyRenderer::UpdateSunset(float timePercent)
-    {
-        // Update the sunset direction and coverage
-        // We need 90 - Angle because of the working out on paper
-        constexpr float Angle = glm::radians(90.0f - 30.0f);
-        m_SkyMaterial->SunsetCoverage = 0.25; // TODO: change this line
-        // TODO: change the coverage and angle dynamically
-        m_SunsetDirection = vec3(-cos(Angle), -sin(Angle), 0);
-
-        // Adjust for east/west with rise/set
-        m_SunsetDirection.x *= timePercent <= 0.75f && timePercent >= 0.25 ? 1 : -1;
-
-        // Update the strength
-        // Sunsets will fade in linearly, stay for a bit, then fade out
-        constexpr float FadeTime = 0.075;
-        constexpr float SunsetTime = 0.025f;
-        constexpr float HalfSunsetTime = SunsetTime / 2.0f;
-
-        // No sunset
-        m_SunsetStrength = 0;
-
-        // Yes sunset
-        if (timePercent <= HalfSunsetTime || timePercent >= 1 - HalfSunsetTime || (timePercent >= 0.5f - HalfSunsetTime && timePercent <= 0.5f + HalfSunsetTime))
-            m_SunsetStrength = 1;
-
-        // Common linear equation values
-        float gradient = 1 / FadeTime;
-        float interceptSunsetStart = 1 - gradient * (0.5 - HalfSunsetTime);
-        float interceptSunsetEnd = 1 + gradient * (0.5 + HalfSunsetTime);
-        float interceptSunriseStart = 1 - gradient * (1 - HalfSunsetTime);
-        float interceptSunriseEnd = 1 + gradient * (HalfSunsetTime);
-
-        // Starting sunset
-        if (timePercent > 0.5f - HalfSunsetTime - FadeTime && timePercent < 0.5f - HalfSunsetTime)
-            m_SunsetStrength = gradient * timePercent + interceptSunsetStart;
-
-        // Ending sunset
-        if (timePercent < 0.5f + HalfSunsetTime + FadeTime && timePercent > 0.5f + HalfSunsetTime)
-            m_SunsetStrength = -gradient * timePercent + interceptSunsetEnd;
-
-        // Starting sunrise
-        if (timePercent > 1.0f - HalfSunsetTime - FadeTime && timePercent < 1.0f - HalfSunsetTime)
-            m_SunsetStrength = gradient * timePercent + interceptSunriseStart;
-
-        // Ending sunrise
-        if (timePercent < 0.0f + HalfSunsetTime + FadeTime && timePercent > 0.0f + HalfSunsetTime)
-            m_SunsetStrength = -gradient * timePercent + interceptSunriseEnd;
-
-        // Make the sunset more visible
-        m_SunsetStrength *= 2;
-    }
-
-    void SkyRenderer::Render()
-    {
-        // Since we draw after the scene, we use a trick to make sure the depth value is always 1
-        // This means we need to change the depth function though because otherwise we won't be able to actually write to the pixels
-        // But we still need depth testing
-        // Also disable depth buffer writing to prevent z-fighting from writing an inaccurate z value
-        glDepthFunc(GL_LEQUAL);
-        glDepthMask(false);
-
-        // Draw the sky
-        // Don't use Renderer.Draw, it is for normal objects
-        m_SkyMaterial->SkyDarkness = m_SkyDarkness;
-        m_SkyMaterial->SunsetStrength = m_SunsetStrength;
-        m_SkyMaterial->SunsetDirection = m_SunsetDirection;
-        m_SkyMesh->Draw(m_Transform);
-
-        // Draw the stars
-        if (m_SkyDarkness != 0)
-        {
-            m_StarMaterial->SkyDarkness = m_SkyDarkness;
-            m_StarMesh->DrawInstanced(m_TransformRotated, m_StarCount);
-        }
-
-        // TODO: redo sun and moon rendering
-        // TODO: add glow to the sun and moon
-        // Sun
-        // TODO: for every matrix below, it should probably be calculated in the prepare function to avoid wasting performance
-        constexpr float SunScale = 0.1f;
-        m_SkyObjectMaterial->ObjectTexture = m_SunTexture;
-        m_SkyObjectMesh->Draw(m_TransformRotated * glm::eulerAngleY((float)-numbers::pi / 2.0f) * glm::translate(vec3(0, 0, -1.0f / SunScale)));
-
-        // Moon
-        // TODO: moon phases
-        // TODO: maybe make the moon travel slightly faster than the sun, especially if I add moon phases
-        // TODO: make moon fade with brightness
-        // TODO: dont render the moon when its alpha would be zero anyway
-        constexpr float MoonScale = 0.075f;
-        m_SkyObjectMaterial->ObjectTexture = m_MoonTexture;
-        m_SkyObjectMesh->Draw(m_TransformRotated * glm::eulerAngleY((float)numbers::pi / 2.0f) * glm::translate(vec3(0, 0, -1.0f / MoonScale)));
-
-        // Reset GL state
-        glDepthMask(true);
-        glDepthFunc(GL_LESS);
     }
 
     void SkyRenderer::PrepareSky()
@@ -334,50 +211,157 @@ namespace Minecraft
         VertexArray::Unbind();
     }
 
-    void SkyRenderer::PrepareSkyObjects()
+    void SkyRenderer::PrepareSunAndMoon()
     {
-        // Request textures
-        m_SunTexture = Instance->Graphics->RequestTexture("sky/sun");
-        m_MoonTexture = Instance->Graphics->RequestTexture("sky/moon");
-
         // Create the material
-        auto shader = Instance->Graphics->RequestShader("sky/sky-object");
-        m_SkyObjectMaterial = make_shared<SkyObjectMaterial>(shader);
+        auto sunTexture = Instance->Graphics->RequestTexture("sky/sun");
+        auto moonTexture = Instance->Graphics->RequestTexture("sky/moon");
 
-        // Create the vertex and index buffers
-        auto vertexBuffer = make_shared<VertexBuffer>();
-        auto indexBuffer = make_shared<IndexBuffer>();
+        auto shader = Instance->Graphics->RequestShader("sky/sun-moon");
+        m_SunAndMoonMaterial = make_shared<SunMoonMaterial>(shader);
+        m_SunAndMoonMaterial->SunTexture = sunTexture;
+        m_SunAndMoonMaterial->MoonTexture = moonTexture;
 
-        // Set the mesh data
-        vertexBuffer->SetData(
-            {
-                -1.0f, 1.0f, -1.0f,
-                0.0f, 1.0f,
-                -1.0f, -1.0f, -1.0f,
-                0.0f, 0.0f,
-                1.0f, -1.0f, -1.0f,
-                1.0f, 0.0f,
-                1.0f, 1.0f, -1.0f,
-                1.0f, 1.0f,
-            }
-        );
+        // Create the mesh
+        auto vertexBuffer = CreateQuadVertices();
+        auto indexBuffer = CreateQuadIndices();
 
-        indexBuffer->SetData(
-            {
-                0, 1, 2,
-                0, 2, 3,
-            }
-        );
-
-        // Create the vertex arrays
         auto vertexArray = make_shared<VertexArray>();
         vertexArray->PushFloat(3);
         vertexArray->PushFloat(2);
         vertexArray->AddBuffer(vertexBuffer);
 
-        // Create the meshes
-        m_SkyObjectMesh = make_shared<Mesh>(vertexArray);
-        m_SkyObjectMesh->AddMaterial(m_SkyObjectMaterial, indexBuffer);
+        m_SunAndMoonMesh = make_shared<Mesh>(vertexArray);
+        m_SunAndMoonMesh->AddMaterial(m_SunAndMoonMaterial, indexBuffer);
+
+        // Set transforms
+        auto sunTransform = Transform();
+        sunTransform.Position.x = 1;
+        sunTransform.Rotation = quat(glm::eulerAngleY(-numbers::pi / 2.0f));
+        sunTransform.Scale *= 0.25f;
+
+        auto moonTransform = Transform();
+        moonTransform.Position.x = -1;
+        moonTransform.Rotation = quat(glm::eulerAngleY(numbers::pi / 2.0f));
+        moonTransform.Scale *= 0.1f;
+
+        m_SunTransform = sunTransform.GetTransformationMatrix();
+        m_MoonTransform = moonTransform.GetTransformationMatrix();
+    }
+
+    void SkyRenderer::UpdateSkyDarkness(float timePercent)
+    {
+        // The night gets darker after dusk, and gets light before dawn
+        constexpr float FadeTime = 0.05f;
+
+        // While at night
+        m_SkyDarkness = 1;
+
+        // Don't show during the day
+        if (timePercent <= 0.5f)
+            m_SkyDarkness = 0;
+
+        // Common linear equation values
+        float gradient = 1 / FadeTime;
+        float interceptNightStart = -gradient * 0.5;
+        float interceptNightEnd = gradient;
+
+        // After dusk start fading in
+        if (0.5f < timePercent && timePercent < 0.5f + FadeTime)
+            m_SkyDarkness = gradient * timePercent + interceptNightStart;
+
+        // Before dawn start fading out
+        if (1 - FadeTime < timePercent && timePercent < 1)
+            m_SkyDarkness = -gradient * timePercent + interceptNightEnd;
+    }
+
+    void SkyRenderer::UpdateSunset(float timePercent)
+    {
+        // Update the sunset direction and coverage
+        // We need 90 - Angle because of the working out on paper
+        constexpr float Angle = glm::radians(90.0f - 30.0f);
+        m_SkyMaterial->SunsetCoverage = 0.25; // TODO: change this line
+        // TODO: change the coverage and angle dynamically
+        m_SunsetDirection = vec3(-cos(Angle), -sin(Angle), 0);
+
+        // Adjust for east/west with rise/set
+        m_SunsetDirection.x *= timePercent <= 0.75f && timePercent >= 0.25 ? 1 : -1;
+
+        // Update the strength
+        // Sunsets will fade in linearly, stay for a bit, then fade out
+        constexpr float FadeTime = 0.075;
+        constexpr float SunsetTime = 0.025f;
+        constexpr float HalfSunsetTime = SunsetTime / 2.0f;
+
+        // No sunset
+        m_SunsetStrength = 0;
+
+        // Yes sunset
+        if (timePercent <= HalfSunsetTime || timePercent >= 1 - HalfSunsetTime || (timePercent >= 0.5f - HalfSunsetTime && timePercent <= 0.5f + HalfSunsetTime))
+            m_SunsetStrength = 1;
+
+        // Common linear equation values
+        float gradient = 1 / FadeTime;
+        float interceptSunsetStart = 1 - gradient * (0.5 - HalfSunsetTime);
+        float interceptSunsetEnd = 1 + gradient * (0.5 + HalfSunsetTime);
+        float interceptSunriseStart = 1 - gradient * (1 - HalfSunsetTime);
+        float interceptSunriseEnd = 1 + gradient * (HalfSunsetTime);
+
+        // Starting sunset
+        if (timePercent > 0.5f - HalfSunsetTime - FadeTime && timePercent < 0.5f - HalfSunsetTime)
+            m_SunsetStrength = gradient * timePercent + interceptSunsetStart;
+
+        // Ending sunset
+        if (timePercent < 0.5f + HalfSunsetTime + FadeTime && timePercent > 0.5f + HalfSunsetTime)
+            m_SunsetStrength = -gradient * timePercent + interceptSunsetEnd;
+
+        // Starting sunrise
+        if (timePercent > 1.0f - HalfSunsetTime - FadeTime && timePercent < 1.0f - HalfSunsetTime)
+            m_SunsetStrength = gradient * timePercent + interceptSunriseStart;
+
+        // Ending sunrise
+        if (timePercent < 0.0f + HalfSunsetTime + FadeTime && timePercent > 0.0f + HalfSunsetTime)
+            m_SunsetStrength = -gradient * timePercent + interceptSunriseEnd;
+
+        // Make the sunset more visible
+        m_SunsetStrength *= 2;
+    }
+
+    void SkyRenderer::Render()
+    {
+        // Since we draw after the scene, we use a trick to make sure the depth value is always 1
+        // This means we need to change the depth function though because otherwise we won't be able to actually write to the pixels
+        // But we still need depth testing
+        // Also disable depth buffer writing to prevent z-fighting from writing an inaccurate z value
+        glDepthFunc(GL_LEQUAL);
+        glDepthMask(false);
+
+        // Draw the sky
+        // Don't use Renderer.Draw, it is for normal objects
+        m_SkyMaterial->SkyDarkness = m_SkyDarkness;
+        m_SkyMaterial->SunsetStrength = m_SunsetStrength;
+        m_SkyMaterial->SunsetDirection = m_SunsetDirection;
+        m_SkyMesh->Draw(m_Transform);
+
+        // Draw the stars
+        if (m_SkyDarkness != 0)
+        {
+            m_StarMaterial->SkyDarkness = m_SkyDarkness;
+            m_StarMesh->DrawInstanced(m_TransformRotated, m_StarCount);
+        }
+
+        // Sun and moon
+        m_SunAndMoonMaterial->SkyDarkness = m_SkyDarkness;
+
+        m_SunAndMoonMaterial->IsSun = true;
+        m_SunAndMoonMesh->Draw(m_TransformRotated * m_SunTransform);
+
+        m_SunAndMoonMaterial->IsSun = false;
+        m_SunAndMoonMesh->Draw(m_TransformRotated * m_MoonTransform);
+
+        // Reset GL state
+        glDepthMask(true);
+        glDepthFunc(GL_LESS);
     }
 
     shared_ptr <VertexBuffer> SkyRenderer::CreateQuadVertices()

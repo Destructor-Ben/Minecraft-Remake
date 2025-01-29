@@ -2,7 +2,6 @@
 
 namespace Minecraft
 {
-    // Base + instanced class that handles transformations in a 3D world
     class Transform
     {
     public:
