@@ -6,10 +6,14 @@ namespace Minecraft
     {
         const ulong a = 6364136223846793005ULL; // Multiplier
         const ulong c = 1442695040888963407ULL; // Increment
-        const ulong m = ULONG_LONG_MAX;
+        Seed = Seed * a + c; // LCG update
 
-        Seed = (a * Seed + c) % m;
-        return Seed;
+        // Recommended by ChatGPT, I'm not a hash expert, but it makes the distributions closer to their expected values
+        ulong x = Seed;
+        x ^= x >> 29;
+        x *= 0x94d049bb133111ebULL;
+        x ^= x >> 32;
+        return x;
     }
 
     int Random::NextInt(int min, int max)
@@ -26,12 +30,14 @@ namespace Minecraft
         if (min > max)
             throw std::runtime_error("min cannot be larger than max in NextFloat");
 
-        return min + (float)NextSeed() / (float)ULONG_LONG_MAX * (max - min);
+        // ChatGPT recommends this
+        double normalized = (NextSeed() & ((1ULL << 53) - 1)) * (1.0 / (1ULL << 53));
+        return (float)(min + normalized * (max - min));
     }
 
     bool Random::NextBool()
     {
-        return NextSeed() >> 16 & 1;
+        return NextSeed() & 1;
     }
 
     vec3 Random::NextPointOnSphere()

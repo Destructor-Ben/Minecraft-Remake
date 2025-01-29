@@ -2,6 +2,7 @@
 
 namespace Minecraft
 {
+    // TODO: create a tester for this
     // TODO: make sure all noise functions are good
     // TODO: consider amplitude and frequency params, structs for params, and either min and max values or 0 to 1 and -1 to 1
     class NoiseGenerator

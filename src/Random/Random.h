@@ -2,8 +2,6 @@
 
 namespace Minecraft
 {
-    // TODO: this needs rigorous testing, maybe just use the builtin random
-    // TODO: perhaps wrap Random around NoiseGenerator?
     class Random
     {
     public:

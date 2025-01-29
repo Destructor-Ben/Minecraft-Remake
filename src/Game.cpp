@@ -7,6 +7,7 @@
 #include "Graphics/Renderers/Renderer.h"
 #include "Graphics/Renderers/ChunkRenderer.h"
 #include "Graphics/Renderers/SkyRenderer.h"
+#include "Random/RandomTests.h"
 #include "World/World.h"
 
 namespace Minecraft
@@ -31,6 +32,10 @@ namespace Minecraft
         CurrentWorld = make_shared<World>();
 
         Renderer::UnbindAll();
+
+        // Running tests
+        // Uncomment to run them
+        // RunRandomTests();
     }
 
     void Game::Shutdown()
