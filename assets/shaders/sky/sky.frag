@@ -12,6 +12,12 @@ uniform sampler2D uNightGradient;
 
 out vec4 FragColor;
 
+// Used to fix color banding
+vec3 dither(vec3 color, vec2 uv) {
+    float noise = fract(sin(dot(uv, vec2(12.9898, 78.233))) * 43758.5453);
+    return color + (noise - 0.5) / 256.0;
+}
+
 void main()
 {
     vec3 coord = normalize(FragCoord);
@@ -25,6 +31,9 @@ void main()
 
     // Blend between day and night value
     vec3 col = mix(dayCol, nightCol, uSkyDarkness);
+
+    // Add dithering to prevent color banding
+    col = dither(col, gradientCoord);
 
     // Calculate the direction multiplier for the sunset color
     // Makes the orange more prominent near the sun
