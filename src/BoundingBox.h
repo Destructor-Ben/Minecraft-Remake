@@ -2,6 +2,7 @@
 
 namespace Minecraft
 {
+    // TODO: just use min and max and also do error checking if min > max
     struct BoundingBox
     {
         vec3 Origin = vec3(0);

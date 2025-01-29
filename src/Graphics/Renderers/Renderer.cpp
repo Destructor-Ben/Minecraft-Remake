@@ -34,6 +34,7 @@ namespace Minecraft
     void Renderer::DrawMesh(const Mesh& mesh, mat4 transform)
     {
         // Frustum culling
+        // TODO: mesh bounds should probably be affected by their transform? why is it like this? its actually kinda complicated
         if (mesh.Bounds.has_value() && !SceneCamera->Frustum.ContainsBounds(mesh.Bounds.value()))
             return;
 

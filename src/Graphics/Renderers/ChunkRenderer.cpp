@@ -7,8 +7,6 @@
 #include "World/Chunk.h"
 #include "World/World.h"
 
-// TODO: fix chunk bounding boxes - blocks are centered on their positions but the bounds dont account for that
-// - Should also center chunks while at it?
 namespace Minecraft
 {
     ChunkRenderer::ChunkRenderer()
@@ -39,9 +37,7 @@ namespace Minecraft
         if (!m_ChunkMeshes.contains(chunk.GetChunkPos()))
             RegenerateMesh(chunk);
 
-        Transform transform { };
-        transform.Position = chunk.GetWorldPos();
-        Instance->Graphics->DrawMesh(*m_ChunkMeshes[chunk.GetChunkPos()], transform.GetTransformationMatrix()); // TODO: just use glm::translate
+        Instance->Graphics->DrawMesh(*m_ChunkMeshes[chunk.GetChunkPos()], glm::translate(chunk.GetWorldPos()));
     }
 
     void ChunkRenderer::RegenerateMesh(Chunk& chunk)
@@ -69,6 +65,7 @@ namespace Minecraft
         vertexArray->PushFloat(3);
         vertexArray->AddBuffer(vertexBuffer);
 
+        // TODO: don't include chunk pos in the bounds
         auto bounds = BoundingBox(chunk.GetWorldPos(), vec3(chunk.Size));
         auto mesh = make_shared<Mesh>(vertexArray, bounds);
         mesh->AddMaterial(m_ChunkMaterial, indexBuffer);
@@ -139,6 +136,9 @@ namespace Minecraft
             face.Rotation = m_GrassPlantFaceRotation * quat(glm::eulerAngleZ(Degrees90 * i));
             SetFaceTexture(face, dir, block.Data.Type->GetTextureCoords(dir));
 
+            // Adjustment to make faces align with bounds
+            face.Position += vec3(0.5);
+
             faces.push_back(face);
         }
     }
@@ -164,6 +164,9 @@ namespace Minecraft
         face.Position += vec3(dir) * 0.5f;
         face.Rotation = rotation;
         SetFaceTexture(face, dir, block.Data.Type->GetTextureCoords(dir));
+
+        // Adjustment to make faces align with bounds
+        face.Position += vec3(0.5);
 
         // Add the face
         faces.push_back(face);
