@@ -3,7 +3,6 @@
 // TODO: moon phases
 // TODO: maybe make the moon travel slightly faster than the sun, especially if I add moon phases
 // TODO: new moon texture with glow
-// TODO: finish star twinkling
 // TODO: finish sky colors
 namespace Minecraft
 {
