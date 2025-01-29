@@ -11,7 +11,9 @@ namespace Minecraft
     public:
         float SkyDarkness = 0;
         float TemperatureStrength = 1;
+        float TwinkleStrength = 0;
         float MaxBrightness = 1;
+        float Time = 0;
         shared_ptr <Texture> StarTexture;
         shared_ptr <Texture> TemperatureGradient;
 

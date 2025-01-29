@@ -2,9 +2,9 @@
 
 // TODO: moon phases
 // TODO: maybe make the moon travel slightly faster than the sun, especially if I add moon phases
-// TODO: star twinkling
-// TODO: multiple star textures
-// TODO: glow for sun and moon
+// TODO: new moon texture with glow
+// TODO: finish star twinkling
+// TODO: finish sky colors
 namespace Minecraft
 {
     class Mesh;
@@ -53,6 +53,7 @@ namespace Minecraft
         shared_ptr<VertexBuffer> m_StarMatrixBuffer;
         shared_ptr<VertexBuffer> m_StarBrightnessBuffer;
         shared_ptr<VertexBuffer> m_StarTemperatureBuffer;
+        shared_ptr<VertexBuffer> m_StarTwinkleSpeedBuffer;
         shared_ptr<VertexBuffer> m_StarTwinkleOffsetBuffer;
         shared_ptr<VertexBuffer> m_StarTextureIndexBuffer;
 

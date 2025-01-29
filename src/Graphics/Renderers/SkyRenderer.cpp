@@ -18,26 +18,6 @@ namespace Minecraft
         PrepareSunAndMoon();
     }
 
-    void SkyRenderer::Update()
-    {
-        float timePercent = Instance->CurrentWorld->TimePercent;
-
-        // Calculate a custom matrix that doesn't include movement
-        mat4 projection = Instance->Graphics->SceneCamera->ProjectionMatrix;
-        mat4 view = Instance->Graphics->SceneCamera->ViewMatrix;
-        view = mat4(mat3(view)); // Remove translation
-        m_Transform = projection * view;
-
-        // Rotate the sky objects while time changes
-        // Z axis is east and west
-        float skyboxAngle = timePercent * 2 * numbers::pi;
-        m_TransformRotated = m_Transform * mat4(glm::eulerAngleZ(skyboxAngle));
-
-        // Update the sky values
-        UpdateSkyDarkness(timePercent);
-        UpdateSunset(timePercent);
-    }
-
     void SkyRenderer::PrepareSky()
     {
         // Request textures
@@ -117,8 +97,9 @@ namespace Minecraft
         // Create the material
         auto shader = Instance->Graphics->RequestShader("sky/star");
         m_StarMaterial = make_shared<StarMaterial>(shader);
-        m_StarMaterial->TemperatureStrength = 0.35;
-        m_StarMaterial->MaxBrightness = 0.9;
+        m_StarMaterial->TemperatureStrength = 0.35f;
+        m_StarMaterial->TwinkleStrength = 0.75f;
+        m_StarMaterial->MaxBrightness = 0.9f;
         m_StarMaterial->StarTexture = Instance->Graphics->RequestTexture("sky/star");
         m_StarMaterial->TemperatureGradient = Instance->Graphics->RequestTexture("sky/star-temperature");
         m_StarMaterial->TemperatureGradient->SetFilters(GL_LINEAR);
@@ -132,6 +113,7 @@ namespace Minecraft
         vector <mat4> starMatrix;
         vector<float> starBrightness;
         vector<float> starTemperature;
+        vector<float> starTwinkleSpeed;
         vector<float> starTwinkleOffset;
         vector<float> starTextureIndex; // TODO: make this buffer an int buffer
 
@@ -155,11 +137,13 @@ namespace Minecraft
             // Other values
             float brightness = starRandom.NextFloat();
             float temperature = starRandom.NextFloat();
+            float twinkleSpeed = starRandom.NextFloat(1.0f, 2.0f);
             float twinkleOffset = starRandom.NextFloat();
             int textureIndex = starRandom.NextInt(0, 2);
 
             starBrightness.push_back(brightness);
             starTemperature.push_back(temperature);
+            starTwinkleSpeed.push_back(twinkleSpeed);
             starTwinkleOffset.push_back(twinkleOffset);
             starTextureIndex.push_back(textureIndex);
         }
@@ -184,6 +168,9 @@ namespace Minecraft
 
         m_StarTemperatureBuffer = make_shared<VertexBuffer>();
         m_StarTemperatureBuffer->SetData(starTemperature.data(), starTemperature.size());
+
+        m_StarTwinkleSpeedBuffer = make_shared<VertexBuffer>();
+        m_StarTwinkleSpeedBuffer->SetData(starTwinkleSpeed.data(), starTwinkleSpeed.size());
 
         m_StarTwinkleOffsetBuffer = make_shared<VertexBuffer>();
         m_StarTwinkleOffsetBuffer->SetData(starTwinkleOffset.data(), starTwinkleOffset.size());
@@ -217,15 +204,20 @@ namespace Minecraft
         glVertexAttribPointer(7, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
         glVertexAttribDivisor(7, 1);
 
-        m_StarTwinkleOffsetBuffer->Bind();
+        m_StarTwinkleSpeedBuffer->Bind();
         glEnableVertexAttribArray(8);
         glVertexAttribPointer(8, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
         glVertexAttribDivisor(8, 1);
 
-        m_StarTextureIndexBuffer->Bind();
+        m_StarTwinkleOffsetBuffer->Bind();
         glEnableVertexAttribArray(9);
         glVertexAttribPointer(9, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
         glVertexAttribDivisor(9, 1);
+
+        m_StarTextureIndexBuffer->Bind();
+        glEnableVertexAttribArray(10);
+        glVertexAttribPointer(10, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
+        glVertexAttribDivisor(10, 1);
 
         m_StarMesh = make_shared<Mesh>(vertexArray);
         m_StarMesh->AddMaterial(m_StarMaterial, indexBuffer);
@@ -269,6 +261,29 @@ namespace Minecraft
 
         m_SunTransform = sunTransform.GetTransformationMatrix();
         m_MoonTransform = moonTransform.GetTransformationMatrix();
+    }
+
+    void SkyRenderer::Update()
+    {
+        float timePercent = Instance->CurrentWorld->TimePercent;
+
+        // Calculate a custom matrix that doesn't include movement
+        mat4 projection = Instance->Graphics->SceneCamera->ProjectionMatrix;
+        mat4 view = Instance->Graphics->SceneCamera->ViewMatrix;
+        view = mat4(mat3(view)); // Remove translation
+        m_Transform = projection * view;
+
+        // Rotate the sky objects while time changes
+        // Z axis is east and west
+        float skyboxAngle = timePercent * 2 * numbers::pi;
+        m_TransformRotated = m_Transform * mat4(glm::eulerAngleZ(skyboxAngle));
+
+        // Update star twinkle time
+        m_StarMaterial->Time = Instance->ElapsedSeconds;
+
+        // Update the sky values
+        UpdateSkyDarkness(timePercent);
+        UpdateSunset(timePercent);
     }
 
     void SkyRenderer::UpdateSkyDarkness(float timePercent)
