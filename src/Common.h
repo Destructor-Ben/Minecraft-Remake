@@ -46,6 +46,7 @@
 #include <glm/gtx/rotate_vector.hpp>
 #include <glm/gtx/norm.hpp>
 #include <stb_image.h>
+#include <stb_image_write.h>
 
 // Debug macro
 #ifndef NDEBUG
