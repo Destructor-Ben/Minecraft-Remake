@@ -4,6 +4,7 @@
 #include "World/BlockData.h"
 
 // TODO: make a macro for looping over all blocks in a chunk + also a chunk range loop for stuff like render distance
+// TODO: ability to export a biome map
 namespace Minecraft
 {
     static FractalNoiseParams TemperatureMap = { 359812, 6, 0.005f };
@@ -58,9 +59,20 @@ namespace Minecraft
         float moisture = m_Noise.Fractal2D(samplePos, MoistureMap);
 
         // Calculate biome from the lookup table
-        int temperatureIndex = std::round(temperature * m_BiomeMapSize);
-        int moistureIndex = std::round(moisture * m_BiomeMapSize);
+        int temperatureIndex = ValueToBiomeIndex(temperature);
+        int moistureIndex = ValueToBiomeIndex(moisture);
 
         return m_BiomeMap[temperatureIndex][moistureIndex];
+    }
+
+    int WorldGenerator::ValueToBiomeIndex(float value)
+    {
+        // Run through a sigmoid function to make biomes at the edge of the table less rare
+        // Increasing k make rare biomes less rare
+        const float k = 10.0f;
+        value = 1.0f / (1.0f + std::exp(-k * (value - 0.5f)));
+
+        // Lerp
+        return std::round(std::lerp(0.0f, m_BiomeMapSize - 1, value));
     }
 }

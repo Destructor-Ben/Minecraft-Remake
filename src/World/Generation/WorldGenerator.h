@@ -45,6 +45,7 @@ namespace Minecraft
 
         void InitBiomeMap();
         Biome* CalculateBiome(Block& block);
+        static int ValueToBiomeIndex(float value);
 
         static constexpr int m_BiomeMapSize = 4;
         array <array<Biome*, m_BiomeMapSize>, m_BiomeMapSize> m_BiomeMap;

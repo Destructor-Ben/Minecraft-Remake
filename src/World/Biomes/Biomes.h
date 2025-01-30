@@ -9,14 +9,14 @@ namespace Minecraft::Biomes
     inline unique_ptr<Biome> None = make_unique<Biome>();
 
     // Temperature
-    inline unique_ptr<Biome> Grassland = make_unique<Biome>();
-    inline unique_ptr<Biome> Forest = make_unique<Biome>();
+    inline unique_ptr<Biome> Grassland = make_unique<Biome>("Grassland");
+    inline unique_ptr<Biome> Forest = make_unique<Biome>("Forest");
 
     // Hot
-    inline unique_ptr<Biome> Desert = make_unique<Biome>();
-    inline unique_ptr<Biome> Jungle = make_unique<Biome>();
+    inline unique_ptr<Biome> Desert = make_unique<Biome>("Desert");
+    inline unique_ptr<Biome> Jungle = make_unique<Biome>("Jungle");
 
     // Cold
-    inline unique_ptr<Biome> Tundra = make_unique<Biome>();
-    inline unique_ptr<Biome> SnowyForest = make_unique<Biome>();
+    inline unique_ptr<Biome> Tundra = make_unique<Biome>("Tundra");
+    inline unique_ptr<Biome> SnowyForest = make_unique<Biome>("Snowy Forest");
 }

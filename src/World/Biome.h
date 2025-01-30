@@ -7,6 +7,6 @@ namespace Minecraft
     class Biome
     {
     public:
-        
+        string Name;
     };
 }
