@@ -21,7 +21,7 @@ namespace Minecraft
                 xCoord /= NoiseScale;
                 zCoord /= NoiseScale;
 
-                float noiseValue = m_Noise.Fractal2D(xCoord, zCoord);
+                float noiseValue = 0.0;// m_Noise.Fractal2D(xCoord, zCoord);
                 int height = (int)(noiseValue * Height);
 
                 // Set blocks

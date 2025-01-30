@@ -33,7 +33,7 @@ namespace Minecraft
                     // Place the thing
                     // TODO: proper random chances
                     const float Chance = 0.1f;
-                    if (m_Noise.White3D(x, yAbove, z) > Chance)
+                    if (true)//m_Noise.White3D(x, yAbove, z) > Chance)
                         continue;
 
                     blockAbove.Data.Type = Blocks::TallGrass.get();
@@ -71,10 +71,10 @@ namespace Minecraft
                     // Place the thing
                     // TODO: proper random chances - Since this uses the same noise map as the grass, it will fail to place when the chances are the same
                     const float Chance = 0.01f;
-                    if (m_Noise.White3D(x + 1024, yAbove + 1024, z + 1024) > Chance)
+                    if (true)//m_Noise.White3D(x + 1024, yAbove + 1024, z + 1024) > Chance)
                         continue;
 
-                    int height = round(glm::lerp(5.0f, 7.0f, m_Noise.White3D(x + 2048, y + 2048, z + 2048)));
+                    int height = round(glm::lerp(5.0f, 7.0f, 0.0f));//m_Noise.White3D(x + 2048, y + 2048, z + 2048)));
 
                     // Trunk
                     for (int yTrunk = 1; yTrunk <= height; ++yTrunk)

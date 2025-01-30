@@ -65,13 +65,13 @@ namespace Minecraft
     float WorldGenerator::SampleTemperatureMap(vec2 coords)
     {
         const float TemperatureMapScale = 1.0f / 10.0f;
-        return m_Noise.Fractal2D(coords * TemperatureMapScale);
+        return 0.0f;//m_Noise.Fractal2D(coords * TemperatureMapScale);
     }
 
     float WorldGenerator::SampleMoistureMap(vec2 coords)
     {
         const float MoistureMapScale = 1.0f / 10.0f;
         // TODO: more elegant way of handling offsets, probably just use a special seed for each map and modify the sample pos with it
-        return m_Noise.Fractal2D(coords * MoistureMapScale + vec2(79487.193f, 3247123.00939f));
+        return 0.0f;//m_Noise.Fractal2D(coords * MoistureMapScale + vec2(79487.193f, 3247123.00939f));
     }
 }
