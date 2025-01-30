@@ -37,8 +37,6 @@ namespace Minecraft
         int ScreenHeight = 0;
 
         // Managers
-        // TODO: maybe unique ptrs make more sense, since reference counting isn't needed? (except for world ofc)
-        // Could also just store a value on the stack, but we do want to init these in a certain order
         shared_ptr<LogManager> Logger = nullptr;
         shared_ptr<InputManager> Input = nullptr;
         shared_ptr<ResourceManager> Resources = nullptr;
