@@ -3,7 +3,6 @@
 namespace Minecraft
 {
     // Note that no error checking happens with this because I want min and max to be exposed
-    // TODO: verify frustum culling and debug bounds rendering still work
     struct BoundingBox
     {
         vec3 Min = vec3(0);

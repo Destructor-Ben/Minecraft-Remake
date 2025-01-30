@@ -156,7 +156,6 @@ namespace Minecraft
 
     #pragma region Loops
 
-    // TODO: either multithread or allow ticks to run separately from updates
     void Game::Run()
     {
         glfwSetTime(0);

@@ -77,9 +77,18 @@ namespace Minecraft
 
     string LogManager::GetMessage(const string& message, const string& logLevel)
     {
-        // TODO: this is the wrong timezone
-        auto time = chrono::system_clock::now();
-        string timeString = format("{:%H:%M:}{:%S}", time, chrono::duration_cast<chrono::milliseconds>(time.time_since_epoch()));
+        auto now = std::chrono::system_clock::now();
+        std::time_t nowCTime = std::chrono::system_clock::to_time_t(now);
+        std::tm localTime = *std::localtime(&nowCTime);
+        auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
+
+        string timeString = format(
+            "{:02}:{:02}:{:02}.{:03}",
+            localTime.tm_hour,
+            localTime.tm_min,
+            localTime.tm_sec,
+            milliseconds.count()
+        );
 
         return format("[{}] [{}] {}\n", timeString, logLevel, message);
     }
