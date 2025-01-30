@@ -10,7 +10,6 @@
 
 namespace Minecraft
 {
-    // TODO: RenderChunks method instead of doing the loop in World
     ChunkRenderer::ChunkRenderer()
     {
         auto shader = Instance->Resources->RequestShader("chunk");
@@ -34,24 +33,39 @@ namespace Minecraft
         Instance->Graphics->DebugDrawBounds(chunkBounds.value(), glm::translate(ChunkToWorldPos(playerChunkPos)), vec3(1, 1, 0));
     }
 
-    // TODO: don't submit draw calls for empty chunk meshes
+    void ChunkRenderer::RenderChunks(const vector<Chunk*>& chunks)
+    {
+        for (auto* chunk : chunks)
+        {
+            chunk->Render();
+        }
+    }
+
     void ChunkRenderer::RenderChunk(Chunk& chunk)
     {
         if (!m_ChunkMeshes.contains(chunk.GetChunkPos()))
             RegenerateMesh(chunk);
+
+        if (m_IsChunkMeshEmpty.at(chunk.GetChunkPos()))
+            return;
 
         Instance->Graphics->DrawMesh(*m_ChunkMeshes[chunk.GetChunkPos()], glm::translate(chunk.GetWorldPos()));
     }
 
     void ChunkRenderer::RegenerateMesh(Chunk& chunk)
     {
+        m_IsChunkMeshEmpty[chunk.GetChunkPos()] = false;
+
         if (!m_ChunkMeshes.contains(chunk.GetChunkPos()))
             CreateMesh(chunk);
 
         auto faces = GetChunkFaces(chunk);
 
         if (faces.empty())
+        {
+            m_IsChunkMeshEmpty[chunk.GetChunkPos()] = true;
             return;
+        }
 
         auto vertices = Quad::ToVertices(faces);
         SetMeshData(chunk, Vertex::ToFloats(vertices), Vertex::ToIndices(vertices));
@@ -130,7 +144,6 @@ namespace Minecraft
         // TODO: should the backfaces mirror instead of being flipped?
         for (int i = 0; i < 4; ++i)
         {
-            // TODO: proper direction
             vec3i dir = vec3i();
 
             Quad face { };
@@ -183,12 +196,9 @@ namespace Minecraft
         face.UVMultiplier = vec2(m_BlockTextureSizeInUVCoords.x, m_BlockTextureSizeInUVCoords.y);
     }
 
-    // TODO: blocks such as grass and leaves will eventually have grey and will be tinted based on biome colour
-    // TODO: make a deferred renderer that doesn't use shading in the mesh
     vec3 ChunkRenderer::GetFaceTint(vec3i dir)
     {
         // Shading for lighting
-        // TODO: redo this system to allow for shading in non axis directions
         float strength = 1;
 
         if (dir.x > 0)

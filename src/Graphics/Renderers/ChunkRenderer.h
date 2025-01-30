@@ -24,6 +24,7 @@ namespace Minecraft
 
         ChunkRenderer();
 
+        void RenderChunks(const vector<Chunk*>& chunks);
         void RenderChunk(Chunk& chunk);
         void RegenerateMesh(Chunk& chunk);
 
@@ -67,5 +68,6 @@ namespace Minecraft
         shared_ptr <ChunkMaterial> m_ChunkMaterial;
 
         unordered_map <vec3i, shared_ptr<Mesh>> m_ChunkMeshes = { };
+        unordered_map<vec3i, bool> m_IsChunkMeshEmpty = { };
     };
 }

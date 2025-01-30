@@ -17,6 +17,7 @@ namespace Minecraft
 
         return { *this, blockX, blockY, blockZ, GetBlockData(GetBlockID(blockX, blockY, blockZ)) };
     }
+    
     uint Chunk::GetBlockID(byte blockX, byte blockY, byte blockZ)
     {
         return blockX * Size * Size + blockY * Size + blockZ;

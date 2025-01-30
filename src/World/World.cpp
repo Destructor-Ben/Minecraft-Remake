@@ -117,10 +117,7 @@ namespace Minecraft
 
     void World::Render()
     {
-        for (auto* chunk : GetRenderedChunks())
-        {
-            chunk->Render();
-        }
+        Instance->ChunkGraphics->RenderChunks(GetRenderedChunks());
 
         if (Instance->ChunkGraphics->DrawChunkBorders)
             Instance->ChunkGraphics->RenderDebugChunkBorders();
@@ -196,7 +193,7 @@ namespace Minecraft
         }
 
         TimePercent = Time / DayLength;
-        IsDay = Time >= Dawn && Time < Dusk;
+        IsDay = Time > Dawn && Time < Dusk;
     }
 
     void World::UpdateCamera()
@@ -206,7 +203,7 @@ namespace Minecraft
 
         const float sensitivity = 0.005f;
         const float maxAngle = glm::radians(89.0f);
-        float speed = 10.0f * Instance->DeltaTime;
+        float speed = 12.5f * Instance->DeltaTime;
 
         // Rotation
         m_CameraPitch -= Instance->Input->GetMousePosDelta().y * sensitivity;
