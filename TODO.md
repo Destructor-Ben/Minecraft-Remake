@@ -8,15 +8,9 @@
         - BlockOffset
         - BlockPos
         - WorldPos
-        - Maybe make chunk positions (origins) their center instead of corner
-            - Blocks already are, also check that they are done correctly
 
 - Partial transparency support for blocks
-- Entities
-- ECS for entities and blocks
 - Make all chunk loops that use radii circle instead of squares
-- Finish the sky renderer
-- Cloud renderer
 - Make all materials automatically request their shaders? it makes no sense to make them not do it since it is passed in anyway
 
 ## Build System

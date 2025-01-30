@@ -14,19 +14,15 @@ namespace Minecraft
 
     void WorldGenerator::Generate(int spawnRadius, int minHeight, int maxHeight)
     {
-        for (int x = -spawnRadius + 1; x < spawnRadius; ++x)
-        {
-            for (int z = -spawnRadius + 1; z < spawnRadius; ++z)
+        for_chunk_in_radius_2D(x, z, spawnRadius, {
+            for (int y = minHeight; y <= maxHeight; ++y)
             {
-                for (int y = minHeight; y <= maxHeight; ++y)
-                {
-                    auto chunkPos = vec3i(x, y, z);
-                    Chunk chunk(x, y, z);
-                    Generate(chunk);
-                    m_World->Chunks[chunkPos] = chunk;
-                }
+                auto chunkPos = vec3i(x, y, z);
+                Chunk chunk(x, y, z);
+                Generate(chunk);
+                m_World->Chunks[chunkPos] = chunk;
             }
-        }
+        })
     }
 
     void WorldGenerator::GenerateChunksAroundPlayer(vec3 playerPos, int radius, int minHeight, int maxHeight)
@@ -37,44 +33,37 @@ namespace Minecraft
         // So we queue them and use a set
         auto regenerateMeshQueue = set<Chunk*>();
 
-        for (int x = -radius + 1; x < radius; ++x)
-        {
-            for (int y = -radius + 1; y < radius; ++y)
-            {
-                for (int z = -radius + 1; z < radius; ++z)
-                {
-                    // Calculate chunk pos
-                    auto chunkPos = vec3i(x, y, z);
-                    chunkPos += playerChunkPos;
+        for_chunk_in_radius(x, y, z, radius, {
+            // Calculate chunk pos
+            auto chunkPos = vec3i(x, y, z);
+            chunkPos += playerChunkPos;
 
-                    // Check if the y position is out of bounds
-                    if (chunkPos.y < minHeight || chunkPos.y > maxHeight)
-                        continue;
+            // Check if the y position is out of bounds
+            if (chunkPos.y < minHeight || chunkPos.y > maxHeight)
+                continue;
 
-                    // Check if the chunk exists
-                    auto existingChunk = m_World->GetChunk(chunkPos);
-                    if (existingChunk.has_value())
-                        continue;
+            // Check if the chunk exists
+            auto existingChunk = m_World->GetChunk(chunkPos);
+            if (existingChunk.has_value())
+                continue;
 
-                    // Generate the chunk
-                    Chunk chunk(chunkPos.x, chunkPos.y, chunkPos.z);
-                    Generate(chunk); // Fucking value references get me sometimes, this needs to go BEFORE we set it, otherwise the empty chunk is copied to the Chunks map
-                    m_World->Chunks[chunkPos] = chunk;
+            // Generate the chunk
+            Chunk chunk(chunkPos.x, chunkPos.y, chunkPos.z);
+            Generate(chunk); // Fucking value references get me sometimes, this needs to go BEFORE we set it, otherwise the empty chunk is copied to the Chunks map
+            m_World->Chunks[chunkPos] = chunk;
 
-                    // Add chunks to re-mesh queue
-                    AddChunkIfExists(regenerateMeshQueue, chunkPos);
+            // Add chunks to re-mesh queue
+            AddChunkIfExists(regenerateMeshQueue, chunkPos);
 
-                    AddChunkIfExists(regenerateMeshQueue, chunkPos + vec3i(1, 0, 0));
-                    AddChunkIfExists(regenerateMeshQueue, chunkPos + vec3i(-1, 0, 0));
+            AddChunkIfExists(regenerateMeshQueue, chunkPos + vec3i(1, 0, 0));
+            AddChunkIfExists(regenerateMeshQueue, chunkPos + vec3i(-1, 0, 0));
 
-                    AddChunkIfExists(regenerateMeshQueue, chunkPos + vec3i(0, 1, 0));
-                    AddChunkIfExists(regenerateMeshQueue, chunkPos + vec3i(0, -1, 0));
+            AddChunkIfExists(regenerateMeshQueue, chunkPos + vec3i(0, 1, 0));
+            AddChunkIfExists(regenerateMeshQueue, chunkPos + vec3i(0, -1, 0));
 
-                    AddChunkIfExists(regenerateMeshQueue, chunkPos + vec3i(0, 0, 1));
-                    AddChunkIfExists(regenerateMeshQueue, chunkPos + vec3i(0, 0, -1));
-                }
-            }
-        }
+            AddChunkIfExists(regenerateMeshQueue, chunkPos + vec3i(0, 0, 1));
+            AddChunkIfExists(regenerateMeshQueue, chunkPos + vec3i(0, 0, -1));
+        })
 
         // Regenerate chunk meshes
         for (auto chunk : regenerateMeshQueue)

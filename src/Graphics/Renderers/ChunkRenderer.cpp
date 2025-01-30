@@ -98,28 +98,21 @@ namespace Minecraft
     {
         vector <Quad> faces;
 
-        for (int x = 0; x < Chunk::Size; ++x)
-        {
-            for (int y = 0; y < Chunk::Size; ++y)
-            {
-                for (int z = 0; z < Chunk::Size; ++z)
-                {
-                    auto block = chunk.GetBlock(x, y, z);
+        for_block_in_chunk(x, y, z, {
+            auto block = chunk.GetBlock(x, y, z);
 
-                    switch (block.Data.Type->MeshType)
-                    {
-                        case BlockMeshType::None:
-                            break;
-                        case BlockMeshType::SolidCube:
-                            SolidCubeMesh(block, faces);
-                            break;
-                        case BlockMeshType::GrassPlant:
-                            GrassPlantMesh(block, faces);
-                            break;
-                    }
-                }
+            switch (block.Data.Type->MeshType)
+            {
+                case BlockMeshType::None:
+                    break;
+                case BlockMeshType::SolidCube:
+                    SolidCubeMesh(block, faces);
+                    break;
+                case BlockMeshType::GrassPlant:
+                    GrassPlantMesh(block, faces);
+                    break;
             }
-        }
+        })
 
         return faces;
     }

@@ -12,9 +12,9 @@ namespace Minecraft
         const int MinHeight = -20;
         const int MaxHeight = 20;
 
-        for (int x = 0; x < Chunk::Size; x++)
+        for (int x = 0; x < Chunk::Size; ++x)
         {
-            for (int z = 0; z < Chunk::Size; z++)
+            for (int z = 0; z < Chunk::Size; ++z)
             {
                 // Generate height
                 float xCoord = x + chunk.GetWorldPos().x;

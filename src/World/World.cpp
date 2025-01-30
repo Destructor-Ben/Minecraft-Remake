@@ -160,25 +160,18 @@ namespace Minecraft
 
         auto playerChunkPos = WorldToChunkPos(PlayerCamera.Position);
 
-        for (int x = -radius + 1; x < radius; ++x)
-        {
-            for (int y = -radius + 1; y < radius; ++y)
-            {
-                for (int z = -radius + 1; z < radius; ++z)
-                {
-                    // Calculate chunk pos
-                    auto chunkPos = vec3i(x, y, z);
-                    chunkPos += playerChunkPos;
+        for_chunk_in_radius(x, y, z, radius, {
+            // Calculate chunk pos
+            auto chunkPos = vec3i(x, y, z);
+            chunkPos += playerChunkPos;
 
-                    // Add the chunk
-                    auto chunk = GetChunk(chunkPos);
-                    if (!chunk.has_value())
-                        continue;
+            // Add the chunk
+            auto chunk = GetChunk(chunkPos);
+            if (!chunk.has_value())
+                continue;
 
-                    chunks.push_back(chunk.value());
-                }
-            }
-        }
+            chunks.push_back(chunk.value());
+        })
     }
 
     void World::TickTime()

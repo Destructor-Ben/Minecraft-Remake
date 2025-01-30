@@ -5,6 +5,23 @@
 #include "World/Chunk.h"
 #include "World/Generation/WorldGenerator.h"
 
+#define for_block_in_chunk(blockX, blockY, blockZ, body) \
+for (int blockX = 0; blockX < Chunk::Size; ++blockX) \
+for (int blockY = 0; blockY < Chunk::Size; ++blockY) \
+for (int blockZ = 0; blockZ < Chunk::Size; ++blockZ) \
+body
+
+#define for_chunk_in_radius(chunkX, chunkY, chunkZ, radius, body) \
+for (int chunkX = -radius + 1; chunkX < radius; ++chunkX) \
+for (int chunkY = -radius + 1; chunkY < radius; ++chunkY) \
+for (int chunkZ = -radius + 1; chunkZ < radius; ++chunkZ) \
+body
+
+#define for_chunk_in_radius_2D(chunkX, chunkZ, radius, body) \
+for (int chunkX = -radius + 1; chunkX < radius; ++chunkX) \
+for (int chunkZ = -radius + 1; chunkZ < radius; ++chunkZ) \
+body
+
 namespace Minecraft
 {
     // Utility functions to convert between different coordinate systems

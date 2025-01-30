@@ -3,7 +3,6 @@
 #include "World/World.h"
 #include "World/BlockData.h"
 
-// TODO: make a macro for looping over all blocks in a chunk + also a chunk range loop for stuff like render distance
 // TODO: ability to export a biome map
 namespace Minecraft
 {
@@ -38,17 +37,10 @@ namespace Minecraft
 
     void WorldGenerator::GenerateBiomes(Chunk& chunk)
     {
-        for (int x = 0; x < Chunk::Size; ++x)
-        {
-            for (int y = 0; y < Chunk::Size; ++y)
-            {
-                for (int z = 0; z < Chunk::Size; ++z)
-                {
-                    auto block = chunk.GetBlock(x, y, z);
-                    block.Data.Biome = CalculateBiome(block);
-                }
-            }
-        }
+        for_block_in_chunk(x, y, z, {
+            auto block = chunk.GetBlock(x, y, z);
+            block.Data.Biome = CalculateBiome(block);
+        })
     }
 
     Biome* WorldGenerator::CalculateBiome(Block& block)
