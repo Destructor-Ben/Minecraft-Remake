@@ -13,27 +13,27 @@ namespace Minecraft
     void WorldGenerator::InitBiomeMap()
     {
         // Cold
-        m_BiomeMap[0][0] = Biomes::Tundra.get();
-        m_BiomeMap[0][1] = Biomes::Tundra.get();
-        m_BiomeMap[0][2] = Biomes::SnowyForest.get();
-        m_BiomeMap[0][3] = Biomes::SnowyForest.get();
+        m_BiomeMap[0][0] = Biomes::Tundra;
+        m_BiomeMap[0][1] = Biomes::Tundra;
+        m_BiomeMap[0][2] = Biomes::SnowyForest;
+        m_BiomeMap[0][3] = Biomes::SnowyForest;
 
         // Temperature
-        m_BiomeMap[1][0] = Biomes::Grassland.get();
-        m_BiomeMap[1][1] = Biomes::Grassland.get();
-        m_BiomeMap[2][0] = Biomes::Grassland.get();
-        m_BiomeMap[2][1] = Biomes::Grassland.get();
+        m_BiomeMap[1][0] = Biomes::Grassland;
+        m_BiomeMap[1][1] = Biomes::Grassland;
+        m_BiomeMap[2][0] = Biomes::Grassland;
+        m_BiomeMap[2][1] = Biomes::Grassland;
 
-        m_BiomeMap[1][2] = Biomes::Forest.get();
-        m_BiomeMap[1][3] = Biomes::Forest.get();
-        m_BiomeMap[2][2] = Biomes::Forest.get();
-        m_BiomeMap[2][3] = Biomes::Forest.get();
+        m_BiomeMap[1][2] = Biomes::Forest;
+        m_BiomeMap[1][3] = Biomes::Forest;
+        m_BiomeMap[2][2] = Biomes::Forest;
+        m_BiomeMap[2][3] = Biomes::Forest;
 
         // Hot
-        m_BiomeMap[3][0] = Biomes::Desert.get();
-        m_BiomeMap[3][1] = Biomes::Desert.get();
-        m_BiomeMap[3][2] = Biomes::Jungle.get();
-        m_BiomeMap[3][3] = Biomes::Jungle.get();
+        m_BiomeMap[3][0] = Biomes::Desert;
+        m_BiomeMap[3][1] = Biomes::Desert;
+        m_BiomeMap[3][2] = Biomes::Jungle;
+        m_BiomeMap[3][3] = Biomes::Jungle;
     }
 
     void WorldGenerator::GenerateBiomes(Chunk& chunk)

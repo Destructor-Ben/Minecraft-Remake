@@ -4,19 +4,27 @@
 
 namespace Minecraft::Biomes
 {
-    // TODO: for biomes, blocks, and all other data, make a CreateBiome function that returns a raw ptr and stores the smart one in a vector
-    // TODO: make a proper biome list
-    inline unique_ptr<Biome> None = make_unique<Biome>();
+    inline vector<shared_ptr<Biome>> BiomeList = { };
+
+    template<typename... Params>
+    inline Biome* CreateBiome(Params... params)
+    {
+        auto biome = make_shared<Biome>(params...);
+        BiomeList.push_back(biome);
+        return biome.get();
+    }
+
+    inline Biome* None = CreateBiome("None");
 
     // Temperature
-    inline unique_ptr<Biome> Grassland = make_unique<Biome>("Grassland");
-    inline unique_ptr<Biome> Forest = make_unique<Biome>("Forest");
+    inline Biome* Grassland = CreateBiome("Grassland");
+    inline Biome* Forest = CreateBiome("Forest");
 
     // Hot
-    inline unique_ptr<Biome> Desert = make_unique<Biome>("Desert");
-    inline unique_ptr<Biome> Jungle = make_unique<Biome>("Jungle");
+    inline Biome* Desert = CreateBiome("Desert");
+    inline Biome* Jungle = CreateBiome("Jungle");
 
     // Cold
-    inline unique_ptr<Biome> Tundra = make_unique<Biome>("Tundra");
-    inline unique_ptr<Biome> SnowyForest = make_unique<Biome>("Snowy Forest");
+    inline Biome* Tundra = CreateBiome("Tundra");
+    inline Biome* SnowyForest = CreateBiome("Snowy Forest");
 }

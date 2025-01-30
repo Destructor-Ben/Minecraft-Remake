@@ -12,6 +12,6 @@ namespace Minecraft
     {
     public:
         BlockType* Type = Blocks::Air.get();
-        Biome* Biome = Biomes::None.get();
+        Biome* Biome = Biomes::None;
     };
 }

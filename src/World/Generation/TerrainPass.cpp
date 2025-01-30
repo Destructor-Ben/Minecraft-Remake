@@ -34,17 +34,17 @@ namespace Minecraft
 
                     if (yPos == height)
                     {
-                        if (block.Data.Biome == Biomes::Grassland.get())
+                        if (block.Data.Biome == Biomes::Grassland)
                             type = Blocks::Grass.get();
-                        else if (block.Data.Biome == Biomes::Forest.get())
+                        else if (block.Data.Biome == Biomes::Forest)
                             type = Blocks::Wood.get();
-                        else if (block.Data.Biome == Biomes::Desert.get())
+                        else if (block.Data.Biome == Biomes::Desert)
                             type = Blocks::Sand.get();
-                        else if (block.Data.Biome == Biomes::Jungle.get())
+                        else if (block.Data.Biome == Biomes::Jungle)
                             type = Blocks::Leaves.get();
-                        else if (block.Data.Biome == Biomes::Tundra.get())
+                        else if (block.Data.Biome == Biomes::Tundra)
                             type = Blocks::IronOre.get();
-                        else if (block.Data.Biome == Biomes::SnowyForest.get())
+                        else if (block.Data.Biome == Biomes::SnowyForest)
                             type = Blocks::Clay.get();
                     }
 
