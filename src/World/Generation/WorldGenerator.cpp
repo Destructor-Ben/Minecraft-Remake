@@ -90,8 +90,6 @@ namespace Minecraft
             chunks.insert(chunk.value());
     }
 
-    // TODO: make a NoiseMap object that will store the parameters and can be sampled easily?
-    // TODO: make random number/bool generation easier with a util method that offsets the input coordinates
     // This is to stop a single block always getting a good random value
     // This would mean chests that spawn tend to be filled with good loot
     void WorldGenerator::Generate(Chunk& chunk)

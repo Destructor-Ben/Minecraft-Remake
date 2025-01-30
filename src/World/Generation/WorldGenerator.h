@@ -45,8 +45,6 @@ namespace Minecraft
 
         void InitBiomeMap();
         Biome* CalculateBiome(Block& block);
-        float SampleTemperatureMap(vec2 coords);
-        float SampleMoistureMap(vec2 coords);
 
         static constexpr int m_BiomeMapSize = 4;
         array <array<Biome*, m_BiomeMapSize>, m_BiomeMapSize> m_BiomeMap;

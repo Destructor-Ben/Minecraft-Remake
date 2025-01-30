@@ -6,6 +6,9 @@
 // TODO: make a macro for looping over all blocks in a chunk + also a chunk range loop for stuff like render distance
 namespace Minecraft
 {
+    static FractalNoiseParams TemperatureMap = { 359812, 6, 0.005f };
+    static FractalNoiseParams MoistureMap = { 9128461, 6, 0.01f };
+
     void WorldGenerator::InitBiomeMap()
     {
         // Cold
@@ -51,27 +54,13 @@ namespace Minecraft
     {
         // Sample the maps
         vec2 samplePos = vec2(block.GetWorldPos().x, block.GetWorldPos().z);
-        float temperature = SampleTemperatureMap(samplePos);
-        float moisture = SampleMoistureMap(samplePos);
+        float temperature = m_Noise.Fractal2D(samplePos, TemperatureMap);
+        float moisture = m_Noise.Fractal2D(samplePos, MoistureMap);
 
         // Calculate biome from the lookup table
-        int temperatureIndex = m_BiomeMapSize - round(temperature * m_BiomeMapSize);
-        int moistureIndex = m_BiomeMapSize - round(moisture * m_BiomeMapSize);
+        int temperatureIndex = std::round(temperature * m_BiomeMapSize);
+        int moistureIndex = std::round(moisture * m_BiomeMapSize);
 
         return m_BiomeMap[temperatureIndex][moistureIndex];
-    }
-
-    // TODO: weird issue where the input position can't be a whole number?
-    float WorldGenerator::SampleTemperatureMap(vec2 coords)
-    {
-        const float TemperatureMapScale = 1.0f / 10.0f;
-        return 0.0f;//m_Noise.Fractal2D(coords * TemperatureMapScale);
-    }
-
-    float WorldGenerator::SampleMoistureMap(vec2 coords)
-    {
-        const float MoistureMapScale = 1.0f / 10.0f;
-        // TODO: more elegant way of handling offsets, probably just use a special seed for each map and modify the sample pos with it
-        return 0.0f;//m_Noise.Fractal2D(coords * MoistureMapScale + vec2(79487.193f, 3247123.00939f));
     }
 }

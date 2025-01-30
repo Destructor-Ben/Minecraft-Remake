@@ -7,6 +7,8 @@ namespace Minecraft
 {
     void WorldGenerator::GenerateDecorations(Chunk& chunk)
     {
+        // TODO: redo
+        /*/
         // Generate trees and grass
         for (int x = 0; x < Chunk::Size; x++)
         {
@@ -146,5 +148,6 @@ namespace Minecraft
                 }
             }
         }
+         //*/
     }
 }

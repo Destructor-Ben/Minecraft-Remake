@@ -5,10 +5,12 @@
 
 namespace Minecraft
 {
+    static FractalNoiseParams HeightMap = { 9548762, 8, 0.05f };
+
     void WorldGenerator::GenerateTerrain(Chunk& chunk)
     {
-        const int NoiseScale = 25.0f;
-        const int Height = 25.0f;
+        const int MinHeight = -20;
+        const int MaxHeight = 20;
 
         for (int x = 0; x < Chunk::Size; x++)
         {
@@ -18,11 +20,8 @@ namespace Minecraft
                 float xCoord = x + chunk.GetWorldPos().x;
                 float zCoord = z + chunk.GetWorldPos().z;
 
-                xCoord /= NoiseScale;
-                zCoord /= NoiseScale;
-
-                float noiseValue = 0.0;// m_Noise.Fractal2D(xCoord, zCoord);
-                int height = (int)(noiseValue * Height);
+                float noiseValue = m_Noise.Fractal2D(xCoord, zCoord, HeightMap);
+                int height = std::lerp(MinHeight, MaxHeight, noiseValue);
 
                 // Set blocks
                 for (int y = 0; y < Chunk::Size; ++y)
