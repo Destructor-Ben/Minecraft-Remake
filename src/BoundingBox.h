@@ -2,17 +2,18 @@
 
 namespace Minecraft
 {
-    // TODO: just use min and max and also do error checking if min > max
+    // Note that no error checking happens with this because I want min and max to be exposed
+    // TODO: verify frustum culling and debug bounds rendering still work
     struct BoundingBox
     {
-        vec3 Origin = vec3(0);
-        vec3 Size = vec3(1);
+        vec3 Min = vec3(0);
+        vec3 Max = vec3(1);
 
-        BoundingBox(vec3 origin, vec3 size) : Origin(origin), Size(size) { }
+        BoundingBox(vec3 min, vec3 max) : Min(min), Max(max) { }
+
+        vec3 GetSize() const { return Max - Min; }
 
         bool ContainsPoint(vec3 point) const;
-
-        vec3 GetMin() const { return Origin; }
-        vec3 GetMax() const { return Origin + Size; }
+        BoundingBox Transformed(mat4 transform) const;
     };
 }

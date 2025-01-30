@@ -10,6 +10,7 @@
 
 namespace Minecraft
 {
+    // TODO: RenderChunks method instead of doing the loop in World
     ChunkRenderer::ChunkRenderer()
     {
         auto shader = Instance->Resources->RequestShader("chunk");
@@ -30,9 +31,10 @@ namespace Minecraft
             return;
 
         auto chunkBounds = m_ChunkMeshes.at(playerChunkPos)->Bounds;
-        Instance->Graphics->DebugDrawBounds(chunkBounds.value(), vec3(1, 1, 0));
+        Instance->Graphics->DebugDrawBounds(chunkBounds.value(), glm::translate(ChunkToWorldPos(playerChunkPos)), vec3(1, 1, 0));
     }
 
+    // TODO: don't submit draw calls for empty chunk meshes
     void ChunkRenderer::RenderChunk(Chunk& chunk)
     {
         if (!m_ChunkMeshes.contains(chunk.GetChunkPos()))
@@ -66,8 +68,7 @@ namespace Minecraft
         vertexArray->PushFloat(3);
         vertexArray->AddBuffer(vertexBuffer);
 
-        // TODO: don't include chunk pos in the bounds
-        auto bounds = BoundingBox(chunk.GetWorldPos(), vec3(chunk.Size));
+        auto bounds = BoundingBox(vec3(0), vec3(Chunk::Size));
         auto mesh = make_shared<Mesh>(vertexArray, bounds);
         mesh->AddMaterial(m_ChunkMaterial, indexBuffer);
         m_ChunkMeshes[chunk.GetChunkPos()] = mesh;

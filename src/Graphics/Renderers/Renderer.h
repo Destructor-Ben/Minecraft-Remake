@@ -30,7 +30,7 @@ namespace Minecraft
 
         void InitDebugMeshes();
         void DebugDrawPoint(vec3 point, vec3 color);
-        void DebugDrawBounds(BoundingBox bounds, vec3 color);
+        void DebugDrawBounds(const BoundingBox& bounds, mat4 transform, vec3 color);
 
         // TODO: these functions are useless, once binding is properly sorted, remove unbindall
         static void UnbindAll();

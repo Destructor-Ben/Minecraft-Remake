@@ -34,9 +34,15 @@ namespace Minecraft
     void Renderer::DrawMesh(const Mesh& mesh, mat4 transform)
     {
         // Frustum culling
-        // TODO: mesh bounds should probably be affected by their transform? why is it like this? its actually kinda complicated
-        if (mesh.Bounds.has_value() && !SceneCamera->Frustum.ContainsBounds(mesh.Bounds.value()))
-            return;
+        if (mesh.Bounds.has_value())
+        {
+            // Transform the bounds
+            auto bounds = mesh.Bounds.value().Transformed(transform);
+
+            // Check if the frustum contains the bounds
+            if (!SceneCamera->Frustum.ContainsBounds(bounds))
+                return;
+        }
 
         mesh.Draw(SceneCamera->ProjectionViewMatrix * transform);
     }
@@ -131,17 +137,18 @@ namespace Minecraft
         DrawMesh(*m_DebugPointMesh, transform);
     }
 
-    void Renderer::DebugDrawBounds(BoundingBox bounds, vec3 color)
+    void Renderer::DebugDrawBounds(const BoundingBox& bounds, mat4 transform, vec3 color)
     {
         glDisable(GL_CULL_FACE);
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-        auto transform = glm::translate(bounds.Origin);
-        transform *= glm::scale(bounds.Size);
+        auto transformedBounds = bounds.Transformed(transform);
+        auto meshTransform = glm::translate(transformedBounds.Min);
+        meshTransform *= glm::scale(transformedBounds.GetSize());
 
         m_DebugMaterial->Color = color;
         m_DebugMaterial->DrawCircle = false;
-        DrawMesh(*m_DebugBoundsMesh, transform);
+        DrawMesh(*m_DebugBoundsMesh, meshTransform);
 
         glEnable(GL_CULL_FACE);
         if (!DrawWireframes)

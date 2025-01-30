@@ -79,26 +79,26 @@ namespace Minecraft
         for (const auto& plane : m_Planes)
         {
             // Compute the positive and negative vertices relative to the plane normal
-            vec3 positiveVertex = bounds.GetMin();
-            vec3 negativeVertex = bounds.GetMax();
+            vec3 positiveVertex = bounds.Min;
+            vec3 negativeVertex = bounds.Max;
             vec3 normal = vec3(plane);
 
             if (normal.x >= 0)
             {
-                positiveVertex.x = bounds.GetMax().x;
-                negativeVertex.x = bounds.GetMin().x;
+                positiveVertex.x = bounds.Max.x;
+                negativeVertex.x = bounds.Min.x;
             }
 
             if (normal.y >= 0)
             {
-                positiveVertex.y = bounds.GetMax().y;
-                negativeVertex.y = bounds.GetMin().y;
+                positiveVertex.y = bounds.Max.y;
+                negativeVertex.y = bounds.Min.y;
             }
 
             if (normal.z >= 0)
             {
-                positiveVertex.z = bounds.GetMax().z;
-                negativeVertex.z = bounds.GetMin().z;
+                positiveVertex.z = bounds.Max.z;
+                negativeVertex.z = bounds.Min.z;
             }
 
             // Check if the AABB is completely outside the plane
