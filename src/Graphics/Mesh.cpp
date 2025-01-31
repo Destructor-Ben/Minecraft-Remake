@@ -2,25 +2,16 @@
 
 #include "Graphics/IndexBuffer.h"
 #include "Graphics/Material.h"
+#include "Graphics/Shader.h"
 #include "Graphics/VertexArray.h"
 
 namespace Minecraft
 {
-    void Mesh::AddMaterial(shared_ptr <Material> material, shared_ptr <IndexBuffer> indexBuffer)
-    {
-        m_Materials[material] = indexBuffer;
-    }
-
-    shared_ptr <IndexBuffer> Mesh::GetIndexBuffer(const shared_ptr <Material>& material)
-    {
-        return m_Materials.at(material);
-    }
-
     void Mesh::Draw(mat4 transform) const
     {
         Vertices->Bind();
 
-        for (auto [material, indexBuffer] : m_Materials)
+        for (auto [material, indexBuffer] : Materials)
         {
             indexBuffer->Bind();
             material->Transform = transform;
@@ -29,6 +20,8 @@ namespace Minecraft
             glDrawElements(GL_TRIANGLES, (int)indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
         }
 
+        IndexBuffer::Unbind();
+        Shader::Unbind();
         VertexArray::Unbind();
     }
 
@@ -36,7 +29,7 @@ namespace Minecraft
     {
         Vertices->Bind();
 
-        for (auto [material, indexBuffer] : m_Materials)
+        for (auto [material, indexBuffer] : Materials)
         {
             indexBuffer->Bind();
             material->Transform = transform;
@@ -45,6 +38,8 @@ namespace Minecraft
             glDrawElementsInstanced(GL_TRIANGLES, (int)indexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr, count);
         }
 
+        IndexBuffer::Unbind();
+        Shader::Unbind();
         VertexArray::Unbind();
     }
 }

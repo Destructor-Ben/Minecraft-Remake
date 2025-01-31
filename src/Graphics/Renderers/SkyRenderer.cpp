@@ -90,7 +90,7 @@ namespace Minecraft
 
         // Create the mesh
         m_SkyMesh = make_shared<Mesh>(vertexArray);
-        m_SkyMesh->AddMaterial(m_SkyMaterial, indexBuffer);
+        m_SkyMesh->Materials[m_SkyMaterial] = indexBuffer;
     }
 
     void SkyRenderer::PrepareStars()
@@ -185,7 +185,7 @@ namespace Minecraft
         vertexArray->AddBuffer(starTextureIndexBuffer);
 
         m_StarMesh = make_shared<Mesh>(vertexArray);
-        m_StarMesh->AddMaterial(m_StarMaterial, indexBuffer);
+        m_StarMesh->Materials[m_StarMaterial] = indexBuffer;
 
         VertexArray::Unbind();
     }
@@ -211,7 +211,7 @@ namespace Minecraft
         vertexArray->AddBuffer(vertexBuffer);
 
         m_SunAndMoonMesh = make_shared<Mesh>(vertexArray);
-        m_SunAndMoonMesh->AddMaterial(m_SunAndMoonMaterial, indexBuffer);
+        m_SunAndMoonMesh->Materials[m_SunAndMoonMaterial] = indexBuffer;
 
         // Set transforms
         auto sunTransform = Transform();

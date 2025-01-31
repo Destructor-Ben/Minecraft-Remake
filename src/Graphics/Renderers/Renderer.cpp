@@ -77,7 +77,7 @@ namespace Minecraft
         pointVertexArray->AddBuffer(pointVertexBuffer);
 
         m_DebugPointMesh = make_shared<Mesh>(pointVertexArray);
-        m_DebugPointMesh->AddMaterial(m_DebugMaterial, pointIndexBuffer);
+        m_DebugPointMesh->Materials[m_DebugMaterial] = pointIndexBuffer;
 
         // Create bounds mesh
         float boundsVertices[] = {
@@ -123,7 +123,7 @@ namespace Minecraft
         boundsVertexArray->AddBuffer(boundsVertexBuffer);
 
         m_DebugBoundsMesh = make_shared<Mesh>(boundsVertexArray);
-        m_DebugBoundsMesh->AddMaterial(m_DebugMaterial, boundsIndexBuffer);
+        m_DebugBoundsMesh->Materials[m_DebugMaterial] = boundsIndexBuffer;
     }
 
     void Renderer::DebugDrawPoint(vec3 point, vec3 color)

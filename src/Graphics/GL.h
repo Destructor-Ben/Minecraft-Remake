@@ -2,7 +2,7 @@
 
 // TODO: reuse shaders and meshes more, i did design this so i can
 // TODO: rework Quad and Vertex
-// TODO: rework materials
+// TODO: rework materials - keep in mind that Shader.SetUniform doesn't do any bining
 
 // Includes all utils from the GL folder
 #include "Camera.h"

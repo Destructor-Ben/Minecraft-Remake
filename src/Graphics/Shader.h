@@ -47,7 +47,7 @@ namespace Minecraft
     private:
         int GetUniformLocation(const string& name);
 
-        map<string, int> m_UniformCache = { };
+        unordered_map<string, int> m_UniformCache = { };
 
         uint m_ID = 0;
     };

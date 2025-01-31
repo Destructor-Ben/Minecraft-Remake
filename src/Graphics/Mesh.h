@@ -12,17 +12,12 @@ namespace Minecraft
     {
     public:
         shared_ptr <VertexArray> Vertices;
+        unordered_map <shared_ptr<Material>, shared_ptr<IndexBuffer>> Materials;
         optional <BoundingBox> Bounds;
 
         Mesh(shared_ptr <VertexArray> vertexArray, optional <BoundingBox> bounds = nullopt) : Vertices(vertexArray), Bounds(bounds) { }
 
-        void AddMaterial(shared_ptr <Material> material, shared_ptr <IndexBuffer> indexBuffer);
-        shared_ptr <IndexBuffer> GetIndexBuffer(const shared_ptr <Material>& material);
-
         void Draw(mat4 transform) const;
         void DrawInstanced(mat4 transform, int count) const;
-
-    private:
-        unordered_map <shared_ptr<Material>, shared_ptr<IndexBuffer>> m_Materials;
     };
 }

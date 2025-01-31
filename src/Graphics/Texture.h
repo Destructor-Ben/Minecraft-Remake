@@ -8,10 +8,20 @@ namespace Minecraft
         Texture();
         ~Texture();
 
-        // Important to remember that generating a mip map doesn't set the mip map filters
-        // Set wrapping mode and filters before data if generating a mip map - However, I believe this is only a convention
-        void SetWrappingMode(GLenum mode);
+        Texture(const Texture& other) = delete;
+        Texture(Texture&& other) = delete;
+        Texture& operator =(const Texture& other) = delete;
+        Texture& operator =(Texture&& other) = delete;
+
+        void SetSWrappingMode(GLenum mode);
+        void SetTWrappingMode(GLenum mode);
+        void SetWrappingModes(GLenum mode);
+
+        void SetMinFilter(GLenum filter);
+        void SetMagFilter(GLenum filter);
         void SetFilters(GLenum filter);
+
+        // Important to remember that generating a mip map doesn't set the mip map filters to actually use the mip map
         void GenerateMipMap();
         void SetData(byte* data, int width, int height, int format = GL_RGB);
 

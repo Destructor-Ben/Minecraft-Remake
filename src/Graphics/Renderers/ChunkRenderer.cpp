@@ -84,14 +84,14 @@ namespace Minecraft
 
         auto bounds = BoundingBox(vec3(0), vec3(Chunk::Size));
         auto mesh = make_shared<Mesh>(vertexArray, bounds);
-        mesh->AddMaterial(m_ChunkMaterial, indexBuffer);
+        mesh->Materials[m_ChunkMaterial] = indexBuffer;
         m_ChunkMeshes[chunk.GetChunkPos()] = mesh;
     }
 
     void ChunkRenderer::SetMeshData(Chunk& chunk, const vector<float>& vertices, const vector <uint>& indices)
     {
         m_ChunkMeshes[chunk.GetChunkPos()]->Vertices->Buffers[0]->SetData(vertices, GL_DYNAMIC_DRAW);
-        m_ChunkMeshes[chunk.GetChunkPos()]->GetIndexBuffer(m_ChunkMaterial)->SetData(indices, GL_DYNAMIC_DRAW);
+        m_ChunkMeshes[chunk.GetChunkPos()]->Materials[m_ChunkMaterial]->SetData(indices, GL_DYNAMIC_DRAW);
     }
 
     vector <Quad> ChunkRenderer::GetChunkFaces(Chunk& chunk)
