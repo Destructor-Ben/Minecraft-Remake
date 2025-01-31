@@ -30,29 +30,29 @@ namespace Minecraft
                     float yPos = block.GetWorldPos().y;
 
                     // Set the block type
-                    auto type = Blocks::Air.get();
+                    auto type = Blocks::Air;
 
                     if (yPos == height)
                     {
                         if (block.Data.Biome == Biomes::Grassland)
-                            type = Blocks::Grass.get();
+                            type = Blocks::Grass;
                         else if (block.Data.Biome == Biomes::Forest)
-                            type = Blocks::Wood.get();
+                            type = Blocks::Wood;
                         else if (block.Data.Biome == Biomes::Desert)
-                            type = Blocks::Sand.get();
+                            type = Blocks::Sand;
                         else if (block.Data.Biome == Biomes::Jungle)
-                            type = Blocks::Leaves.get();
+                            type = Blocks::Leaves;
                         else if (block.Data.Biome == Biomes::Tundra)
-                            type = Blocks::IronOre.get();
+                            type = Blocks::IronOre;
                         else if (block.Data.Biome == Biomes::SnowyForest)
-                            type = Blocks::Clay.get();
+                            type = Blocks::Clay;
                     }
 
                     if (yPos < height)
-                        type = Blocks::Dirt.get();
+                        type = Blocks::Dirt;
 
                     if (yPos <= height - 2)
-                        type = Blocks::Stone.get();
+                        type = Blocks::Stone;
 
                     block.Data.Type = type;
                 }

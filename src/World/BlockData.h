@@ -11,7 +11,7 @@ namespace Minecraft
     class BlockData
     {
     public:
-        BlockType* Type = Blocks::Air.get();
+        BlockType* Type = Blocks::Air;
         Biome* Biome = Biomes::None;
     };
 }
