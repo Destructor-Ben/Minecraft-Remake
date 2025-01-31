@@ -19,10 +19,9 @@ namespace Minecraft
 
         void Bind();
 
-        void PushInt(int count, bool isInstanceData = false, bool convertTo01 = false);
-        void PushUInt(int count, bool isInstanceData = false, bool convertTo01 = false);
+        void PushInt(int count, bool isInstanceData = false, bool convertToFloat = false, bool normalized = false);
+        void PushUInt(int count, bool isInstanceData = false, bool convertToFloat = false, bool normalized = false);
         void PushFloat(int count, bool isInstanceData = false);
-        void PushBool(int count, bool isInstanceData = false);
         void PushMat4(bool isInstanceData = false);
 
         void AddBuffer(shared_ptr<VertexBuffer> buffer);
@@ -38,7 +37,8 @@ namespace Minecraft
             int Count = 0;
             int Size = 0;
             bool IsInstanceData = false;
-            bool Normalized = false; // Whether int types are normalized to 0-1
+            bool ShouldConvertToFloat = false;
+            bool IsNormalized = false; // Whether int types are normalized to 0-1
         };
 
         uint m_ID = 0;

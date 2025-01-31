@@ -24,32 +24,25 @@ namespace Minecraft
         glBindVertexArray(0);
     }
 
-    void VertexArray::PushInt(int count, bool isInstanceData, bool convertTo01)
+    void VertexArray::PushInt(int count, bool isInstanceData, bool convertToFloat, bool normalized)
     {
         int attributeSize = sizeof(int) * count;
         m_Stride += attributeSize;
-        m_Attributes.push_back({ GL_INT, count, attributeSize, isInstanceData, convertTo01 });
+        m_Attributes.push_back({ GL_INT, count, attributeSize, isInstanceData, convertToFloat, normalized });
     }
 
-    void VertexArray::PushUInt(int count, bool isInstanceData, bool convertTo01)
+    void VertexArray::PushUInt(int count, bool isInstanceData, bool convertToFloat, bool normalized)
     {
         int attributeSize = sizeof(uint) * count;
         m_Stride += attributeSize;
-        m_Attributes.push_back({ GL_UNSIGNED_INT, count, attributeSize, isInstanceData, convertTo01 });
+        m_Attributes.push_back({ GL_UNSIGNED_INT, count, attributeSize, isInstanceData, convertToFloat, normalized });
     }
 
     void VertexArray::PushFloat(int count, bool isInstanceData)
     {
         int attributeSize = sizeof(float) * count;
         m_Stride += attributeSize;
-        m_Attributes.push_back({ GL_FLOAT, count, attributeSize, isInstanceData, false });
-    }
-
-    void VertexArray::PushBool(int count, bool isInstanceData)
-    {
-        int attributeSize = sizeof(bool) * count;
-        m_Stride += attributeSize;
-        m_Attributes.push_back({ GL_BOOL, count, attributeSize, isInstanceData, false });
+        m_Attributes.push_back({ GL_FLOAT, count, attributeSize, isInstanceData });
     }
 
     void VertexArray::PushMat4(bool isInstanceData)
@@ -74,7 +67,11 @@ namespace Minecraft
 
             int attributeIndex = i + m_AttributeOffset;
             glEnableVertexAttribArray(attributeIndex);
-            glVertexAttribPointer(attributeIndex, attribute.Count, attribute.GLType, attribute.Normalized, (int)m_Stride, (void*)offset);
+
+            if (attribute.GLType == GL_FLOAT || attribute.ShouldConvertToFloat)
+                glVertexAttribPointer(attributeIndex, attribute.Count, attribute.GLType, attribute.IsNormalized, (int)m_Stride, (void*)offset);
+            else
+                glVertexAttribIPointer(attributeIndex, attribute.Count, attribute.GLType, (int)m_Stride, (void*)offset);
 
             // Make instance attributes update every instance
             if (attribute.IsInstanceData)

@@ -48,13 +48,6 @@ namespace Minecraft
         int m_StarCount = 0;
         shared_ptr<Mesh> m_StarMesh;
         shared_ptr<StarMaterial> m_StarMaterial;
-        // TODO: remove these buffers
-        shared_ptr<VertexBuffer> m_StarMatrixBuffer;
-        shared_ptr<VertexBuffer> m_StarBrightnessBuffer;
-        shared_ptr<VertexBuffer> m_StarTemperatureBuffer;
-        shared_ptr<VertexBuffer> m_StarTwinkleSpeedBuffer;
-        shared_ptr<VertexBuffer> m_StarTwinkleOffsetBuffer;
-        shared_ptr<VertexBuffer> m_StarTextureIndexBuffer;
 
         shared_ptr<Mesh> m_SunAndMoonMesh;
         shared_ptr<SunMoonMaterial> m_SunAndMoonMaterial;

@@ -38,10 +38,10 @@ void main()
 
     // Twinkling
     // Remap uTime to make a second cycle from 101
-    FragColor.a *= mix(uTwinkleStrength, 1.0f, cos(uTime * 2 * PI * TwinkleSpeed + TwinkleOffset) * 0.5 + 0.5);
+    FragColor.a *= mix(uTwinkleStrength, 1.0, cos(uTime * 2 * PI * TwinkleSpeed + TwinkleOffset) * 0.5 + 0.5);
 
     // Clamp to be safe
-    FragColor.a = clamp(FragColor.a, 0.0, uMaxBrightness);
+    FragColor.a = clamp(FragColor.a, 0.0, 1.0);
 
     if (FragColor.a == 0) {
         discard;

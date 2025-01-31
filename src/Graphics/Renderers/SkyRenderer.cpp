@@ -116,7 +116,7 @@ namespace Minecraft
         vector<float> starTemperature;
         vector<float> starTwinkleSpeed;
         vector<float> starTwinkleOffset;
-        vector<float> starTextureIndex; // TODO: make this buffer an int buffer
+        vector<int> starTextureIndex;
 
         Random starRandom(StarSeed);
 
@@ -153,41 +153,36 @@ namespace Minecraft
         auto vertexBuffer = CreateQuadVertices();
         auto indexBuffer = CreateQuadIndices();
 
-        m_StarMatrixBuffer = make_shared<VertexBuffer>();
-        m_StarMatrixBuffer->SetData((const float*)starMatrix.data(), starMatrix.size() * 16); // 16 floats per matrix
+        auto starMatrixBuffer = make_shared<VertexBuffer>();
+        auto starBrightnessBuffer = make_shared<VertexBuffer>();
+        auto starTemperatureBuffer = make_shared<VertexBuffer>();
+        auto starTwinkleSpeedBuffer = make_shared<VertexBuffer>();
+        auto starTwinkleOffsetBuffer = make_shared<VertexBuffer>();
+        auto starTextureIndexBuffer = make_shared<VertexBuffer>();
 
-        m_StarBrightnessBuffer = make_shared<VertexBuffer>();
-        m_StarBrightnessBuffer->SetData(starBrightness);
-
-        m_StarTemperatureBuffer = make_shared<VertexBuffer>();
-        m_StarTemperatureBuffer->SetData(starTemperature);
-
-        m_StarTwinkleSpeedBuffer = make_shared<VertexBuffer>();
-        m_StarTwinkleSpeedBuffer->SetData(starTwinkleSpeed);
-
-        m_StarTwinkleOffsetBuffer = make_shared<VertexBuffer>();
-        m_StarTwinkleOffsetBuffer->SetData(starTwinkleOffset);
-
-        // TODO: this will need to use a different function when its ints
-        m_StarTextureIndexBuffer = make_shared<VertexBuffer>();
-        m_StarTextureIndexBuffer->SetData(starTextureIndex);
+        starMatrixBuffer->SetData((const float*)starMatrix.data(), starMatrix.size() * 16); // 16 floats per matrix
+        starBrightnessBuffer->SetData(starBrightness);
+        starTemperatureBuffer->SetData(starTemperature);
+        starTwinkleSpeedBuffer->SetData(starTwinkleSpeed);
+        starTwinkleOffsetBuffer->SetData(starTwinkleOffset);
+        starTextureIndexBuffer->SetDataRaw(starTextureIndex.data(), starTextureIndex.size() * sizeof(int));
 
         auto vertexArray = make_shared<VertexArray>();
         vertexArray->PushFloat(3);
         vertexArray->PushFloat(2);
         vertexArray->AddBuffer(vertexBuffer);
         vertexArray->PushMat4(true);
-        vertexArray->AddBuffer(m_StarMatrixBuffer);
+        vertexArray->AddBuffer(starMatrixBuffer);
         vertexArray->PushFloat(1, true);
-        vertexArray->AddBuffer(m_StarBrightnessBuffer);
+        vertexArray->AddBuffer(starBrightnessBuffer);
         vertexArray->PushFloat(1, true);
-        vertexArray->AddBuffer(m_StarTemperatureBuffer);
+        vertexArray->AddBuffer(starTemperatureBuffer);
         vertexArray->PushFloat(1, true);
-        vertexArray->AddBuffer(m_StarTwinkleSpeedBuffer);
+        vertexArray->AddBuffer(starTwinkleSpeedBuffer);
         vertexArray->PushFloat(1, true);
-        vertexArray->AddBuffer(m_StarTwinkleOffsetBuffer);
-        vertexArray->PushFloat(1, true); // TODO: push int
-        vertexArray->AddBuffer(m_StarTextureIndexBuffer);
+        vertexArray->AddBuffer(starTwinkleOffsetBuffer);
+        vertexArray->PushInt(1, true);
+        vertexArray->AddBuffer(starTextureIndexBuffer);
 
         m_StarMesh = make_shared<Mesh>(vertexArray);
         m_StarMesh->AddMaterial(m_StarMaterial, indexBuffer);

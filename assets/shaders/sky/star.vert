@@ -8,7 +8,7 @@ layout (location = 6) in float iBrightness;
 layout (location = 7) in float iTemperature;
 layout (location = 8) in float iTwinkleSpeed;
 layout (location = 9) in float iTwinkleOffset;
-layout (location = 10) in float iTextureIndex;
+layout (location = 10) in int iTextureIndex;
 
 uniform mat4 uTransform;
 
@@ -26,7 +26,7 @@ void main()
     Temperature = iTemperature;
     TwinkleSpeed = iTwinkleSpeed;
     TwinkleOffset = iTwinkleOffset;
-    TextureIndex = int(iTextureIndex);
+    TextureIndex = iTextureIndex;
 
     vec4 position = uTransform * iTransform * iPosition;
     gl_Position = position.xyww;
