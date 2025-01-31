@@ -64,6 +64,8 @@ namespace Minecraft
         //   - Definitely profile
         // - Track the number of quads in each chunk and preallocate that when a mesh is regenerated
         //   - This only helps when breaking blocks however
+        // TODO: reuse this vector to avoid reallocating it
+        // - If I do that, then it will be much easier to prellocate the size
         auto faces = vector<Quad>();
         GetChunkFaces(chunk, faces);
 
@@ -73,6 +75,7 @@ namespace Minecraft
             return;
         }
 
+        // TODO: reuse these vectors to avoid reallocating them
         auto vertices = vector<float>();
         auto indices = vector<uint>();
         Quad::ToRawData(faces, vertices, indices);
