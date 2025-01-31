@@ -4,6 +4,7 @@ namespace Minecraft
 {
     class FragmentShader;
     class VertexShader;
+    class Texture;
 
     class Shader
     {
@@ -14,46 +15,33 @@ namespace Minecraft
         void Bind();
         uint GetID() const { return m_ID; }
 
-        template<typename T>
-        void SetUniform(const string& name, T value);
+        void SetUniform(const string& name, float value);
+        void SetUniform(const string& name, int value);
+        void SetUniform(const string& name, uint value);
+        void SetUniform(const string& name, bool value);
+
+        void SetUniform(const string& name, vec2 value);
+        void SetUniform(const string& name, vec2i value);
+
+        void SetUniform(const string& name, vec3 value);
+        void SetUniform(const string& name, vec3i value);
+
+        void SetUniform(const string& name, vec4 value);
+        void SetUniform(const string& name, vec4i value);
+
+        void SetUniform(const string& name, mat2 value);
+        void SetUniform(const string& name, mat3 value);
+        void SetUniform(const string& name, mat4 value);
+
+        void SetUniform(const string& name, shared_ptr<Texture> value, int slot);
 
         static void Unbind();
 
     private:
-        // TODO: cache uniform locations
         int GetUniformLocation(const string& name);
+
+        map<string, int> m_UniformCache = { };
 
         uint m_ID = 0;
     };
-
-    template<>
-    void Shader::SetUniform<float>(const string& name, float value);
-    template<>
-    void Shader::SetUniform<int>(const string& name, int value);
-    template<>
-    void Shader::SetUniform<uint>(const string& name, uint value);
-    template<>
-    void Shader::SetUniform<bool>(const string& name, bool value);
-
-    template<>
-    void Shader::SetUniform<vec2>(const string& name, vec2 value);
-    template<>
-    void Shader::SetUniform<vec2i>(const string& name, vec2i value);
-
-    template<>
-    void Shader::SetUniform<vec3>(const string& name, vec3 value);
-    template<>
-    void Shader::SetUniform<vec3i>(const string& name, vec3i value);
-
-    template<>
-    void Shader::SetUniform<vec4>(const string& name, vec4 value);
-    template<>
-    void Shader::SetUniform<vec4i>(const string& name, vec4i value);
-
-    template<>
-    void Shader::SetUniform<mat2>(const string& name, mat2 value);
-    template<>
-    void Shader::SetUniform<mat3>(const string& name, mat3 value);
-    template<>
-    void Shader::SetUniform<mat4>(const string& name, mat4 value);
 }

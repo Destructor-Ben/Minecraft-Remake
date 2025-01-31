@@ -14,11 +14,7 @@ namespace Minecraft
         m_Shader->SetUniform("uTwinkleStrength", TwinkleStrength);
         m_Shader->SetUniform("uMaxBrightness", MaxBrightness);
         m_Shader->SetUniform("uTime", Time);
-
-        StarTexture->BindTextureUnit(0);
-        m_Shader->SetUniform("uTexture", 0);
-
-        TemperatureGradient->BindTextureUnit(1);
-        m_Shader->SetUniform("uTemperatureGradient", 1);
+        m_Shader->SetUniform("uTexture", StarTexture, 0);
+        m_Shader->SetUniform("uTemperatureGradient", TemperatureGradient, 1);
     }
 }

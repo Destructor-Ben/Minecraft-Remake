@@ -14,16 +14,12 @@ namespace Minecraft
         if (IsSun)
         {
             m_Shader->SetUniform("uSkyDarkness", 1.0f);
-
-            SunTexture->BindTextureUnit(0);
-            m_Shader->SetUniform("uTexture", 0);
+            m_Shader->SetUniform("uTexture", SunTexture, 0);
         }
         else
         {
             m_Shader->SetUniform("uSkyDarkness", SkyDarkness);
-
-            MoonTexture->BindTextureUnit(0);
-            m_Shader->SetUniform("uTexture", 0);
+            m_Shader->SetUniform("uTexture", MoonTexture, 0);
         }
     }
 }

@@ -4,6 +4,7 @@
 #include "LogManager.h"
 #include "Graphics/VertexShader.h"
 #include "Graphics/FragmentShader.h"
+#include "Graphics/Texture.h"
 
 namespace Minecraft
 {
@@ -27,15 +28,8 @@ namespace Minecraft
 
     #pragma region Uniforms
 
-    template<typename T>
-    void Shader::SetUniform(const string& name, T value)
-    {
-        Instance->Logger->Throw("Unsupported data type for shader uniform");
-    }
-
     #define UNIFORM_FUNCTION(type, function) \
-    template<>\
-    void Shader::SetUniform<type>(const string& name, type value)\
+    void Shader::SetUniform(const string& name, type value)\
     {\
         int location = GetUniformLocation(name);\
         function;\
@@ -59,6 +53,13 @@ namespace Minecraft
     UNIFORM_FUNCTION(mat3, glUniformMatrix3fv(location, 1, false, glm::value_ptr(value)))
     UNIFORM_FUNCTION(mat4, glUniformMatrix4fv(location, 1, false, glm::value_ptr(value)))
 
+    // Textures are different because they also have a slot parameter
+    void Shader::SetUniform(const string& name, shared_ptr <Texture> value, int slot)
+    {
+        value->BindTextureUnit(slot);
+        SetUniform(name, slot);
+    }
+
     #pragma endregion
 
     void Shader::Unbind()
@@ -68,6 +69,14 @@ namespace Minecraft
 
     int Shader::GetUniformLocation(const string& name)
     {
-        return glGetUniformLocation(m_ID, name.c_str());
+        if (m_UniformCache.contains(name))
+            return m_UniformCache.at(name);
+
+        int location = glGetUniformLocation(m_ID, name.c_str());
+        if (location == -1)
+            Instance->Logger->Warn(format("Uniform '{}' wasn't found - Location was -1", name));
+
+        m_UniformCache[name] = location;
+        return location;
     }
 }
