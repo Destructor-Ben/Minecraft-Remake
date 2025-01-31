@@ -5,7 +5,6 @@ namespace Minecraft
     IndexBuffer::IndexBuffer() : m_ID(0), m_Count(0)
     {
         glGenBuffers(1, &m_ID);
-        Bind();
     }
 
     IndexBuffer::~IndexBuffer()
@@ -23,6 +22,7 @@ namespace Minecraft
         m_Count = count;
         Bind();
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, (slong)(count * sizeof(uint)), data, usage);
+        Unbind();
     }
 
     void IndexBuffer::Bind()

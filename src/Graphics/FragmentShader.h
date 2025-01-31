@@ -8,6 +8,11 @@ namespace Minecraft
         explicit FragmentShader(const string& source);
         ~FragmentShader();
 
+        FragmentShader(const FragmentShader& other) = delete;
+        FragmentShader(FragmentShader&& other) = delete;
+        FragmentShader& operator =(const FragmentShader& other) = delete;
+        FragmentShader& operator =(FragmentShader&& other) = delete;
+
         uint GetID() const { return m_ID; }
 
     private:

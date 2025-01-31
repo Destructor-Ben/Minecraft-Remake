@@ -7,19 +7,27 @@ namespace Minecraft
     class VertexArray
     {
     public:
+        vector <shared_ptr<VertexBuffer>> Buffers;
+
         VertexArray();
         ~VertexArray();
 
+        VertexArray(const VertexArray& other) = delete;
+        VertexArray(VertexArray&& other) = delete;
+        VertexArray& operator =(const VertexArray& other) = delete;
+        VertexArray& operator =(VertexArray&& other) = delete;
+
         void Bind();
 
-        // TODO: make more PushXX functions
-        // TODO: make AddBuffer also clear the stride and attributes
-        // This is so multiple buffers can be added
-        void PushFloat(int count, bool normalized = false);
+        void PushInt(int count, bool isInstanceData = false, bool convertTo01 = false);
+        void PushUInt(int count, bool isInstanceData = false, bool convertTo01 = false);
+        void PushFloat(int count, bool isInstanceData = false);
+        void PushBool(int count, bool isInstanceData = false);
+        void PushMat4(bool isInstanceData = false);
+
         void AddBuffer(shared_ptr<VertexBuffer> buffer);
 
         uint GetID() const { return m_ID; }
-        shared_ptr<VertexBuffer> GetBuffer() const { return m_Buffer; }
 
         static void Unbind();
 
@@ -29,16 +37,16 @@ namespace Minecraft
             int GLType = 0;
             int Count = 0;
             int Size = 0;
-            bool Normalized = false;
+            bool IsInstanceData = false;
+            bool Normalized = false; // Whether int types are normalized to 0-1
         };
 
         uint m_ID = 0;
-        shared_ptr<VertexBuffer> m_Buffer;
 
-        // How large one vertex is
-        uint m_Stride = 0;
+        // Offset used when multiple buffers are added
+        uint m_AttributeOffset = 0;
 
-        // The list of the attributes
-        vector<VertexAttribute> m_Attributes;
+        uint m_Stride = 0; // How large one vertex is
+        vector <VertexAttribute> m_Attributes; // The list of the attributes
     };
 }

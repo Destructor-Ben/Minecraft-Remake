@@ -5,7 +5,6 @@ namespace Minecraft
     VertexBuffer::VertexBuffer() : m_ID(0)
     {
         glGenBuffers(1, &m_ID);
-        Bind();
     }
 
     VertexBuffer::~VertexBuffer()
@@ -20,8 +19,14 @@ namespace Minecraft
 
     void VertexBuffer::SetData(const float* data, uint count, GLenum usage)
     {
+        SetDataRaw(data, count * sizeof(float), usage);
+    }
+
+    void VertexBuffer::SetDataRaw(const void* data, slong size, GLenum usage)
+    {
         Bind();
-        glBufferData(GL_ARRAY_BUFFER, (slong)(count * sizeof(float)), data, usage);
+        glBufferData(GL_ARRAY_BUFFER, size, data, usage);
+        Unbind();
     }
 
     void VertexBuffer::Bind()

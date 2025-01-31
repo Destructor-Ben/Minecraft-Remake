@@ -5,12 +5,18 @@ namespace Minecraft
     class FragmentShader;
     class VertexShader;
     class Texture;
+    class CubeMap;
 
     class Shader
     {
     public:
         Shader(const VertexShader& vertexShader, const FragmentShader& fragmentShader);
         ~Shader();
+
+        Shader(const Shader& other) = delete;
+        Shader(Shader&& other) = delete;
+        Shader& operator =(const Shader& other) = delete;
+        Shader& operator =(Shader&& other) = delete;
 
         void Bind();
         uint GetID() const { return m_ID; }
@@ -34,6 +40,7 @@ namespace Minecraft
         void SetUniform(const string& name, mat4 value);
 
         void SetUniform(const string& name, shared_ptr<Texture> value, int slot);
+        void SetUniform(const string& name, shared_ptr<CubeMap> value, int slot);
 
         static void Unbind();
 

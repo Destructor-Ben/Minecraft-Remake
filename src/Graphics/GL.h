@@ -1,8 +1,8 @@
 #pragma once
 
 // TODO: reuse shaders and meshes more, i did design this so i can
-// TODO: delete copy ctors of grapihcs resources
-// TODO: don't randomly bind stuff
+// TODO: rework Quad and Vertex
+// TODO: rework materials
 
 // Includes all utils from the GL folder
 #include "Camera.h"

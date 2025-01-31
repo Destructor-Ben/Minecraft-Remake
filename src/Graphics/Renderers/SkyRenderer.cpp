@@ -153,72 +153,41 @@ namespace Minecraft
         auto vertexBuffer = CreateQuadVertices();
         auto indexBuffer = CreateQuadIndices();
 
-        auto vertexArray = make_shared<VertexArray>();
-        vertexArray->PushFloat(3);
-        vertexArray->PushFloat(2);
-        vertexArray->AddBuffer(vertexBuffer);
-
-        // TODO: abstract all this fancy instancing stuff away
-        vertexArray->Bind();
-
         m_StarMatrixBuffer = make_shared<VertexBuffer>();
         m_StarMatrixBuffer->SetData((const float*)starMatrix.data(), starMatrix.size() * 16); // 16 floats per matrix
 
         m_StarBrightnessBuffer = make_shared<VertexBuffer>();
-        m_StarBrightnessBuffer->SetData(starBrightness.data(), starBrightness.size());
+        m_StarBrightnessBuffer->SetData(starBrightness);
 
         m_StarTemperatureBuffer = make_shared<VertexBuffer>();
-        m_StarTemperatureBuffer->SetData(starTemperature.data(), starTemperature.size());
+        m_StarTemperatureBuffer->SetData(starTemperature);
 
         m_StarTwinkleSpeedBuffer = make_shared<VertexBuffer>();
-        m_StarTwinkleSpeedBuffer->SetData(starTwinkleSpeed.data(), starTwinkleSpeed.size());
+        m_StarTwinkleSpeedBuffer->SetData(starTwinkleSpeed);
 
         m_StarTwinkleOffsetBuffer = make_shared<VertexBuffer>();
-        m_StarTwinkleOffsetBuffer->SetData(starTwinkleOffset.data(), starTwinkleOffset.size());
+        m_StarTwinkleOffsetBuffer->SetData(starTwinkleOffset);
 
+        // TODO: this will need to use a different function when its ints
         m_StarTextureIndexBuffer = make_shared<VertexBuffer>();
-        m_StarTextureIndexBuffer->SetData(starTextureIndex.data(), starTextureIndex.size());
+        m_StarTextureIndexBuffer->SetData(starTextureIndex);
 
-        m_StarMatrixBuffer->Bind();
-
-        for (int i = 0; i < 4; i++)
-        {
-            glEnableVertexAttribArray(2 + i);
-            glVertexAttribPointer(
-                2 + i,               // Attribute location
-                4,                   // vec4 per column
-                GL_FLOAT,            // Data type
-                GL_FALSE,            // Normalized
-                sizeof(glm::mat4),   // Stride (mat4 is 4 vec4s)
-                (void*)(i * sizeof(glm::vec4)) // Offset for each column
-            );
-            glVertexAttribDivisor(2 + i, 1); // Update once per instance
-        }
-
-        m_StarBrightnessBuffer->Bind();
-        glEnableVertexAttribArray(6);
-        glVertexAttribPointer(6, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
-        glVertexAttribDivisor(6, 1);
-
-        m_StarTemperatureBuffer->Bind();
-        glEnableVertexAttribArray(7);
-        glVertexAttribPointer(7, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
-        glVertexAttribDivisor(7, 1);
-
-        m_StarTwinkleSpeedBuffer->Bind();
-        glEnableVertexAttribArray(8);
-        glVertexAttribPointer(8, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
-        glVertexAttribDivisor(8, 1);
-
-        m_StarTwinkleOffsetBuffer->Bind();
-        glEnableVertexAttribArray(9);
-        glVertexAttribPointer(9, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
-        glVertexAttribDivisor(9, 1);
-
-        m_StarTextureIndexBuffer->Bind();
-        glEnableVertexAttribArray(10);
-        glVertexAttribPointer(10, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
-        glVertexAttribDivisor(10, 1);
+        auto vertexArray = make_shared<VertexArray>();
+        vertexArray->PushFloat(3);
+        vertexArray->PushFloat(2);
+        vertexArray->AddBuffer(vertexBuffer);
+        vertexArray->PushMat4(true);
+        vertexArray->AddBuffer(m_StarMatrixBuffer);
+        vertexArray->PushFloat(1, true);
+        vertexArray->AddBuffer(m_StarBrightnessBuffer);
+        vertexArray->PushFloat(1, true);
+        vertexArray->AddBuffer(m_StarTemperatureBuffer);
+        vertexArray->PushFloat(1, true);
+        vertexArray->AddBuffer(m_StarTwinkleSpeedBuffer);
+        vertexArray->PushFloat(1, true);
+        vertexArray->AddBuffer(m_StarTwinkleOffsetBuffer);
+        vertexArray->PushFloat(1, true); // TODO: push int
+        vertexArray->AddBuffer(m_StarTextureIndexBuffer);
 
         m_StarMesh = make_shared<Mesh>(vertexArray);
         m_StarMesh->AddMaterial(m_StarMaterial, indexBuffer);
