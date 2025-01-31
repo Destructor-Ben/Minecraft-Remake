@@ -281,7 +281,7 @@ namespace Minecraft
     {
         // Update the sunset direction and coverage
         // We need 90 - Angle because of the working out on paper
-        constexpr float Angle = glm::radians(90.0f - 30.0f);
+        constexpr float Angle = glm::radians(90.0f - 15.0f);
         m_SkyMaterial->SunsetCoverage = 0.25; // TODO: change this line
         // TODO: change the coverage and angle dynamically
         m_SunsetDirection = vec3(-cos(Angle), -sin(Angle), 0);
