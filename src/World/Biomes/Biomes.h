@@ -4,6 +4,7 @@
 
 namespace Minecraft::Biomes
 {
+    inline int BiomeCount = 0;
     inline vector<shared_ptr<Biome>> BiomeList = { };
 
     template<typename... Params>
@@ -11,6 +12,7 @@ namespace Minecraft::Biomes
     {
         auto biome = make_shared<Biome>(params...);
         BiomeList.push_back(biome);
+        BiomeCount++;
         return biome.get();
     }
 

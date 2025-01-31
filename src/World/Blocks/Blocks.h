@@ -9,6 +9,7 @@
 
 namespace Minecraft::Blocks
 {
+    inline int BlockCount = 0;
     inline vector<shared_ptr<BlockType>> BlockList = { };
 
     template<typename T, typename... Params>
@@ -16,6 +17,7 @@ namespace Minecraft::Blocks
     {
         auto block = make_shared<T>(params...);
         BlockList.push_back(block);
+        BlockCount++;
         return block.get();
     }
 
