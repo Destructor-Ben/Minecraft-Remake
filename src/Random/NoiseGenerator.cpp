@@ -3,7 +3,6 @@
 #include <random>
 
 #include "Game.h"
-#include "Hash.h"
 #include "LogManager.h"
 
 namespace Minecraft
@@ -17,24 +16,30 @@ namespace Minecraft
 
     float NoiseGenerator::White1D(float x, const WhiteNoiseParams& params) const
     {
-        ulong seed = params.Seed;
-        HashCombine(seed, m_Seed, FloatToHash(x));
+        ulong seed = params.Seed + m_Seed;
+        seed = seed * 0x9E3779B97F4A7C15ULL + FloatToHash(x);
+
         float value = HashToFloat(MurmurHash(seed));
         return params.Is0To1 ? value : value * 2 - 1;
     }
 
     float NoiseGenerator::White2D(float x, float y, const WhiteNoiseParams& params) const
     {
-        ulong seed = params.Seed;
-        HashCombine(seed, m_Seed, FloatToHash(x), FloatToHash(y));
+        ulong seed = params.Seed + m_Seed;
+        seed = seed * 0x9E3779B97F4A7C15ULL + FloatToHash(x);
+        seed = seed * 0x9E3779B97F4A7C15ULL + FloatToHash(y);
+
         float value = HashToFloat(MurmurHash(seed));
         return params.Is0To1 ? value : value * 2 - 1;
     }
 
     float NoiseGenerator::White3D(float x, float y, float z, const WhiteNoiseParams& params) const
     {
-        ulong seed = params.Seed;
-        HashCombine(seed, m_Seed, FloatToHash(x), FloatToHash(y), FloatToHash(z));
+        ulong seed = params.Seed + m_Seed;
+        seed = seed * 0x9E3779B97F4A7C15ULL + FloatToHash(x);
+        seed = seed * 0x9E3779B97F4A7C15ULL + FloatToHash(y);
+        seed = seed * 0x9E3779B97F4A7C15ULL + FloatToHash(z);
+
         float value = HashToFloat(MurmurHash(seed));
         return params.Is0To1 ? value : value * 2 - 1;
     }
