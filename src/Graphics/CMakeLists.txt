@@ -20,8 +20,6 @@ target_sources(Minecraft_Remake PRIVATE
     Shader.h
     Texture.cpp
     Texture.h
-    Vertex.cpp
-    Vertex.h
     VertexArray.cpp
     VertexArray.h
     VertexBuffer.cpp

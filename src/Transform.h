@@ -2,6 +2,7 @@
 
 namespace Minecraft
 {
+    // Base + instanced class to handle transformations
     class Transform
     {
     public:

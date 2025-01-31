@@ -14,7 +14,6 @@ namespace Minecraft
     class VertexBuffer;
     class World;
 
-    // TODO: implement greedy meshing - flat, adjacent block faces use the same quad
     class ChunkRenderer
     {
     public:
@@ -34,7 +33,7 @@ namespace Minecraft
         void CreateMesh(Chunk& chunk);
         void SetMeshData(Chunk& chunk, const vector<float>& vertices, const vector <uint>& indices);
 
-        vector <Quad> GetChunkFaces(Chunk& chunk);
+        void GetChunkFaces(Chunk& chunk, vector <Quad>& faces);
         void SolidCubeMesh(Block& block, vector <Quad>& faces);
         void GrassPlantMesh(Block& block, vector <Quad>& faces);
 

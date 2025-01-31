@@ -1,60 +1,60 @@
 #include "Quad.h"
 
-#include "Graphics/Vertex.h"
-
 namespace Minecraft
 {
-    /*
-    vector <Vertex> Quad::ToVertices()
+    static constexpr vec3 VertexPositions[4] = {
+        { -0.5f, 0, -0.5f },
+        { 0.5f,  0, -0.5f },
+        { -0.5f, 0, 0.5f },
+        { 0.5f,  0, 0.5f }
+    };
+
+    static constexpr vec2 VertexUVs[4] = {
+        { 0, 1 },
+        { 1, 1 },
+        { 0, 0 },
+        { 1, 0 }
+    };
+
+    void Quad::ToRawData(const vector <Quad>& quads, vector<float>& vertices, vector <uint>& indices)
     {
-        vector <Vertex> vertices { };
+        uint currentIndex = 0;
 
-        for (int i = 0; i < 4; ++i)
+        // Reserve memory - Guaranteed to know how big these will be
+        uint numQuads = quads.size();
+        vertices.reserve(numQuads * 4 * 8); // 4 vertices per quad, 8 floats per vertex
+        indices.reserve(numQuads * 6); // 6 indices per quad
+
+        for (const auto& quad : quads)
         {
-            Vertex vertex { };
+            auto transform = quad.GetTransformationMatrix();
 
-            switch (i)
+            // Add vertices
+            for (int i = 0; i < 4; ++i)
             {
-                case 0:
-                    vertex.Position = vec3(-0.5f, 0, -0.5f);
-                    vertex.UV = vec2(0, 1);
-                    break;
-                case 1:
-                    vertex.Position = vec3(0.5f, 0, -0.5f);
-                    vertex.UV = vec2(1, 1);
-                    break;
-                case 2:
-                    vertex.Position = vec3(-0.5f, 0, 0.5f);
-                    vertex.UV = vec2(0, 0);
-                    break;
-                case 3:
-                    vertex.Position = vec3(0.5f, 0, 0.5f);
-                    vertex.UV = vec2(1, 0);
-                    break;
-                default:
-                    break;
+                vec4 vertexPos = transform * vec4(VertexPositions[i], 1.0f);
+                vec2 vertexUVs = VertexUVs[i] * quad.UVScale + quad.UVPosition;
+
+                vertices.insert(vertices.end(), {
+                    // Position
+                    vertexPos.x, vertexPos.y, vertexPos.z,
+                    // UVs
+                    vertexUVs.x, vertexUVs.y,
+                    // Shading
+                    quad.Shading.r, quad.Shading.g, quad.Shading.b,
+                });
             }
 
-            vertex.Position = vec3(GetTransformationMatrix() * vec4(vertex.Position, 1.0f));
-            vertex.Shading = Shading;
-            vertex.UV *= UVMultiplier;
-            vertex.UV += UVOffset;
-            vertices.push_back(vertex);
+            // Add indices
+            indices.insert(indices.end(), {
+                // Triangle 1
+                currentIndex + 2, currentIndex + 1, currentIndex,
+                // Triangle 2
+                currentIndex + 1, currentIndex + 2, currentIndex + 3,
+            });
+
+            // Increment index counter by 4 since we added 4 vertices
+            currentIndex += 4;
         }
-
-        return vertices;
     }
-
-    vector <Vertex> Quad::ToVertices(vector <Quad> quads)
-    {
-        auto vertices = vector<Vertex>();
-
-        for (auto quad : quads)
-        {
-            vertices.insert_range(vertices.end(), quad.ToVertices());
-        }
-
-        return vertices;
-    }
-     */
 }

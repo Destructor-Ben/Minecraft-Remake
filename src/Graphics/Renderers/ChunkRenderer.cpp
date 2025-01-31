@@ -59,7 +59,13 @@ namespace Minecraft
         if (!m_ChunkMeshes.contains(chunk.GetChunkPos()))
             CreateMesh(chunk);
 
-        auto faces = GetChunkFaces(chunk);
+        // TODO: preallocate size
+        // - Possibly just estimate with say 50% of the max faces
+        //   - Definitely profile
+        // - Track the number of quads in each chunk and preallocate that when a mesh is regenerated
+        //   - This only helps when breaking blocks however
+        auto faces = vector<Quad>();
+        GetChunkFaces(chunk, faces);
 
         if (faces.empty())
         {
@@ -67,8 +73,10 @@ namespace Minecraft
             return;
         }
 
-        auto vertices = Quad::ToVertices(faces);
-        SetMeshData(chunk, Vertex::ToFloats(vertices), Vertex::ToIndices(vertices));
+        auto vertices = vector<float>();
+        auto indices = vector<uint>();
+        Quad::ToRawData(faces, vertices, indices);
+        SetMeshData(chunk, vertices, indices);
     }
 
     void ChunkRenderer::CreateMesh(Chunk& chunk)
@@ -94,10 +102,8 @@ namespace Minecraft
         m_ChunkMeshes[chunk.GetChunkPos()]->Materials[m_ChunkMaterial]->SetData(indices, GL_DYNAMIC_DRAW);
     }
 
-    vector <Quad> ChunkRenderer::GetChunkFaces(Chunk& chunk)
+    void ChunkRenderer::GetChunkFaces(Chunk& chunk, vector <Quad>& faces)
     {
-        vector <Quad> faces;
-
         for_block_in_chunk(x, y, z, {
             auto block = chunk.GetBlock(x, y, z);
 
@@ -113,8 +119,6 @@ namespace Minecraft
                     break;
             }
         })
-
-        return faces;
     }
 
     void ChunkRenderer::SolidCubeMesh(Block& block, vector <Quad>& faces)
@@ -185,8 +189,8 @@ namespace Minecraft
         face.Shading = GetFaceTint(dir);
 
         // Calculate the UVs
-        face.UVOffset = vec2(textureCoords.x * m_BlockTextureSizeInUVCoords.x, 1.0f - (textureCoords.y + 1) * m_BlockTextureSizeInUVCoords.y);
-        face.UVMultiplier = vec2(m_BlockTextureSizeInUVCoords.x, m_BlockTextureSizeInUVCoords.y);
+        face.UVPosition = vec2(textureCoords.x * m_BlockTextureSizeInUVCoords.x, 1.0f - (textureCoords.y + 1) * m_BlockTextureSizeInUVCoords.y);
+        face.UVScale = vec2(m_BlockTextureSizeInUVCoords.x, m_BlockTextureSizeInUVCoords.y);
     }
 
     vec3 ChunkRenderer::GetFaceTint(vec3i dir)
