@@ -2,11 +2,10 @@
 
 namespace Minecraft
 {
-    // TODO: implement biome details here
-
     class Biome
     {
     public:
         string Name;
+        vec3 MapColor;
     };
 }

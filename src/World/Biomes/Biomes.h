@@ -16,17 +16,17 @@ namespace Minecraft::Biomes
         return biome.get();
     }
 
-    inline Biome* None = CreateBiome("None");
+    inline Biome* None = CreateBiome("None", vec3(1, 0, 1));
 
     // Temperature
-    inline Biome* Grassland = CreateBiome("Grassland");
-    inline Biome* Forest = CreateBiome("Forest");
+    inline Biome* Grassland = CreateBiome("Grassland", vec3(0, 1, 0));
+    inline Biome* Forest = CreateBiome("Forest", vec3(0, 0.5, 0));
 
     // Hot
-    inline Biome* Desert = CreateBiome("Desert");
-    inline Biome* Jungle = CreateBiome("Jungle");
+    inline Biome* Desert = CreateBiome("Desert", vec3(1, 1, 0));
+    inline Biome* Jungle = CreateBiome("Jungle", vec3(0.5, 0.5, 0));
 
     // Cold
-    inline Biome* Tundra = CreateBiome("Tundra");
-    inline Biome* SnowyForest = CreateBiome("Snowy Forest");
+    inline Biome* Tundra = CreateBiome("Tundra", vec3(1, 1, 1));
+    inline Biome* SnowyForest = CreateBiome("Snowy Forest", vec3(0.5, 0.5, 0.5));
 }

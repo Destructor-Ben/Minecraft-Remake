@@ -317,6 +317,7 @@ namespace Minecraft
         SaveTexture(path, width, height, data);
     }
 
+    // TODO: move this to resource manager?
     void NoiseGenerator::SaveTexture(string path, int width, int height, const vector <byte>& data)
     {
         int channels = 1;

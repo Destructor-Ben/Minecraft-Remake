@@ -1,5 +1,6 @@
 #pragma once
 
+// TODO: color utils to convert to/from hex and rgb
 namespace Minecraft
 {
     class LogManager;

@@ -1,13 +1,17 @@
 #include "WorldGenerator.h"
 
+#include "Game.h"
+#include "LogManager.h"
 #include "World/World.h"
 #include "World/BlockData.h"
 
-// TODO: ability to export a biome map
 namespace Minecraft
 {
-    static FractalNoiseParams TemperatureMap = { 359812, 6, 0.005f };
-    static FractalNoiseParams MoistureMap = { 9128461, 6, 0.01f };
+    // Make biomes that require more extreme weather more common
+    static constexpr float BiomeRarity = 15.0f;
+
+    static FractalNoiseParams TemperatureMap = { 359812, 4, 0.00075f };
+    static FractalNoiseParams MoistureMap = { 9128461, 4, 0.0025f };
 
     void WorldGenerator::InitBiomeMap()
     {
@@ -33,20 +37,25 @@ namespace Minecraft
         m_BiomeMap[3][1] = Biomes::Desert;
         m_BiomeMap[3][2] = Biomes::Jungle;
         m_BiomeMap[3][3] = Biomes::Jungle;
+
+        // Debug exports
+        m_Noise.SaveTexture(1000, 1000, TemperatureMap, "TemperatureMap.png");
+        m_Noise.SaveTexture(1000, 1000, MoistureMap, "MoistureMap.png");
+        ExportBiomeMap();
     }
 
     void WorldGenerator::GenerateBiomes(Chunk& chunk)
     {
         for_block_in_chunk(x, y, z, {
             auto block = chunk.GetBlock(x, y, z);
-            block.Data.Biome = CalculateBiome(block);
+            block.Data.Biome = CalculateBiome(block.GetWorldPos());
         })
     }
 
-    Biome* WorldGenerator::CalculateBiome(Block& block)
+    Biome* WorldGenerator::CalculateBiome(vec3 pos)
     {
         // Sample the maps
-        vec2 samplePos = vec2(block.GetWorldPos().x, block.GetWorldPos().z);
+        vec2 samplePos = vec2(pos.x, pos.z);
         float temperature = m_Noise.Fractal2D(samplePos, TemperatureMap);
         float moisture = m_Noise.Fractal2D(samplePos, MoistureMap);
 
@@ -61,10 +70,36 @@ namespace Minecraft
     {
         // Run through a sigmoid function to make biomes at the edge of the table less rare
         // Increasing k make rare biomes less rare
-        const float k = 10.0f;
+        const float k = BiomeRarity;
         value = 1.0f / (1.0f + std::exp(-k * (value - 0.5f)));
 
         // Lerp
         return std::round(std::lerp(0.0f, m_BiomeMapSize - 1, value));
+    }
+
+    void WorldGenerator::ExportBiomeMap(int width, int height)
+    {
+        auto data = vector<byte>();
+
+        for (int y = 0; y < height; ++y)
+        {
+            for (int x = 0; x < width; ++x)
+            {
+                Biome* biome = CalculateBiome(vec3(x, 0, y));
+                vec3 color = biome->MapColor;
+
+                data.push_back((byte)(color.r * UCHAR_MAX));
+                data.push_back((byte)(color.g * UCHAR_MAX));
+                data.push_back((byte)(color.b * UCHAR_MAX));
+            }
+        }
+
+        // TODO: use resource manager instead for saving textures
+        string path = "BiomeMap.png";
+        int channels = 3;
+        int result = stbi_write_png(path.c_str(), width, height, channels, data.data(), width * channels);
+
+        if (!result)
+            Instance->Logger->Throw("Failed to save texture at path: " + path);
     }
 }
