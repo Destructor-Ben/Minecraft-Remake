@@ -35,8 +35,8 @@ namespace Minecraft
     {
     public:
         // World size (vertical)
-        static constexpr int MinHeight = -3;
-        static constexpr int MaxHeight = 3;
+        static constexpr int MinHeight = -5;
+        static constexpr int MaxHeight = 5;
 
         // Distances for rendering, simulating, etc.
         static constexpr int RenderDistance = 12;

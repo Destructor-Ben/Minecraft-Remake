@@ -8,6 +8,7 @@ namespace Minecraft
 {
     class Biome;
     class Block;
+    class BlockType;
     class Chunk;
     class World;
 
@@ -50,6 +51,18 @@ namespace Minecraft
 
         static constexpr int m_BiomeMapSize = 4;
         array <array<Biome*, m_BiomeMapSize>, m_BiomeMapSize> m_BiomeMap;
+
+        #pragma endregion
+
+        #pragma region Terrain
+
+        void InitSurfaceBlocksMap();
+
+        int GetTerrainHeight(vec3 pos);
+        int GetSurfaceHeight(vec3 pos);
+
+        unordered_map<Biome*, BlockType*> m_SurfaceBlocksMap;
+        unordered_map<Biome*, BlockType*> m_UndergroundBlocksMap;
 
         #pragma endregion
 

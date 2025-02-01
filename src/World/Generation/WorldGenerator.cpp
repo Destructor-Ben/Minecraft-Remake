@@ -10,6 +10,7 @@ namespace Minecraft
         m_Noise(seed)
     {
         InitBiomeMap();
+        InitSurfaceBlocksMap();
     }
 
     void WorldGenerator::Generate(int spawnRadius, int minHeight, int maxHeight)

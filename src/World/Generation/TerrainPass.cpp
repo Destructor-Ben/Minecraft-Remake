@@ -5,23 +5,24 @@
 
 namespace Minecraft
 {
-    static FractalNoiseParams HeightMap = { 9548762, 8, 0.05f };
+    static constexpr int MinHeight = -50;
+    static constexpr int MaxHeight = 50;
+
+    static constexpr int MinDirtAmount = 2;
+    static constexpr int MaxDirtAmount = 3;
+
+    static FractalNoiseParams HeightMap = { 9548762, 8, 0.005f };
+    static WhiteNoiseParams DirtDepthMap = { 9328546 };
 
     void WorldGenerator::GenerateTerrain(Chunk& chunk)
     {
-        const int MinHeight = -20;
-        const int MaxHeight = 20;
-
         for (int x = 0; x < Chunk::Size; ++x)
         {
             for (int z = 0; z < Chunk::Size; ++z)
             {
-                // Generate height
-                float xCoord = x + chunk.GetWorldPos().x;
-                float zCoord = z + chunk.GetWorldPos().z;
-
-                float noiseValue = m_Noise.Fractal2D(xCoord, zCoord, HeightMap);
-                int height = std::lerp(MinHeight, MaxHeight, noiseValue);
+                // Get height
+                vec3 samplePos = { x + chunk.GetWorldPos().x, 0, z + chunk.GetWorldPos().z };
+                int height = GetTerrainHeight(samplePos);
 
                 // Set blocks
                 for (int y = 0; y < Chunk::Size; ++y)
@@ -30,33 +31,59 @@ namespace Minecraft
                     float yPos = block.GetWorldPos().y;
 
                     // Set the block type
-                    auto type = Blocks::Air;
+                    auto biome = block.Data.Biome;
+                    auto blockType = Blocks::Air;
+                    int surfaceHeight = GetSurfaceHeight(samplePos);
 
+                    // Surface
                     if (yPos == height)
-                    {
-                        if (block.Data.Biome == Biomes::Grassland)
-                            type = Blocks::Grass;
-                        else if (block.Data.Biome == Biomes::Forest)
-                            type = Blocks::Wood;
-                        else if (block.Data.Biome == Biomes::Desert)
-                            type = Blocks::Sand;
-                        else if (block.Data.Biome == Biomes::Jungle)
-                            type = Blocks::Leaves;
-                        else if (block.Data.Biome == Biomes::Tundra)
-                            type = Blocks::IronOre;
-                        else if (block.Data.Biome == Biomes::SnowyForest)
-                            type = Blocks::Clay;
-                    }
+                        blockType = m_SurfaceBlocksMap[biome];
 
+                    // Underground
                     if (yPos < height)
-                        type = Blocks::Dirt;
+                        blockType = m_UndergroundBlocksMap[biome];
 
-                    if (yPos <= height - 2)
-                        type = Blocks::Stone;
+                    // Rock
+                    if (yPos <= height - surfaceHeight)
+                        blockType = Blocks::Stone;
 
-                    block.Data.Type = type;
+                    block.Data.Type = blockType;
                 }
             }
         }
+    }
+
+    int WorldGenerator::GetTerrainHeight(vec3 pos)
+    {
+        float noiseValue = m_Noise.Fractal2D(pos.x, pos.z, HeightMap);
+        return (int)std::lerp((float)MinHeight, (float)MaxHeight, noiseValue);
+    }
+
+    int WorldGenerator::GetSurfaceHeight(vec3 pos)
+    {
+        float noiseValue = m_Noise.White2D(pos.x, pos.z, DirtDepthMap);
+        return (int)std::lerp((float)MinDirtAmount, (float)MaxDirtAmount, noiseValue);
+    }
+
+    void WorldGenerator::InitSurfaceBlocksMap()
+    {
+        m_SurfaceBlocksMap[Biomes::None] = Blocks::Air;
+        m_UndergroundBlocksMap[Biomes::None] = Blocks::Air;
+
+        m_SurfaceBlocksMap[Biomes::Grassland] = Blocks::Grass;
+        m_UndergroundBlocksMap[Biomes::Grassland] = Blocks::Dirt;
+        m_SurfaceBlocksMap[Biomes::Forest] = Blocks::Grass;
+        m_UndergroundBlocksMap[Biomes::Forest] = Blocks::Dirt;
+
+        m_SurfaceBlocksMap[Biomes::Desert] = Blocks::Sand;
+        m_UndergroundBlocksMap[Biomes::Desert] = Blocks::Sand;
+        m_SurfaceBlocksMap[Biomes::Jungle] = Blocks::Grass;
+        m_UndergroundBlocksMap[Biomes::Jungle] = Blocks::Dirt;
+
+        // TODO: proper blocks for snowy biomes
+        m_SurfaceBlocksMap[Biomes::Tundra] = Blocks::IronOre;
+        m_UndergroundBlocksMap[Biomes::Tundra] = Blocks::IronOre;
+        m_SurfaceBlocksMap[Biomes::SnowyForest] = Blocks::Clay;
+        m_UndergroundBlocksMap[Biomes::SnowyForest] = Blocks::Clay;
     }
 }
