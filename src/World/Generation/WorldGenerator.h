@@ -74,10 +74,13 @@ namespace Minecraft
         void GenerateDecorations(Chunk& chunk);
 
         void GenerateGrass(Chunk& chunk);
-        void GenerateTrees(Chunk& chunk);
-
         bool ContainsGrass(Block& block);
 
+        void GenerateTrees(Chunk& chunk);
+        optional<BlockType*> GetTreeBlock(Block& block);
+        optional<BlockType*> GetTreeBlock(Block& block, Block& treeCenter); // TODO: the problem with this is that the block may be in another chunk, same with ContainsTreeOrigin
+        // TODO: alternate approach:
+        bool ContainsTreeOrigin(Block& block);
         int GetTreeHeight(Block& block);
 
         #pragma endregion
