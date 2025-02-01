@@ -31,18 +31,11 @@ namespace Minecraft
         void AddChunkIfExists(set<Chunk*>& chunks, vec3i chunkPos);
 
         // These are the passes of the world generator
-        // Figure out what biomes will be where
-        void GenerateBiomes(Chunk& chunk);
-        // Generate the terrain according to each biome
-        void GenerateTerrain(Chunk& chunk);
-        // Generate caves
-        void GenerateCaves(Chunk& chunk);
-        // Generate large structures
-        void GenerateStructures(Chunk& chunk);
-        // Generate decorations, such as grass, trees, etc.
-        void GenerateDecorations(Chunk& chunk);
 
         #pragma region Biomes
+
+        // Figure out what biomes will be where
+        void GenerateBiomes(Chunk& chunk);
 
         void InitBiomeMap();
         Biome* CalculateBiome(vec3 pos);
@@ -56,6 +49,9 @@ namespace Minecraft
 
         #pragma region Terrain
 
+        // Generate the terrain according to each biome
+        void GenerateTerrain(Chunk& chunk);
+
         void InitSurfaceBlocksMap();
 
         int GetTerrainHeight(vec3 pos);
@@ -63,6 +59,24 @@ namespace Minecraft
 
         unordered_map<Biome*, BlockType*> m_SurfaceBlocksMap;
         unordered_map<Biome*, BlockType*> m_UndergroundBlocksMap;
+
+        #pragma endregion
+
+        // Generate caves
+        void GenerateCaves(Chunk& chunk);
+
+        // Generate large structures
+        void GenerateStructures(Chunk& chunk);
+
+        #pragma region Decorations
+
+        // Generate decorations, such as grass, trees, etc.
+        void GenerateDecorations(Chunk& chunk);
+
+        void GenerateGrass(Chunk& chunk);
+        void GenerateTrees(Chunk& chunk);
+
+        bool ContainsGrass(vec3 pos);
 
         #pragma endregion
 

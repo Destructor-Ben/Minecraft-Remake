@@ -11,6 +11,11 @@ for (int blockY = 0; blockY < Chunk::Size; ++blockY) \
 for (int blockZ = 0; blockZ < Chunk::Size; ++blockZ) \
 body
 
+#define for_block_in_chunk_2D(blockX, blockZ, body) \
+for (int blockX = 0; blockX < Chunk::Size; ++blockX) \
+for (int blockZ = 0; blockZ < Chunk::Size; ++blockZ) \
+body
+
 #define for_chunk_in_radius(chunkX, chunkY, chunkZ, radius, body) \
 for (int chunkX = -radius + 1; chunkX < radius; ++chunkX) \
 for (int chunkY = -radius + 1; chunkY < radius; ++chunkY) \

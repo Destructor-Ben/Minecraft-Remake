@@ -16,6 +16,7 @@ namespace Minecraft
 
     void WorldGenerator::GenerateTerrain(Chunk& chunk)
     {
+        // TODO: use for_block_in_chunk_2D
         for (int x = 0; x < Chunk::Size; ++x)
         {
             for (int z = 0; z < Chunk::Size; ++z)
