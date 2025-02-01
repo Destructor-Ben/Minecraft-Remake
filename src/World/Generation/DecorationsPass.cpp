@@ -21,7 +21,7 @@ namespace Minecraft
 
     void WorldGenerator::GenerateGrass(Minecraft::Chunk& chunk)
     {
-        // TODO: use for_block_in_chunk_2D
+        // TODO: use for_block_in_chunk
         for (int x = 0; x < Chunk::Size; ++x)
         {
             for (int y = 0; y < Chunk::Size; ++y)
@@ -29,20 +29,11 @@ namespace Minecraft
                 for (int z = 0; z < Chunk::Size; ++z)
                 {
                     // Check if grass can be placed
-                    vec3 samplePos = { x, y, z };
-                    samplePos += chunk.GetWorldPos();
-
-                    if (!ContainsGrass(samplePos))
+                    Block block = chunk.GetBlock(x, y, z);
+                    if (!ContainsGrass(block))
                         continue;
 
                     // Place the grass
-                    auto block = chunk.GetBlock(x, y, z);
-
-                    // Biome check
-                    // TODO: check the biome of the block below, and do it earlier - we want to avoid unnecessarily getting blocks though
-                    if (block.Data.Biome == Biomes::Tundra || block.Data.Biome == Biomes::SnowyForest || block.Data.Biome == Biomes::Desert)
-                        continue;
-
                     block.Data.Type = Blocks::TallGrass;
                 }
             }
@@ -54,14 +45,23 @@ namespace Minecraft
         // TODO
     }
 
-    bool WorldGenerator::ContainsGrass(vec3 pos)
+    bool WorldGenerator::ContainsGrass(Block& block)
     {
+        vec3 pos = block.GetWorldPos();
+
         // Random check
         if (m_Noise.White3D(pos, GrassMap) > GrassChance)
             return false;
 
         // Ground check
-        int terrainHeight = GetTerrainHeight(pos);
-        return terrainHeight + 1 == pos.y;
+        if (GetTerrainHeight(pos) + 1 != pos.y)
+            return false;
+
+        // Biome check
+        Biome* biome = block.Data.Biome;
+        if (biome == Biomes::Tundra || biome == Biomes::SnowyForest || biome == Biomes::Desert)
+            return false;
+
+        return true;
     }
 }

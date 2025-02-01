@@ -76,7 +76,9 @@ namespace Minecraft
         void GenerateGrass(Chunk& chunk);
         void GenerateTrees(Chunk& chunk);
 
-        bool ContainsGrass(vec3 pos);
+        bool ContainsGrass(Block& block);
+
+        int GetTreeHeight(Block& block);
 
         #pragma endregion
 
