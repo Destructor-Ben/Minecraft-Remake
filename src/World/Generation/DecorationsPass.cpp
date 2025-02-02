@@ -72,24 +72,28 @@ namespace Minecraft
     }
 
     // TODO: abstract multi block structures away at some point because this is a lot of boilerplate
+    // TODO: this code is ugly
     void WorldGenerator::GenerateTrees(Minecraft::Chunk& chunk)
     {
         // TODO: use for_block_in_chunk
 
         // This contains all tree positions in the current chunk
-        // TODO: make this include some positions from adjacent chunks
-        vector <Block> treePositions = { };
+        vector <vec3i> treePositions = { };
 
-        // Add tree positions from this chunk
-        for (int x = 0; x < Chunk::Size; ++x)
+        // Add tree positions from this chunk and nearby chunks
+        // TODO: make sure these specific values work
+        constexpr int TreeBoundsWidth = 5;
+        constexpr int TreeBoundsHeight = MaxJungleTreeHeight + 2;
+
+        for (int x = -TreeBoundsWidth; x < Chunk::Size + TreeBoundsWidth; ++x)
         {
-            for (int y = 0; y < Chunk::Size; ++y)
+            for (int y = -TreeBoundsHeight; y < Chunk::Size + TreeBoundsHeight; ++y)
             {
-                for (int z = 0; z < Chunk::Size; ++z)
+                for (int z = -TreeBoundsWidth; z < Chunk::Size + TreeBoundsWidth; ++z)
                 {
-                    Block block = chunk.GetBlock(x, y, z);
-                    if (ContainsTreeOrigin(block))
-                        treePositions.push_back(block);
+                    vec3i pos = vec3(x, y, z);
+                    if (ContainsTreeOrigin(pos + (vec3i)chunk.GetWorldPos()))
+                        treePositions.push_back(pos);
                 }
             }
         }
@@ -97,15 +101,14 @@ namespace Minecraft
         // Actually place the trees
         for (auto& treeOrigin : treePositions)
         {
-            PlaceTree(chunk, treeOrigin);
+            PlaceTree(chunk, treeOrigin + (vec3i)chunk.GetWorldPos(), treeOrigin);
         }
     }
 
     // This doesn't go across chunk borders, so other chunks will generate trees differently when they are done
-    void WorldGenerator::PlaceTree(Chunk& chunk, Block& origin)
+    void WorldGenerator::PlaceTree(Chunk& chunk, vec3i pos, vec3i blockPos)
     {
-        int treeHeight = GetTreeHeight(origin);
-        vec3i blockPos = origin.GetBlockPos();
+        int treeHeight = GetTreeHeight(pos);
         vec3i topOfTree = blockPos;
         topOfTree.y += treeHeight - 1;
 
@@ -166,11 +169,8 @@ namespace Minecraft
         }
     }
 
-    // TODO: these run off a block&, which doesn't work if other chunks haven't been generated yet
-    bool WorldGenerator::ContainsTreeOrigin(Block& block)
+    bool WorldGenerator::ContainsTreeOrigin(vec3i pos)
     {
-        vec3 pos = block.GetWorldPos();
-
         // Random check
         if (m_Noise.White3D(pos, TreeMap) > TreeChance)
             return false;
@@ -180,19 +180,19 @@ namespace Minecraft
             return false;
 
         // Biome check
-        Biome* biome = block.Data.Biome;
+        Biome* biome = CalculateBiome(pos);
         if (biome != Biomes::Forest && biome != Biomes::Jungle && biome != Biomes::SnowyForest)
             return false;
 
         return true;
     }
 
-    int WorldGenerator::GetTreeHeight(Block& block)
+    int WorldGenerator::GetTreeHeight(vec3i pos)
     {
-        bool isJungle = block.Data.Biome == Biomes::Jungle;
+        bool isJungle = CalculateBiome(pos) == Biomes::Jungle;
         float minHeight = isJungle ? MinJungleTreeHeight : MinTreeHeight;
         float maxHeight = isJungle ? MaxJungleTreeHeight : MaxTreeHeight;
 
-        return (int)std::lerp(minHeight, maxHeight, m_Noise.White3D(block.GetWorldPos(), TreeHeightMap));
+        return (int)std::lerp(minHeight, maxHeight, m_Noise.White3D(pos, TreeHeightMap));
     }
 }
