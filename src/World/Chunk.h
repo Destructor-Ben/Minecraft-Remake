@@ -16,6 +16,9 @@ namespace Minecraft
         Chunk() = default;
         Chunk(int chunkX, int chunkY, int chunkZ) : m_ChunkX(chunkX), m_ChunkY(chunkY), m_ChunkZ(chunkZ) { }
 
+        bool ContainsBlockPos(int blockX, int blockY, int blockZ);
+        bool ContainsBlockPos(vec3i blockPos) { return ContainsBlockPos(blockPos.x, blockPos.y, blockPos.z); }
+
         Block GetBlock(byte blockX, byte blockY, byte blockZ);
         Block GetBlock(vec3i blockPos) { return GetBlock((byte)blockPos.x, (byte)blockPos.y, (byte)blockPos.z); }
 

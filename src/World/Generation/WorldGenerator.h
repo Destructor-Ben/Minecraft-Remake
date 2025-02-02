@@ -77,9 +77,7 @@ namespace Minecraft
         bool ContainsGrass(Block& block);
 
         void GenerateTrees(Chunk& chunk);
-        optional<BlockType*> GetTreeBlock(Block& block);
-        optional<BlockType*> GetTreeBlock(Block& block, Block& treeCenter); // TODO: the problem with this is that the block may be in another chunk, same with ContainsTreeOrigin
-        // TODO: alternate approach:
+        void PlaceTree(Chunk& chunk, Block& origin);
         bool ContainsTreeOrigin(Block& block);
         int GetTreeHeight(Block& block);
 

@@ -21,8 +21,9 @@ namespace Minecraft
 
     void WorldGenerator::GenerateDecorations(Chunk& chunk)
     {
-        GenerateGrass(chunk);
+        // Trees then grass so trees don't get eaten into by grass
         GenerateTrees(chunk);
+        GenerateGrass(chunk);
     }
 
     void WorldGenerator::GenerateGrass(Minecraft::Chunk& chunk)
@@ -58,6 +59,10 @@ namespace Minecraft
         if (GetTerrainHeight(pos) + 1 != pos.y)
             return false;
 
+        // Air check
+        if (block.Data.Type != Blocks::Air)
+            return false;
+
         // Biome check
         Biome* biome = block.Data.Biome;
         if (biome == Biomes::Tundra || biome == Biomes::SnowyForest || biome == Biomes::Desert)
@@ -66,47 +71,102 @@ namespace Minecraft
         return true;
     }
 
+    // TODO: abstract multi block structures away at some point because this is a lot of boilerplate
     void WorldGenerator::GenerateTrees(Minecraft::Chunk& chunk)
     {
         // TODO: use for_block_in_chunk
+
+        // This contains all tree positions in the current chunk
+        // TODO: make this include some positions from adjacent chunks
+        vector <Block> treePositions = { };
+
+        // Add tree positions from this chunk
         for (int x = 0; x < Chunk::Size; ++x)
         {
             for (int y = 0; y < Chunk::Size; ++y)
             {
                 for (int z = 0; z < Chunk::Size; ++z)
                 {
-                    /*/ Check if this block contains part of a tree
                     Block block = chunk.GetBlock(x, y, z);
-                    auto blockType = GetTreeBlock(block);
-                    if (blockType == nullopt)
+                    if (ContainsTreeOrigin(block))
+                        treePositions.push_back(block);
+                }
+            }
+        }
+
+        // Actually place the trees
+        for (auto& treeOrigin : treePositions)
+        {
+            PlaceTree(chunk, treeOrigin);
+        }
+    }
+
+    // This doesn't go across chunk borders, so other chunks will generate trees differently when they are done
+    void WorldGenerator::PlaceTree(Chunk& chunk, Block& origin)
+    {
+        int treeHeight = GetTreeHeight(origin);
+        vec3i blockPos = origin.GetBlockPos();
+        vec3i topOfTree = blockPos;
+        topOfTree.y += treeHeight - 1;
+
+        // Trunk
+        for (int trunkY = 0; trunkY < treeHeight; ++trunkY)
+        {
+            vec3i trunkPos = blockPos;
+            trunkPos.y += trunkY;
+
+            if (!chunk.ContainsBlockPos(trunkPos))
+                continue;
+
+            auto block = chunk.GetBlock(trunkPos);
+            block.Data.Type = Blocks::Wood;
+        }
+
+        // Leaves
+        for (int x = 0; x < 5; ++x)
+        {
+            for (int y = 0; y < 2; ++y)
+            {
+                for (int z = 0; z < 5; ++z)
+                {
+                    vec3i leafPos = topOfTree + vec3i(x - 2, y - 1, z - 2);
+
+                    if (!chunk.ContainsBlockPos(leafPos))
                         continue;
 
-                    // Place the block
-                    block.Data.Type = blockType.value();
-                    //*/
+                    auto block = chunk.GetBlock(leafPos);
+
+                    if (block.Data.Type != Blocks::Air)
+                        continue;
+
+                    block.Data.Type = Blocks::Leaves;
                 }
             }
         }
-    }
 
-    // TODO: idk how to implement this
-    optional<BlockType*> WorldGenerator::GetTreeBlock(Block& block)
-    {
-        for (int x = 0; x < 10; ++x)
+        for (int x = 0; x < 3; ++x)
         {
-            for (int y = 0; y < 10; ++y)
+            for (int y = 0; y < 2; ++y)
             {
-                for (int z = 0; z < 10; ++z)
+                for (int z = 0; z < 3; ++z)
                 {
-                    if (ContainsTreeOrigin(block))
-                        return Blocks::Wood;
+                    vec3i leafPos = topOfTree + vec3i(x - 1, y + 1, z - 1);
+
+                    if (!chunk.ContainsBlockPos(leafPos))
+                        continue;
+
+                    auto block = chunk.GetBlock(leafPos);
+
+                    if (block.Data.Type != Blocks::Air)
+                        continue;
+
+                    block.Data.Type = Blocks::Leaves;
                 }
             }
         }
-
-        return nullopt;
     }
 
+    // TODO: these run off a block&, which doesn't work if other chunks haven't been generated yet
     bool WorldGenerator::ContainsTreeOrigin(Block& block)
     {
         vec3 pos = block.GetWorldPos();
