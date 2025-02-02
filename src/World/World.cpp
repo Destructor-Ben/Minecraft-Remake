@@ -251,5 +251,56 @@ namespace Minecraft
             PlayerCamera.Position += cameraForward * -movementDirection.z * speed; // There is a negative sign here because movement direction -z is forward, but camera forward -z backwards
             PlayerCamera.Position += cameraRight * movementDirection.x * speed;
         }
+
+        // TODO: temporary - move to separate function
+        // Block breaking
+        // TODO: abstract into a ray object/raycast function
+        // TODO: wonky
+        // TODO: regen adjacent meshes
+        vec3 rayPos = PlayerCamera.Position;
+        vec3 lookDir = PlayerCamera.GetForwardVector();
+        float maxDistance = 10.0f;
+        float stepSize = 0.01f;
+        int steps = maxDistance / stepSize;
+
+        optional <vec3i> targetBlockPos = nullopt;
+
+        // Works via ray marching
+        for (int i = 0; i < steps; ++i)
+        {
+            // If the ray has intersected a block, get it
+            optional <Block> block = GetBlock(rayPos);
+            if (block.has_value() && block->Data.Type != Blocks::Air)
+            {
+                targetBlockPos = block->GetWorldPos();
+                break;
+            }
+
+            // Update the ray
+            rayPos += lookDir * stepSize;
+        }
+
+        // Block breaking
+        if (targetBlockPos.has_value() && Instance->Input->WasMouseButtonPressed(MouseButton::Left))
+        {
+            auto block = GetBlock(targetBlockPos.value());
+
+            block->Data.Type = Blocks::Air;
+            block->GetChunk().RegenerateMesh();
+
+            // Regen adjacent chunk meshes
+            // TODO: make this a function
+            // TODO: do for other directions
+            if (block->GetBlockPos().x == 0)
+            {
+                auto chunkPos = block->GetChunk().GetChunkPos();
+                chunkPos.x -= 1;
+                auto chunk = GetChunk(chunkPos);
+                if (chunk.value())
+                {
+                    chunk.value()->RegenerateMesh();
+                }
+            }
+        }
     }
 }
