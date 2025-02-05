@@ -22,7 +22,6 @@ namespace Minecraft
 
         Renderer();
 
-        void Update();
         void PreRender();
         void PostRender();
 
@@ -31,9 +30,6 @@ namespace Minecraft
         void InitDebugMeshes();
         void DebugDrawPoint(vec3 point, vec3 color);
         void DebugDrawBounds(const BoundingBox& bounds, mat4 transform, vec3 color);
-
-        // TODO: these functions are useless, once binding is properly sorted, remove unbindall
-        static void UnbindAll();
 
     private:
         shared_ptr <Mesh> m_DebugPointMesh;

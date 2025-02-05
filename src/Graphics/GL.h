@@ -13,6 +13,7 @@
 #include "Mesh.h"
 #include "Quad.h"
 #include "Shader.h"
+#include "Sprite.h"
 #include "Texture.h"
 #include "VertexArray.h"
 #include "VertexBuffer.h"

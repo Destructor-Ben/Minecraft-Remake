@@ -7,6 +7,7 @@
 #include "Graphics/Renderers/Renderer.h"
 #include "Graphics/Renderers/ChunkRenderer.h"
 #include "Graphics/Renderers/SkyRenderer.h"
+#include "Graphics/Renderers/UIRenderer.h"
 #include "Random/RandomTests.h"
 #include "World/World.h"
 
@@ -26,12 +27,13 @@ namespace Minecraft
 
         Input = make_shared<InputManager>();
         Resources = make_shared<ResourceManager>();
+
         Graphics = make_shared<Renderer>();
         ChunkGraphics = make_shared<ChunkRenderer>();
         SkyGraphics = make_shared<SkyRenderer>();
-        CurrentWorld = make_shared<World>();
+        UI = make_shared<UIRenderer>();
 
-        Renderer::UnbindAll();
+        CurrentWorld = make_shared<World>();
 
         // Running tests
         // Uncomment to run them
@@ -41,8 +43,6 @@ namespace Minecraft
     void Game::Shutdown()
     {
         Logger->Info("Exiting...");
-
-        Renderer::UnbindAll();
 
         // We manually null these out because we need to deallocate the objects in a guaranteed order
         CurrentWorld = nullptr;
@@ -135,8 +135,6 @@ namespace Minecraft
         if (CurrentWorld)
             CurrentWorld->Update();
 
-        Graphics->Update();
-
         Input->PostUpdate();
     }
 
@@ -144,12 +142,25 @@ namespace Minecraft
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        // World rendering
         Graphics->PreRender();
 
         if (CurrentWorld)
             CurrentWorld->Render();
 
         Graphics->PostRender();
+
+        // UI rendering
+        // TODO: temporary, just testing
+        // TODO: make a proper UI system
+        // TODO: how to handle z values with sprites? default to 1? or just ignore and use render order for what's on top?
+        Graphics->SceneCamera = &UI->UICamera;
+        auto sprite = Sprite();
+        sprite.SpriteTexture = Resources->RequestTexture("uitest");
+        sprite.Scale = vec3(10);
+        sprite.Position = vec3(ScreenWidth / 2, ScreenHeight / 2, -0.5); // TODO: depth needs to be negative
+        sprite.Color = vec3(1, 0, 0);
+        UI->DrawSprite(sprite);
     }
 
     #pragma endregion

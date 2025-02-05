@@ -61,7 +61,6 @@ namespace Minecraft
 
     World::World()
     {
-        Instance->Graphics->SceneCamera = &PlayerCamera;
         SetMouseHidden(true);
         PlayerCamera.FOV = 70.0f;
 
@@ -72,7 +71,6 @@ namespace Minecraft
 
     World::~World()
     {
-        Instance->Graphics->SceneCamera = nullptr;
         SetMouseHidden(false);
     }
 
@@ -110,6 +108,8 @@ namespace Minecraft
         }
 
         UpdateCamera();
+        PlayerCamera.Update();
+        
         m_WorldGenerator.GenerateChunksAroundPlayer(PlayerCamera.Position, GenerationDistance, MinHeight, MaxHeight);
 
         Instance->SkyGraphics->Update();
@@ -117,6 +117,8 @@ namespace Minecraft
 
     void World::Render()
     {
+        Instance->Graphics->SceneCamera = &PlayerCamera;
+
         Instance->ChunkGraphics->RenderChunks(GetRenderedChunks());
 
         if (Instance->ChunkGraphics->DrawChunkBorders)

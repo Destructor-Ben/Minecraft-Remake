@@ -5,6 +5,8 @@ target_sources(Minecraft_Remake PRIVATE
     DebugMaterial.h
     SkyMaterial.cpp
     SkyMaterial.h
+    SpriteMaterial.cpp
+    SpriteMaterial.h
     StarMaterial.cpp
     StarMaterial.h
     SunMoonMaterial.cpp

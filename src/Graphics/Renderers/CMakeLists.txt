@@ -5,4 +5,6 @@ target_sources(Minecraft_Remake PRIVATE
     Renderer.h
     SkyRenderer.cpp
     SkyRenderer.h
+    UIRenderer.cpp
+    UIRenderer.h
 )

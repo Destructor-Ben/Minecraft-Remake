@@ -14,12 +14,6 @@ namespace Minecraft
         InitDebugMeshes();
     }
 
-    void Renderer::Update()
-    {
-        if (SceneCamera != nullptr)
-            SceneCamera->Update();
-    }
-
     void Renderer::PreRender()
     {
         if (DrawWireframes)
@@ -31,6 +25,7 @@ namespace Minecraft
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
 
+    // TODO: allow toggling frustum culling
     void Renderer::DrawMesh(const Mesh& mesh, mat4 transform)
     {
         // Frustum culling
@@ -153,15 +148,5 @@ namespace Minecraft
         glEnable(GL_CULL_FACE);
         if (!DrawWireframes)
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    }
-
-    void Renderer::UnbindAll()
-    {
-        VertexArray::Unbind();
-        VertexBuffer::Unbind();
-        IndexBuffer::Unbind();
-        Shader::Unbind();
-        Texture::Unbind();
-        CubeMap::Unbind();
     }
 }

@@ -18,6 +18,7 @@ target_sources(Minecraft_Remake PRIVATE
     Quad.h
     Shader.cpp
     Shader.h
+    Sprite.h
     Texture.cpp
     Texture.h
     VertexArray.cpp
