@@ -18,8 +18,8 @@ namespace Minecraft
     {
         UICamera.IsPerspective = false;
         // TODO: maybe make the near clip plane 0
-        UICamera.NearClip = 0.1f;
-        UICamera.FarClip = 1.0f;
+        UICamera.NearClip = 0;
+        UICamera.FarClip = 1;
 
         // Changing this changes the UI scale
         UICamera.OrthographicScale = 1.0f;
@@ -35,6 +35,7 @@ namespace Minecraft
 
         // Create the mesh
         auto vertices = make_shared<VertexBuffer>();
+        // TODO: dont center the sprites, make the origin the bottom left
         vertices->SetData(vector<float>(
             {
                 -0.5f, -0.5f,

@@ -4,6 +4,7 @@
 #include "ResourceManager.h"
 #include "Version.h"
 #include "Input/InputManager.h"
+#include "Graphics/GL.h"
 #include "Graphics/Renderers/Renderer.h"
 #include "Graphics/Renderers/ChunkRenderer.h"
 #include "Graphics/Renderers/SkyRenderer.h"
@@ -156,10 +157,10 @@ namespace Minecraft
         // TODO: how to handle z values with sprites? default to 1? or just ignore and use render order for what's on top?
         Graphics->SceneCamera = &UI->UICamera;
         auto sprite = Sprite();
-        sprite.SpriteTexture = Resources->RequestTexture("uitest");
-        sprite.Scale = vec3(10);
-        sprite.Position = vec3(ScreenWidth / 2, ScreenHeight / 2, -0.5); // TODO: depth needs to be negative
-        sprite.Color = vec3(1, 0, 0);
+        sprite.SpriteTexture = Resources->RequestTexture("ui/crosshair");
+        // TODO: fix scaling being dodgy, maybe use a downsized ui viewport
+        sprite.Scale = vec3(sprite.SpriteTexture->GetWidth() * 3);
+        sprite.Position = vec3(ScreenWidth / 2, ScreenHeight / 2, 0);
         UI->DrawSprite(sprite);
     }
 
