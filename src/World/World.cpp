@@ -109,7 +109,7 @@ namespace Minecraft
 
         UpdateCamera();
         PlayerCamera.Update();
-        
+
         m_WorldGenerator.GenerateChunksAroundPlayer(PlayerCamera.Position, GenerationDistance, MinHeight, MaxHeight);
 
         Instance->SkyGraphics->Update();
@@ -288,7 +288,8 @@ namespace Minecraft
             auto block = GetBlock(targetBlockPos.value());
 
             block->Data.Type = Blocks::Air;
-            block->GetChunk().RegenerateMesh();
+            // TODO: priority
+            Instance->ChunkGraphics->QueueMeshRegen(block->GetChunk());
 
             // Regen adjacent chunk meshes
             // TODO: make this a function
@@ -300,7 +301,8 @@ namespace Minecraft
                 auto chunk = GetChunk(chunkPos);
                 if (chunk.value())
                 {
-                    chunk.value()->RegenerateMesh();
+                    // TODO: priority
+                    Instance->ChunkGraphics->QueueMeshRegen(*chunk.value());
                 }
             }
         }

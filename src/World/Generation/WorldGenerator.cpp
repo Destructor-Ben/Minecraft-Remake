@@ -1,10 +1,12 @@
 #include "WorldGenerator.h"
 
+#include "Game.h"
+#include "Graphics/Renderers/ChunkRenderer.h"
 #include "World/World.h"
 
 namespace Minecraft
 {
-    WorldGenerator::WorldGenerator(World* world, uint seed) :
+    WorldGenerator::WorldGenerator(World* world, ulong seed) :
         m_World(world),
         m_Seed(seed),
         m_Noise(seed)
@@ -18,10 +20,13 @@ namespace Minecraft
         for_chunk_in_radius_2D(x, z, spawnRadius, {
             for (int y = minHeight; y <= maxHeight; ++y)
             {
+                // Create and generate the chunk
                 auto chunkPos = vec3i(x, y, z);
-                Chunk chunk(x, y, z);
-                Generate(chunk);
-                m_World->Chunks[chunkPos] = chunk;
+                auto& chunk = CreateChunk(chunkPos);
+
+                // Remesh the chunk
+                // TODO: priority
+                Instance->ChunkGraphics->QueueMeshRegen(chunk);
             }
         })
     }
@@ -29,10 +34,6 @@ namespace Minecraft
     void WorldGenerator::GenerateChunksAroundPlayer(vec3 playerPos, int radius, int minHeight, int maxHeight)
     {
         auto playerChunkPos = WorldToChunkPos(playerPos);
-
-        // When generating chunks side by side, many chunks will probably get re-meshed multiple times
-        // So we queue them and use a set
-        auto regenerateMeshQueue = set<Chunk*>();
 
         for_chunk_in_radius(x, y, z, radius, {
             // Calculate chunk pos
@@ -49,35 +50,26 @@ namespace Minecraft
                 continue;
 
             // Generate the chunk
-            Chunk chunk(chunkPos.x, chunkPos.y, chunkPos.z);
-            Generate(chunk); // Fucking value references get me sometimes, this needs to go BEFORE we set it, otherwise the empty chunk is copied to the Chunks map
-            m_World->Chunks[chunkPos] = chunk;
+            auto& chunk = CreateChunk(chunkPos);
 
-            // Add chunks to re-mesh queue
-            AddChunkIfExists(regenerateMeshQueue, chunkPos);
-
-            AddChunkIfExists(regenerateMeshQueue, chunkPos + vec3i(1, 0, 0));
-            AddChunkIfExists(regenerateMeshQueue, chunkPos + vec3i(-1, 0, 0));
-
-            AddChunkIfExists(regenerateMeshQueue, chunkPos + vec3i(0, 1, 0));
-            AddChunkIfExists(regenerateMeshQueue, chunkPos + vec3i(0, -1, 0));
-
-            AddChunkIfExists(regenerateMeshQueue, chunkPos + vec3i(0, 0, 1));
-            AddChunkIfExists(regenerateMeshQueue, chunkPos + vec3i(0, 0, -1));
+            // Regenerate chunk meshes
+            for (const auto& direction : m_ChunkRemeshDirections)
+            {
+                auto chunkToRemesh = m_World->GetChunk(chunkPos);
+                if (chunkToRemesh.has_value())
+                    Instance->ChunkGraphics->QueueMeshRegen(*chunkToRemesh.value()); // TODO: priority
+            }
         })
-
-        // Regenerate chunk meshes
-        for (auto chunk : regenerateMeshQueue)
-        {
-            chunk->RegenerateMesh();
-        }
     }
 
-    void WorldGenerator::AddChunkIfExists(set<Chunk*>& chunks, vec3i chunkPos)
+    Chunk& WorldGenerator::CreateChunk(vec3i chunkPos)
     {
-        auto chunk = m_World->GetChunk(chunkPos);
-        if (chunk.has_value())
-            chunks.insert(chunk.value());
+        // Avoid copying the chunk into the map, just create it in there and retrieve its reference
+        m_World->Chunks.emplace(chunkPos, Chunk(chunkPos.x, chunkPos.y, chunkPos.z));
+        auto& chunk = m_World->Chunks[chunkPos];
+        Generate(chunk);
+
+        return chunk;
     }
 
     // This is to stop a single block always getting a good random value

@@ -16,7 +16,7 @@ namespace Minecraft
     {
     public:
         WorldGenerator() = default;
-        explicit WorldGenerator(World* world, uint seed = 0);
+        explicit WorldGenerator(World* world, ulong seed = 0);
 
         // Generates the initial chunks in a world
         void Generate(int spawnRadius, int minHeight, int maxHeight);
@@ -24,11 +24,26 @@ namespace Minecraft
         // Makes the world infinite by generating chunks around the player
         void GenerateChunksAroundPlayer(vec3 playerPos, int radius, int minHeight, int maxHeight);
 
-        // Generates an individual chunk, used above
+    private:
+        // Creates a chunk at the given positions and generates it
+        Chunk& CreateChunk(vec3i chunkPos);
+
+        // Generates the terrain of an individual chunk, used above
         void Generate(Chunk& chunk);
 
-    private:
-        void AddChunkIfExists(set<Chunk*>& chunks, vec3i chunkPos);
+        World* m_World = nullptr;
+        ulong m_Seed = 0;
+        NoiseGenerator m_Noise;
+
+        static constexpr array<vec3i, 7> m_ChunkRemeshDirections = {
+            vec3i(0, 0, 0),
+            vec3i(1, 0, 0),
+            vec3i(-1, 0, 0),
+            vec3i(0, 1, 0),
+            vec3i(0, -1, 0),
+            vec3i(0, 0, 1),
+            vec3i(0, 0, -1),
+        };
 
         // These are the passes of the world generator
 
@@ -82,9 +97,5 @@ namespace Minecraft
         int GetTreeHeight(vec3i pos);
 
         #pragma endregion
-
-        World* m_World = nullptr;
-        uint m_Seed = 0;
-        NoiseGenerator m_Noise;
     };
 }

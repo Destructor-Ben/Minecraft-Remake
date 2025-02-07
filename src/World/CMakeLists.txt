@@ -7,6 +7,8 @@ target_sources(Minecraft_Remake PRIVATE
     BlockType.h
     Chunk.cpp
     Chunk.h
+    ChunkPriorityQueue.cpp
+    ChunkPriorityQueue.h
     World.cpp
     World.h
 )

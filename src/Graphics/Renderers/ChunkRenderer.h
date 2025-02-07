@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Hash.h"
+#include "World/ChunkPriorityQueue.h"
 
 namespace Minecraft
 {
@@ -25,11 +26,12 @@ namespace Minecraft
 
         void RenderChunks(const vector<Chunk*>& chunks);
         void RenderChunk(Chunk& chunk);
-        void RegenerateMesh(Chunk& chunk);
+        void QueueMeshRegen(Chunk& chunk, int priority = 0);
 
         void RenderDebugChunkBorders();
 
     private:
+        void RegenerateMesh(Chunk& chunk);
         void CreateMesh(Chunk& chunk);
         void SetMeshData(Chunk& chunk, const vector<float>& vertices, const vector <uint>& indices);
 
@@ -68,5 +70,7 @@ namespace Minecraft
 
         unordered_map <vec3i, shared_ptr<Mesh>> m_ChunkMeshes = { };
         unordered_map<vec3i, bool> m_IsChunkMeshEmpty = { };
+
+        ChunkPriorityQueue m_ChunkRemeshQueue = { };
     };
 }

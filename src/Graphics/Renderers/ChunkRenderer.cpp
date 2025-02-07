@@ -36,21 +36,35 @@ namespace Minecraft
 
     void ChunkRenderer::RenderChunks(const vector<Chunk*>& chunks)
     {
+        // Remesh the chunks waiting in the queue (one at a time)
+        // TODO: multi-thread
+        if (!m_ChunkRemeshQueue.empty())
+        {
+            auto* chunk = m_ChunkRemeshQueue.pop();
+            RegenerateMesh(*chunk);
+        }
+
+        // Render the chunks
         for (auto* chunk : chunks)
         {
-            chunk->Render();
+            RenderChunk(*chunk);
         }
     }
 
     void ChunkRenderer::RenderChunk(Chunk& chunk)
     {
         if (!m_ChunkMeshes.contains(chunk.GetChunkPos()))
-            RegenerateMesh(chunk);
+            return;
 
         if (m_IsChunkMeshEmpty.at(chunk.GetChunkPos()))
             return;
 
         Instance->Graphics->DrawMesh(*m_ChunkMeshes[chunk.GetChunkPos()], glm::translate(chunk.GetWorldPos()));
+    }
+
+    void ChunkRenderer::QueueMeshRegen(Chunk& chunk, int priority)
+    {
+        m_ChunkRemeshQueue.push(&chunk, priority);
     }
 
     void ChunkRenderer::RegenerateMesh(Chunk& chunk)
@@ -65,7 +79,7 @@ namespace Minecraft
         //   - Definitely profile
         // - Track the number of quads in each chunk and preallocate that when a mesh is regenerated
         //   - This only helps when breaking blocks however
-        // TODO: reuse this vector to avoid reallocating it
+        // TODO: reuse this vector to avoid reallocating it - how to do with multithreading?
         // - If I do that, then it will be much easier to prellocate the size
         auto faces = vector<Quad>();
         GetChunkFaces(chunk, faces);
@@ -76,7 +90,7 @@ namespace Minecraft
             return;
         }
 
-        // TODO: reuse these vectors to avoid reallocating them
+        // TODO: reuse this vector to avoid reallocating it - how to do with multithreading?
         auto vertices = vector<float>();
         auto indices = vector<uint>();
         Quad::ToRawData(faces, vertices, indices);

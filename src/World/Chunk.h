@@ -32,11 +32,8 @@ namespace Minecraft
         vec3 GetWorldPos() const { return vec3(GetChunkPos() * (int)Size); }
         vec3i GetChunkPos() const { return { m_ChunkX, m_ChunkY, m_ChunkZ }; }
 
-        void RegenerateMesh();
-
         void Tick();
         void Update();
-        void Render();
 
     private:
         int m_ChunkX = 0;

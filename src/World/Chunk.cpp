@@ -42,11 +42,6 @@ namespace Minecraft
         return m_BlockData.at(blockID);
     }
 
-    void Chunk::RegenerateMesh()
-    {
-        Instance->ChunkGraphics->RegenerateMesh(*this);
-    }
-
     void Chunk::Tick()
     {
 
@@ -55,10 +50,5 @@ namespace Minecraft
     void Chunk::Update()
     {
 
-    }
-
-    void Chunk::Render()
-    {
-        Instance->ChunkGraphics->RenderChunk(*this);
     }
 }
