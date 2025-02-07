@@ -8,7 +8,6 @@
 #include "World/Chunk.h"
 #include "World/World.h"
 
-// TODO: mesh regen queue
 namespace Minecraft
 {
     ChunkRenderer::ChunkRenderer()

@@ -1,7 +1,5 @@
 #pragma once
 
-// TODO: moon phases
-// TODO: maybe make the moon travel slightly faster than the sun, especially if I add moon phases
 // TODO: finish sky colors
 namespace Minecraft
 {

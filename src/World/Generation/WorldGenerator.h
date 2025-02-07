@@ -2,8 +2,6 @@
 
 #include "Random/NoiseGenerator.h"
 
-// TODO: make chunk remeshing done in the chunk renderer
-// TODO: finish world generation
 namespace Minecraft
 {
     class Biome;
