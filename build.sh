@@ -1,10 +1,10 @@
 #!/bin/bash
 
 if [ "$1" == "debug" ]; then
-  cmake -B -DCMAKE_BUILD_TYPE=Debug bin/debug
+  cmake -DCMAKE_BUILD_TYPE=Debug -B bin/debug
   cmake --build bin/debug
 else
-  cmake -B -DCMAKE_BUILD_TYPE=Release bin/release
+  cmake -DCMAKE_BUILD_TYPE=Release -B bin/release
   cmake --build bin/release
 fi
 
