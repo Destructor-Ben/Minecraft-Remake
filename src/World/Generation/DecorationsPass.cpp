@@ -64,7 +64,7 @@ namespace Minecraft
             return false;
 
         // Biome check
-        Biome* biome = block.Data.Biome;
+        BiomeType* biome = block.Data.Biome;
         if (biome == Biomes::Tundra || biome == Biomes::SnowyForest || biome == Biomes::Desert)
             return false;
 
@@ -180,7 +180,7 @@ namespace Minecraft
             return false;
 
         // Biome check
-        Biome* biome = CalculateBiome(pos);
+        BiomeType* biome = CalculateBiome(pos);
         if (biome != Biomes::Forest && biome != Biomes::Jungle && biome != Biomes::SnowyForest)
             return false;
 

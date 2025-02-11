@@ -52,7 +52,7 @@ namespace Minecraft
         })
     }
 
-    Biome* WorldGenerator::CalculateBiome(vec3 pos)
+    BiomeType* WorldGenerator::CalculateBiome(vec3 pos)
     {
         // Sample the maps
         vec2 samplePos = vec2(pos.x, pos.z);
@@ -85,7 +85,7 @@ namespace Minecraft
         {
             for (int x = 0; x < width; ++x)
             {
-                Biome* biome = CalculateBiome(vec3(x, 0, y));
+                BiomeType* biome = CalculateBiome(vec3(x, 0, y));
                 vec3 color = biome->MapColor;
 
                 data.push_back((byte)(color.r * UCHAR_MAX));

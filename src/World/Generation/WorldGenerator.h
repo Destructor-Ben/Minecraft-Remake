@@ -4,7 +4,7 @@
 
 namespace Minecraft
 {
-    class Biome;
+    class BiomeType;
     class Block;
     class BlockType;
     class Chunk;
@@ -51,12 +51,12 @@ namespace Minecraft
         void GenerateBiomes(Chunk& chunk);
 
         void InitBiomeMap();
-        Biome* CalculateBiome(vec3 pos);
+        BiomeType* CalculateBiome(vec3 pos);
         static int ValueToBiomeIndex(float value);
         void ExportBiomeMap(int width = 1000, int height = 1000);
 
         static constexpr int m_BiomeMapSize = 4;
-        array <array<Biome*, m_BiomeMapSize>, m_BiomeMapSize> m_BiomeMap;
+        array <array<BiomeType*, m_BiomeMapSize>, m_BiomeMapSize> m_BiomeMap;
 
         #pragma endregion
 
@@ -70,8 +70,8 @@ namespace Minecraft
         int GetTerrainHeight(vec3 pos);
         int GetSurfaceHeight(vec3 pos);
 
-        unordered_map<Biome*, BlockType*> m_SurfaceBlocksMap;
-        unordered_map<Biome*, BlockType*> m_UndergroundBlocksMap;
+        unordered_map<BiomeType*, BlockType*> m_SurfaceBlocksMap;
+        unordered_map<BiomeType*, BlockType*> m_UndergroundBlocksMap;
 
         #pragma endregion
 

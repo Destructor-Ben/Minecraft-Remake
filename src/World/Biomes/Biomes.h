@@ -1,32 +1,32 @@
 #pragma once
 
-#include "World/Biome.h"
+#include "World/BiomeType.h"
 
 namespace Minecraft::Biomes
 {
     inline int BiomeCount = 0;
-    inline vector<shared_ptr<Biome>> BiomeList = { };
+    inline vector<shared_ptr<BiomeType>> BiomeList = { };
 
     template<typename... Params>
-    inline Biome* CreateBiome(Params... params)
+    inline BiomeType* CreateBiome(Params... params)
     {
-        auto biome = make_shared<Biome>(params...);
+        auto biome = make_shared<BiomeType>(params...);
         BiomeList.push_back(biome);
         BiomeCount++;
         return biome.get();
     }
 
-    inline Biome* None = CreateBiome("None", vec3(1, 0, 1));
+    inline BiomeType* None = CreateBiome("None", vec3(1, 0, 1));
 
     // Temperature
-    inline Biome* Grassland = CreateBiome("Grassland", vec3(0, 1, 0));
-    inline Biome* Forest = CreateBiome("Forest", vec3(0, 0.5, 0));
+    inline BiomeType* Grassland = CreateBiome("Grassland", vec3(0, 1, 0));
+    inline BiomeType* Forest = CreateBiome("Forest", vec3(0, 0.5, 0));
 
     // Hot
-    inline Biome* Desert = CreateBiome("Desert", vec3(1, 1, 0));
-    inline Biome* Jungle = CreateBiome("Jungle", vec3(0.5, 0.5, 0));
+    inline BiomeType* Desert = CreateBiome("Desert", vec3(1, 1, 0));
+    inline BiomeType* Jungle = CreateBiome("Jungle", vec3(0.5, 0.5, 0));
 
     // Cold
-    inline Biome* Tundra = CreateBiome("Tundra", vec3(1, 1, 1));
-    inline Biome* SnowyForest = CreateBiome("Snowy Forest", vec3(0.5, 0.5, 0.5));
+    inline BiomeType* Tundra = CreateBiome("Tundra", vec3(1, 1, 1));
+    inline BiomeType* SnowyForest = CreateBiome("Snowy Forest", vec3(0.5, 0.5, 0.5));
 }

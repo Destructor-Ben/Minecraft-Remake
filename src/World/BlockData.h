@@ -2,7 +2,7 @@
 
 #include "World/BlockType.h"
 #include "World/Blocks/Blocks.h"
-#include "World/Biome.h"
+#include "World/BiomeType.h"
 #include "World/Biomes/Biomes.h"
 
 namespace Minecraft
@@ -12,6 +12,6 @@ namespace Minecraft
     {
     public:
         BlockType* Type = Blocks::Air;
-        Biome* Biome = Biomes::None;
+        BiomeType* Biome = Biomes::None;
     };
 }

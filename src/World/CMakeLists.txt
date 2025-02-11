@@ -1,5 +1,5 @@
 target_sources(Minecraft_Remake PRIVATE
-    Biome.h
+    BiomeType.h
     Block.cpp
     Block.h
     BlockData.h

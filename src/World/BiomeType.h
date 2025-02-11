@@ -2,7 +2,7 @@
 
 namespace Minecraft
 {
-    class Biome
+    class BiomeType
     {
     public:
         string Name;
