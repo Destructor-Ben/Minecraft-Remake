@@ -2,7 +2,7 @@
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 # Adding the source files
-add_executable(Minecraft_Remake
+target_sources(Minecraft_Remake PRIVATE
     BoundingBox.cpp
     BoundingBox.h
     Common.h

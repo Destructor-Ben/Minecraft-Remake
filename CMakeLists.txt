@@ -2,10 +2,8 @@ cmake_minimum_required(VERSION 3.22)
 project(Minecraft_Remake VERSION 0.1.0 LANGUAGES CXX C)
 set(CMAKE_CXX_STANDARD 23)
 
-# Resources
-file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
-
 # Main executable
+add_executable(Minecraft_Remake)
 add_subdirectory(src)
 
 # Source generators
@@ -35,3 +33,13 @@ target_link_libraries(Minecraft_Remake stb_image_write)
 target_link_libraries(Minecraft_Remake glad)
 target_link_libraries(Minecraft_Remake glm)
 target_link_libraries(Minecraft_Remake glfw ${GLFW_LIBRARIES})
+
+# Resources
+add_custom_command(
+    TARGET Minecraft_Remake
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${CMAKE_SOURCE_DIR}/assets
+    ${CMAKE_CURRENT_BINARY_DIR}/assets
+    COMMENT "Copying assets to build folder"
+)
