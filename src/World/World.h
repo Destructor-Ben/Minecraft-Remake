@@ -94,6 +94,8 @@ namespace Minecraft
         void TickTime();
 
         void UpdateCamera();
+        void UpdateBlockBreaking();
+        void UpdateMeshInDirection(vec3i chunkPos, vec3i dir);
 
         vector<Chunk*> m_LoadedChunks = { };
         vector<Chunk*> m_RenderedChunks = { };

@@ -109,6 +109,7 @@ namespace Minecraft
 
         UpdateCamera();
         PlayerCamera.Update();
+        UpdateBlockBreaking();
 
         m_WorldGenerator.GenerateChunksAroundPlayer(PlayerCamera.Position, GenerationDistance, MinHeight, MaxHeight);
 
@@ -253,12 +254,13 @@ namespace Minecraft
             PlayerCamera.Position += cameraForward * -movementDirection.z * speed; // There is a negative sign here because movement direction -z is forward, but camera forward -z backwards
             PlayerCamera.Position += cameraRight * movementDirection.x * speed;
         }
+    }
 
-        // TODO: temporary - move to separate function
+    void World::UpdateBlockBreaking()
+    {
         // Block breaking
         // TODO: abstract into a ray object/raycast function
         // TODO: wonky
-        // TODO: regen adjacent meshes
         vec3 rayPos = PlayerCamera.Position;
         vec3 lookDir = PlayerCamera.GetForwardVector();
         float maxDistance = 10.0f;
@@ -292,19 +294,36 @@ namespace Minecraft
             Instance->ChunkGraphics->QueueMeshRegen(block->GetChunk());
 
             // Regen adjacent chunk meshes
-            // TODO: make this a function
-            // TODO: do for other directions
-            if (block->GetBlockPos().x == 0)
-            {
-                auto chunkPos = block->GetChunk().GetChunkPos();
-                chunkPos.x -= 1;
-                auto chunk = GetChunk(chunkPos);
-                if (chunk.value())
-                {
-                    // TODO: priority
-                    Instance->ChunkGraphics->QueueMeshRegen(*chunk.value());
-                }
-            }
+            auto chunkPos = block->GetChunk().GetChunkPos();
+            auto blockPos = block->GetBlockPos();
+
+            if (blockPos.x == 0)
+                UpdateMeshInDirection(chunkPos, vec3i(-1, 0, 0));
+
+            if (blockPos.y == 0)
+                UpdateMeshInDirection(chunkPos, vec3i(0, -1, 0));
+
+            if (blockPos.z == 0)
+                UpdateMeshInDirection(chunkPos, vec3i(0, 0, -1));
+
+            if (blockPos.x == Chunk::Size - 1)
+                UpdateMeshInDirection(chunkPos, vec3i(1, 0, 0));
+
+            if (blockPos.y == Chunk::Size - 1)
+                UpdateMeshInDirection(chunkPos, vec3i(0, 1, 0));
+
+            if (blockPos.z == Chunk::Size - 1)
+                UpdateMeshInDirection(chunkPos, vec3i(0, 0, 1));
+        }
+    }
+
+    void World::UpdateMeshInDirection(vec3i chunkPos, vec3i dir)
+    {
+        auto chunk = GetChunk(chunkPos + dir);
+        if (chunk.value())
+        {
+            // TODO: priority
+            Instance->ChunkGraphics->QueueMeshRegen(*chunk.value());
         }
     }
 }
