@@ -12,6 +12,8 @@ target_sources(Minecraft_Remake PRIVATE
     LogManager.cpp
     LogManager.h
     Main.cpp
+    Profiler.cpp
+    Profiler.h
     ResourceManager.cpp
     ResourceManager.h
     Transform.cpp

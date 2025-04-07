@@ -1,6 +1,7 @@
 #include "ChunkRenderer.h"
 
 #include "Game.h"
+#include "Profiler.h"
 #include "ResourceManager.h"
 #include "Graphics/GL.h"
 #include "Graphics/Materials/ChunkMaterial.h"
@@ -35,6 +36,8 @@ namespace Minecraft
 
     void ChunkRenderer::RenderChunks(const vector<Chunk*>& chunks)
     {
+        Instance->UpdateProfiler->Push("ChunkRenderer::Render");
+
         // Remesh the chunks waiting in the queue (one at a time)
         // TODO: multi-thread
         // TODO: for some reason, this causes holes while generating chunks - might be an issue with the world generator
@@ -49,6 +52,8 @@ namespace Minecraft
         {
             RenderChunk(*chunk);
         }
+
+        Instance->UpdateProfiler->Pop();
     }
 
     void ChunkRenderer::RenderChunk(Chunk& chunk)

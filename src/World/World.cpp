@@ -2,6 +2,7 @@
 
 #include "Game.h"
 #include "LogManager.h"
+#include "Profiler.h"
 #include "Input/InputManager.h"
 #include "Graphics/Renderers/ChunkRenderer.h"
 #include "Graphics/Renderers/Renderer.h"
@@ -118,6 +119,8 @@ namespace Minecraft
 
     void World::Render()
     {
+        Instance->UpdateProfiler->Push("World::Render");
+
         Instance->Graphics->SceneCamera = &PlayerCamera;
 
         Instance->ChunkGraphics->RenderChunks(GetRenderedChunks());
@@ -126,6 +129,8 @@ namespace Minecraft
             Instance->ChunkGraphics->RenderDebugChunkBorders();
 
         Instance->SkyGraphics->Render();
+
+        Instance->UpdateProfiler->Pop();
     }
 
     void World::SetMouseHidden(bool hidden)

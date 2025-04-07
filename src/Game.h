@@ -6,6 +6,7 @@ namespace Minecraft
     class LogManager;
     class InputManager;
     class ResourceManager;
+    class Profiler;
     class Renderer;
     class ChunkRenderer;
     class SkyRenderer;
@@ -39,18 +40,20 @@ namespace Minecraft
         int ScreenHeight = 0;
 
         // Managers
-        shared_ptr<LogManager> Logger = nullptr;
-        shared_ptr<InputManager> Input = nullptr;
-        shared_ptr<ResourceManager> Resources = nullptr;
+        shared_ptr <LogManager> Logger = nullptr;
+        shared_ptr <InputManager> Input = nullptr;
+        shared_ptr <ResourceManager> Resources = nullptr;
+        shared_ptr <Profiler> UpdateProfiler = nullptr;
+        shared_ptr <Profiler> TickProfiler = nullptr;
 
         // Renderers
-        shared_ptr<Renderer> Graphics = nullptr;
-        shared_ptr<ChunkRenderer> ChunkGraphics = nullptr;
-        shared_ptr<SkyRenderer> SkyGraphics = nullptr;
-        shared_ptr<UIRenderer> UI = nullptr;
+        shared_ptr <Renderer> Graphics = nullptr;
+        shared_ptr <ChunkRenderer> ChunkGraphics = nullptr;
+        shared_ptr <SkyRenderer> SkyGraphics = nullptr;
+        shared_ptr <UIRenderer> UI = nullptr;
 
         // World
-        shared_ptr<World> CurrentWorld = nullptr;
+        shared_ptr <World> CurrentWorld = nullptr;
 
         void Run();
         void Initialize();

@@ -1,6 +1,7 @@
 #include "SkyRenderer.h"
 
 #include "Game.h"
+#include "Profiler.h"
 #include "ResourceManager.h"
 #include "Graphics/GL.h"
 #include "Graphics/Materials/SkyMaterial.h"
@@ -331,6 +332,8 @@ namespace Minecraft
 
     void SkyRenderer::Render()
     {
+        Instance->UpdateProfiler->Push("SkyRenderer::Render");
+
         // Since we draw after the scene, we use a trick to make sure the depth value is always 1
         // This means we need to change the depth function though because otherwise we won't be able to actually write to the pixels
         // But we still need depth testing
@@ -364,6 +367,8 @@ namespace Minecraft
         // Reset GL state
         glDepthMask(true);
         glDepthFunc(GL_LESS);
+
+        Instance->UpdateProfiler->Pop();
     }
 
     shared_ptr <VertexBuffer> SkyRenderer::CreateQuadVertices()

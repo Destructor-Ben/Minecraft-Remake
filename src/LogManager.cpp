@@ -19,9 +19,7 @@ namespace Minecraft
 
     void LogManager::Debug(const string& message)
     {
-        #if DEBUG
         Log(GetMessage(message, "DEBUG"));
-        #endif
     }
 
     void LogManager::Info(const string& message)
