@@ -29,8 +29,7 @@ namespace Minecraft
 
         Input = make_shared<InputManager>();
         Resources = make_shared<ResourceManager>();
-        UpdateProfiler = make_shared<Profiler>();
-        TickProfiler = make_shared<Profiler>();
+        PerfProfiler = make_shared<Profiler>();
 
         Graphics = make_shared<Renderer>();
         ChunkGraphics = make_shared<ChunkRenderer>();
@@ -54,8 +53,7 @@ namespace Minecraft
         Graphics = nullptr;
         Resources = nullptr;
         Input = nullptr;
-        TickProfiler = nullptr;
-        UpdateProfiler = nullptr;
+        PerfProfiler = nullptr;
 
         glfwTerminate();
 
@@ -130,19 +128,19 @@ namespace Minecraft
 
     void Game::Tick()
     {
-        TickProfiler->BeginFrame("Tick");
+        PerfProfiler->BeginFrame("Tick");
 
         if (CurrentWorld)
             CurrentWorld->Tick();
 
-        auto data = TickProfiler->EndFrame();
+        auto data = PerfProfiler->EndFrame();
         if (Input->WasKeyPressed(Key::LeftBracket))
             Logger->Debug("\n" + data.ToString());
     }
 
     void Game::Update()
     {
-        UpdateProfiler->BeginFrame("Update");
+        PerfProfiler->BeginFrame("Update");
 
         Input->Update();
 
@@ -151,14 +149,14 @@ namespace Minecraft
 
         Input->PostUpdate();
 
-        auto data = UpdateProfiler->EndFrame();
+        auto data = PerfProfiler->EndFrame();
         if (Input->WasKeyPressed(Key::RightBracket))
             Logger->Debug("\n" + data.ToString());
     }
 
     void Game::Render()
     {
-        UpdateProfiler->BeginFrame("Render");
+        PerfProfiler->BeginFrame("Render");
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -182,7 +180,7 @@ namespace Minecraft
         sprite.Position = vec3(ScreenWidth / 2, ScreenHeight / 2, 0);
         UI->DrawSprite(sprite);
 
-        auto data = UpdateProfiler->EndFrame();
+        auto data = PerfProfiler->EndFrame();
         if (Input->WasKeyPressed(Key::BackSlash))
             Logger->Debug("\n" + data.ToString());
     }

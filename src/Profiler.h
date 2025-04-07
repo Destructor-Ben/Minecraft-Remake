@@ -5,7 +5,7 @@ namespace Minecraft
     struct ProfilerData
     {
         string Name;
-        int Ms;
+        float Ms;
         ProfilerData* Parent;
         vector <ProfilerData> Children;
 

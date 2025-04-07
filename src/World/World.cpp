@@ -77,18 +77,26 @@ namespace Minecraft
 
     void World::Tick()
     {
+        Instance->PerfProfiler->Push("World::Tick");
+
         UpdateChunkList(m_LoadedChunks, SimulationDistance);
 
+        Instance->PerfProfiler->Push("World::TickChunks");
         for (auto* chunk : GetLoadedChunks())
         {
             chunk->Tick();
         }
+        Instance->PerfProfiler->Pop();
 
         TickTime();
+
+        Instance->PerfProfiler->Pop();
     }
 
     void World::Update()
     {
+        Instance->PerfProfiler->Push("World::Update");
+
         UpdateChunkList(m_RenderedChunks, RenderDistance);
 
         if (Instance->Input->WasKeyReleased(Key::Escape))
@@ -103,23 +111,29 @@ namespace Minecraft
         if (Instance->Input->WasKeyReleased(Key::G))
             Instance->Graphics->DrawWireframes = !Instance->Graphics->DrawWireframes;
 
+        Instance->PerfProfiler->Push("World::UpdateChunks");
         for (auto* chunk : GetRenderedChunks())
         {
             chunk->Update();
         }
+        Instance->PerfProfiler->Pop();
 
+        Instance->PerfProfiler->Push("World::UpdatePlayer");
         UpdateCamera();
         PlayerCamera.Update();
         UpdateBlockBreaking();
+        Instance->PerfProfiler->Pop();
 
         m_WorldGenerator.GenerateChunksAroundPlayer(PlayerCamera.Position, GenerationDistance, MinHeight, MaxHeight);
 
         Instance->SkyGraphics->Update();
+
+        Instance->PerfProfiler->Pop();
     }
 
     void World::Render()
     {
-        Instance->UpdateProfiler->Push("World::Render");
+        Instance->PerfProfiler->Push("World::Render");
 
         Instance->Graphics->SceneCamera = &PlayerCamera;
 
@@ -130,7 +144,7 @@ namespace Minecraft
 
         Instance->SkyGraphics->Render();
 
-        Instance->UpdateProfiler->Pop();
+        Instance->PerfProfiler->Pop();
     }
 
     void World::SetMouseHidden(bool hidden)
@@ -164,6 +178,8 @@ namespace Minecraft
 
     void World::UpdateChunkList(vector<Chunk*>& chunks, int radius)
     {
+        Instance->PerfProfiler->Push("World::UpdateChunkList");
+
         chunks.clear();
 
         auto playerChunkPos = WorldToChunkPos(PlayerCamera.Position);
@@ -180,6 +196,8 @@ namespace Minecraft
 
             chunks.push_back(chunk.value());
         })
+
+        Instance->PerfProfiler->Pop();
     }
 
     void World::TickTime()

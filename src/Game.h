@@ -43,8 +43,7 @@ namespace Minecraft
         shared_ptr <LogManager> Logger = nullptr;
         shared_ptr <InputManager> Input = nullptr;
         shared_ptr <ResourceManager> Resources = nullptr;
-        shared_ptr <Profiler> UpdateProfiler = nullptr;
-        shared_ptr <Profiler> TickProfiler = nullptr;
+        shared_ptr <Profiler> PerfProfiler = nullptr;
 
         // Renderers
         shared_ptr <Renderer> Graphics = nullptr;

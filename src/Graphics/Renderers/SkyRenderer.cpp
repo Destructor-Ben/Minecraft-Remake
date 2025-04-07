@@ -332,7 +332,7 @@ namespace Minecraft
 
     void SkyRenderer::Render()
     {
-        Instance->UpdateProfiler->Push("SkyRenderer::Render");
+        Instance->PerfProfiler->Push("SkyRenderer::Render");
 
         // Since we draw after the scene, we use a trick to make sure the depth value is always 1
         // This means we need to change the depth function though because otherwise we won't be able to actually write to the pixels
@@ -368,7 +368,7 @@ namespace Minecraft
         glDepthMask(true);
         glDepthFunc(GL_LESS);
 
-        Instance->UpdateProfiler->Pop();
+        Instance->PerfProfiler->Pop();
     }
 
     shared_ptr <VertexBuffer> SkyRenderer::CreateQuadVertices()

@@ -7,7 +7,7 @@ namespace Minecraft
 {
     string ProfilerData::ToString(int level) const
     {
-        string heading = format("{} {}ms:", Name, Ms);
+        string heading = format("{} {:.3f}ms:", Name, Ms);
         for (int i = 0; i < level; ++i)
         {
             heading = "  " + heading;
@@ -75,7 +75,7 @@ namespace Minecraft
         auto scope = m_Scopes.top();
 
         // Add to profile results
-        m_CurrentData->Ms = chrono::duration_cast<std::chrono::milliseconds>(endTime - scope.StartTime).count();
+        m_CurrentData->Ms = std::chrono::duration<float, std::milli>(endTime - scope.StartTime).count();
 
         // Update current data
         m_CurrentData = m_CurrentData->Parent;

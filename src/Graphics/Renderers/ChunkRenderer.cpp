@@ -36,24 +36,28 @@ namespace Minecraft
 
     void ChunkRenderer::RenderChunks(const vector<Chunk*>& chunks)
     {
-        Instance->UpdateProfiler->Push("ChunkRenderer::Render");
+        Instance->PerfProfiler->Push("ChunkRenderer::Render");
 
         // Remesh the chunks waiting in the queue (one at a time)
         // TODO: multi-thread
         // TODO: for some reason, this causes holes while generating chunks - might be an issue with the world generator
+        Instance->PerfProfiler->Push("ChunkRenderer::RegenerateMeshes");
         while (!m_ChunkRemeshQueue.empty())
         {
             auto* chunk = m_ChunkRemeshQueue.pop();
             RegenerateMesh(*chunk);
         }
+        Instance->PerfProfiler->Pop();
 
         // Render the chunks
+        Instance->PerfProfiler->Push("ChunkRenderer::RenderChunks");
         for (auto* chunk : chunks)
         {
             RenderChunk(*chunk);
         }
+        Instance->PerfProfiler->Pop();
 
-        Instance->UpdateProfiler->Pop();
+        Instance->PerfProfiler->Pop();
     }
 
     void ChunkRenderer::RenderChunk(Chunk& chunk)
