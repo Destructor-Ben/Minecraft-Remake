@@ -7,11 +7,14 @@ namespace Minecraft
         string Name;
         float Ms;
         ProfilerData* Parent;
-        vector <ProfilerData> Children;
+        vector<ProfilerData> Children;
 
         string ToString(int level = 0) const;
     };
 
+    // TODO: add stuff to save + average the profile data every frame, since it's always recording it anyway
+    // TODO: profile worldgen + loading
+    // Also make a debug display in game
     class Profiler
     {
     public:
@@ -30,6 +33,6 @@ namespace Minecraft
 
         stack<Scope> m_Scopes = { };
         ProfilerData* m_CurrentData = nullptr;
-        optional <ProfilerData> m_Data = nullopt;
+        optional<ProfilerData> m_Data = nullopt;
     };
 }
