@@ -65,6 +65,7 @@ namespace Minecraft
         m_Scopes.emplace(name, startTime);
     }
 
+    // TODO: validate that the correct number of Pop calls have taken place
     void Profiler::Pop()
     {
         if (!m_Data.has_value())

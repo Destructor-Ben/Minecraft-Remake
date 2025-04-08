@@ -13,8 +13,6 @@ namespace Minecraft
     };
 
     // TODO: add stuff to save + average the profile data every frame, since it's always recording it anyway
-    // TODO: profile worldgen + loading
-    // Also make a debug display in game
     class Profiler
     {
     public:

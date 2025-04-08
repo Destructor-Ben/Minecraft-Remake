@@ -22,25 +22,44 @@ namespace Minecraft
         Logger = make_shared<LogManager>();
         Logger->Info(format("Starting Minecraft_Remake version {}...", Version::String));
 
+        PerfProfiler = make_shared<Profiler>();
+        PerfProfiler->BeginFrame("Load");
+
+        PerfProfiler->Push("WindowInit");
+
         InitGLFW();
         InitGL();
         stbi_set_flip_vertically_on_load(true);
         glfwMaximizeWindow(Window);
 
+        PerfProfiler->Pop();
+
+        PerfProfiler->Push("MiscManagers");
+
         Input = make_shared<InputManager>();
         Resources = make_shared<ResourceManager>();
-        PerfProfiler = make_shared<Profiler>();
 
         m_TickPerfData = { };
         m_UpdatePerfData = { };
         m_RenderPerfData = { };
+
+        PerfProfiler->Pop();
+
+        PerfProfiler->Push("GraphicsInit");
 
         Graphics = make_shared<Renderer>();
         ChunkGraphics = make_shared<ChunkRenderer>();
         SkyGraphics = make_shared<SkyRenderer>();
         UI = make_shared<UIRenderer>();
 
+        PerfProfiler->Pop();
+
+        PerfProfiler->Push("WorldInit");
         CurrentWorld = make_shared<World>();
+        PerfProfiler->Pop();
+
+        auto frameData = PerfProfiler->EndFrame();
+        Logger->Debug("Debug load times:\n" + frameData.ToString());
 
         // Running tests
         // Uncomment to run them
@@ -57,15 +76,17 @@ namespace Minecraft
         Graphics = nullptr;
         Resources = nullptr;
         Input = nullptr;
-        PerfProfiler = nullptr;
 
         glfwTerminate();
 
+        PerfProfiler = nullptr;
         Logger = nullptr;
     }
 
     void Game::InitGLFW()
     {
+        PerfProfiler->Push("InitGLFW");
+
         Logger->Info("Initializing GLFW...");
 
         glfwSetErrorCallback(GLFWError);
@@ -79,12 +100,16 @@ namespace Minecraft
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
         #endif
 
+        PerfProfiler->Push("Creating Window");
+
         const int InitialWidth = 1280;
         const int InitialHeight = 720;
         ScreenWidth = InitialWidth;
         ScreenHeight = InitialHeight;
         Window = glfwCreateWindow(InitialWidth, InitialHeight, "Minecraft Remake", nullptr, nullptr);
         glfwMakeContextCurrent(Window);
+
+        PerfProfiler->Pop();
 
         glfwSetFramebufferSizeCallback(Window, OnResize);
         glfwSetScrollCallback(Window, OnScroll);
@@ -93,10 +118,14 @@ namespace Minecraft
         SetVSyncEnabled(true);
 
         Logger->Info("GLFW Initialized");
+
+        PerfProfiler->Pop();
     }
 
     void Game::InitGL()
     {
+        PerfProfiler->Push("InitGL");
+
         Logger->Info("Initializing OpenGL...");
 
         gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
@@ -124,6 +153,8 @@ namespace Minecraft
         glBlendEquation(GL_FUNC_ADD);
 
         Logger->Info("OpenGL Initialized");
+
+        PerfProfiler->Pop();
     }
 
     #pragma endregion
