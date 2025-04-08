@@ -47,7 +47,7 @@ namespace Minecraft
         if (data.Children.size() != 1)
             Instance->Logger->Throw("Profiler went badly wrong");
 
-        return data.Children[0];
+        return data.Children.at(0);
     }
 
     void Profiler::Push(string name)
