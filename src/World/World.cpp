@@ -180,9 +180,19 @@ namespace Minecraft
     {
         Instance->PerfProfiler->Push("World::UpdateChunkList");
 
-        chunks.clear();
-
+        // Only refresh chunks when moving along chunk borders
+        // TODO: test this
         auto playerChunkPos = WorldToChunkPos(PlayerCamera.Position);
+        if (m_PreviousPlayerChunkPos == playerChunkPos)
+        {
+            Instance->PerfProfiler->Pop();
+            return;
+        }
+
+        chunks.clear();
+        // TODO: prealloc:
+        //int maxChunks = (2 * radius - 1) * (2 * radius - 1) * (2 * radius - 1);
+        //chunks.reserve(maxChunks); // Pre-allocate
 
         for_chunk_in_radius(x, y, z, radius, {
             // Calculate chunk pos
@@ -219,6 +229,8 @@ namespace Minecraft
     {
         if (!m_IsMouseHidden)
             return;
+
+        m_PreviousPlayerChunkPos = WorldToChunkPos(PlayerCamera.Position);
 
         const float sensitivity = 0.005f;
         const float maxAngle = glm::radians(89.0f);

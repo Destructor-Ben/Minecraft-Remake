@@ -105,5 +105,6 @@ namespace Minecraft
         float m_CameraPitch = 0.0f;
         float m_CameraYaw = 0.0f;
         bool m_IsMouseHidden = false;
+        vec3i m_PreviousPlayerChunkPos = { };
     };
 }

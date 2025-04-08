@@ -1,12 +1,14 @@
 #pragma once
 
+#include "Profiler.h"
+#include "Input/Key.h"
+
 // TODO: color utils to convert to/from hex and rgb
 namespace Minecraft
 {
     class LogManager;
     class InputManager;
     class ResourceManager;
-    class Profiler;
     class Renderer;
     class ChunkRenderer;
     class SkyRenderer;
@@ -15,14 +17,14 @@ namespace Minecraft
 
     class Game;
 
-    inline shared_ptr<Game> Instance = nullptr;
+    inline shared_ptr <Game> Instance = nullptr;
 
     class Game
     {
     public:
         // Loop variables
         bool Running = true;
-        chrono::time_point<chrono::steady_clock> StartTime;
+        chrono::time_point <chrono::steady_clock> StartTime;
         float ElapsedSeconds = 0;
 
         int UpdateCount = 0;
@@ -78,6 +80,8 @@ namespace Minecraft
         void InitGL();
         void InitGLFW();
 
+        void HandleProfilerData(const ProfilerData& data, Key debugKey, vector <ProfilerData>& previousData);
+
         static void GLError(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, cstring message, const void* userParam);
         static void GLFWError(int code, cstring description);
 
@@ -85,5 +89,9 @@ namespace Minecraft
         static void OnResize(GLFWwindow* window, int width, int height);
 
         bool m_VSyncEnabled = false;
+
+        vector <ProfilerData> m_TickPerfData;
+        vector <ProfilerData> m_UpdatePerfData;
+        vector <ProfilerData> m_RenderPerfData;
     };
 }

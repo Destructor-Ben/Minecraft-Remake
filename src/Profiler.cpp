@@ -7,7 +7,7 @@ namespace Minecraft
 {
     string ProfilerData::ToString(int level) const
     {
-        string heading = format("{} {:.3f}ms:", Name, Ms);
+        string heading = format("{} {:.3f}ms", Name, Ms);
         for (int i = 0; i < level; ++i)
         {
             heading = "  " + heading;

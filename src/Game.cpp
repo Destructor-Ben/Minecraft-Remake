@@ -31,6 +31,10 @@ namespace Minecraft
         Resources = make_shared<ResourceManager>();
         PerfProfiler = make_shared<Profiler>();
 
+        m_TickPerfData = { };
+        m_UpdatePerfData = { };
+        m_RenderPerfData = { };
+
         Graphics = make_shared<Renderer>();
         ChunkGraphics = make_shared<ChunkRenderer>();
         SkyGraphics = make_shared<SkyRenderer>();
@@ -126,6 +130,27 @@ namespace Minecraft
 
     #pragma region Update Functions
 
+    void Game::HandleProfilerData(const ProfilerData& data, Key debugKey, vector <ProfilerData>& previousData)
+    {
+        if (Input->WasKeyPressed(debugKey))
+            Logger->Debug("\n" + data.ToString());
+
+        if (Input->IsKeyDown(debugKey))
+            previousData.push_back(data);
+
+        if (Input->WasKeyReleased(debugKey))
+        {
+            previousData.push_back(data);
+
+            // TODO: average the data
+            auto averageData = data;
+
+            //Logger->Debug("\n" + averageData.ToString());
+
+            previousData.clear();
+        }
+    }
+
     void Game::Tick()
     {
         PerfProfiler->BeginFrame("Tick");
@@ -134,8 +159,7 @@ namespace Minecraft
             CurrentWorld->Tick();
 
         auto data = PerfProfiler->EndFrame();
-        if (Input->WasKeyPressed(Key::LeftBracket))
-            Logger->Debug("\n" + data.ToString());
+        HandleProfilerData(data, Key::LeftBracket, m_TickPerfData);
     }
 
     void Game::Update()
@@ -150,8 +174,7 @@ namespace Minecraft
         Input->PostUpdate();
 
         auto data = PerfProfiler->EndFrame();
-        if (Input->WasKeyPressed(Key::RightBracket))
-            Logger->Debug("\n" + data.ToString());
+        HandleProfilerData(data, Key::RightBracket, m_UpdatePerfData);
     }
 
     void Game::Render()
@@ -181,8 +204,7 @@ namespace Minecraft
         UI->DrawSprite(sprite);
 
         auto data = PerfProfiler->EndFrame();
-        if (Input->WasKeyPressed(Key::BackSlash))
-            Logger->Debug("\n" + data.ToString());
+        HandleProfilerData(data, Key::BackSlash, m_RenderPerfData);
     }
 
     #pragma endregion
