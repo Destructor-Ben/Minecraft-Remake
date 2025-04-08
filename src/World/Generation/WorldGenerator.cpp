@@ -80,14 +80,16 @@ namespace Minecraft
 
     Chunk& WorldGenerator::CreateChunk(vec3i chunkPos)
     {
-        Instance->PerfProfiler->Push("WorldGenerator::CreateChunk");
+        // TODO: this and below flood the console
+        // TODO: make the profiler just add the duration onto calls of the same name + increment a counter so we know how many times a method was called
+        //Instance->PerfProfiler->Push("WorldGenerator::CreateChunk");
 
         // Avoid copying the chunk into the map, just create it in there and retrieve its reference
         m_World->Chunks.emplace(chunkPos, Chunk(chunkPos.x, chunkPos.y, chunkPos.z));
         auto& chunk = m_World->Chunks[chunkPos];
         Generate(chunk);
 
-        Instance->PerfProfiler->Pop();
+        //Instance->PerfProfiler->Pop();
 
         return chunk;
     }
@@ -96,7 +98,7 @@ namespace Minecraft
     // This would mean chests that spawn tend to be filled with good loot
     void WorldGenerator::Generate(Chunk& chunk)
     {
-        Instance->PerfProfiler->Push("WorldGenerator::GenerateChunk");
+        //Instance->PerfProfiler->Push("WorldGenerator::GenerateChunk");
 
         GenerateBiomes(chunk);
         GenerateTerrain(chunk);
@@ -104,6 +106,6 @@ namespace Minecraft
         GenerateStructures(chunk);
         GenerateDecorations(chunk);
 
-        Instance->PerfProfiler->Pop();
+        //Instance->PerfProfiler->Pop();
     }
 }
