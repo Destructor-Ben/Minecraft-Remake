@@ -54,6 +54,7 @@ namespace Minecraft
         static constexpr int MaxSpawnHeight = MaxHeight;
 
         Camera PlayerCamera;
+        vec3i PreviousPlayerChunkPos = { };
         unordered_map <vec3i, Chunk> Chunks = { };
 
         // Time
@@ -105,6 +106,5 @@ namespace Minecraft
         float m_CameraPitch = 0.0f;
         float m_CameraYaw = 0.0f;
         bool m_IsMouseHidden = false;
-        vec3i m_PreviousPlayerChunkPos = { };
     };
 }

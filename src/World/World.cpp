@@ -181,8 +181,9 @@ namespace Minecraft
         Instance->PerfProfiler->Push("World::UpdateChunkList");
 
         // Only refresh chunks when moving along chunk borders
+        // TODO: what about when the world loads?
         auto playerChunkPos = WorldToChunkPos(PlayerCamera.Position);
-        if (m_PreviousPlayerChunkPos == playerChunkPos)
+        if (PreviousPlayerChunkPos == playerChunkPos)
         {
             Instance->PerfProfiler->Pop();
             return;
@@ -226,7 +227,7 @@ namespace Minecraft
         if (!m_IsMouseHidden)
             return;
 
-        m_PreviousPlayerChunkPos = WorldToChunkPos(PlayerCamera.Position);
+        PreviousPlayerChunkPos = WorldToChunkPos(PlayerCamera.Position);
 
         const float sensitivity = 0.005f;
         const float maxAngle = glm::radians(89.0f);

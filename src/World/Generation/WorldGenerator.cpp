@@ -1,6 +1,7 @@
 #include "WorldGenerator.h"
 
 #include "Game.h"
+#include "Profiler.h"
 #include "Graphics/Renderers/ChunkRenderer.h"
 #include "World/World.h"
 
@@ -17,6 +18,8 @@ namespace Minecraft
 
     void WorldGenerator::Generate(int spawnRadius, int minHeight, int maxHeight)
     {
+        Instance->PerfProfiler->Push("WorldGenerator::Generate");
+
         for_chunk_in_radius_2D(x, z, spawnRadius, {
             for (int y = minHeight; y <= maxHeight; ++y)
             {
@@ -29,11 +32,22 @@ namespace Minecraft
                 Instance->ChunkGraphics->QueueMeshRegen(chunk);
             }
         })
+
+        Instance->PerfProfiler->Pop();
     }
 
     void WorldGenerator::GenerateChunksAroundPlayer(vec3 playerPos, int radius, int minHeight, int maxHeight)
     {
+        Instance->PerfProfiler->Push("WorldGenerator::GenerateChunksAroundPlayer");
+
+        // Only generate new chunks when moving along chunk borders
+        // TODO: what about when the world loads?
         auto playerChunkPos = WorldToChunkPos(playerPos);
+        if (m_World->PreviousPlayerChunkPos == playerChunkPos)
+        {
+            Instance->PerfProfiler->Pop();
+            return;
+        }
 
         for_chunk_in_radius(x, y, z, radius, {
             // Calculate chunk pos
@@ -60,14 +74,20 @@ namespace Minecraft
                     Instance->ChunkGraphics->QueueMeshRegen(*chunkToRemesh.value()); // TODO: priority
             }
         })
+
+        Instance->PerfProfiler->Pop();
     }
 
     Chunk& WorldGenerator::CreateChunk(vec3i chunkPos)
     {
+        Instance->PerfProfiler->Push("WorldGenerator::CreateChunk");
+
         // Avoid copying the chunk into the map, just create it in there and retrieve its reference
         m_World->Chunks.emplace(chunkPos, Chunk(chunkPos.x, chunkPos.y, chunkPos.z));
         auto& chunk = m_World->Chunks[chunkPos];
         Generate(chunk);
+
+        Instance->PerfProfiler->Pop();
 
         return chunk;
     }
@@ -76,10 +96,14 @@ namespace Minecraft
     // This would mean chests that spawn tend to be filled with good loot
     void WorldGenerator::Generate(Chunk& chunk)
     {
+        Instance->PerfProfiler->Push("WorldGenerator::GenerateChunk");
+
         GenerateBiomes(chunk);
         GenerateTerrain(chunk);
         GenerateCaves(chunk);
         GenerateStructures(chunk);
         GenerateDecorations(chunk);
+
+        Instance->PerfProfiler->Pop();
     }
 }
