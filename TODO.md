@@ -1,13 +1,8 @@
 # To Do List
 
+- Fix holes in meshes when generating chunks around the player
 - Worldgen border fixes + steps - look at how minecraft does it
 - The process segfaults on linux when exiting
-- Fix chunk meshing speed
-    - Redo coordinate stuff
-        - ChunkOffset
-        - BlockOffset
-        - BlockPos
-        - WorldPos
 
 - Partial transparency support for blocks
 - Make all chunk loops that use radii circle instead of squares
@@ -20,9 +15,6 @@
 - Make assets use an asset bundle
 
 ## Optimizations
-
-- What exactly changes in release builds that improves performance so much?
-- Debug + Release options for linux, since inlining happens with the release build which prevents profiling effectively (I assume this is the issue)
 
 - Multithreading
     - Chunk meshing can be made to run in parallel
