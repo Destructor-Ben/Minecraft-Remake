@@ -41,6 +41,11 @@ namespace Minecraft
 
         void AddFaceInDirection(Block& block, vector <Quad>& faces, vec3i dir, quat rotation);
         void SetFaceTexture(Quad& face, vec3i dir, vec2i textureCoords);
+        // TODO: change the tint property in the vertices to a normal
+        // Then calculate the lighting based on the direction to the sun and moon
+        // Then also have a global brightness property
+        // TODO: probably handle point lights too
+        // TODO: maybe the sun and moon should be directional lights
         vec3 GetFaceTint(vec3i dir);
 
         vec2 m_BlockTextureSizeInUVCoords;
