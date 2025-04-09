@@ -161,6 +161,7 @@ namespace Minecraft
 
     #pragma region Update Functions
 
+    // TODO: also sometimes print all debug data if more chunks are generated on the same frame so I can tell if
     void Game::HandleProfilerData(const ProfilerData& data, Key debugKey, vector <ProfilerData>& previousData)
     {
         if (Input->WasKeyPressed(debugKey))
