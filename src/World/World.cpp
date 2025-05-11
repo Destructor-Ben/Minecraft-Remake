@@ -234,7 +234,7 @@ namespace Minecraft
         float speed = 12.5f * Instance->DeltaTime;
 
         // Rotation
-        m_CameraPitch -= Instance->Input->GetMousePosDelta().y * sensitivity;
+        m_CameraPitch += Instance->Input->GetMousePosDelta().y * sensitivity;
         m_CameraYaw -= Instance->Input->GetMousePosDelta().x * sensitivity;
         m_CameraPitch = glm::clamp(m_CameraPitch, -maxAngle, maxAngle);
         PlayerCamera.Rotation = quat(vec3(m_CameraPitch, m_CameraYaw, 0.0f));

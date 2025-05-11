@@ -283,7 +283,7 @@ namespace Minecraft
         double mouseX, mouseY;
         glfwGetCursorPos(Instance->Window, &mouseX, &mouseY);
         m_MousePos.x = (float)mouseX;
-        m_MousePos.y = (float)mouseY;
+        m_MousePos.y = (float)(Instance->ScreenHeight - mouseY);
 
         if (!m_OldMousePosInitialized)
         {
