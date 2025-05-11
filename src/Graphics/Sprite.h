@@ -7,10 +7,10 @@ namespace Minecraft
 {
     class Texture;
 
-    // TODO: origin for rotation and scaling
     struct Sprite
     {
         vec2 Position = vec2(0);
+        vec2 Origin = vec2(0);
         float Rotation = 0;
         float Depth = 0.5f;
         float Scale = 1;

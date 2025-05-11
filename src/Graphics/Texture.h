@@ -31,6 +31,7 @@ namespace Minecraft
         uint GetID() const { return m_ID; }
         int GetWidth() const { return m_Width; }
         int GetHeight() const { return m_Height; }
+        vec2i GetSize() const { return { m_Width, m_Height }; }
 
         static void Unbind();
 

@@ -67,6 +67,7 @@ namespace Minecraft
         crosshair.SpriteTexture = Instance->Resources->RequestTexture("ui/crosshair");;
         crosshair.Position = Instance->ScreenSize / 2;
         crosshair.Scale = 3.0f;
+        crosshair.Origin = crosshair.SpriteTexture->GetSize() / 2;
         DrawSprite(crosshair);
 
         Instance->PerfProfiler->Pop();
