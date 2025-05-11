@@ -1,5 +1,6 @@
 #pragma once
 
+// TODO just use a flat array instead of a tree structure, it is much easier to deal with
 namespace Minecraft
 {
     struct ProfilerData

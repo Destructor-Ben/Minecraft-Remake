@@ -54,6 +54,7 @@ namespace Minecraft
         static constexpr int MaxSpawnHeight = MaxHeight;
 
         Camera PlayerCamera;
+        // TODO: make a bool called PlayerMovedChunks
         vec3i PreviousPlayerChunkPos = { };
         unordered_map <vec3i, Chunk> Chunks = { };
 
