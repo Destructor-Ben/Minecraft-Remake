@@ -38,8 +38,11 @@ namespace Minecraft
 
         // Window
         GLFWwindow* Window = nullptr;
+        // TODO: rectangle object and ScreenRect
+        // Use rectangles in atlases for selecting sprites instead of a UVPosition and UVOffset
         int ScreenWidth = 0;
         int ScreenHeight = 0;
+        vec2i ScreenSize = { };
 
         // Managers
         shared_ptr <LogManager> Logger = nullptr;

@@ -1,13 +1,15 @@
 #include "UIRenderer.h"
 
 #include "Game.h"
+#include "LogManager.h"
 #include "ResourceManager.h"
 #include "Graphics/GL.h"
 #include "Graphics/Materials/SpriteMaterial.h"
 #include "Graphics/Renderers/Renderer.h"
+#include "Input/InputManager.h"
 
 namespace Minecraft
-{// TODO: make a begin and end function, as well as for renderer instead of PreRender and PostRender, also do wireframes for UI there
+{
     UIRenderer::UIRenderer()
     {
         InitCamera();
@@ -17,14 +19,8 @@ namespace Minecraft
     void UIRenderer::InitCamera()
     {
         UICamera.IsPerspective = false;
-        // TODO: maybe make the near clip plane 0
         UICamera.NearClip = 0;
         UICamera.FarClip = 1;
-
-        // Changing this changes the UI scale
-        UICamera.OrthographicScale = 1.0f;
-
-        UICamera.Update();
     }
 
     void UIRenderer::InitMesh()
@@ -35,17 +31,12 @@ namespace Minecraft
 
         // Create the mesh
         auto vertices = make_shared<VertexBuffer>();
-        // TODO: dont center the sprites, make the origin the bottom left
         vertices->SetData(vector<float>(
             {
-                -0.5f, -0.5f,
-                0, 1,
-                0.5f, -0.5f,
-                1, 1,
-                -0.5f, 0.5f,
                 0, 0,
-                0.5f, 0.5,
                 1, 0,
+                0, 1,
+                1, 1,
             }
         ));
 
@@ -59,19 +50,35 @@ namespace Minecraft
 
         auto vertexArray = make_shared<VertexArray>();
         vertexArray->PushFloat(2);
-        vertexArray->PushFloat(2);
         vertexArray->AddBuffer(vertices);
 
         m_SpriteMesh = make_shared<Mesh>(vertexArray);
         m_SpriteMesh->Materials[m_SpriteMaterial] = indices;
     }
 
+    void UIRenderer::Render()
+    {
+        Instance->PerfProfiler->Push("UI::Render");
+
+        UICamera.Update();
+        Instance->Graphics->SceneCamera = &UICamera;
+
+        auto crosshair = Sprite();
+        crosshair.SpriteTexture = Instance->Resources->RequestTexture("ui/crosshair");;
+        crosshair.Position = Instance->ScreenSize / 2;
+        crosshair.Scale = 3.0f;
+        DrawSprite(crosshair);
+
+        Instance->PerfProfiler->Pop();
+
+    }
+
     void UIRenderer::DrawSprite(Sprite& sprite)
     {
-        // TODO: figure out how to do depth testing without interfering with the game world
-        glDisable(GL_DEPTH_TEST);
+        // Clear the existing depth buffer so it doesn't interfere with the game world
+        glClear(GL_DEPTH_BUFFER_BIT);
+
         m_SpriteMaterial->DrawnSprite = &sprite;
         Instance->Graphics->DrawMesh(*m_SpriteMesh, sprite.GetTransformationMatrix());
-        glEnable(GL_DEPTH_TEST);
     }
 }

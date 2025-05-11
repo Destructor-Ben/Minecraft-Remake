@@ -215,25 +215,16 @@ namespace Minecraft
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // World rendering
         Graphics->PreRender();
 
+        // World rendering
         if (CurrentWorld)
             CurrentWorld->Render();
 
-        Graphics->PostRender();
-
         // UI rendering
-        // TODO: temporary, just testing
-        // TODO: make a proper UI system
-        // TODO: how to handle z values with sprites? default to 1? or just ignore and use render order for what's on top?
-        Graphics->SceneCamera = &UI->UICamera;
-        auto sprite = Sprite();
-        sprite.SpriteTexture = Resources->RequestTexture("ui/crosshair");
-        // TODO: fix scaling being dodgy, maybe use a downsized ui viewport
-        sprite.Scale = vec3(sprite.SpriteTexture->GetWidth() * 3);
-        sprite.Position = vec3(ScreenWidth / 2, ScreenHeight / 2, 0);
-        UI->DrawSprite(sprite);
+        UI->Render();
+
+        Graphics->PostRender();
 
         auto data = PerfProfiler->EndFrame();
         HandleProfilerData(data, Key::BackSlash, m_RenderPerfData);
@@ -389,6 +380,7 @@ namespace Minecraft
         glViewport(0, 0, width, height);
         Instance->ScreenWidth = width;
         Instance->ScreenHeight = height;
+        Instance->ScreenSize = vec2i(width, height);
     }
 
     #pragma endregion
