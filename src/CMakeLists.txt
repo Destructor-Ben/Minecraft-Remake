@@ -23,6 +23,7 @@ target_sources(Minecraft_Remake PRIVATE
 add_subdirectory(Graphics)
 add_subdirectory(Input)
 add_subdirectory(Random)
+add_subdirectory(UI)
 add_subdirectory(World)
 
 # Auto include Common.h in all files

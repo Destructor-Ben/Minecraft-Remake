@@ -11,6 +11,7 @@
 #include "Graphics/Renderers/SkyRenderer.h"
 #include "Graphics/Renderers/UIRenderer.h"
 #include "Random/RandomTests.h"
+#include "UI/UI.h"
 #include "World/World.h"
 
 namespace Minecraft
@@ -51,6 +52,7 @@ namespace Minecraft
         ChunkGraphics = make_shared<ChunkRenderer>();
         SkyGraphics = make_shared<SkyRenderer>();
         UI = make_shared<UIRenderer>();
+        UI::Init();
 
         PerfProfiler->Pop();
 
@@ -200,8 +202,13 @@ namespace Minecraft
 
         Input->Update();
 
+        // World updating
         if (CurrentWorld)
             CurrentWorld->Update();
+
+        // UI updating
+        UI::Update();
+        UI->Update();
 
         Input->PostUpdate();
 

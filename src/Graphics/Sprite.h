@@ -9,6 +9,7 @@ namespace Minecraft
 
     struct Sprite
     {
+        // These aren't forced to be ints so be careful
         vec2 Position = vec2(0);
         vec2 Origin = vec2(0);
         float Rotation = 0;

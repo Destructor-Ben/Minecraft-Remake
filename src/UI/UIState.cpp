@@ -1,0 +1,52 @@
+#include "UIState.h"
+
+#include "Game.h"
+#include "Graphics/Renderers/UIRenderer.h"
+#include "UI/UIElement.h"
+
+namespace Minecraft
+{
+    void UIState::Register()
+    {
+        Instance->UI->UIStates.push_back(this);
+    }
+
+    void UIState::Update()
+    {
+        for (auto& element : m_Elements)
+        {
+            if (!element->Active)
+                continue;
+
+            element->Update();
+        }
+    }
+
+    void UIState::Render()
+    {
+        for (auto& element : m_Elements)
+        {
+            if (!element->Active)
+                continue;
+
+            element->Render();
+        }
+    }
+
+    void UIState::AddElement(shared_ptr <UIElement> element)
+    {
+        m_Elements.push_back(element);
+        element->OnAdd();
+    }
+
+    void UIState::RemoveElement(shared_ptr <UIElement> element)
+    {
+        auto it = std::find(m_Elements.begin(), m_Elements.end(), element);
+
+        if (it == m_Elements.end())
+            return;
+
+        element->OnRemove();
+        m_Elements.erase(it);
+    }
+}

@@ -6,7 +6,7 @@
 #include "Graphics/GL.h"
 #include "Graphics/Materials/SpriteMaterial.h"
 #include "Graphics/Renderers/Renderer.h"
-#include "Input/InputManager.h"
+#include "UI/UIState.h"
 
 namespace Minecraft
 {
@@ -56,22 +56,40 @@ namespace Minecraft
         m_SpriteMesh->Materials[m_SpriteMaterial] = indices;
     }
 
+    void UIRenderer::Update()
+    {
+        Instance->PerfProfiler->Push("UI::Update");
+
+        UICamera.Update();
+
+        // Update the UI
+        for (auto& state : UIStates)
+        {
+            if (!state->Active)
+                continue;
+
+            state->Update();
+        }
+
+        Instance->PerfProfiler->Pop();
+    }
+
     void UIRenderer::Render()
     {
         Instance->PerfProfiler->Push("UI::Render");
 
-        UICamera.Update();
         Instance->Graphics->SceneCamera = &UICamera;
 
-        auto crosshair = Sprite();
-        crosshair.SpriteTexture = Instance->Resources->RequestTexture("ui/crosshair");;
-        crosshair.Position = Instance->ScreenSize / 2;
-        crosshair.Scale = 3.0f;
-        crosshair.Origin = crosshair.SpriteTexture->GetSize() / 2;
-        DrawSprite(crosshair);
+        // Draw the UI
+        for (auto& state : UIStates)
+        {
+            if (!state->Active)
+                continue;
+
+            state->Render();
+        }
 
         Instance->PerfProfiler->Pop();
-
     }
 
     void UIRenderer::DrawSprite(Sprite& sprite)
