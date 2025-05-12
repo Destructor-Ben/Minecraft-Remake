@@ -41,13 +41,13 @@ namespace Minecraft
         Instance->PerfProfiler->Push("WorldGenerator::GenerateChunksAroundPlayer");
 
         // Only generate new chunks when moving along chunk borders
-        // TODO: what about when the world loads?
-        auto playerChunkPos = WorldToChunkPos(playerPos);
-        if (m_World->PreviousPlayerChunkPos == playerChunkPos)
+        if (m_World->HasPlayerMovedChunks)
         {
             Instance->PerfProfiler->Pop();
             return;
         }
+
+        auto playerChunkPos = WorldToChunkPos(playerPos);
 
         for_chunk_in_radius(x, y, z, radius, {
             // Calculate chunk pos

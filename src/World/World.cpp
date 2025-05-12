@@ -120,6 +120,7 @@ namespace Minecraft
 
         Instance->PerfProfiler->Push("World::UpdatePlayer");
         UpdateCamera();
+        HasPlayerMovedChunks = WorldToChunkPos(PlayerCamera.Position) != PreviousPlayerChunkPos;
         PlayerCamera.Update();
         UpdateBlockBreaking();
         Instance->PerfProfiler->Pop();
@@ -181,14 +182,13 @@ namespace Minecraft
         Instance->PerfProfiler->Push("World::UpdateChunkList");
 
         // Only refresh chunks when moving along chunk borders
-        // TODO: what about when the world loads?
-        auto playerChunkPos = WorldToChunkPos(PlayerCamera.Position);
-        if (PreviousPlayerChunkPos == playerChunkPos)
+        if (HasPlayerMovedChunks)
         {
             Instance->PerfProfiler->Pop();
             return;
         }
 
+        auto playerChunkPos = WorldToChunkPos(PlayerCamera.Position);
         chunks.clear();
 
         for_chunk_in_radius(x, y, z, radius, {
