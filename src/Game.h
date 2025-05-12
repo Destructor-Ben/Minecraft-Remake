@@ -37,6 +37,7 @@ namespace Minecraft
         float TargetTickRate = 10;
 
         // Window
+        // TODO: window needs a minimum size
         GLFWwindow* Window = nullptr;
         // TODO: rectangle object and ScreenRect
         // Use rectangles in atlases for selecting sprites instead of a UVPosition and UVOffset
