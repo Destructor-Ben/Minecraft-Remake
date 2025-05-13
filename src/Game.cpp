@@ -52,12 +52,11 @@ namespace Minecraft
         ChunkGraphics = make_shared<ChunkRenderer>();
         SkyGraphics = make_shared<SkyRenderer>();
         UI = make_shared<UIRenderer>();
-        UI::Init();
 
         PerfProfiler->Pop();
 
-        PerfProfiler->Push("WorldInit");
-        CurrentWorld = make_shared<World>();
+        PerfProfiler->Push("UIInit");
+        UI::Init();
         PerfProfiler->Pop();
 
         auto frameData = PerfProfiler->EndFrame();
@@ -118,6 +117,7 @@ namespace Minecraft
         glfwSetInputMode(Window, GLFW_STICKY_KEYS, GLFW_TRUE);
         glfwSetInputMode(Window, GLFW_STICKY_MOUSE_BUTTONS, GLFW_TRUE);
         SetVSyncEnabled(true);
+        SetMouseHidden(false);
 
         Logger->Info("GLFW Initialized");
 
@@ -202,12 +202,30 @@ namespace Minecraft
 
         Input->Update();
 
+        #pragma region Random Keybinds
+
+        if (Instance->Input->WasKeyReleased(Key::Escape) && InGame)
+        {
+            // Pausing
+            Instance->IsPaused = !Instance->IsPaused;
+
+            // Mouse hiding
+            Instance->SetMouseHidden(!Instance->IsPaused);
+        }
+
+        if (Instance->Input->WasKeyReleased(Key::B))
+            Instance->ChunkGraphics->DrawChunkBorders = !Instance->ChunkGraphics->DrawChunkBorders;
+
+        if (Instance->Input->WasKeyReleased(Key::G))
+            Instance->Graphics->DrawWireframes = !Instance->Graphics->DrawWireframes;
+
+        #pragma endregion
+
         // World updating
-        if (CurrentWorld)
+        if (InGame && !IsPaused && CurrentWorld)
             CurrentWorld->Update();
 
         // UI updating
-        UI::Update();
         UI->Update();
 
         Input->PostUpdate();
@@ -249,7 +267,9 @@ namespace Minecraft
 
         while (Running)
         {
-            Tick();
+            if (!IsPaused)
+                Tick();
+
             Update();
             Render();
 
@@ -273,6 +293,9 @@ namespace Minecraft
             TickCount = UpdateCount;
             TickDeltaTime = DeltaTime;
 
+            if (IsPaused)
+                TickDeltaTime = 0;
+
             Running = !glfwWindowShouldClose(Window);
         }
     }
@@ -280,6 +303,12 @@ namespace Minecraft
     #pragma endregion
 
     #pragma region Callbacks
+
+    void Game::SetMouseHidden(bool hidden)
+    {
+        InputManager::SetRawMouseMotion(hidden);
+        InputManager::SetCursorDisabled(hidden);
+    }
 
     void Game::GLFWError(int code, cstring description)
     {

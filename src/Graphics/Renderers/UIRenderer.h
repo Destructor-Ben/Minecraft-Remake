@@ -17,8 +17,6 @@ namespace Minecraft
     public:
         Camera UICamera;
 
-        vector<UIState*> UIStates = { };
-
         UIRenderer();
 
         void Update();
@@ -30,7 +28,7 @@ namespace Minecraft
         void InitCamera();
         void InitMesh();
 
-        shared_ptr<Mesh> m_SpriteMesh;
-        shared_ptr<SpriteMaterial> m_SpriteMaterial;
+        shared_ptr <Mesh> m_SpriteMesh;
+        shared_ptr <SpriteMaterial> m_SpriteMaterial;
     };
 }

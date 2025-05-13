@@ -27,6 +27,9 @@ namespace Minecraft
         chrono::time_point <chrono::steady_clock> StartTime;
         float ElapsedSeconds = 0;
 
+        bool IsPaused = true;
+        bool InGame = false;
+
         int UpdateCount = 0;
         int TickCount = 0;
 
@@ -80,6 +83,9 @@ namespace Minecraft
             m_VSyncEnabled = value;
         }
 
+        bool IsMouseHidden() const { return m_IsMouseHidden; }
+        void SetMouseHidden(bool hidden);
+
     private:
         void InitGL();
         void InitGLFW();
@@ -93,6 +99,7 @@ namespace Minecraft
         static void OnResize(GLFWwindow* window, int width, int height);
 
         bool m_VSyncEnabled = false;
+        bool m_IsMouseHidden = false;
 
         vector <ProfilerData> m_TickPerfData;
         vector <ProfilerData> m_UpdatePerfData;

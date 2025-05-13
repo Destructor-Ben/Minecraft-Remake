@@ -71,7 +71,6 @@ namespace Minecraft
         static constexpr float Midnight = DayLength * 3.0f / 4.0f; // 3/4
 
         World();
-        ~World();
 
         void Tick();
         void Update();
@@ -86,10 +85,6 @@ namespace Minecraft
 
         optional <Block> GetBlock(int x, int y, int z) { return GetBlock(vec3i(x, y, z)); }
         optional <Block> GetBlock(vec3i pos);
-
-        // Mouse hiding
-        bool IsMouseHidden() const { return m_IsMouseHidden; }
-        void SetMouseHidden(bool hidden);
 
     private:
         void UpdateChunkList(vector<Chunk*>& chunks, int radius);
@@ -107,6 +102,5 @@ namespace Minecraft
 
         float m_CameraPitch = 0.0f;
         float m_CameraYaw = 0.0f;
-        bool m_IsMouseHidden = false;
     };
 }

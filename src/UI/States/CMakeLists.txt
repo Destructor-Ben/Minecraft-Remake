@@ -1,3 +1,8 @@
 target_sources(Minecraft_Remake PRIVATE
-    Crosshair.cpp
+    UICrosshair.cpp
+    UICrosshair.h
+    UIMainMenu.cpp
+    UIMainMenu.h
+    UIPauseMenu.cpp
+    UIPauseMenu.h
 )

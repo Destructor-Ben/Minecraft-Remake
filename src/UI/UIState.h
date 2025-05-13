@@ -9,11 +9,15 @@ namespace Minecraft
     {
     public:
         bool Active = true;
+        bool IsInGameUI = true;
 
-        void Register();
+        virtual void Init() { };
 
-        void Update();
-        void Render();
+        // Make sure the UI isn't active when it isn't meant to be
+        // Always called even if not active
+        virtual void CheckActive();
+        virtual void Update();
+        virtual void Render();
 
         void AddElement(shared_ptr<UIElement> element);
         void RemoveElement(shared_ptr<UIElement> element);

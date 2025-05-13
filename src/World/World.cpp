@@ -62,17 +62,11 @@ namespace Minecraft
 
     World::World()
     {
-        SetMouseHidden(true);
         PlayerCamera.FOV = 70.0f;
 
         // TODO: random seed generation
         m_WorldGenerator = WorldGenerator(this);
         m_WorldGenerator.Generate(SpawnRadius, MinSpawnHeight, MaxSpawnHeight);
-    }
-
-    World::~World()
-    {
-        SetMouseHidden(false);
     }
 
     void World::Tick()
@@ -88,6 +82,13 @@ namespace Minecraft
         }
         Instance->PerfProfiler->Pop();
 
+        Instance->PerfProfiler->Push("World::TickPlayer");
+        UpdateCamera();
+        HasPlayerMovedChunks = WorldToChunkPos(PlayerCamera.Position) != PreviousPlayerChunkPos;
+        PlayerCamera.Update();
+        UpdateBlockBreaking();
+        Instance->PerfProfiler->Pop();
+
         TickTime();
 
         Instance->PerfProfiler->Pop();
@@ -99,30 +100,11 @@ namespace Minecraft
 
         UpdateChunkList(m_RenderedChunks, RenderDistance);
 
-        if (Instance->Input->WasKeyReleased(Key::Escape))
-            Instance->Close();
-
-        if (Instance->Input->WasKeyReleased(Key::E))
-            SetMouseHidden(!IsMouseHidden());
-
-        if (Instance->Input->WasKeyReleased(Key::B))
-            Instance->ChunkGraphics->DrawChunkBorders = !Instance->ChunkGraphics->DrawChunkBorders;
-
-        if (Instance->Input->WasKeyReleased(Key::G))
-            Instance->Graphics->DrawWireframes = !Instance->Graphics->DrawWireframes;
-
         Instance->PerfProfiler->Push("World::UpdateChunks");
         for (auto* chunk : GetRenderedChunks())
         {
             chunk->Update();
         }
-        Instance->PerfProfiler->Pop();
-
-        Instance->PerfProfiler->Push("World::UpdatePlayer");
-        UpdateCamera();
-        HasPlayerMovedChunks = WorldToChunkPos(PlayerCamera.Position) != PreviousPlayerChunkPos;
-        PlayerCamera.Update();
-        UpdateBlockBreaking();
         Instance->PerfProfiler->Pop();
 
         m_WorldGenerator.GenerateChunksAroundPlayer(PlayerCamera.Position, GenerationDistance, MinHeight, MaxHeight);
@@ -146,13 +128,6 @@ namespace Minecraft
         Instance->SkyGraphics->Render();
 
         Instance->PerfProfiler->Pop();
-    }
-
-    void World::SetMouseHidden(bool hidden)
-    {
-        m_IsMouseHidden = hidden;
-        InputManager::SetRawMouseMotion(hidden);
-        InputManager::SetCursorDisabled(hidden);
     }
 
     optional<Chunk*> World::GetChunk(vec3i chunkPos)
@@ -224,9 +199,6 @@ namespace Minecraft
 
     void World::UpdateCamera()
     {
-        if (!m_IsMouseHidden)
-            return;
-
         PreviousPlayerChunkPos = WorldToChunkPos(PlayerCamera.Position);
 
         const float sensitivity = 0.005f;

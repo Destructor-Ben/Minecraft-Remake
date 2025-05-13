@@ -1,14 +1,16 @@
 #include "UIState.h"
 
 #include "Game.h"
-#include "Graphics/Renderers/UIRenderer.h"
 #include "UI/UIElement.h"
 
 namespace Minecraft
 {
-    void UIState::Register()
+    void UIState::CheckActive()
     {
-        Instance->UI->UIStates.push_back(this);
+        if (IsInGameUI)
+            Active &= Instance->InGame;
+        else
+            Active &= !Instance->InGame;
     }
 
     void UIState::Update()

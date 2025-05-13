@@ -6,6 +6,7 @@
 #include "Graphics/GL.h"
 #include "Graphics/Materials/SpriteMaterial.h"
 #include "Graphics/Renderers/Renderer.h"
+#include "UI/UI.h"
 #include "UI/UIState.h"
 
 namespace Minecraft
@@ -63,8 +64,10 @@ namespace Minecraft
         UICamera.Update();
 
         // Update the UI
-        for (auto& state : UIStates)
+        for (auto& state : UI::UIStateList)
         {
+            state->CheckActive();
+
             if (!state->Active)
                 continue;
 
@@ -81,7 +84,7 @@ namespace Minecraft
         Instance->Graphics->SceneCamera = &UICamera;
 
         // Draw the UI
-        for (auto& state : UIStates)
+        for (auto& state : UI::UIStateList)
         {
             if (!state->Active)
                 continue;
