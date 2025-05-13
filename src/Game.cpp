@@ -201,9 +201,23 @@ namespace Minecraft
         PerfProfiler->BeginFrame("Update");
 
         Input->Update();
+        UpdateKeybinds();
 
-        #pragma region Random Keybinds
+        // World updating
+        if (InGame && !IsPaused && CurrentWorld)
+            CurrentWorld->Update();
 
+        // UI updating
+        UI->Update();
+
+        Input->PostUpdate();
+
+        auto data = PerfProfiler->EndFrame();
+        HandleProfilerData(data, Key::RightBracket, m_UpdatePerfData);
+    }
+
+    void Game::UpdateKeybinds()
+    {
         if (Instance->Input->WasKeyReleased(Key::Escape) && InGame)
         {
             // Pausing
@@ -218,20 +232,6 @@ namespace Minecraft
 
         if (Instance->Input->WasKeyReleased(Key::G))
             Instance->Graphics->DrawWireframes = !Instance->Graphics->DrawWireframes;
-
-        #pragma endregion
-
-        // World updating
-        if (InGame && !IsPaused && CurrentWorld)
-            CurrentWorld->Update();
-
-        // UI updating
-        UI->Update();
-
-        Input->PostUpdate();
-
-        auto data = PerfProfiler->EndFrame();
-        HandleProfilerData(data, Key::RightBracket, m_UpdatePerfData);
     }
 
     void Game::Render()
@@ -306,6 +306,7 @@ namespace Minecraft
 
     void Game::SetMouseHidden(bool hidden)
     {
+        m_IsMouseHidden = hidden;
         InputManager::SetRawMouseMotion(hidden);
         InputManager::SetCursorDisabled(hidden);
     }

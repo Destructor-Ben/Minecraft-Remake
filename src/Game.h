@@ -17,14 +17,14 @@ namespace Minecraft
 
     class Game;
 
-    inline shared_ptr <Game> Instance = nullptr;
+    inline shared_ptr<Game> Instance = nullptr;
 
     class Game
     {
     public:
         // Loop variables
         bool Running = true;
-        chrono::time_point <chrono::steady_clock> StartTime;
+        chrono::time_point<chrono::steady_clock> StartTime;
         float ElapsedSeconds = 0;
 
         bool IsPaused = true;
@@ -49,19 +49,19 @@ namespace Minecraft
         vec2i ScreenSize = { };
 
         // Managers
-        shared_ptr <LogManager> Logger = nullptr;
-        shared_ptr <InputManager> Input = nullptr;
-        shared_ptr <ResourceManager> Resources = nullptr;
-        shared_ptr <Profiler> PerfProfiler = nullptr;
+        shared_ptr<LogManager> Logger = nullptr;
+        shared_ptr<InputManager> Input = nullptr;
+        shared_ptr<ResourceManager> Resources = nullptr;
+        shared_ptr<Profiler> PerfProfiler = nullptr;
 
         // Renderers
-        shared_ptr <Renderer> Graphics = nullptr;
-        shared_ptr <ChunkRenderer> ChunkGraphics = nullptr;
-        shared_ptr <SkyRenderer> SkyGraphics = nullptr;
-        shared_ptr <UIRenderer> UI = nullptr;
+        shared_ptr<Renderer> Graphics = nullptr;
+        shared_ptr<ChunkRenderer> ChunkGraphics = nullptr;
+        shared_ptr<SkyRenderer> SkyGraphics = nullptr;
+        shared_ptr<UIRenderer> UI = nullptr;
 
         // World
-        shared_ptr <World> CurrentWorld = nullptr;
+        shared_ptr<World> CurrentWorld = nullptr;
 
         void Run();
         void Initialize();
@@ -90,7 +90,9 @@ namespace Minecraft
         void InitGL();
         void InitGLFW();
 
-        void HandleProfilerData(const ProfilerData& data, Key debugKey, vector <ProfilerData>& previousData);
+        void UpdateKeybinds();
+
+        void HandleProfilerData(const ProfilerData& data, Key debugKey, vector<ProfilerData>& previousData);
 
         static void GLError(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, cstring message, const void* userParam);
         static void GLFWError(int code, cstring description);
@@ -101,8 +103,8 @@ namespace Minecraft
         bool m_VSyncEnabled = false;
         bool m_IsMouseHidden = false;
 
-        vector <ProfilerData> m_TickPerfData;
-        vector <ProfilerData> m_UpdatePerfData;
-        vector <ProfilerData> m_RenderPerfData;
+        vector<ProfilerData> m_TickPerfData;
+        vector<ProfilerData> m_UpdatePerfData;
+        vector<ProfilerData> m_RenderPerfData;
     };
 }
