@@ -64,7 +64,7 @@ namespace Minecraft
         float TimePercent = 0;
         bool IsDay = true;
         int DayCount = 0;
-        static constexpr float DayLength = 30.0f; // Measured in seconds
+        static constexpr float DayLength = 90.0f; // Measured in seconds
         static constexpr float Dawn = 0;                           // 0/4 or 4/4
         static constexpr float Noon = DayLength / 4.0f;            // 1/4
         static constexpr float Dusk = DayLength / 2.0f;            // 2/4
