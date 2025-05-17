@@ -29,7 +29,6 @@ namespace Minecraft
         m_Logo->Position.y = Instance->ScreenHeight - 300;
         AddElement(m_Logo);
 
-        // TODO: buttons
         m_PlayButton = make_shared<UIButton>();
         m_PlayButton->OnMouseUp = []()
         {
@@ -46,6 +45,14 @@ namespace Minecraft
         m_PlayButton->SetButtonSize(vec2i(30, 10));
         // TODO: fix origins: m_PlayButton->Origin = m_PlayButton->Size / 2;
         AddElement(m_PlayButton);
+
+        m_ExitButton = make_shared<UIButton>();
+        m_ExitButton->OnMouseUp = []() { Instance->Close(); };
+        m_ExitButton->Position.x = Instance->ScreenWidth / 2;
+        m_ExitButton->Position.y = Instance->ScreenHeight - 550;
+        m_ExitButton->SetButtonSize(vec2i(30, 10));
+        // TODO: fix origins: m_ExitButton->Origin = m_ExitButton->Size / 2;
+        AddElement(m_ExitButton);
     }
 
     void UIMainMenu::CheckActive()
@@ -60,7 +67,5 @@ namespace Minecraft
         UIState::Update();
 
         // TODO: update the locations of the UI elements
-        if (m_PlayButton->IsHovered())
-            Instance->Logger->Info("Test");
     }
 }
