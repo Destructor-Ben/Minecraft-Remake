@@ -49,7 +49,7 @@ namespace Minecraft
         m_ExitButton = make_shared<UIButton>();
         m_ExitButton->OnMouseUp = []() { Instance->Close(); };
         m_ExitButton->Position.x = Instance->ScreenWidth / 2;
-        m_ExitButton->Position.y = Instance->ScreenHeight - 550;
+        m_ExitButton->Position.y = Instance->ScreenHeight - 600;
         m_ExitButton->SetButtonSize(vec2i(30, 10));
         // TODO: fix origins: m_ExitButton->Origin = m_ExitButton->Size / 2;
         AddElement(m_ExitButton);

@@ -6,13 +6,13 @@
 namespace Minecraft
 {
     // TODO: add text
-    // TODO: scale up a bit, perhaps 2-3 times bigger
     class UIButton : public UIElement
     {
     public:
         static constexpr int CornerSize = 5;
         static constexpr int EdgeSize = 10;
         static constexpr int Padding = 3;
+        static constexpr int Scale = 3;
 
         std::function<void()> OnMouseDown;
         std::function<void()> OnMouseUp;

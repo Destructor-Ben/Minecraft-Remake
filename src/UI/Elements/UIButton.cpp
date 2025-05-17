@@ -15,7 +15,7 @@ namespace Minecraft
 
     void UIButton::SetButtonSize(vec2i size)
     {
-        Size = size + (CornerSize + Padding) * 2;
+        Size = size + (CornerSize * Scale + Padding) * 2;
     }
 
     void UIButton::Update()
@@ -39,7 +39,8 @@ namespace Minecraft
         UIElement::Render();
 
         // Setting up the sprite
-        vec2i size = Size - CornerSize * 2; // Size of the edge sprites
+        vec2i size = Size - CornerSize * 2 * Scale; // Size of the edge sprites
+        float scaledCornerSize = CornerSize * Scale;
         auto sprite = Sprite();
         sprite.SpriteTexture = m_Texture;
         sprite.Origin = Origin;
@@ -58,7 +59,7 @@ namespace Minecraft
 
         // Bottom left corner
         sprite.Position = Position;
-        sprite.Size = vec2i(CornerSize);
+        sprite.Size = vec2i(scaledCornerSize);
         sprite.UVs->x = uvOffset.x;
         sprite.UVs->y = uvOffset.y;
         sprite.UVs->Width = CornerSize;
@@ -66,22 +67,22 @@ namespace Minecraft
         Instance->UI->DrawSprite(sprite);
 
         // Bottom edge
-        sprite.Position.x += CornerSize;
-        sprite.Size = vec2i(size.x, CornerSize);
+        sprite.Position.x += scaledCornerSize;
+        sprite.Size = vec2i(size.x, scaledCornerSize);
         sprite.UVs->x += CornerSize;
         sprite.UVs->Width = EdgeSize;
         Instance->UI->DrawSprite(sprite);
 
         // Bottom right corner
         sprite.Position.x += size.x;
-        sprite.Size = vec2i(CornerSize);
+        sprite.Size = vec2i(scaledCornerSize);
         sprite.UVs->x += EdgeSize;
         sprite.UVs->Width = CornerSize;
         Instance->UI->DrawSprite(sprite);
 
         // Left edge
-        sprite.Position = Position + vec2i(0, CornerSize);
-        sprite.Size = vec2i(CornerSize, size.y);
+        sprite.Position = Position + vec2i(0, scaledCornerSize);
+        sprite.Size = vec2i(scaledCornerSize, size.y);
         sprite.UVs->x = uvOffset.x;
         sprite.UVs->y = uvOffset.y + CornerSize;
         sprite.UVs->Width = CornerSize;
@@ -89,7 +90,7 @@ namespace Minecraft
         Instance->UI->DrawSprite(sprite);
 
         // Middle
-        sprite.Position.x += CornerSize;
+        sprite.Position.x += scaledCornerSize;
         sprite.Size = vec2i(size.x, size.y);
         sprite.UVs->x += CornerSize;
         sprite.UVs->Width = EdgeSize;
@@ -97,14 +98,14 @@ namespace Minecraft
 
         // Right edge
         sprite.Position.x += size.x;
-        sprite.Size = vec2i(CornerSize, size.y);
+        sprite.Size = vec2i(scaledCornerSize, size.y);
         sprite.UVs->x += EdgeSize;
         sprite.UVs->Width = CornerSize;
         Instance->UI->DrawSprite(sprite);
 
         // Top left corner
-        sprite.Position = Position + vec2i(0, CornerSize + size.y);
-        sprite.Size = vec2i(CornerSize);
+        sprite.Position = Position + vec2i(0, scaledCornerSize + size.y);
+        sprite.Size = vec2i(scaledCornerSize);
         sprite.UVs->x = uvOffset.x;
         sprite.UVs->y = uvOffset.y + CornerSize + EdgeSize;
         sprite.UVs->Width = CornerSize;
@@ -112,15 +113,15 @@ namespace Minecraft
         Instance->UI->DrawSprite(sprite);
 
         // Top edge
-        sprite.Position.x += CornerSize;
-        sprite.Size = vec2i(size.x, CornerSize);
+        sprite.Position.x += scaledCornerSize;
+        sprite.Size = vec2i(size.x, scaledCornerSize);
         sprite.UVs->x += CornerSize;
         sprite.UVs->Width = EdgeSize;
         Instance->UI->DrawSprite(sprite);
 
         // Top right corner
         sprite.Position.x += size.x;
-        sprite.Size = vec2i(CornerSize);
+        sprite.Size = vec2i(scaledCornerSize);
         sprite.UVs->x += EdgeSize;
         sprite.UVs->Width = CornerSize;
         Instance->UI->DrawSprite(sprite);
