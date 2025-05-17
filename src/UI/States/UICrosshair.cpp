@@ -12,13 +12,13 @@ namespace Minecraft
 
         auto texture = Instance->Resources->RequestTexture("ui/crosshair");
         m_Crosshair = make_shared<UISprite>();
-        m_Crosshair->DrawnSprite.SpriteTexture = texture;
-        m_Crosshair->DrawnSprite.Scale = 3.0f;
-        m_Crosshair->DrawnSprite.Origin = texture->GetSize() / 2;
+        m_Crosshair->SpriteTexture = texture;
+        m_Crosshair->Scale = vec2(3.0f);
+        m_Crosshair->Origin = texture->GetSize() / 2;
 
         AddElement(m_Crosshair);
     }
-    
+
     void UICrosshair::CheckActive()
     {
         Active = !Instance->IsPaused;
@@ -30,6 +30,6 @@ namespace Minecraft
     {
         UIState::Update();
 
-        m_Crosshair->DrawnSprite.Position = Instance->ScreenSize / 2;
+        m_Crosshair->Position = Instance->ScreenSize / 2;
     }
 }

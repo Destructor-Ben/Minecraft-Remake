@@ -9,14 +9,22 @@ namespace Minecraft
     {
         UIElement::Update();
 
-        Position = DrawnSprite.Position;
-        Size = vec2i((vec2)DrawnSprite.SpriteTexture->GetSize() * DrawnSprite.Scale);
+        Size = Scale * (vec2)SpriteTexture->GetSize();
     }
 
     void UISprite::Render()
     {
         UIElement::Render();
 
-        Instance->UI->DrawSprite(DrawnSprite);
+        auto sprite = Sprite();
+        sprite.Position = Position;
+        sprite.Origin = Origin;
+        sprite.Rotation = Rotation;
+        sprite.Depth = Depth;
+        sprite.Scale = Scale;
+        sprite.UVs = UVs;
+        sprite.Color = Color;
+        sprite.SpriteTexture = SpriteTexture;
+        Instance->UI->DrawSprite(sprite);
     }
 }

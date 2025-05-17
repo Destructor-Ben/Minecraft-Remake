@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Rectangle.h"
 #include "Transform.h"
 #include "Graphics/Texture.h"
 
@@ -14,10 +15,11 @@ namespace Minecraft
         vec2 Origin = vec2(0);
         float Rotation = 0;
         float Depth = 0.5f;
-        float Scale = 1;
+        vec2 Scale = vec2(1); // Multiplier for the texture size
+        vec2 Size = vec2(0); // Measured in pixels
 
-        vec2 UVPosition = vec2(0);
-        vec2 UVScale = vec2(1);
+        // Measured in pixels
+        optional<Rectangle> UVs = nullopt;
 
         vec3 Color = vec3(1);
         shared_ptr<Texture> SpriteTexture;
@@ -28,7 +30,7 @@ namespace Minecraft
 
             transform.Position = vec3(Position.x, Position.y, -Depth);
             transform.Rotation = glm::rotate(glm::identity<quat>(), Rotation, vec3(0, 0, 1));
-            transform.Scale = vec3(SpriteTexture->GetWidth() * Scale, SpriteTexture->GetHeight() * Scale, 1);
+            transform.Scale = vec3(SpriteTexture->GetWidth() * Scale.x + Size.x, SpriteTexture->GetHeight() * Scale.y + Size.y, 1);
 
             return transform.GetTransformationMatrix();
         }

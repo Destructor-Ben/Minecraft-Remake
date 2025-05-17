@@ -8,9 +8,14 @@ namespace Minecraft
     class UISprite : public UIElement
     {
     public:
-        // Modify this, not width and height
-        // TODO: move all of these fields into here
-        Sprite DrawnSprite;
+        float Rotation = 0;
+        float Depth = 0.5f;
+        vec2 Scale = vec2(1); // Scale * TextureSize gets outputted into Size
+
+        optional <Rectangle> UVs = nullopt;
+
+        vec3 Color = vec3(1);
+        shared_ptr <Texture> SpriteTexture;
 
         virtual void Update() override;
         virtual void Render() override;

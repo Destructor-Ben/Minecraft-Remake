@@ -4,6 +4,7 @@
 
 namespace Minecraft
 {
+    class UIButton;
     class UISprite;
 
     class UIMainMenu : public UIState
@@ -14,6 +15,10 @@ namespace Minecraft
         virtual void Update() override;
 
     private:
-        shared_ptr <UISprite> m_TestSprite;
+        shared_ptr <UISprite> m_Background;
+        shared_ptr <UISprite> m_Logo;
+
+        shared_ptr <UIButton> m_PlayButton;
+        shared_ptr <UIButton> m_ExitButton;
     };
 }

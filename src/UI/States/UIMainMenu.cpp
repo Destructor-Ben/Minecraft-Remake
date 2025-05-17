@@ -1,8 +1,10 @@
 #include "UIMainMenu.h"
 
 #include "Game.h"
+#include "LogManager.h"
 #include "ResourceManager.h"
 #include "Input/InputManager.h"
+#include "UI/Elements/UIButton.h"
 #include "UI/Elements/UISprite.h"
 #include "World/World.h"
 
@@ -14,14 +16,36 @@ namespace Minecraft
 
         IsInGameUI = false;
 
-        auto texture = Instance->Resources->RequestTexture("chunk");
-        m_TestSprite = make_shared<UISprite>();
-        m_TestSprite->DrawnSprite.SpriteTexture = texture;
-        m_TestSprite->DrawnSprite.Scale = 3.0f;
-        m_TestSprite->DrawnSprite.Origin = texture->GetSize() / 2;
-        m_TestSprite->DrawnSprite.Position = vec2i(500, 500);
+        auto backgroundTexture = Instance->Resources->RequestTexture("ui/menu/background");
+        m_Background = make_shared<UISprite>();
+        m_Background->SpriteTexture = backgroundTexture;
+        AddElement(m_Background);
 
-        AddElement(m_TestSprite);
+        auto logoTexture = Instance->Resources->RequestTexture("ui/menu/logo");
+        m_Logo = make_shared<UISprite>();
+        m_Logo->SpriteTexture = logoTexture;
+        m_Logo->Origin = logoTexture->GetSize() / 2;
+        m_Logo->Position.x = Instance->ScreenWidth / 2;
+        m_Logo->Position.y = Instance->ScreenHeight - 300;
+        AddElement(m_Logo);
+
+        // TODO: buttons
+        m_PlayButton = make_shared<UIButton>();
+        m_PlayButton->OnMouseUp = []()
+        {
+            // Generate world
+            Instance->Logger->Info("Entering world...");
+            Instance->CurrentWorld = make_shared<World>();
+            Instance->InGame = true;
+            Instance->IsPaused = false;
+            Instance->SetMouseHidden(true);
+        };
+
+        m_PlayButton->Position.x = Instance->ScreenWidth / 2;
+        m_PlayButton->Position.y = Instance->ScreenHeight - 500;
+        m_PlayButton->SetButtonSize(vec2i(30, 10));
+        // TODO: fix origins: m_PlayButton->Origin = m_PlayButton->Size / 2;
+        AddElement(m_PlayButton);
     }
 
     void UIMainMenu::CheckActive()
@@ -35,13 +59,8 @@ namespace Minecraft
     {
         UIState::Update();
 
-        if (!Instance->Input->WasMouseButtonPressed(MouseButton::Left))
-            return;
-
-        // Generate world
-        Instance->CurrentWorld = make_shared<World>();
-        Instance->InGame = true;
-        Instance->IsPaused = false;
-        Instance->SetMouseHidden(true);
+        // TODO: update the locations of the UI elements
+        if (m_PlayButton->IsHovered())
+            Instance->Logger->Info("Test");
     }
 }

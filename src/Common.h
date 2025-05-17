@@ -9,6 +9,7 @@
 #include <cmath>
 #include <exception>
 #include <fstream>
+#include <functional>
 #include <iostream>
 #include <memory>
 #include <numbers>

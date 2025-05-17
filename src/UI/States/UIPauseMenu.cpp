@@ -13,10 +13,10 @@ namespace Minecraft
 
         auto texture = Instance->Resources->RequestTexture("sky/sun");
         m_TestSprite = make_shared<UISprite>();
-        m_TestSprite->DrawnSprite.SpriteTexture = texture;
-        m_TestSprite->DrawnSprite.Scale = 3.0f;
-        m_TestSprite->DrawnSprite.Origin = texture->GetSize() / 2;
-        m_TestSprite->DrawnSprite.Position = vec2i(200, 200);
+        m_TestSprite->SpriteTexture = texture;
+        m_TestSprite->Scale = vec2(3.0f);
+        m_TestSprite->Origin = texture->GetSize() / 2;
+        m_TestSprite->Position = vec2i(200, 200);
 
         AddElement(m_TestSprite);
     }

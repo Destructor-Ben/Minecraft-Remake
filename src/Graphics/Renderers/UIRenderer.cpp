@@ -7,7 +7,6 @@
 #include "Graphics/Materials/SpriteMaterial.h"
 #include "Graphics/Renderers/Renderer.h"
 #include "UI/UI.h"
-#include "UI/UIState.h"
 
 namespace Minecraft
 {

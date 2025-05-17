@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Common.h"
+#include "Rectangle.h"
 
 namespace Minecraft
 {
@@ -9,12 +9,16 @@ namespace Minecraft
     {
     public:
         // These are more of an output than necessarily intended to be set
-        vec2i Position;
-        vec2i Size;
+        // TODO: make these a custom unit based on screen width
+        vec2i Position = vec2i(0);
+        vec2i Origin = vec2i(0);
+        vec2i Size = vec2i(1);
 
         bool Active = true;
 
         UIElement() { }
+
+        virtual Rectangle GetBounds();
 
         virtual void OnAdd() { }
         virtual void OnRemove() { }

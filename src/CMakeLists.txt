@@ -14,6 +14,8 @@ target_sources(Minecraft_Remake PRIVATE
     Main.cpp
     Profiler.cpp
     Profiler.h
+    Rectangle.cpp
+    Rectangle.h
     ResourceManager.cpp
     ResourceManager.h
     Transform.cpp
