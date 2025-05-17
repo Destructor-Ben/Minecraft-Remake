@@ -302,7 +302,18 @@ namespace Minecraft
 
     #pragma endregion
 
-    #pragma region Callbacks
+    #pragma region Window Control Functions
+
+    void Game::Close() const
+    {
+        glfwSetWindowShouldClose(Window, true);
+    }
+
+    void Game::SetVSyncEnabled(bool value)
+    {
+        glfwSwapInterval(value ? 1 : 0);
+        m_VSyncEnabled = value;
+    }
 
     void Game::SetMouseHidden(bool hidden)
     {
@@ -311,11 +322,13 @@ namespace Minecraft
         InputManager::SetCursorDisabled(hidden);
     }
 
+    // TODO: should be in LogManager
     void Game::GLFWError(int code, cstring description)
     {
         Instance->Logger->Error(format("GLFW Error (Code {}): {}", code, description));
     }
 
+    // TODO: should be in LogManager
     void Game::GLError(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, cstring message, const void* userParam)
     {
         string sourceString;
@@ -418,6 +431,7 @@ namespace Minecraft
         Instance->ScreenWidth = width;
         Instance->ScreenHeight = height;
         Instance->ScreenSize = vec2i(width, height);
+        Instance->ScreenRect = Rectangle(0, 0, width, height);
     }
 
     #pragma endregion

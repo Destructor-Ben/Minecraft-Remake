@@ -1,9 +1,35 @@
 #pragma once
 
 #include "Profiler.h"
+#include "Rectangle.h"
 #include "Input/Key.h"
 
 // TODO: color utils to convert to/from hex and rgb
+// TODO: proper name, namespace, and logo
+// TODO: icon and cursor
+// TODO: make all managers have an init function instead of doing stuff in ctors
+// - This is because sometimes they will need to refer to Instance->XXManager to init themselves, but the object exists, but hasn't been assigned to a variable yet
+// - If I use an init function, then all managers can be stored by value (no shared_ptr) because they won't init anything until Init is called, so the init order is still deterministic
+// TODO: loading screens + better init order
+// TODO: rename all managers
+// TODO: better include management - including this file should include all managers
+// - To opt out for the managers header files themselves, allow defining an include to disable it!
+// - E.g. #ifndef DONT_INCLUDE_MANAGERS {includes} #endif and #define DONT_INCLUDE_MANAGERS to out out
+// TODO: can't this just be a static class? is there any reason for this to be a singleton? does it even need to be a class? could it just be a namespace?
+// - After looking online, just make a namespace
+// TODO: minimum window size
+// TODO: ensure graceful shutdown
+// - Make sure all of the system signals are respected
+//   - SIGINT
+//   - SIGTERM
+//   - SIGKILL
+//   - Any others for killing processes
+// - Error message dialog box if there is an error as well as print to error log
+// - Also allow segfaults to give an error message - I think its also a process signal
+// - Ctrl + c interrupting
+// TODO: text rendering - make it a separate manager from UI since text will appear in game
+// TODO: better game loops
+// TODO: multithread loading and initial world generation to stop the main thread being blocked (it shouldn't be too hard right?)
 namespace Minecraft
 {
     class LogManager;
@@ -40,13 +66,11 @@ namespace Minecraft
         float TargetTickRate = 10;
 
         // Window
-        // TODO: window needs a minimum size
         GLFWwindow* Window = nullptr;
-        // TODO: ScreenRect variable
-        // Use rectangles in atlases for selecting sprites instead of a UVPosition and UVOffset
         int ScreenWidth = 0;
         int ScreenHeight = 0;
         vec2i ScreenSize = { };
+        Rectangle ScreenRect = { };
 
         // Managers
         shared_ptr <LogManager> Logger = nullptr;
@@ -74,14 +98,10 @@ namespace Minecraft
         float GetFrameRate() const { return 1.0 / DeltaTime; }
         float GetTickRate() const { return 1.0 / TickDeltaTime; }
 
-        void Close() const { glfwSetWindowShouldClose(Window, true); }
+        void Close() const;
 
         bool IsVSyncEnabled() const { return m_VSyncEnabled; }
-        void SetVSyncEnabled(bool value)
-        {
-            glfwSwapInterval(value ? 1 : 0);
-            m_VSyncEnabled = value;
-        }
+        void SetVSyncEnabled(bool value);
 
         bool IsMouseHidden() const { return m_IsMouseHidden; }
         void SetMouseHidden(bool hidden);

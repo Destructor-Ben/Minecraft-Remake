@@ -5,7 +5,8 @@
 
 namespace Minecraft
 {
-    // TODO: finish button and main menu UI
+    // TODO: add text
+    // TODO: scale up a bit, perhaps 2-3 times bigger
     class UIButton : public UIElement
     {
     public:
