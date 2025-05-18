@@ -76,14 +76,14 @@ namespace Minecraft
 
         vec2i pos = Instance->ScreenSize / 2;
         pos.x -= 500;
-        TextRenderer::DrawText("Hello World!\tI <3 Minecraft!", pos);
+        TextRenderer::DrawTextWithShadow("Hello World!\tI <3 Minecraft!", pos, vec3(0, 1, 1));
         pos.y -= 30;
-        TextRenderer::DrawText("ABCDEFGHIJKLMNOPQRSTUVWXYZ", pos);
+        TextRenderer::DrawTextWithShadow("ABCDEFGHIJKLMNOPQRSTUVWXYZ", pos, vec3(1, 1, 0));
         pos.y -= 30;
-        TextRenderer::DrawText("abcdefghijklmnopqrstuvwxyz", pos);
+        TextRenderer::DrawTextWithShadow("abcdefghijklmnopqrstuvwxyz", pos);
         pos.y -= 30;
-        TextRenderer::DrawText("0123456789", pos);
+        TextRenderer::DrawTextWithShadow("0123456789", pos, vec3(1, 0, 0), vec3(0.5, 0.1, 0));
         pos.y -= 30;
-        TextRenderer::DrawText(".,?!'`\"-_/|\\:;()[]{}<>#^*+=~@$%&", pos);
+        TextRenderer::DrawTextWithShadow(".,?!'`\"-_/|\\:;()[]{}<>#^*+=~@$%&", pos);
     }
 }

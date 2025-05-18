@@ -97,7 +97,7 @@ namespace Minecraft::TextRenderer
         CharacterMap['&'] = { 123, 2, 5, 5 };
     }
 
-    void DrawText(string text, vec2i position)
+    void DrawText(string text, vec2i position, vec3 color)
     {
         // Used to stop spacing at the beginning of the text
         bool previousCharWasWhitespace = true;
@@ -133,6 +133,7 @@ namespace Minecraft::TextRenderer
             sprite.Scale = vec2(0);
             sprite.Size = charUVs.GetSize() * TextScale;
             sprite.SpriteTexture = FontTexture;
+            sprite.Color = color;
             sprite.UVs = charUVs;
             Instance->UI->DrawSprite(sprite);
 
@@ -142,11 +143,14 @@ namespace Minecraft::TextRenderer
         }
     }
 
-    void DrawTextWithShadow(string text, vec2i position)
+    void DrawTextWithShadow(string text, vec2i position, vec3 textColor, optional <vec3> shadowColor)
     {
-        DrawText(text, position);
-        // TODO: option for color and add options for main text and shadow color
-        DrawText(text, position + vec2i(1));
+        // Default shadow color
+        if (shadowColor == nullopt)
+            shadowColor = textColor * 0.25;
+
+        DrawText(text, position + vec2i(ShadowOffset, -ShadowOffset) * TextScale, shadowColor.value());
+        DrawText(text, position, textColor);
     }
 
     int GetWhitespaceWidth(char c)
