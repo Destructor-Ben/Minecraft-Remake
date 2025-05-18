@@ -27,7 +27,6 @@
 // - Error message dialog box if there is an error as well as print to error log
 // - Also allow segfaults to give an error message - I think its also a process signal
 // - Ctrl + c interrupting
-// TODO: text rendering - make it a separate manager from UI since text will appear in game
 // TODO: better game loops
 // TODO: multithread loading and initial world generation to stop the main thread being blocked (it shouldn't be too hard right?)
 namespace Minecraft

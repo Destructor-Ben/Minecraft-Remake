@@ -9,6 +9,7 @@
 #include "Graphics/Renderers/Renderer.h"
 #include "Graphics/Renderers/ChunkRenderer.h"
 #include "Graphics/Renderers/SkyRenderer.h"
+#include "Graphics/Renderers/TextRenderer.h"
 #include "Graphics/Renderers/UIRenderer.h"
 #include "Random/RandomTests.h"
 #include "UI/UI.h"
@@ -51,6 +52,7 @@ namespace Minecraft
         Graphics = make_shared<Renderer>();
         ChunkGraphics = make_shared<ChunkRenderer>();
         SkyGraphics = make_shared<SkyRenderer>();
+        TextRenderer::Init();
         UI = make_shared<UIRenderer>();
 
         PerfProfiler->Pop();

@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "LogManager.h"
 #include "ResourceManager.h"
+#include "Graphics/Renderers/TextRenderer.h"
 #include "Input/InputManager.h"
 #include "UI/Elements/UIButton.h"
 #include "UI/Elements/UISprite.h"
@@ -67,5 +68,22 @@ namespace Minecraft
         UIState::Update();
 
         // TODO: update the locations of the UI elements
+    }
+
+    void UIMainMenu::Render()
+    {
+        UIState::Render();
+
+        vec2i pos = Instance->ScreenSize / 2;
+        pos.x -= 500;
+        TextRenderer::DrawText("Hello World!\tI <3 Minecraft!", pos);
+        pos.y -= 30;
+        TextRenderer::DrawText("ABCDEFGHIJKLMNOPQRSTUVWXYZ", pos);
+        pos.y -= 30;
+        TextRenderer::DrawText("abcdefghijklmnopqrstuvwxyz", pos);
+        pos.y -= 30;
+        TextRenderer::DrawText("0123456789", pos);
+        pos.y -= 30;
+        TextRenderer::DrawText(".,?!'`\"-_/|\\:;()[]{}<>#^*+=~@$%&", pos);
     }
 }
