@@ -9,6 +9,7 @@ namespace Minecraft
     {
         UIElement::Update();
 
+        // TODO: this sucks
         Size = Scale * (vec2)SpriteTexture->GetSize();
     }
 
