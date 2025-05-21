@@ -6,7 +6,7 @@ namespace Minecraft
 {
     void UIText::SetText(string text)
     {
-        m_Text = text;
+        Text.Text = text;
         Size = TextRenderer::GetTextSize(text);
     }
 
@@ -14,10 +14,8 @@ namespace Minecraft
     {
         UIElement::Render();
 
-        // TODO: include origin, scale, and rotation when that is added to the text renderer
-        if (HasShadow)
-            TextRenderer::DrawTextWithShadow(m_Text, Position - Origin, TextColor, ShadowColor);
-        else
-            TextRenderer::DrawText(m_Text, Position - Origin, TextColor);
+        Text.Position = Position;
+        Text.Origin = Origin;
+        TextRenderer::DrawText(Text);
     }
 }

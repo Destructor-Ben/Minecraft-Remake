@@ -8,6 +8,27 @@
 - Make all chunk loops that use radii circle instead of squares
 - Make all materials automatically request their shaders? it makes no sense to make them not do it since it is passed in anyway
 
+## UI
+
+- Finish UI states
+    - Main menu
+    - Pause menu
+    - Debug UI
+    - Crosshair
+    - Open UI fade (the black tint)
+    - Hotbar
+    - Inventory
+- Rewrite certain APIs
+    - TextRenderer/TextDrawParams
+    - Sprite
+    - Color
+    - Rectangle
+- UI Elements
+    - UIElement
+    - UISprite
+    - UIText
+    - UIButton
+
 ## Build System
 
 - Make the libraries submodules instead of directly embedded

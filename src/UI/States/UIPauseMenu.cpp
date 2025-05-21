@@ -11,16 +11,13 @@ namespace Minecraft
 {
     void UIPauseMenu::Init()
     {
-        UIState::Init();
-
         // TODO: blur in the future
         // TODO: fade in future
         // TODO: make a separate layer
         auto backgroundTexture = Instance->Resources->RequestTexture("pixel");
         m_BlackBackground = make_shared<UISprite>();
-        m_BlackBackground->SpriteTexture = backgroundTexture;
-        m_BlackBackground->Color = vec3(0);
-        m_BlackBackground->Opacity = 0.35f;
+        m_BlackBackground->DrawnSprite.SpriteTexture = backgroundTexture;
+        m_BlackBackground->DrawnSprite.SpriteColor = Color(Colors::Black.RGB, 0.35f);
         m_BlackBackground->Position = vec2i(0);
         AddElement(m_BlackBackground);
 
@@ -53,10 +50,19 @@ namespace Minecraft
             Instance->SetMouseHidden(false);
         };
         AddElement(m_ExitButton);
+
+        UIState::Init();
     }
 
     void UIPauseMenu::CheckActive()
     {
+        // Pausing with escape
+        if (Instance->InGame && Instance->Input->WasKeyReleased(Key::Escape))
+        {
+            Instance->IsPaused = !Instance->IsPaused;
+            Instance->SetMouseHidden(!Instance->IsPaused);
+        }
+
         Active = Instance->IsPaused;
 
         UIState::CheckActive();
@@ -64,11 +70,9 @@ namespace Minecraft
 
     void UIPauseMenu::Update()
     {
-        UIState::Update();
-
         // Update the background scale
         // TODO: OnResize hook?
-        m_BlackBackground->Scale = Instance->ScreenSize;
+        m_BlackBackground->DrawnSprite.Scale = Instance->ScreenSize;
 
         // Update locations for the UI elements
         // TODO: this should be done automatically with custom units
@@ -83,5 +87,7 @@ namespace Minecraft
         m_BackButton->Position.y = yPos;
         yPos -= 75;
         m_ExitButton->Position.y = yPos;
+
+        UIState::Update();
     }
 }

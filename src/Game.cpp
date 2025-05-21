@@ -203,7 +203,6 @@ namespace Minecraft
         PerfProfiler->BeginFrame("Update");
 
         Input->Update();
-        UpdateKeybinds();
 
         // World updating
         if (InGame && !IsPaused && CurrentWorld)
@@ -216,24 +215,6 @@ namespace Minecraft
 
         auto data = PerfProfiler->EndFrame();
         HandleProfilerData(data, Key::RightBracket, m_UpdatePerfData);
-    }
-
-    void Game::UpdateKeybinds()
-    {
-        if (Instance->Input->WasKeyReleased(Key::Escape) && InGame)
-        {
-            // Pausing
-            Instance->IsPaused = !Instance->IsPaused;
-
-            // Mouse hiding
-            Instance->SetMouseHidden(!Instance->IsPaused);
-        }
-
-        if (Instance->Input->WasKeyReleased(Key::B))
-            Instance->ChunkGraphics->DrawChunkBorders = !Instance->ChunkGraphics->DrawChunkBorders;
-
-        if (Instance->Input->WasKeyReleased(Key::G))
-            Instance->Graphics->DrawWireframes = !Instance->Graphics->DrawWireframes;
     }
 
     void Game::Render()

@@ -8,15 +8,15 @@ namespace Minecraft
 {
     void UICrosshair::Init()
     {
-        UIState::Init();
-
         auto texture = Instance->Resources->RequestTexture("ui/crosshair");
         m_Crosshair = make_shared<UISprite>();
-        m_Crosshair->SpriteTexture = texture;
-        m_Crosshair->Scale = vec2(3.0f);
+        m_Crosshair->DrawnSprite.SpriteTexture = texture;
+        m_Crosshair->DrawnSprite.Scale = vec2(3.0f);
         m_Crosshair->Origin = texture->GetSize() / 2;
 
         AddElement(m_Crosshair);
+
+        UIState::Init();
     }
 
     void UICrosshair::CheckActive()
@@ -28,8 +28,8 @@ namespace Minecraft
 
     void UICrosshair::Update()
     {
-        UIState::Update();
-
         m_Crosshair->Position = Instance->ScreenSize / 2;
+
+        UIState::Update();
     }
 }

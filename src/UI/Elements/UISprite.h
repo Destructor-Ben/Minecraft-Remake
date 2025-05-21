@@ -8,16 +8,11 @@ namespace Minecraft
     class UISprite : public UIElement
     {
     public:
-        // TODO: just use a sprite variable
-        float Rotation = 0;
-        float Depth = 0.5f;
-        vec2 Scale = vec2(1); // Scale * TextureSize gets outputted into Size
+        // Ignore the position and origin, they are overwritten
+        Sprite DrawnSprite;
 
-        optional <Rectangle> UVs = nullopt;
-
-        vec3 Color = vec3(1);
-        float Opacity = 1.0f;
-        shared_ptr <Texture> SpriteTexture;
+        // Also sets size
+        void SetTexture(shared_ptr<Texture> texture);
 
         virtual void Update() override;
         virtual void Render() override;

@@ -13,7 +13,8 @@ namespace Minecraft::TextRenderer
     static shared_ptr <Texture> FontTexture;
     static Rectangle UnknownCharacter = Rectangle(1, 2, 3, 5);
 
-    int GetWhitespaceWidth(char c);
+    static void DrawTextInternal(TextDrawParams text);
+    static int GetWhitespaceWidth(char c);
 
     void Init()
     {
@@ -97,25 +98,42 @@ namespace Minecraft::TextRenderer
         CharacterMap['&'] = { 123, 2, 5, 5 };
     }
 
-    void DrawText(string text, vec2i position, vec3 color)
+    void DrawText(TextDrawParams text)
+    {
+        if (text.HasShadow)
+        {
+            // Default shadow color
+            if (text.ShadowColor == nullopt)
+                text.ShadowColor = text.TextColor.MultiplyRGB(0.25f);
+
+            auto shadowText = text;
+            shadowText.TextColor = shadowText.ShadowColor.value();
+            shadowText.Position += vec2i(ShadowOffset, -ShadowOffset) * TextScale;
+            DrawTextInternal(shadowText);
+        }
+
+        DrawTextInternal(text);
+    }
+
+    static void DrawTextInternal(TextDrawParams text)
     {
         // Used to stop spacing at the beginning of the text
         bool previousCharWasWhitespace = true;
 
-        for (char c : text)
+        for (char c : text.Text)
         {
             // Whitespace
             int whitespaceWidth = GetWhitespaceWidth(c);
             if (whitespaceWidth != 0)
             {
-                position.x += whitespaceWidth * WhitespaceSize * TextScale;
+                text.Position.x += whitespaceWidth * WhitespaceSize * TextScale;
                 previousCharWasWhitespace = true;
                 continue;
             }
 
             // Character spacing - This is done here to avoid whitespaces being a pixel too large
             if (!previousCharWasWhitespace)
-                position.x += CharacterSpacing * TextScale;
+                text.Position.x += CharacterSpacing * TextScale;
 
             // Get the character UVs
             auto charUVs = UnknownCharacter;
@@ -128,29 +146,23 @@ namespace Minecraft::TextRenderer
                 yOffset = -TextScale;
 
             // Draw the sprite
+            // TODO: use SetTargetRect
             auto sprite = Sprite();
-            sprite.Position = position + vec2i(0, yOffset);
+            sprite.Position = text.Position + vec2i(0, yOffset);
+            sprite.Origin = text.Origin;
+            sprite.Rotation = text.Rotation;
+            sprite.Depth = text.Depth;
             sprite.Scale = vec2(0);
             sprite.Size = charUVs.GetSize() * TextScale;
             sprite.SpriteTexture = FontTexture;
-            sprite.Color = color;
+            sprite.SpriteColor = text.TextColor;
             sprite.UVs = charUVs;
             Instance->UI->DrawSprite(sprite);
 
             // Advance the position
-            position.x += charUVs.Width * TextScale; // Character size
+            text.Position.x += charUVs.Width * TextScale; // Character size
             previousCharWasWhitespace = false;
         }
-    }
-
-    void DrawTextWithShadow(string text, vec2i position, vec3 textColor, optional <vec3> shadowColor)
-    {
-        // Default shadow color
-        if (shadowColor == nullopt)
-            shadowColor = textColor * 0.25;
-
-        DrawText(text, position + vec2i(ShadowOffset, -ShadowOffset) * TextScale, shadowColor.value());
-        DrawText(text, position, textColor);
     }
 
     vec2i GetTextSize(string text)
@@ -190,7 +202,7 @@ namespace Minecraft::TextRenderer
         return size;
     }
 
-    int GetWhitespaceWidth(char c)
+    static int GetWhitespaceWidth(char c)
     {
         if (c == ' ')
             return 1;

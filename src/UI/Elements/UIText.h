@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Graphics/TextDrawParams.h"
 #include "UI/UIElement.h"
 
 namespace Minecraft
@@ -7,15 +8,10 @@ namespace Minecraft
     class UIText : public UIElement
     {
     public:
-        vec3 TextColor = vec3(1);
-        optional <vec3> ShadowColor = nullopt;
-        bool HasShadow = true;
+        TextDrawParams Text;
 
         void SetText(string text);
 
         virtual void Render() override;
-
-    private:
-        string m_Text;
     };
 }

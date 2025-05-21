@@ -21,7 +21,7 @@ namespace Minecraft
 
     void UIButton::SetText(string text)
     {
-        m_Text = text;
+        Text.Text = text;
         SetButtonSize(TextRenderer::GetTextSize(text));
     }
 
@@ -66,6 +66,7 @@ namespace Minecraft
         //if (!useDarkMode)
         //    uvOffset.y += CornerSize * 2 + EdgeSize + 1;
 
+        // TODO: use SetTargetRect
         // Bottom left corner
         sprite.Position = Position - Origin;
         sprite.Size = vec2i(scaledCornerSize);
@@ -136,11 +137,11 @@ namespace Minecraft
         Instance->UI->DrawSprite(sprite);
 
         // Text
-        if (m_Text.empty())
+        if (Text.Text.empty())
             return;
 
-        // TODO: proper text drawing
-        // TODO: precalculate text origin as half of it's size
-        TextRenderer::DrawTextWithShadow(m_Text, Position - TextRenderer::GetTextSize(m_Text) / 2, TextColor);
+        Text.Position = Position;
+        Text.Origin = Origin;
+        TextRenderer::DrawText(Text);
     }
 }

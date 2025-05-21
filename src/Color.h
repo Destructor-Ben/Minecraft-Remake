@@ -7,19 +7,20 @@ namespace Minecraft
         vec3 RGB = vec3(1);
         float Opacity = 1.0f;
 
-        // TODO: color list static Color Red;
-        // - RGB, CMY, white, black, transparent
+        Color(vec4 rgba) : RGB(rgba.r, rgba.g, rgba.b), Opacity(rgba.a) { }
+        Color(vec3 rgb, float opacity = 1.0f) : RGB(rgb), Opacity(opacity) { }
+        Color(float r, float g, float b, float opacity = 1.0f) : RGB(r, g, b), Opacity(opacity) { }
 
-        // TODO: ToXX functions
-        // - hex string
+        Color MultiplyRGB(float value) const { return Color(RGB * value, Opacity); }
+        Color MultiplyRGB(vec3 value) const { return Color(RGB * value, Opacity); }
+        Color MultiplyRGBA(float value) const { return Color(RGB * value, Opacity * value); }
+        Color MultiplyRGBA(vec4 value) const { return Color(ToRGBA() * value); }
 
-        // TODO: ctors/from functions
-        // - hex string
-        // - vec3
-        // - vec3 + float
-        // - 3 floats
-        // - 4 floats
+        string ToHex() const;
+        vec3 ToHSV() const;
+        vec4 ToRGBA() const;
 
-        // TODO: handling other colour formats, e.g. HSV
+        static Color FromHex(string hex);
+        static Color FromHSV(vec3 hsv, float opacity = 1.0f);
     };
 }

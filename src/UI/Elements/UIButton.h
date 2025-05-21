@@ -1,11 +1,11 @@
 #pragma once
 
+#include "Graphics/TextDrawParams.h"
 #include "Graphics/Texture.h"
 #include "UI/UIElement.h"
 
 namespace Minecraft
 {
-    // TODO: add text
     class UIButton : public UIElement
     {
     public:
@@ -17,10 +17,7 @@ namespace Minecraft
         std::function<void()> OnMouseDown;
         std::function<void()> OnMouseUp;
 
-        // TODO: text draw params
-        vec3 TextColor = vec3(1);
-        optional <vec3> TextShadowColor = nullopt;
-        bool TextHasShadow = true;
+        TextDrawParams Text;
 
         UIButton();
 
@@ -37,6 +34,5 @@ namespace Minecraft
     private:
         bool m_IsHovered;
         shared_ptr <Texture> m_Texture;
-        string m_Text;
     };
 }

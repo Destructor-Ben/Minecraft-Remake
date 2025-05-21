@@ -13,18 +13,16 @@ namespace Minecraft
 {
     void UIMainMenu::Init()
     {
-        UIState::Init();
-
         IsInGameUI = false;
 
         auto backgroundTexture = Instance->Resources->RequestTexture("ui/menu/background");
         m_Background = make_shared<UISprite>();
-        m_Background->SpriteTexture = backgroundTexture;
+        m_Background->DrawnSprite.SpriteTexture = backgroundTexture;
         AddElement(m_Background);
 
         auto logoTexture = Instance->Resources->RequestTexture("ui/menu/logo");
         m_Logo = make_shared<UISprite>();
-        m_Logo->SpriteTexture = logoTexture;
+        m_Logo->DrawnSprite.SpriteTexture = logoTexture;
         m_Logo->Origin = logoTexture->GetSize() / 2;
         m_Logo->Position.x = Instance->ScreenWidth / 2;
         m_Logo->Position.y = Instance->ScreenHeight - 300;
@@ -54,6 +52,8 @@ namespace Minecraft
         m_ExitButton->SetText("Exit");
         m_ExitButton->Origin = m_ExitButton->Size / 2;
         AddElement(m_ExitButton);
+
+        UIState::Init();
     }
 
     void UIMainMenu::CheckActive()
@@ -65,8 +65,9 @@ namespace Minecraft
 
     void UIMainMenu::Update()
     {
-        UIState::Update();
 
         // TODO: update the locations of the UI elements
+
+        UIState::Update();
     }
 }

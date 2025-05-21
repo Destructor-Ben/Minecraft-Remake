@@ -5,28 +5,24 @@
 
 namespace Minecraft
 {
+    void UISprite::SetTexture(shared_ptr <Texture> texture)
+    {
+        DrawnSprite.SpriteTexture = texture;
+        Size = texture->GetSize();
+    }
+
     void UISprite::Update()
     {
         UIElement::Update();
 
-        // TODO: this sucks
-        Size = Scale * (vec2)SpriteTexture->GetSize();
+        DrawnSprite.Position = Position;
+        DrawnSprite.Origin = Origin;
     }
 
     void UISprite::Render()
     {
         UIElement::Render();
 
-        auto sprite = Sprite();
-        sprite.Position = Position;
-        sprite.Origin = Origin;
-        sprite.Rotation = Rotation;
-        sprite.Depth = Depth;
-        sprite.Scale = Scale;
-        sprite.UVs = UVs;
-        sprite.Color = Color;
-        sprite.Opacity = Opacity;
-        sprite.SpriteTexture = SpriteTexture;
-        Instance->UI->DrawSprite(sprite);
+        Instance->UI->DrawSprite(DrawnSprite);
     }
 }

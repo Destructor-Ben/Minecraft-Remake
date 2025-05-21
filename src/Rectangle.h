@@ -7,12 +7,16 @@ namespace Minecraft
     class Rectangle
     {
     public:
-        int x;
-        int y;
-        int Width;
-        int Height;
+        int x = 0;
+        int y = 0;
+        int Width = 0;
+        int Height = 0;
 
-        // TODO: ctor for 2 vec2is
+        Rectangle() { }
+        Rectangle(int width, int height) : Width(width), Height(height) { }
+        Rectangle(int x, int y, int width, int height) : Width(width), Height(height), x(x), y(y) { }
+        Rectangle(vec2i size) : Width(size.x), Height(size.y) { }
+        Rectangle(vec2i pos, vec2i size) : Width(size.x), Height(size.y), x(pos.x), y(pos.y) { }
 
         vec2i GetSize() const { return { Width, Height }; }
         vec2i GetPosition() const { return { x, y }; }

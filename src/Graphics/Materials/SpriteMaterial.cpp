@@ -8,15 +8,9 @@ namespace Minecraft
     {
         Material::Bind();
 
-        vec2 textureSize = DrawnSprite->SpriteTexture->GetSize();
+        vec2i textureSize = DrawnSprite->SpriteTexture->GetSize();
         m_Shader->SetUniform("uTexture", DrawnSprite->SpriteTexture, 0);
-        // TODO: use Color.ToVec4()
-        vec4 color = vec4();
-        color.r = DrawnSprite->Color.r;
-        color.g = DrawnSprite->Color.g;
-        color.b = DrawnSprite->Color.b;
-        color.a = DrawnSprite->Opacity;
-        m_Shader->SetUniform("uColor", color);
+        m_Shader->SetUniform("uColor", DrawnSprite->SpriteColor.ToRGBA());
         m_Shader->SetUniform("uOrigin", DrawnSprite->Origin / textureSize);
 
         vec2 texCoordPos = vec2(0);
@@ -24,8 +18,8 @@ namespace Minecraft
 
         if (DrawnSprite->UVs.has_value())
         {
-            texCoordPos = (vec2)DrawnSprite->UVs->GetPosition() / textureSize;
-            textCoordScale = (vec2)DrawnSprite->UVs->GetSize() / textureSize;
+            texCoordPos = (vec2)DrawnSprite->UVs->GetPosition() / (vec2)textureSize;
+            textCoordScale = (vec2)DrawnSprite->UVs->GetSize() / (vec2)textureSize;
         }
 
         m_Shader->SetUniform("uTexCoordPosition", texCoordPos);

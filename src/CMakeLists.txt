@@ -5,7 +5,9 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 target_sources(Minecraft_Remake PRIVATE
     BoundingBox.cpp
     BoundingBox.h
+    Color.cpp
     Color.h
+    Colors.h
     Common.h
     Game.cpp
     Game.h

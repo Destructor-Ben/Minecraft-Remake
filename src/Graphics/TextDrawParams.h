@@ -1,13 +1,20 @@
 #pragma once
 
+#include "Colors.h"
+
 namespace Minecraft
 {
     struct TextDrawParams
     {
-        // TODO make these colours
-        vec3 TextColor = vec3(1);
-        optional<vec3> ShadowColor = nullopt;
+        vec2i Position = vec2i(0);
+        vec2i Origin = vec2i(0);
+        float Rotation = 0;
+        float Depth = 0.5f;
+        vec2 Scale = vec2(1); // Multiplier for text size
+
+        string Text = "";
+        Color TextColor = Colors::White;
+        optional<Color> ShadowColor = nullopt; // nullopt means the shadow color is calculated
         bool HasShadow = true;
-        // TODO: do we want position + origin? maybe origin? idk
     };
 }
