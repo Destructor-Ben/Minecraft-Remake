@@ -25,6 +25,7 @@ namespace Minecraft
         sprite.Scale = Scale;
         sprite.UVs = UVs;
         sprite.Color = Color;
+        sprite.Opacity = Opacity;
         sprite.SpriteTexture = SpriteTexture;
         Instance->UI->DrawSprite(sprite);
     }

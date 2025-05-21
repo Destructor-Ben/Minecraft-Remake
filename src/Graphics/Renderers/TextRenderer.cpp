@@ -153,6 +153,43 @@ namespace Minecraft::TextRenderer
         DrawText(text, position, textColor);
     }
 
+    vec2i GetTextSize(string text)
+    {
+        // The default height is based on the font
+        // TODO: 7 being the text height fucks with the baseline of the test when using origin to centre
+        vec2i size = vec2i(0, 5 * TextScale);//meant to be 7 but testing with 5
+
+        // Used to stop spacing at the beginning of the text
+        bool previousCharWasWhitespace = true;
+
+        for (char c : text)
+        {
+            // Whitespace
+            int whitespaceWidth = GetWhitespaceWidth(c);
+            if (whitespaceWidth != 0)
+            {
+                size.x += whitespaceWidth * WhitespaceSize * TextScale;
+                previousCharWasWhitespace = true;
+                continue;
+            }
+
+            // Character spacing - This is done here to avoid whitespaces being a pixel too large
+            if (!previousCharWasWhitespace)
+                size.x += CharacterSpacing * TextScale;
+
+            // Get the character UVs
+            auto charUVs = UnknownCharacter;
+            if (CharacterMap.contains(c))
+                charUVs = CharacterMap.at(c);
+
+            // Increase the size
+            size.x += charUVs.Width * TextScale; // Character size
+            previousCharWasWhitespace = false;
+        }
+
+        return size;
+    }
+
     int GetWhitespaceWidth(char c)
     {
         if (c == ' ')

@@ -17,10 +17,17 @@ namespace Minecraft
         std::function<void()> OnMouseDown;
         std::function<void()> OnMouseUp;
 
+        // TODO: text draw params
+        vec3 TextColor = vec3(1);
+        optional <vec3> TextShadowColor = nullopt;
+        bool TextHasShadow = true;
+
         UIButton();
 
         // Accounts for padding + corner size
         void SetButtonSize(vec2i size);
+        void SetButtonSize(int width, int height) { SetButtonSize(vec2i(width, height)); }
+        void SetText(string text);
 
         bool IsHovered() const { return m_IsHovered; }
 
@@ -30,5 +37,6 @@ namespace Minecraft
     private:
         bool m_IsHovered;
         shared_ptr <Texture> m_Texture;
+        string m_Text;
     };
 }

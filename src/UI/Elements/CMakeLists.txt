@@ -3,4 +3,6 @@ target_sources(Minecraft_Remake PRIVATE
     UIButton.h
     UISprite.cpp
     UISprite.h
+    UIText.cpp
+    UIText.h
 )

@@ -43,16 +43,16 @@ namespace Minecraft
 
         m_PlayButton->Position.x = Instance->ScreenWidth / 2;
         m_PlayButton->Position.y = Instance->ScreenHeight - 500;
-        m_PlayButton->SetButtonSize(vec2i(30, 10));
-        // TODO: fix origins: m_PlayButton->Origin = m_PlayButton->Size / 2;
+        m_PlayButton->SetText("Play");
+        m_PlayButton->Origin = m_PlayButton->Size / 2;
         AddElement(m_PlayButton);
 
         m_ExitButton = make_shared<UIButton>();
         m_ExitButton->OnMouseUp = []() { Instance->Close(); };
         m_ExitButton->Position.x = Instance->ScreenWidth / 2;
         m_ExitButton->Position.y = Instance->ScreenHeight - 600;
-        m_ExitButton->SetButtonSize(vec2i(30, 10));
-        // TODO: fix origins: m_ExitButton->Origin = m_ExitButton->Size / 2;
+        m_ExitButton->SetText("Exit");
+        m_ExitButton->Origin = m_ExitButton->Size / 2;
         AddElement(m_ExitButton);
     }
 
@@ -68,22 +68,5 @@ namespace Minecraft
         UIState::Update();
 
         // TODO: update the locations of the UI elements
-    }
-
-    void UIMainMenu::Render()
-    {
-        UIState::Render();
-
-        vec2i pos = Instance->ScreenSize / 2;
-        pos.x -= 500;
-        TextRenderer::DrawTextWithShadow("Hello World!\tI <3 Minecraft!", pos, vec3(0, 1, 1));
-        pos.y -= 30;
-        TextRenderer::DrawTextWithShadow("ABCDEFGHIJKLMNOPQRSTUVWXYZ", pos, vec3(1, 1, 0));
-        pos.y -= 30;
-        TextRenderer::DrawTextWithShadow("abcdefghijklmnopqrstuvwxyz", pos);
-        pos.y -= 30;
-        TextRenderer::DrawTextWithShadow("0123456789", pos, vec3(1, 0, 0), vec3(0.5, 0.1, 0));
-        pos.y -= 30;
-        TextRenderer::DrawTextWithShadow(".,?!'`\"-_/|\\:;()[]{}<>#^*+=~@$%&", pos);
     }
 }

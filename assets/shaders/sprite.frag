@@ -3,14 +3,14 @@
 in vec2 TexCoord;
 
 uniform sampler2D uTexture;
-uniform vec3 uColor;
+uniform vec4 uColor;
 
 out vec4 FragColor;
 
 void main()
 {
     FragColor = texture(uTexture, TexCoord);
-    FragColor.rgb *= uColor;
+    FragColor *= uColor;
 
     if (FragColor.a == 0) {
         discard;

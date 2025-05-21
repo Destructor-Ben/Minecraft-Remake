@@ -10,7 +10,13 @@ namespace Minecraft
 
         vec2 textureSize = DrawnSprite->SpriteTexture->GetSize();
         m_Shader->SetUniform("uTexture", DrawnSprite->SpriteTexture, 0);
-        m_Shader->SetUniform("uColor", DrawnSprite->Color);
+        // TODO: use Color.ToVec4()
+        vec4 color = vec4();
+        color.r = DrawnSprite->Color.r;
+        color.g = DrawnSprite->Color.g;
+        color.b = DrawnSprite->Color.b;
+        color.a = DrawnSprite->Opacity;
+        m_Shader->SetUniform("uColor", color);
         m_Shader->SetUniform("uOrigin", DrawnSprite->Origin / textureSize);
 
         vec2 texCoordPos = vec2(0);

@@ -12,6 +12,8 @@ namespace Minecraft
         int Width;
         int Height;
 
+        // TODO: ctor for 2 vec2is
+
         vec2i GetSize() const { return { Width, Height }; }
         vec2i GetPosition() const { return { x, y }; }
 

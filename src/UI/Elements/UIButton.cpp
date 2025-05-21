@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "ResourceManager.h"
 #include "Graphics/Sprite.h"
+#include "Graphics/Renderers/TextRenderer.h"
 #include "Graphics/Renderers/UIRenderer.h"
 #include "Input/InputManager.h"
 
@@ -16,6 +17,12 @@ namespace Minecraft
     void UIButton::SetButtonSize(vec2i size)
     {
         Size = size + (CornerSize * Scale + Padding) * 2;
+    }
+
+    void UIButton::SetText(string text)
+    {
+        m_Text = text;
+        SetButtonSize(TextRenderer::GetTextSize(text));
     }
 
     void UIButton::Update()
@@ -43,7 +50,9 @@ namespace Minecraft
         float scaledCornerSize = CornerSize * Scale;
         auto sprite = Sprite();
         sprite.SpriteTexture = m_Texture;
-        sprite.Origin = Origin;
+        // TODO: fix origin sprite.Origin = Origin;
+        // - Temporary fix is to subtract origin from all sprite positions
+        // - I think the real issue is that origin is getting scaled
         sprite.UVs = Rectangle();
         sprite.Scale = vec2(0);
 
@@ -58,7 +67,7 @@ namespace Minecraft
         //    uvOffset.y += CornerSize * 2 + EdgeSize + 1;
 
         // Bottom left corner
-        sprite.Position = Position;
+        sprite.Position = Position - Origin;
         sprite.Size = vec2i(scaledCornerSize);
         sprite.UVs->x = uvOffset.x;
         sprite.UVs->y = uvOffset.y;
@@ -81,7 +90,7 @@ namespace Minecraft
         Instance->UI->DrawSprite(sprite);
 
         // Left edge
-        sprite.Position = Position + vec2i(0, scaledCornerSize);
+        sprite.Position = Position - Origin + vec2i(0, scaledCornerSize);
         sprite.Size = vec2i(scaledCornerSize, size.y);
         sprite.UVs->x = uvOffset.x;
         sprite.UVs->y = uvOffset.y + CornerSize;
@@ -104,7 +113,7 @@ namespace Minecraft
         Instance->UI->DrawSprite(sprite);
 
         // Top left corner
-        sprite.Position = Position + vec2i(0, scaledCornerSize + size.y);
+        sprite.Position = Position - Origin + vec2i(0, scaledCornerSize + size.y);
         sprite.Size = vec2i(scaledCornerSize);
         sprite.UVs->x = uvOffset.x;
         sprite.UVs->y = uvOffset.y + CornerSize + EdgeSize;
@@ -125,5 +134,13 @@ namespace Minecraft
         sprite.UVs->x += EdgeSize;
         sprite.UVs->Width = CornerSize;
         Instance->UI->DrawSprite(sprite);
+
+        // Text
+        if (m_Text.empty())
+            return;
+
+        // TODO: proper text drawing
+        // TODO: precalculate text origin as half of it's size
+        TextRenderer::DrawTextWithShadow(m_Text, Position - TextRenderer::GetTextSize(m_Text) / 2, TextColor);
     }
 }

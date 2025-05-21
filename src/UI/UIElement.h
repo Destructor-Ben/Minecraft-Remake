@@ -12,6 +12,7 @@ namespace Minecraft
         // These are more of an output than necessarily intended to be set
         // TODO: make these a custom unit based on screen width
         // TODO: should use getters and setters for these
+        // TODO: make a UIElement* Parent;
         vec2i Position = vec2i(0);
         vec2i Origin = vec2i(0);
         vec2i Size = vec2i(1);

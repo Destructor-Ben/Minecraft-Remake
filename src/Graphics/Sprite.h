@@ -8,9 +8,11 @@ namespace Minecraft
 {
     class Texture;
 
+    // TODO: FromRect function - deals with origin?
     struct Sprite
     {
         // These aren't forced to be ints so be careful
+        // TODO: maybe force to be ints
         vec2 Position = vec2(0);
         vec2 Origin = vec2(0);
         float Rotation = 0;
@@ -18,10 +20,11 @@ namespace Minecraft
         vec2 Scale = vec2(1); // Multiplier for the texture size
         vec2 Size = vec2(0); // Measured in pixels
 
-        // Measured in pixels
-        optional<Rectangle> UVs = nullopt;
-
+        optional<Rectangle> UVs = nullopt; // Measured in pixels
+        // TODO: use a colour struct for this
         vec3 Color = vec3(1);
+        float Opacity = 1.0f;
+        // end TODO
         shared_ptr<Texture> SpriteTexture;
 
         mat4 GetTransformationMatrix()
