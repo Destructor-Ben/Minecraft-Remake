@@ -29,6 +29,9 @@
 // - Ctrl + c interrupting
 // TODO: better game loops
 // TODO: multithread loading and initial world generation to stop the main thread being blocked (it shouldn't be too hard right?)
+// TODO: debug drawing for rectangles/bounds with UI
+// TODO: for all UV cases, should use Rectangle
+// TODO: for all color stuff, use Color
 namespace Minecraft
 {
     class LogManager;
@@ -108,8 +111,6 @@ namespace Minecraft
     private:
         void InitGL();
         void InitGLFW();
-
-        void UpdateKeybinds();
 
         void HandleProfilerData(const ProfilerData& data, Key debugKey, vector <ProfilerData>& previousData);
 

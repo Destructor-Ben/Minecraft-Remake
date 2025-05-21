@@ -2,8 +2,6 @@
 
 namespace Minecraft
 {
-    // TODO: debug drawing for rectangles/bounds with UI
-    // TODO: for all UV cases, should use this
     class Rectangle
     {
     public:

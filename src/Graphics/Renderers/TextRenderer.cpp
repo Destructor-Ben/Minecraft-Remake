@@ -146,14 +146,11 @@ namespace Minecraft::TextRenderer
                 yOffset = -TextScale;
 
             // Draw the sprite
-            // TODO: use SetTargetRect
+            auto targetRect = Rectangle(text.Position + vec2i(0, yOffset), charUVs.GetSize() * TextScale);
             auto sprite = Sprite();
-            sprite.Position = text.Position + vec2i(0, yOffset);
-            sprite.Origin = text.Origin;
+            sprite.SetTargetRect(targetRect, text.Origin);
             sprite.Rotation = text.Rotation;
             sprite.Depth = text.Depth;
-            sprite.Scale = vec2(0);
-            sprite.Size = charUVs.GetSize() * TextScale;
             sprite.SpriteTexture = FontTexture;
             sprite.SpriteColor = text.TextColor;
             sprite.UVs = charUVs;

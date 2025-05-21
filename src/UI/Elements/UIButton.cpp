@@ -140,8 +140,9 @@ namespace Minecraft
         if (Text.Text.empty())
             return;
 
+        // TODO: do the updating in Update
         Text.Position = Position;
-        Text.Origin = Origin;
+        Text.Origin = TextRenderer::GetTextSize(Text.Text) / 2;
         TextRenderer::DrawText(Text);
     }
 }

@@ -18,16 +18,12 @@
     - Open UI fade (the black tint)
     - Hotbar
     - Inventory
-- Rewrite certain APIs
-    - TextRenderer/TextDrawParams
-    - Sprite
-    - Color
-    - Rectangle
 - UI Elements
     - UIElement
     - UISprite
     - UIText
     - UIButton
+    - All the origins are cooked - Check Sprite.SetTargetRect
 
 ## Build System
 
@@ -37,6 +33,7 @@
 
 ## Optimizations
 
+- Possible memory leak
 - Multithreading
     - Chunk meshing can be made to run in parallel
     - World generation can also be in parallel for certain passes, idk about stuff like tree placement, race conditions could affect things like that

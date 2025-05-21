@@ -14,6 +14,7 @@ namespace Minecraft
     {
         UIElement::Render();
 
+        // TODO: do the updating in Update
         Text.Position = Position;
         Text.Origin = Origin;
         TextRenderer::DrawText(Text);
