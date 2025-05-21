@@ -306,7 +306,7 @@ namespace Minecraft
 
     #pragma region Window Control Functions
 
-    void Game::Close() const
+    void Game::Close()
     {
         glfwSetWindowShouldClose(Window, true);
     }

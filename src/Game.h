@@ -97,7 +97,7 @@ namespace Minecraft
         float GetFrameRate() const { return 1.0 / DeltaTime; }
         float GetTickRate() const { return 1.0 / TickDeltaTime; }
 
-        void Close() const;
+        void Close();
 
         bool IsVSyncEnabled() const { return m_VSyncEnabled; }
         void SetVSyncEnabled(bool value);
