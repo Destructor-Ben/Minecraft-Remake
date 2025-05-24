@@ -11,14 +11,6 @@
 ## UI
 
 - The UI code is absolutely cooked
-    - Bounds calculations looks correct
-    - Need to rewrite the lowest level stuff first then higher level stuff
-    - Sprites
-        - Sprite.FromRect and Sprite.Origin need checking for weird behaviour
-        - Test thoroughly
-    - Text
-        - Make sure all the parameters work properly
-        - Test thoroughly
     - Go through UIElement and UIState and make sure all of the overrides are covered
         - OnResize
         - Ensure the base function is being called in the correct order

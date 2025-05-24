@@ -104,10 +104,8 @@ namespace Minecraft::TextRenderer
         if (text.HasShadow)
         {
             auto shadowText = text;
-            // TODO: when rotating text, this isn't correct and makes the background glide slightly
-            // - maybe add/subtract offset to origin too/instead?
             vec2 offset = vec2(ShadowOffset, -ShadowOffset) * (vec2)TextScale * text.Scale;
-            shadowText.Position += offset;
+            shadowText.Origin -= offset;
 
             // Default shadow color
             if (shadowText.ShadowColor == nullopt)
