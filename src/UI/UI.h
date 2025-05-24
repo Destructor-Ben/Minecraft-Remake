@@ -26,9 +26,6 @@ namespace Minecraft::UI
     // Ingame
     inline UIState* PauseMenu;
     inline UIState* Crosshair;
-    // TODO: initialize the rest of the UI that is unimplemented
-    inline UIState* Hotbar;
-    inline UIState* DebugMenu;
 
     // This is where all the UI states are initialized
     inline void Init()
