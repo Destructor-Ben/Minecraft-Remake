@@ -416,7 +416,9 @@ namespace Minecraft
         Instance->ScreenSize = vec2i(width, height);
         Instance->ScreenRect = Rectangle(0, 0, width, height);
 
-        Instance->UI->OnResize();
+        // OnResize can get called before the UI is initialized
+        if (Instance->UI)
+            Instance->UI->OnResize();
     }
 
     #pragma endregion

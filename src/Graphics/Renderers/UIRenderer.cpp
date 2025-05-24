@@ -21,6 +21,7 @@ namespace Minecraft
         UICamera.IsPerspective = false;
         UICamera.NearClip = 0;
         UICamera.FarClip = 1;
+        UICamera.Update();
     }
 
     void UIRenderer::InitMesh()
@@ -60,8 +61,6 @@ namespace Minecraft
     {
         Instance->PerfProfiler->Push("UI::Update");
 
-        UICamera.Update();
-
         // Update the UI
         for (auto& state : UI::UIStateList)
         {
@@ -96,6 +95,9 @@ namespace Minecraft
 
     void UIRenderer::OnResize()
     {
+        // Update camera matrices
+        UICamera.Update();
+
         for (auto& state : UI::UIStateList)
         {
             state->OnResize();
