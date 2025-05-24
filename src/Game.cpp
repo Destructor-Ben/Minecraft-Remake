@@ -415,6 +415,8 @@ namespace Minecraft
         Instance->ScreenHeight = height;
         Instance->ScreenSize = vec2i(width, height);
         Instance->ScreenRect = Rectangle(0, 0, width, height);
+
+        Instance->UI->OnResize();
     }
 
     #pragma endregion

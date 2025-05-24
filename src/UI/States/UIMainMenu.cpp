@@ -22,10 +22,12 @@ namespace Minecraft
 
         auto logoTexture = Instance->Resources->RequestTexture("ui/menu/logo");
         m_Logo = make_shared<UISprite>();
-        m_Logo->DrawnSprite.SpriteTexture = logoTexture;
-        m_Logo->Origin = logoTexture->GetSize() / 2;
-        m_Logo->Position.x = Instance->ScreenWidth / 2;
-        m_Logo->Position.y = Instance->ScreenHeight - 300;
+        m_Logo->SetTexture(logoTexture);
+        m_Logo->x.Percent = 0.5f;
+        m_Logo->y.Pixels = -300;
+        m_Logo->y.Percent = 1.0f;
+        m_Logo->OriginX.Percent = 0.5f;
+        m_Logo->OriginY.Percent = 0.5f;
         AddElement(m_Logo);
 
         m_PlayButton = make_shared<UIButton>();
@@ -39,18 +41,22 @@ namespace Minecraft
             Instance->SetMouseHidden(true);
         };
 
-        m_PlayButton->Position.x = Instance->ScreenWidth / 2;
-        m_PlayButton->Position.y = Instance->ScreenHeight - 500;
+        m_PlayButton->x.Percent = 0.5f;
+        m_PlayButton->y.Pixels = -500;
+        m_PlayButton->y.Percent = 1.0f;
+        m_PlayButton->OriginX.Percent = 0.5f;
+        m_PlayButton->OriginY.Percent = 0.5f;
         m_PlayButton->SetText("Play");
-        m_PlayButton->Origin = m_PlayButton->Size / 2;
         AddElement(m_PlayButton);
 
         m_ExitButton = make_shared<UIButton>();
         m_ExitButton->OnMouseUp = []() { Instance->Close(); };
-        m_ExitButton->Position.x = Instance->ScreenWidth / 2;
-        m_ExitButton->Position.y = Instance->ScreenHeight - 600;
+        m_ExitButton->x.Percent = 0.5f;
+        m_ExitButton->y.Pixels = -700;
+        m_ExitButton->y.Percent = 1.0f;
+        m_ExitButton->OriginX.Percent = 0.5f;
+        m_ExitButton->OriginY.Percent = 0.5f;
         m_ExitButton->SetText("Exit");
-        m_ExitButton->Origin = m_ExitButton->Size / 2;
         AddElement(m_ExitButton);
 
         UIState::Init();
@@ -61,13 +67,5 @@ namespace Minecraft
         Active = !Instance->InGame;
 
         UIState::CheckActive();
-    }
-
-    void UIMainMenu::Update()
-    {
-
-        // TODO: update the locations of the UI elements
-
-        UIState::Update();
     }
 }

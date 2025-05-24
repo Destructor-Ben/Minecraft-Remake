@@ -21,6 +21,7 @@ namespace Minecraft
 
         void AddElement(shared_ptr<UIElement> element);
         void RemoveElement(shared_ptr<UIElement> element);
+        void RecalculateElementBounds();
 
     private:
         vector<shared_ptr<UIElement>> m_Elements = { };

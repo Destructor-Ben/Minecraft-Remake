@@ -39,6 +39,7 @@ namespace Minecraft
     {
         m_Elements.push_back(element);
         element->OnAdd();
+        element->CalculateBounds();
     }
 
     void UIState::RemoveElement(shared_ptr <UIElement> element)
@@ -50,5 +51,13 @@ namespace Minecraft
 
         element->OnRemove();
         m_Elements.erase(it);
+    }
+
+    void UIState::RecalculateElementBounds()
+    {
+        for (auto& element : m_Elements)
+        {
+            element->CalculateBounds();
+        }
     }
 }

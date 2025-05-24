@@ -11,6 +11,7 @@ namespace Minecraft
 {
     void UIPauseMenu::Init()
     {
+        /*
         // TODO: blur in the future
         // TODO: fade in future
         // TODO: make a separate layer
@@ -51,6 +52,8 @@ namespace Minecraft
         };
         AddElement(m_ExitButton);
 
+        //*/
+
         UIState::Init();
     }
 
@@ -75,7 +78,7 @@ namespace Minecraft
         m_BlackBackground->DrawnSprite.Scale = Instance->ScreenSize;
 
         // Update locations for the UI elements
-        // TODO: this should be done automatically with custom units
+        /*/ TODO: this should be done automatically with custom units
         int halfWidth = Instance->ScreenWidth / 2;
         m_PauseMenuText->Position.x = halfWidth;
         m_BackButton->Position.x = halfWidth;
@@ -86,7 +89,7 @@ namespace Minecraft
         yPos -= 150;
         m_BackButton->Position.y = yPos;
         yPos -= 75;
-        m_ExitButton->Position.y = yPos;
+        m_ExitButton->Position.y = yPos;*/
 
         UIState::Update();
     }

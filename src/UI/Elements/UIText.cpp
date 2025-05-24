@@ -6,17 +6,25 @@ namespace Minecraft
 {
     void UIText::SetText(string text)
     {
+        vec2i size = TextRenderer::GetTextSize(text);
+        Width.Pixels = size.x;
+        Height.Pixels = size.y;
         Text.Text = text;
-        Size = TextRenderer::GetTextSize(text);
+        CalculateBounds();
+    }
+
+    void UIText::CalculateBounds()
+    {
+        UIElement::CalculateBounds();
+
+        Text.Position = GetPosition();
+        Text.Origin = GetOrigin();
     }
 
     void UIText::Render()
     {
         UIElement::Render();
 
-        // TODO: do the updating in Update
-        Text.Position = Position;
-        Text.Origin = Origin;
         TextRenderer::DrawText(Text);
     }
 }

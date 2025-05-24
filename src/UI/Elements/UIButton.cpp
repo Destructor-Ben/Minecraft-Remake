@@ -16,7 +16,9 @@ namespace Minecraft
 
     void UIButton::SetButtonSize(vec2i size)
     {
-        Size = size + (CornerSize * Scale + Padding) * 2;
+        vec2i calculatedSize = size + (CornerSize * Scale + Padding) * 2;
+        Width.Pixels = calculatedSize.x;
+        Height.Pixels = calculatedSize.y;
     }
 
     void UIButton::SetText(string text)
@@ -46,13 +48,11 @@ namespace Minecraft
         UIElement::Render();
 
         // Setting up the sprite
-        vec2i size = Size - CornerSize * 2 * Scale; // Size of the edge sprites
+        vec2i size = GetSize() - CornerSize * 2 * Scale; // Size of the edge sprites
         float scaledCornerSize = CornerSize * Scale;
         auto sprite = Sprite();
         sprite.SpriteTexture = m_Texture;
-        // TODO: fix origin sprite.Origin = Origin;
-        // - Temporary fix is to subtract origin from all sprite positions
-        // - I think the real issue is that origin is getting scaled
+        //sprite.Origin = GetOrigin();
         sprite.UVs = Rectangle();
         sprite.Scale = vec2(0);
 
@@ -66,9 +66,10 @@ namespace Minecraft
         //if (!useDarkMode)
         //    uvOffset.y += CornerSize * 2 + EdgeSize + 1;
 
+        // TODO: calculate these sprites in CalculateBounds
         // TODO: use SetTargetRect
         // Bottom left corner
-        sprite.Position = Position - Origin;
+        sprite.Position = GetPosition();
         sprite.Size = vec2i(scaledCornerSize);
         sprite.UVs->x = uvOffset.x;
         sprite.UVs->y = uvOffset.y;
@@ -91,7 +92,7 @@ namespace Minecraft
         Instance->UI->DrawSprite(sprite);
 
         // Left edge
-        sprite.Position = Position - Origin + vec2i(0, scaledCornerSize);
+        sprite.Position = GetPosition() + vec2i(0, scaledCornerSize);
         sprite.Size = vec2i(scaledCornerSize, size.y);
         sprite.UVs->x = uvOffset.x;
         sprite.UVs->y = uvOffset.y + CornerSize;
@@ -114,7 +115,7 @@ namespace Minecraft
         Instance->UI->DrawSprite(sprite);
 
         // Top left corner
-        sprite.Position = Position - Origin + vec2i(0, scaledCornerSize + size.y);
+        sprite.Position = GetPosition() + vec2i(0, scaledCornerSize + size.y);
         sprite.Size = vec2i(scaledCornerSize);
         sprite.UVs->x = uvOffset.x;
         sprite.UVs->y = uvOffset.y + CornerSize + EdgeSize;
@@ -141,7 +142,7 @@ namespace Minecraft
             return;
 
         // TODO: do the updating in Update
-        Text.Position = Position;
+        Text.Position = GetPosition();
         Text.Origin = TextRenderer::GetTextSize(Text.Text) / 2;
         TextRenderer::DrawText(Text);
     }

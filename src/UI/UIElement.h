@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Rectangle.h"
+#include "UI/UIDimension.h"
 
 namespace Minecraft
 {
@@ -9,24 +10,37 @@ namespace Minecraft
     class UIElement
     {
     public:
-        // These are more of an output than necessarily intended to be set
-        // TODO: make these a custom unit based on screen width
-        // TODO: should use getters and setters for these
-        // TODO: make a UIElement* Parent;
-        vec2i Position = vec2i(0);
-        vec2i Origin = vec2i(0);
-        vec2i Size = vec2i(1);
+        UIElement* Parent = nullptr;
+
+        UIDimension x;
+        UIDimension y;
+
+        UIDimension Width;
+        UIDimension Height;
+
+        UIDimension OriginX;
+        UIDimension OriginY;
 
         bool Active = true;
 
         UIElement() { }
 
-        virtual Rectangle GetBounds();
+        Rectangle GetParentBounds() const;
+        Rectangle GetBounds() const { return m_Bounds; }
+        vec2i GetPosition() const { return m_Bounds.GetPosition(); }
+        vec2i GetSize() const { return m_Bounds.GetSize(); }
+        vec2i GetOrigin() const { return m_Origin; }
+
+        virtual void CalculateBounds();
 
         virtual void OnAdd() { }
         virtual void OnRemove() { }
 
         virtual void Update() { }
         virtual void Render() { }
+
+    private:
+        Rectangle m_Bounds;
+        vec2i m_Origin;
     };
 }

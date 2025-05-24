@@ -10,6 +10,8 @@
 
 ## UI
 
+- The UI code is absolutely cooked
+    - Go through ALL UI code
 - Finish UI states
     - Main menu
     - Pause menu

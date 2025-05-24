@@ -1,5 +1,6 @@
 target_sources(Minecraft_Remake PRIVATE
     UI.h
+    UIDimension.h
     UIElement.cpp
     UIElement.h
     UIState.cpp

@@ -7,16 +7,23 @@ namespace Minecraft
 {
     void UISprite::SetTexture(shared_ptr <Texture> texture)
     {
+        vec2i size = texture->GetSize();
+        Width.Pixels = size.x;
+        Height.Pixels = size.y;
         DrawnSprite.SpriteTexture = texture;
-        Size = texture->GetSize();
+        CalculateBounds();
     }
 
-    void UISprite::Update()
+    void UISprite::SetScale(float scale)
     {
-        UIElement::Update();
+        CalculateBounds();
+    }
 
-        DrawnSprite.Position = Position;
-        DrawnSprite.Origin = Origin;
+    void UISprite::CalculateBounds()
+    {
+        UIElement::CalculateBounds();
+
+        DrawnSprite.SetTargetRect(GetBounds(), GetOrigin());
     }
 
     void UISprite::Render()

@@ -94,6 +94,14 @@ namespace Minecraft
         Instance->PerfProfiler->Pop();
     }
 
+    void UIRenderer::OnResize()
+    {
+        for (auto& state : UI::UIStateList)
+        {
+            state->RecalculateElementBounds();
+        }
+    }
+
     void UIRenderer::DrawSprite(Sprite& sprite)
     {
         // Clear the existing depth buffer so it doesn't interfere with the game world

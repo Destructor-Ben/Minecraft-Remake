@@ -11,7 +11,7 @@ namespace Minecraft
         vec2i textureSize = DrawnSprite->SpriteTexture->GetSize();
         m_Shader->SetUniform("uTexture", DrawnSprite->SpriteTexture, 0);
         m_Shader->SetUniform("uColor", DrawnSprite->SpriteColor.ToRGBA());
-        m_Shader->SetUniform("uOrigin", DrawnSprite->Origin / textureSize);
+        m_Shader->SetUniform("uOrigin", (vec2)DrawnSprite->Origin);
 
         vec2 texCoordPos = vec2(0);
         vec2 textCoordScale = vec2(1);

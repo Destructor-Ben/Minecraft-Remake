@@ -5,6 +5,10 @@
 
 namespace Minecraft
 {
+    // TODO: figure out how this mess will work
+    // - Sizing is the problem
+    // - Sometimes will want to set the exact dimensions
+    // - Sometimes will want to set a scale
     class UISprite : public UIElement
     {
     public:
@@ -12,9 +16,10 @@ namespace Minecraft
         Sprite DrawnSprite;
 
         // Also sets size
-        void SetTexture(shared_ptr<Texture> texture);
+        void SetTexture(shared_ptr <Texture> texture);
+        void SetScale(float scale);
 
-        virtual void Update() override;
+        virtual void CalculateBounds() override;
         virtual void Render() override;
     };
 }
