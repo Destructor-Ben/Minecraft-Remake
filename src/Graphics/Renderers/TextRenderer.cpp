@@ -117,6 +117,8 @@ namespace Minecraft::TextRenderer
 
     static void DrawTextInternal(TextDrawParams text)
     {
+        vec2 scale = TextScale * text.Scale;
+
         // Used to stop spacing at the beginning of the text
         bool previousCharWasWhitespace = true;
 
@@ -126,14 +128,14 @@ namespace Minecraft::TextRenderer
             int whitespaceWidth = GetWhitespaceWidth(c);
             if (whitespaceWidth != 0)
             {
-                text.Position.x += whitespaceWidth * WhitespaceSize * TextScale;
+                text.Position.x += whitespaceWidth * WhitespaceSize * scale.x;
                 previousCharWasWhitespace = true;
                 continue;
             }
 
             // Character spacing - This is done here to avoid whitespaces being a pixel too large
             if (!previousCharWasWhitespace)
-                text.Position.x += CharacterSpacing * TextScale;
+                text.Position.x += CharacterSpacing * scale.x;
 
             // Get the character UVs
             auto charUVs = UnknownCharacter;
@@ -143,12 +145,13 @@ namespace Minecraft::TextRenderer
             // 3 characters have a y offset: .;$
             int yOffset = 0;
             if (c == ',' || c == ';' || c == '$')
-                yOffset = -TextScale;
+                yOffset = -scale.x;
 
             // Draw the sprite
-            auto targetRect = Rectangle(text.Position + vec2i(0, yOffset), charUVs.GetSize() * TextScale);
+            auto targetRect = Rectangle(text.Position + vec2i(0, yOffset), (vec2)charUVs.GetSize() * scale);
             auto sprite = Sprite();
-            //TODO:sprite.SetTargetRect(targetRect, text.Origin);
+            sprite.SetTargetRect(targetRect);
+            sprite.Origin = text.Origin;
             sprite.Rotation = text.Rotation;
             sprite.Depth = text.Depth;
             sprite.SpriteTexture = FontTexture;
@@ -157,7 +160,7 @@ namespace Minecraft::TextRenderer
             Instance->UI->DrawSprite(sprite);
 
             // Advance the position
-            text.Position.x += charUVs.Width * TextScale; // Character size
+            text.Position.x += charUVs.Width * scale.x; // Character size
             previousCharWasWhitespace = false;
         }
     }
@@ -166,7 +169,7 @@ namespace Minecraft::TextRenderer
     {
         // The default height is based on the font
         // TODO: 7 being the text height fucks with the baseline of the test when using origin to centre
-        vec2i size = vec2i(0, 5 * TextScale);//meant to be 7 but testing with 5
+        vec2i size = vec2i(0, 5 * TextScale); // meant to be 7 but testing with 5
 
         // Used to stop spacing at the beginning of the text
         bool previousCharWasWhitespace = true;

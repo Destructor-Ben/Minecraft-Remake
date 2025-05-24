@@ -73,4 +73,19 @@ namespace Minecraft
 
         UIState::CheckActive();
     }
+
+    void UIMainMenu::Render()
+    {
+        auto text = TextDrawParams();
+        text.Text = "Hello world! I <3 minecraft!";
+        text.Position = Instance->ScreenSize / 2;
+
+        vec2 mousePos = Instance->Input->GetMousePos() / (vec2)Instance->ScreenSize;
+        text.Rotation = std::lerp(0, numbers::pi * 4, mousePos.x);
+        text.Scale = vec2(std::lerp(1, 10, mousePos.y));
+
+        TextRenderer::DrawText(text);
+
+        UIState::Render();
+    }
 }

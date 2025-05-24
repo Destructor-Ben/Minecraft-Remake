@@ -7,6 +7,7 @@
 
 namespace Minecraft
 {
+    // TODO: figure out how to rotate around a shared pivot
     struct Sprite
     {
         vec2i Position = vec2i(0);
