@@ -152,7 +152,7 @@ namespace Minecraft::TextRenderer
             auto sprite = Sprite();
             sprite.SetTargetRect(targetRect);
             sprite.Origin = text.Origin;
-            sprite.Rotation = text.Rotation;
+            sprite.Rotation = text.Rotation; // TODO: rotation needs to orbit the origin
             sprite.Depth = text.Depth;
             sprite.SpriteTexture = FontTexture;
             sprite.SpriteColor = text.TextColor;
@@ -168,8 +168,10 @@ namespace Minecraft::TextRenderer
     vec2i GetTextSize(string text, vec2 scale)
     {
         // The default height is based on the font
-        // TODO: 7 being the text height fucks with the baseline of the test when using origin to centre
-        vec2i size = vec2i(0, 5 * TextScale); // meant to be 7 but testing with 5
+        // Some characters are 7 tall but that fucks with centering
+        // since not all characters use the extra pixel above
+        // and the one below is under the baseline
+        vec2i size = vec2i(0, 5 * TextScale);
 
         // Used to stop spacing at the beginning of the text
         bool previousCharWasWhitespace = true;
