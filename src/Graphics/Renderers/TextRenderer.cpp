@@ -145,7 +145,7 @@ namespace Minecraft::TextRenderer
             // 3 characters have a y offset: .;$
             int yOffset = 0;
             if (c == ',' || c == ';' || c == '$')
-                yOffset = -scale.x;
+                yOffset = -scale.y;
 
             // Draw the sprite
             auto targetRect = Rectangle(text.Position + vec2i(0, yOffset), (vec2)charUVs.GetSize() * scale);
