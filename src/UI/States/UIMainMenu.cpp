@@ -1,6 +1,5 @@
 #include "UIMainMenu.h"
 
-#include "BoundingBox.h"
 #include "Game.h"
 #include "LogManager.h"
 #include "ResourceManager.h"
