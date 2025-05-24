@@ -13,8 +13,6 @@
 - The UI code is absolutely cooked
     - Bounds calculations looks correct
     - Need to rewrite the lowest level stuff first then higher level stuff
-    - Disable main menu UI drawing
-    - Put UIDimension.Calculate in a cpp file
     - Sprites
         - Sprite.FromRect and Sprite.Origin need checking for weird behaviour
         - Test thoroughly
