@@ -21,7 +21,6 @@ namespace Minecraft
 
         void Update();
         void Render();
-
         void OnResize();
 
         void DrawSprite(Sprite& sprite);

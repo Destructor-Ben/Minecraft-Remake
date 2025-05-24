@@ -98,7 +98,7 @@ namespace Minecraft
     {
         for (auto& state : UI::UIStateList)
         {
-            state->RecalculateElementsBounds();
+            state->OnResize();
         }
     }
 
