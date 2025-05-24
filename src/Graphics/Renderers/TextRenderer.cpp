@@ -13,7 +13,7 @@ namespace Minecraft::TextRenderer
     static shared_ptr <Texture> FontTexture;
     static Rectangle UnknownCharacter = Rectangle(1, 2, 3, 5);
 
-    static void DrawTextInternal(TextDrawParams text);
+    static void DrawTextInternal(const TextDrawParams& text);
     static int GetWhitespaceWidth(char c);
 
     void Init()
@@ -98,26 +98,30 @@ namespace Minecraft::TextRenderer
         CharacterMap['&'] = Rectangle(123, 2, 5, 5);
     }
 
-    void DrawText(TextDrawParams text)
+    void DrawText(const TextDrawParams& text)
     {
+        // Draw shadow
         if (text.HasShadow)
         {
-            // Default shadow color
-            if (text.ShadowColor == nullopt)
-                text.ShadowColor = text.TextColor.MultiplyRGB(0.25f);
-
             auto shadowText = text;
-            shadowText.TextColor = shadowText.ShadowColor.value();
-            shadowText.Position += vec2i(ShadowOffset, -ShadowOffset) * TextScale;
+            shadowText.Position += vec2(ShadowOffset, -ShadowOffset) * (vec2)TextScale * text.Scale;
+
+            // Default shadow color
+            if (shadowText.ShadowColor == nullopt)
+                shadowText.TextColor = text.TextColor.MultiplyRGB(0.25f);
+            else
+                shadowText.TextColor = shadowText.ShadowColor.value();
+
             DrawTextInternal(shadowText);
         }
 
         DrawTextInternal(text);
     }
 
-    static void DrawTextInternal(TextDrawParams text)
+    static void DrawTextInternal(const TextDrawParams& text)
     {
         vec2 scale = TextScale * text.Scale;
+        float xOffset = 0;
 
         // Used to stop spacing at the beginning of the text
         bool previousCharWasWhitespace = true;
@@ -128,14 +132,14 @@ namespace Minecraft::TextRenderer
             int whitespaceWidth = GetWhitespaceWidth(c);
             if (whitespaceWidth != 0)
             {
-                text.Position.x += whitespaceWidth * WhitespaceSize * scale.x;
+                xOffset += whitespaceWidth * WhitespaceSize * scale.x;
                 previousCharWasWhitespace = true;
                 continue;
             }
 
             // Character spacing - This is done here to avoid whitespaces being a pixel too large
             if (!previousCharWasWhitespace)
-                text.Position.x += CharacterSpacing * scale.x;
+                xOffset += CharacterSpacing * scale.x;
 
             // Get the character UVs
             auto charUVs = UnknownCharacter;
@@ -148,7 +152,7 @@ namespace Minecraft::TextRenderer
                 yOffset = -scale.y;
 
             // Draw the sprite
-            auto targetRect = Rectangle(text.Position + vec2i(0, yOffset), (vec2)charUVs.GetSize() * scale);
+            auto targetRect = Rectangle(text.Position + vec2i(xOffset, yOffset), (vec2)charUVs.GetSize() * scale);
             auto sprite = Sprite();
             sprite.SetTargetRect(targetRect);
             sprite.Origin = text.Origin;
@@ -160,12 +164,12 @@ namespace Minecraft::TextRenderer
             Instance->UI->DrawSprite(sprite);
 
             // Advance the position
-            text.Position.x += charUVs.Width * scale.x; // Character size
+            xOffset += charUVs.Width * scale.x; // Character size
             previousCharWasWhitespace = false;
         }
     }
 
-    vec2i GetTextSize(string text, vec2 scale)
+    vec2i GetTextSize(const string& text, vec2 scale)
     {
         // The default height is based on the font
         // Some characters are 7 tall but that fucks with centering
