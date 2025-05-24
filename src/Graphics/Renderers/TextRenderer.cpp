@@ -104,7 +104,10 @@ namespace Minecraft::TextRenderer
         if (text.HasShadow)
         {
             auto shadowText = text;
-            shadowText.Position += vec2(ShadowOffset, -ShadowOffset) * (vec2)TextScale * text.Scale;
+            // TODO: when rotating text, this isn't correct and makes the background glide slightly
+            // - maybe add/subtract offset to origin too/instead?
+            vec2 offset = vec2(ShadowOffset, -ShadowOffset) * (vec2)TextScale * text.Scale;
+            shadowText.Position += offset;
 
             // Default shadow color
             if (shadowText.ShadowColor == nullopt)
@@ -151,12 +154,18 @@ namespace Minecraft::TextRenderer
             if (c == ',' || c == ';' || c == '$')
                 yOffset = -scale.y;
 
+            // Calculate rotated positions
+            vec2 localPos = { xOffset, yOffset };
+            vec2 offset = localPos - (vec2)text.Origin;
+            vec2 rotatedOffset = glm::rotate(offset, text.Rotation);
+            vec2i worldPos = text.Position + (vec2i)rotatedOffset;
+
             // Draw the sprite
-            auto targetRect = Rectangle(text.Position + vec2i(xOffset, yOffset), (vec2)charUVs.GetSize() * scale);
+            auto targetRect = Rectangle(worldPos, (vec2)charUVs.GetSize() * scale);
             auto sprite = Sprite();
             sprite.SetTargetRect(targetRect);
-            sprite.Origin = text.Origin;
-            sprite.Rotation = text.Rotation; // TODO: rotation needs to orbit the origin
+            sprite.Origin = vec2i(0);
+            sprite.Rotation = text.Rotation;
             sprite.Depth = text.Depth;
             sprite.SpriteTexture = FontTexture;
             sprite.SpriteColor = text.TextColor;
