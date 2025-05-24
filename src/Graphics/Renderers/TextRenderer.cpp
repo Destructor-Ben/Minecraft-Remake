@@ -148,7 +148,7 @@ namespace Minecraft::TextRenderer
             // Draw the sprite
             auto targetRect = Rectangle(text.Position + vec2i(0, yOffset), charUVs.GetSize() * TextScale);
             auto sprite = Sprite();
-            sprite.SetTargetRect(targetRect, text.Origin);
+            //TODO:sprite.SetTargetRect(targetRect, text.Origin);
             sprite.Rotation = text.Rotation;
             sprite.Depth = text.Depth;
             sprite.SpriteTexture = FontTexture;

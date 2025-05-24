@@ -7,34 +7,22 @@
 
 namespace Minecraft
 {
-    class Texture;
-
     struct Sprite
     {
-        // Ints are pixels, floats are multipliers
         vec2i Position = vec2i(0);
-        vec2i Origin = vec2i(0);
+        vec2i Origin = vec2i(0); // Keep in mind that without using a rectangle, origin is subtracted from position
         vec2i Size = vec2i(0);
         float Rotation = 0;
-        float Depth = 0.5f;
-        vec2 Scale = vec2(1);
+        float Depth = 0.5f; // 0 to 1 range
 
         optional <Rectangle> UVs = nullopt;
         Color SpriteColor = Colors::White;
         shared_ptr <Texture> SpriteTexture;
 
-        // Sets position and scale and deals with the origin being funky
-        void SetTargetRect(Rectangle rect, vec2i origin = vec2i(0));
+        void SetTextureAndScale(shared_ptr <Texture> texture, vec2 scale = vec2(1));
+        void SetOriginAsPercent(vec2 percent);
+        void SetTargetRect(Rectangle rect); // Shortcut for setting position and size
 
-        mat4 GetTransformationMatrix()
-        {
-            auto transform = Transform();
-
-            transform.Position = vec3(Position.x, Position.y, -Depth);
-            transform.Rotation = glm::rotate(glm::identity<quat>(), Rotation, vec3(0, 0, 1));
-            transform.Scale = vec3(SpriteTexture->GetWidth() * Scale.x + Size.x, SpriteTexture->GetHeight() * Scale.y + Size.y, 1);
-
-            return transform.GetTransformationMatrix();
-        }
+        mat4 GetTransformationMatrix() const;
     };
 }

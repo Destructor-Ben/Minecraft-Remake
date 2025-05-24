@@ -75,7 +75,7 @@ namespace Minecraft
     {
         // Update the background scale
         // TODO: OnResize hook?
-        m_BlackBackground->DrawnSprite.Scale = Instance->ScreenSize;
+        //TODO:m_BlackBackground->DrawnSprite.Scale = Instance->ScreenSize;
 
         // Update locations for the UI elements
         /*/ TODO: this should be done automatically with custom units

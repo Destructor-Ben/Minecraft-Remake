@@ -54,7 +54,7 @@ namespace Minecraft
         sprite.SpriteTexture = m_Texture;
         //sprite.Origin = GetOrigin();
         sprite.UVs = Rectangle();
-        sprite.Scale = vec2(0);
+        //TODO:sprite.Scale = vec2(0);
 
         // Calculating the UV offset for color mode + hover effects
         vec2i uvOffset = vec2i(0);

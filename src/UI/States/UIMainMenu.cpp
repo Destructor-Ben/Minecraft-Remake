@@ -1,9 +1,11 @@
 #include "UIMainMenu.h"
 
+#include "BoundingBox.h"
 #include "Game.h"
 #include "LogManager.h"
 #include "ResourceManager.h"
 #include "Graphics/Renderers/TextRenderer.h"
+#include "Graphics/Renderers/UIRenderer.h"
 #include "Input/InputManager.h"
 #include "UI/Elements/UIButton.h"
 #include "UI/Elements/UISprite.h"
@@ -71,5 +73,36 @@ namespace Minecraft
         Active = !Instance->InGame;
 
         UIState::CheckActive();
+    }
+
+    void UIMainMenu::Render()
+    {
+        auto texture = Instance->Resources->RequestTexture("ui/crosshair");
+        auto sprite = Sprite();
+        sprite.SpriteTexture = texture;
+
+        // Set test values for origin
+        vec2 mousePos = Instance->Input->GetMousePos() / (vec2)Instance->ScreenSize;
+        vec2 scale = vec2(std::lerp(1.0f, 10.0f, mousePos.x));
+        float rotation = std::lerp(0, numbers::pi * 4, mousePos.y);
+        sprite.Rotation = rotation;
+
+        // Setting the origin point
+        vec2i originPoint = Instance->ScreenSize / 2;
+
+        // Drawing some test textures
+        for (int i = -1; i <= 1; ++i)
+        {
+            Rectangle rect = Rectangle(Instance->ScreenSize / 2, (vec2)texture->GetSize() * scale);
+            rect.x -= i * 30;
+
+            sprite.SetTargetRect(rect);
+            sprite.SetOriginAsPercent(vec2(0.5f));
+            sprite.Origin += originPoint - sprite.Position;
+            // TODO: test AccountForOrigin
+            Instance->UI->DrawSprite(sprite);
+        }
+
+        UIState::Render();
     }
 }

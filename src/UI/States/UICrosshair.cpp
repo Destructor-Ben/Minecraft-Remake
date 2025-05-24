@@ -11,7 +11,7 @@ namespace Minecraft
         auto texture = Instance->Resources->RequestTexture("ui/crosshair");
         m_Crosshair = make_shared<UISprite>();
         m_Crosshair->DrawnSprite.SpriteTexture = texture;
-        m_Crosshair->DrawnSprite.Scale = vec2(3.0f); // TODO: keep a global sprite scale property somehwere, proibably UIRenderer
+        //TODO:m_Crosshair->DrawnSprite.Scale = vec2(3.0f); // TODO: keep a global sprite scale property somehwere, proibably UIRenderer
         m_Crosshair->x.Percent = 0.5f;
         m_Crosshair->y.Percent = 0.5f;
         m_Crosshair->OriginX.Percent = 0.5f;

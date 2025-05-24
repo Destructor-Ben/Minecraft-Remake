@@ -23,7 +23,7 @@ namespace Minecraft
     {
         UIElement::CalculateBounds();
 
-        DrawnSprite.SetTargetRect(GetBounds(), GetOrigin());
+        //TODO:DrawnSprite.SetTargetRect(GetBounds(), GetOrigin());
     }
 
     void UISprite::Render()
