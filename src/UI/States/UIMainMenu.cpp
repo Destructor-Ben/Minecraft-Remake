@@ -84,6 +84,9 @@ namespace Minecraft
         text.Rotation = std::lerp(0, numbers::pi * 4, mousePos.x);
         text.Scale = vec2(std::lerp(1, 10, mousePos.y));
 
+        // Uh oh
+        text.Origin = TextRenderer::GetTextSize(text.Text, text.Scale) / 2;
+
         TextRenderer::DrawText(text);
 
         UIState::Render();

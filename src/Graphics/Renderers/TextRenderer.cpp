@@ -165,7 +165,7 @@ namespace Minecraft::TextRenderer
         }
     }
 
-    vec2i GetTextSize(string text)
+    vec2i GetTextSize(string text, vec2 scale)
     {
         // The default height is based on the font
         // TODO: 7 being the text height fucks with the baseline of the test when using origin to centre
@@ -199,7 +199,7 @@ namespace Minecraft::TextRenderer
             previousCharWasWhitespace = false;
         }
 
-        return size;
+        return (vec2)size * scale;
     }
 
     static int GetWhitespaceWidth(char c)
