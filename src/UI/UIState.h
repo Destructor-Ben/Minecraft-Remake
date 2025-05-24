@@ -4,7 +4,7 @@ namespace Minecraft
 {
     class UIElement;
 
-    // Root level ui object
+    // Root level UI object
     class UIState
     {
     public:

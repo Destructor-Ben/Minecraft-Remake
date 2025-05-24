@@ -6,6 +6,7 @@
 // TODO: implement UI scale
 // TODO: batch the draw calls - receive the sprites, sort them, and construct a single mesh that is drawn in a single call?
 // TODO: make a begin and end function, as well as for renderer instead of PreRender and PostRender, also do wireframes for UI there
+// TODO: make an input system that travels down from parent elements to children (or first elements to be added) and "swallows" input events so overlapping elements don't interfere
 namespace Minecraft
 {
     class Mesh;

@@ -6,7 +6,6 @@
 namespace Minecraft
 {
     // Basic element of UI
-    // TODO: make an input system that travels down from parent elements to children (or first elements to be added) and "swallows" input events so overlapping elements don't interfere
     class UIElement
     {
     public:
