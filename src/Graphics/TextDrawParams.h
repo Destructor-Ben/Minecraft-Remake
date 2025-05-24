@@ -8,9 +8,9 @@ namespace Minecraft
     {
         vec2i Position = vec2i(0);
         vec2i Origin = vec2i(0);
+        vec2 Scale = vec2(1);
         float Rotation = 0;
         float Depth = 0.5f;
-        vec2 Scale = vec2(1);
 
         string Text = "";
         Color TextColor = Colors::White;
