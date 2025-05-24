@@ -25,7 +25,7 @@ namespace Minecraft::TextRenderer
         // Letters
         for (int i = 0; i < 26; ++i)
         {
-            Rectangle rect = { 1 + 4 * i, 14, 3, 5 };
+            auto rect = Rectangle(1 + 4 * i, 14, 3, 5);
 
             // M, N, W, and X are wider than other characters
             if (i > 12)
@@ -59,43 +59,43 @@ namespace Minecraft::TextRenderer
         // Numbers
         for (int i = 0; i < 10; ++i)
         {
-            Rectangle rect = { 1 + 4 * i, 8, 3, 5 };
+            auto rect = Rectangle(1 + 4 * i, 8, 3, 5);
             CharacterMap['0' + i] = rect;
         }
 
         // Punctuation - Has to be done manually :(
-        CharacterMap['.'] = { 5, 2, 1, 5 };
-        CharacterMap[','] = { 7, 1, 1, 6 };
-        CharacterMap['?'] = { 9, 2, 3, 5 };
-        CharacterMap['!'] = { 13, 2, 1, 5 };
-        CharacterMap['\''] = { 15, 2, 1, 5 };
-        CharacterMap['`'] = { 17, 2, 2, 5 };
-        CharacterMap['"'] = { 20, 2, 3, 5 };
-        CharacterMap['-'] = { 24, 2, 3, 5 };
-        CharacterMap['_'] = { 28, 2, 3, 5 };
-        CharacterMap['/'] = { 32, 2, 5, 5 };
-        CharacterMap['|'] = { 38, 2, 1, 5 };
-        CharacterMap['\\'] = { 40, 2, 5, 5 };
-        CharacterMap[':'] = { 46, 2, 1, 5 };
-        CharacterMap[';'] = { 48, 1, 1, 6 };
-        CharacterMap['('] = { 50, 2, 2, 5 };
-        CharacterMap[')'] = { 53, 2, 2, 5 };
-        CharacterMap['['] = { 56, 2, 2, 5 };
-        CharacterMap[']'] = { 59, 2, 2, 5 };
-        CharacterMap['{'] = { 62, 2, 3, 5 };
-        CharacterMap['}'] = { 66, 2, 3, 5 };
-        CharacterMap['<'] = { 70, 2, 3, 5 };
-        CharacterMap['>'] = { 74, 2, 3, 5 };
-        CharacterMap['#'] = { 78, 2, 5, 5 };
-        CharacterMap['^'] = { 84, 2, 3, 5 };
-        CharacterMap['*'] = { 88, 2, 3, 5 };
-        CharacterMap['+'] = { 92, 2, 3, 5 };
-        CharacterMap['='] = { 96, 2, 3, 5 };
-        CharacterMap['~'] = { 100, 2, 5, 5 };
-        CharacterMap['@'] = { 106, 2, 4, 5 };
-        CharacterMap['$'] = { 111, 1, 5, 7 };
-        CharacterMap['%'] = { 117, 2, 5, 5 };
-        CharacterMap['&'] = { 123, 2, 5, 5 };
+        CharacterMap['.'] = Rectangle(5, 2, 1, 5);
+        CharacterMap[','] = Rectangle(7, 1, 1, 6);
+        CharacterMap['?'] = Rectangle(9, 2, 3, 5);
+        CharacterMap['!'] = Rectangle(13, 2, 1, 5);
+        CharacterMap['\''] = Rectangle(15, 2, 1, 5);
+        CharacterMap['`'] = Rectangle(17, 2, 2, 5);
+        CharacterMap['"'] = Rectangle(20, 2, 3, 5);
+        CharacterMap['-'] = Rectangle(24, 2, 3, 5);
+        CharacterMap['_'] = Rectangle(28, 2, 3, 5);
+        CharacterMap['/'] = Rectangle(32, 2, 5, 5);
+        CharacterMap['|'] = Rectangle(38, 2, 1, 5);
+        CharacterMap['\\'] = Rectangle(40, 2, 5, 5);
+        CharacterMap[':'] = Rectangle(46, 2, 1, 5);
+        CharacterMap[';'] = Rectangle(48, 1, 1, 6);
+        CharacterMap['('] = Rectangle(50, 2, 2, 5);
+        CharacterMap[')'] = Rectangle(53, 2, 2, 5);
+        CharacterMap['['] = Rectangle(56, 2, 2, 5);
+        CharacterMap[']'] = Rectangle(59, 2, 2, 5);
+        CharacterMap['{'] = Rectangle(62, 2, 3, 5);
+        CharacterMap['}'] = Rectangle(66, 2, 3, 5);
+        CharacterMap['<'] = Rectangle(70, 2, 3, 5);
+        CharacterMap['>'] = Rectangle(74, 2, 3, 5);
+        CharacterMap['#'] = Rectangle(78, 2, 5, 5);
+        CharacterMap['^'] = Rectangle(84, 2, 3, 5);
+        CharacterMap['*'] = Rectangle(88, 2, 3, 5);
+        CharacterMap['+'] = Rectangle(92, 2, 3, 5);
+        CharacterMap['='] = Rectangle(96, 2, 3, 5);
+        CharacterMap['~'] = Rectangle(100, 2, 5, 5);
+        CharacterMap['@'] = Rectangle(106, 2, 4, 5);
+        CharacterMap['$'] = Rectangle(111, 1, 5, 7);
+        CharacterMap['%'] = Rectangle(117, 2, 5, 5);
+        CharacterMap['&'] = Rectangle(123, 2, 5, 5);
     }
 
     void DrawText(TextDrawParams text)
