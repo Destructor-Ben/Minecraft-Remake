@@ -15,6 +15,8 @@ namespace Minecraft
     {
         IsInGameUI = false;
 
+        /* TODO: reenable the UI at some point
+
         auto backgroundTexture = Instance->Resources->RequestTexture("ui/menu/background");
         m_Background = make_shared<UISprite>();
         m_Background->DrawnSprite.SpriteTexture = backgroundTexture;
@@ -58,6 +60,8 @@ namespace Minecraft
         m_ExitButton->OriginY.Percent = 0.5f;
         m_ExitButton->SetText("Exit");
         AddElement(m_ExitButton);
+
+        */
 
         UIState::Init();
     }
