@@ -14,7 +14,7 @@ namespace Minecraft
         // Ints are pixels, floats are multipliers
         vec2i Position = vec2i(0);
         vec2i Origin = vec2i(0);
-        vec2i Size = vec2(0);
+        vec2i Size = vec2i(0);
         float Rotation = 0;
         float Depth = 0.5f;
         vec2 Scale = vec2(1);

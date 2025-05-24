@@ -11,7 +11,24 @@
 ## UI
 
 - The UI code is absolutely cooked
-    - Go through ALL UI code
+    - Bounds calculations looks correct
+    - Need to rewrite the lowest level stuff first then higher level stuff
+    - Put UIDimension.Calculate in a cpp file
+    - Sprites
+        - Sprite.FromRect and Sprite.Origin need checking for weird behaviour
+        - Test thoroughly
+    - Text
+        - Make sure all the parameters work properly
+        - Test thoroughly
+    - Go through UIElement and UIState and make sure all of the overrides are covered
+        - OnResize
+        - Ensure the base function is being called in the correct order
+    - Now rewrite the basic elements
+    - Now rewrite the UI states
+    - Once that is done, checking that origins work correctly when using the same origin across multiple sprites
+        - Text rendering
+        - Button rendering
+    - Make sure includes are good
 - Finish UI states
     - Main menu
     - Pause menu

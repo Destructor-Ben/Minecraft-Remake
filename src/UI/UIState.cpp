@@ -53,7 +53,7 @@ namespace Minecraft
         m_Elements.erase(it);
     }
 
-    void UIState::RecalculateElementBounds()
+    void UIState::RecalculateElementsBounds()
     {
         for (auto& element : m_Elements)
         {
