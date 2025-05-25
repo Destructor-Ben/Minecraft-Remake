@@ -29,6 +29,12 @@ namespace Minecraft
         SetButtonSize(TextRenderer::GetTextSize(text));
     }
 
+    void UIButton::SetDepth(float depth)
+    {
+        m_Depth = depth;
+        RecalculateBounds();
+    }
+
     // At some point, this input code will get moved to UIElement
     void UIButton::OnUpdate()
     {
@@ -79,8 +85,7 @@ namespace Minecraft
         sprite.SpriteTexture = m_Texture;
         sprite.Origin = GetOrigin();
         sprite.UVs = Rectangle();
-        sprite.Depth = Depth;
-        sprite.Rotation = Rotation; // TODO: finish rotation - need to transform the offset
+        sprite.Depth = m_Depth;
 
         // Bottom left corner
         sprite.Position = GetPosition();
@@ -154,7 +159,6 @@ namespace Minecraft
         // Text - Always centered
         Text.Position = GetPosition() - GetOrigin() + GetSize() / 2;
         Text.Origin = TextRenderer::GetTextSize(Text.Text) / 2;
-        Text.Depth = Depth;
-        Text.Rotation = Rotation;
+        Text.Depth = m_Depth;
     }
 }

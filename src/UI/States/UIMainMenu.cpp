@@ -73,9 +73,6 @@ namespace Minecraft
     {
         Active = !Instance->InGame;
 
-        //m_ExitButton->Rotation = Instance->ElapsedSeconds;
-        m_ExitButton->RecalculateBounds();
-
         UIState::CheckActive();
     }
 }

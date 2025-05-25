@@ -7,6 +7,7 @@
 
 namespace Minecraft
 {
+    // Can't be rotated because it is high effort to implement
     class UIButton : public UIElement
     {
     public:
@@ -18,8 +19,6 @@ namespace Minecraft
         std::function<void()> OnMouseUp;
 
         TextDrawParams Text;
-        float Rotation = 0;
-        float Depth = 0.5f;
 
         UIButton();
 
@@ -27,7 +26,8 @@ namespace Minecraft
         void SetButtonSize(vec2i size);
         void SetButtonSize(int width, int height) { SetButtonSize(vec2i(width, height)); }
         void SetText(string text);
-
+        void SetDepth(float depth);
+        float GetDepth() const { return m_Depth; }
         bool IsHovered() const { return m_IsHovered; }
 
         virtual void OnUpdate() override;
@@ -36,6 +36,7 @@ namespace Minecraft
 
     private:
         bool m_IsHovered = false;
+        float m_Depth = 0.5f;
         shared_ptr <Texture> m_Texture;
         array<Sprite, 9> m_Sprites = { };
     };
