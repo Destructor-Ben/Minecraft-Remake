@@ -2,6 +2,7 @@
 
 #include "UI/UIState.h"
 #include "UI/States/UICrosshair.h"
+#include "UI/States/UIDebug.h"
 #include "UI/States/UIMainMenu.h"
 #include "UI/States/UIPauseMenu.h"
 
@@ -27,15 +28,17 @@ namespace Minecraft::UI
     inline UIState* MainMenu;
 
     // Ingame
-    inline UIState* PauseMenu;
     inline UIState* Crosshair;
+    inline UIState* PauseMenu;
+    inline UIState* DebugMenu;
 
     // This is where all the UI states are initialized
     inline void Init()
     {
         MainMenu = CreateUI<UIMainMenu>();
 
-        PauseMenu = CreateUI<UIPauseMenu>();
         Crosshair = CreateUI<UICrosshair>();
+        PauseMenu = CreateUI<UIPauseMenu>();
+        DebugMenu = CreateUI<UIDebug>();
     }
 }
