@@ -12,7 +12,6 @@ namespace Minecraft
     public:
         virtual void OnInit() override;
         virtual void CheckActive() override;
-        virtual void OnRender() override;
 
     private:
         shared_ptr <UISprite> m_Background;

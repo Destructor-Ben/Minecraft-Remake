@@ -5,17 +5,12 @@
 
 namespace Minecraft
 {
-    void UISprite::SetTexture(shared_ptr <Texture> texture)
+    void UISprite::SetTextureAndScale(shared_ptr <Texture> texture, vec2 scale)
     {
         vec2i size = texture->GetSize();
-        Width.Pixels = size.x;
-        Height.Pixels = size.y;
+        Width.Pixels = size.x * scale.x;
+        Height.Pixels = size.y * scale.y;
         DrawnSprite.SpriteTexture = texture;
-        RecalculateBounds();
-    }
-
-    void UISprite::SetScale(float scale)
-    {
         RecalculateBounds();
     }
 
@@ -23,7 +18,8 @@ namespace Minecraft
     {
         UIElement::RecalculateBounds();
 
-        //TODO:DrawnSprite.SetTargetRect(GetBounds(), GetOrigin());
+        DrawnSprite.SetTargetRect(GetBounds());
+        DrawnSprite.Origin = GetOrigin();
     }
 
     void UISprite::OnRender()

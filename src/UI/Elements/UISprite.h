@@ -5,19 +5,13 @@
 
 namespace Minecraft
 {
-    // TODO: figure out how this mess will work
-    // - Sizing is the problem
-    // - Sometimes will want to set the exact dimensions
-    // - Sometimes will want to set a scale
     class UISprite : public UIElement
     {
     public:
-        // Ignore the position and origin, they are overwritten
+        // Ignore position, origin, and size, since they are overwritten
         Sprite DrawnSprite;
 
-        // Also sets size
-        void SetTexture(shared_ptr <Texture> texture);
-        void SetScale(float scale);
+        void SetTextureAndScale(shared_ptr <Texture> texture, vec2 scale = vec2(1));
 
         virtual void RecalculateBounds() override;
         virtual void OnRender() override;

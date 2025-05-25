@@ -3,11 +3,11 @@
 #include "Game.h"
 #include "LogManager.h"
 #include "ResourceManager.h"
-#include "Graphics/Renderers/TextRenderer.h"
 #include "Graphics/Renderers/UIRenderer.h"
 #include "Input/InputManager.h"
 #include "UI/Elements/UIButton.h"
 #include "UI/Elements/UISprite.h"
+#include "UI/Elements/UIText.h"
 #include "World/World.h"
 
 namespace Minecraft
@@ -15,9 +15,14 @@ namespace Minecraft
     void UIMainMenu::OnInit()
     {
         IsInGameUI = false;
+        
+        //auto testText = make_shared<UIText>();
+        //AddElement(testText);
 
-        /* TODO: reenable the UI at some point
+        //auto testButton = make_shared<UIButton>();
+        //AddElement(testButton);
 
+        /* TODO: reneable old UI
         auto backgroundTexture = Instance->Resources->RequestTexture("ui/menu/background");
         m_Background = make_shared<UISprite>();
         m_Background->DrawnSprite.SpriteTexture = backgroundTexture;
@@ -60,31 +65,15 @@ namespace Minecraft
         m_ExitButton->OriginX.Percent = 0.5f;
         m_ExitButton->OriginY.Percent = 0.5f;
         m_ExitButton->SetText("Exit");
-        AddElement(m_ExitButton);
-
-        */
+        AddElement(m_ExitButton);*/
     }
 
     void UIMainMenu::CheckActive()
     {
         Active = !Instance->InGame;
 
+        m_Background->DrawnSprite.Rotation = Instance->ElapsedSeconds;
+
         UIState::CheckActive();
-    }
-
-    void UIMainMenu::OnRender()
-    {
-        auto text = TextDrawParams();
-        text.Text = "Hello world! I <3 minecraft!";
-        text.Position = Instance->ScreenSize / 2;
-
-        vec2 mousePos = Instance->Input->GetMousePos() / (vec2)Instance->ScreenSize;
-        text.Rotation = std::lerp(0, numbers::pi * 4, mousePos.x);
-        text.Scale = vec2(std::lerp(1, 10, mousePos.y));
-
-        // Uh oh
-        text.Origin = TextRenderer::GetTextSize(text.Text, text.Scale) / 2;
-
-        TextRenderer::DrawText(text);
     }
 }
