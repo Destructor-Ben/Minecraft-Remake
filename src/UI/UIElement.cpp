@@ -50,7 +50,6 @@ namespace Minecraft
         }
     }
 
-    // TODO: the order of this makes me uneasy
     void UIElement::ScreenResized()
     {
         OnResize();
