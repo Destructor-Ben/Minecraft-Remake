@@ -20,7 +20,5 @@ namespace Minecraft
 
         shared_ptr <UIButton> m_PlayButton;
         shared_ptr <UIButton> m_ExitButton;
-
-        shared_ptr <UIText> m_TestText;
     };
 }
