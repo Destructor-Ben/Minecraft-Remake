@@ -9,11 +9,9 @@
 
 namespace Minecraft
 {
-    /*
-    void UIPauseMenu::Init()
+    void UIPauseMenu::OnInit()
     {
-        /*
-        // TODO: blur in the future
+        /*/ TODO: blur in the future
         // TODO: fade in future
         // TODO: make a separate layer
         auto backgroundTexture = Instance->Resources->RequestTexture("pixel");
@@ -22,28 +20,35 @@ namespace Minecraft
         m_BlackBackground->DrawnSprite.SpriteColor = Color(Colors::Black.RGB, 0.35f);
         m_BlackBackground->Position = vec2i(0);
         AddElement(m_BlackBackground);
+        //*/
 
         m_PauseMenuText = make_shared<UIText>();
         m_PauseMenuText->SetText("Game is paused");
-        m_PauseMenuText->Origin = m_PauseMenuText->Size / 2;
+        m_PauseMenuText->x.Percent = 0.5f;
+        m_PauseMenuText->y.Percent = 1;
+        m_PauseMenuText->y.Pixels = -400;
+        m_PauseMenuText->OriginX.Percent = 0.5;
+        m_PauseMenuText->OriginX.Percent = 0.5;
         AddElement(m_PauseMenuText);
 
         m_BackButton = make_shared<UIButton>();
-        // TODO: min and max size
-        //m_BackButton->SetButtonSize(300, 30);
-        m_BackButton->SetText("Back");
-        m_BackButton->Origin = m_BackButton->Size / 2;
         m_BackButton->OnMouseUp = []()
         {
             Instance->IsPaused = false;
             Instance->SetMouseHidden(true);
         };
+
+        m_BackButton->SetText("Back to game");
+        m_BackButton->x.Percent = 0.5f;
+        m_BackButton->y.Pixels = -500;
+        m_BackButton->y.Percent = 1.0f;
+        m_BackButton->OriginX.Percent = 0.5f;
+        m_BackButton->OriginY.Percent = 0.5f;
+        m_BackButton->Width.HasMin = true;
+        m_BackButton->Width.MinPixels = 300;
         AddElement(m_BackButton);
 
         m_ExitButton = make_shared<UIButton>();
-        // TODO: min and max size m_ExitButton->SetButtonSize(300, 30);
-        m_ExitButton->SetText("Exit");
-        m_ExitButton->Origin = m_ExitButton->Size / 2;
         m_ExitButton->OnMouseUp = []()
         {
             Instance->IsPaused = true;
@@ -51,11 +56,16 @@ namespace Minecraft
             Instance->CurrentWorld = nullptr;
             Instance->SetMouseHidden(false);
         };
+
+        m_ExitButton->SetText("Exit");
+        m_ExitButton->x.Percent = 0.5f;
+        m_ExitButton->y.Pixels = -500 - m_BackButton->GetSize().y - 10;
+        m_ExitButton->y.Percent = 1.0f;
+        m_ExitButton->OriginX.Percent = 0.5f;
+        m_ExitButton->OriginY.Percent = 0.5f;
+        m_ExitButton->Width.HasMin = true;
+        m_ExitButton->Width.MinPixels = 300;
         AddElement(m_ExitButton);
-
-        //*
-
-        UIState::Init();
     }
 
     void UIPauseMenu::CheckActive()
@@ -71,28 +81,4 @@ namespace Minecraft
 
         UIState::CheckActive();
     }
-
-    void UIPauseMenu::Update()
-    {
-        // Update the background scale
-        // TODO: OnResize hook?
-        //TODO:m_BlackBackground->DrawnSprite.Scale = Instance->ScreenSize;
-
-        // Update locations for the UI elements
-        // TODO: this should be done automatically with custom units
-        int halfWidth = Instance->ScreenWidth / 2;
-        m_PauseMenuText->Position.x = halfWidth;
-        m_BackButton->Position.x = halfWidth;
-        m_ExitButton->Position.x = halfWidth;
-
-        int yPos = Instance->ScreenHeight - 400;
-        m_PauseMenuText->Position.y = yPos;
-        yPos -= 150;
-        m_BackButton->Position.y = yPos;
-        yPos -= 75;
-        m_ExitButton->Position.y = yPos;*
-
-        UIState::Update();
-    }
-    */
 }
