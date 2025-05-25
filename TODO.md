@@ -8,33 +8,6 @@
 - Make all chunk loops that use radii circle instead of squares
 - Make all materials automatically request their shaders? it makes no sense to make them not do it since it is passed in anyway
 
-## UI
-
-- The UI code is absolutely cooked
-    - Go through UIElement and UIState and make sure all of the overrides are covered
-        - OnResize
-        - Ensure the base function is being called in the correct order
-    - Now rewrite the basic elements
-    - Now rewrite the UI states
-    - Once that is done, checking that origins work correctly when using the same origin across multiple sprites
-        - Text rendering
-        - Button rendering
-    - Make sure includes are good
-- Finish UI states
-    - Main menu
-    - Pause menu
-    - Debug UI
-    - Crosshair
-    - Open UI fade (the black tint)
-    - Hotbar
-    - Inventory
-- UI Elements
-    - UIElement
-    - UISprite
-    - UIText
-    - UIButton
-    - All the origins are cooked - Check Sprite.SetTargetRect
-
 ## Build System
 
 - Make the libraries submodules instead of directly embedded
