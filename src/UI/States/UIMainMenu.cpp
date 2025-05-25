@@ -12,7 +12,7 @@
 
 namespace Minecraft
 {
-    void UIMainMenu::Init()
+    void UIMainMenu::OnInit()
     {
         IsInGameUI = false;
 
@@ -63,8 +63,6 @@ namespace Minecraft
         AddElement(m_ExitButton);
 
         */
-
-        UIState::Init();
     }
 
     void UIMainMenu::CheckActive()
@@ -74,7 +72,7 @@ namespace Minecraft
         UIState::CheckActive();
     }
 
-    void UIMainMenu::Render()
+    void UIMainMenu::OnRender()
     {
         auto text = TextDrawParams();
         text.Text = "Hello world! I <3 minecraft!";
@@ -88,7 +86,5 @@ namespace Minecraft
         text.Origin = TextRenderer::GetTextSize(text.Text, text.Scale) / 2;
 
         TextRenderer::DrawText(text);
-
-        UIState::Render();
     }
 }

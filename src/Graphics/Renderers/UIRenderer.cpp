@@ -100,7 +100,8 @@ namespace Minecraft
 
         for (auto& state : UI::UIStateList)
         {
-            state->OnResize();
+            state->ScreenResized();
+            state->RecalculateBounds();
         }
     }
 

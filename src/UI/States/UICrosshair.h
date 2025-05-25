@@ -9,7 +9,7 @@ namespace Minecraft
     class UICrosshair : public UIState
     {
     public:
-        virtual void Init() override;
+        virtual void OnInit() override;
         virtual void CheckActive() override;
 
     private:

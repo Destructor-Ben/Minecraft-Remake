@@ -8,6 +8,6 @@ namespace Minecraft
     class UIDebug : public UIState
     {
     public:
-        virtual void Update() override;
+        //virtual void Update() override;
     };
 }

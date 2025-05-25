@@ -9,8 +9,9 @@ namespace Minecraft
     class UIElement
     {
     public:
-        UIElement* Parent = nullptr;
+        bool Active = true;
 
+        // Dimensions
         UIDimension x;
         UIDimension y;
 
@@ -20,9 +21,24 @@ namespace Minecraft
         UIDimension OriginX;
         UIDimension OriginY;
 
-        bool Active = true;
-
         UIElement() { }
+
+        void AddElement(shared_ptr <UIElement> element);
+        void RemoveElement(shared_ptr <UIElement> element);
+
+        void Update();
+        void Render();
+        void ScreenResized();
+
+        virtual void RecalculateBounds();
+
+        // None of these need any base function to be called
+        virtual void OnAdd() { }
+        virtual void OnRemove() { }
+        virtual void OnResize() { }
+
+        virtual void OnUpdate() { }
+        virtual void OnRender() { }
 
         Rectangle GetParentBounds() const;
         Rectangle GetBounds() const { return m_Bounds; }
@@ -30,16 +46,14 @@ namespace Minecraft
         vec2i GetSize() const { return m_Bounds.GetSize(); }
         vec2i GetOrigin() const { return m_Origin; }
 
-        virtual void CalculateBounds();
-
-        virtual void OnAdd() { }
-        virtual void OnRemove() { }
-
-        virtual void Update() { }
-        virtual void Render() { }
+        UIElement* GetParent() const { return m_Parent; }
+        const vector <shared_ptr<UIElement>>& GetChildren() const { return m_Children; }
 
     private:
-        Rectangle m_Bounds;
-        vec2i m_Origin;
+        UIElement* m_Parent = nullptr;
+        vector <shared_ptr<UIElement>> m_Children = { };
+
+        Rectangle m_Bounds = { };
+        vec2i m_Origin = { };
     };
 }

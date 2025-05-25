@@ -28,8 +28,8 @@ namespace Minecraft
 
         bool IsHovered() const { return m_IsHovered; }
 
-        virtual void Update() override;
-        virtual void Render() override;
+        virtual void OnUpdate() override;
+        virtual void OnRender() override;
 
     private:
         bool m_IsHovered;

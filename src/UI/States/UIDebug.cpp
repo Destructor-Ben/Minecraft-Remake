@@ -7,6 +7,7 @@
 
 namespace Minecraft
 {
+    /*
     void UIDebug::Update()
     {
         if (Instance->Input->WasKeyReleased(Key::B))
@@ -17,4 +18,5 @@ namespace Minecraft
 
         UIState::Update();
     }
+     */
 }

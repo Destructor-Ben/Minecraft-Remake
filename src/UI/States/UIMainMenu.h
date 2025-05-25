@@ -10,9 +10,9 @@ namespace Minecraft
     class UIMainMenu : public UIState
     {
     public:
-        virtual void Init() override;
+        virtual void OnInit() override;
         virtual void CheckActive() override;
-        virtual void Render() override;
+        virtual void OnRender() override;
 
     private:
         shared_ptr <UISprite> m_Background;

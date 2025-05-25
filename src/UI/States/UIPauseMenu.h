@@ -11,9 +11,9 @@ namespace Minecraft
     class UIPauseMenu : public UIState
     {
     public:
-        virtual void Init() override;
+        /*virtual void Init() override;
         virtual void CheckActive() override;
-        virtual void Update() override;
+        virtual void Update() override;*/
 
     private:
         shared_ptr <UISprite> m_BlackBackground;

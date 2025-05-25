@@ -11,25 +11,23 @@ namespace Minecraft
         Width.Pixels = size.x;
         Height.Pixels = size.y;
         DrawnSprite.SpriteTexture = texture;
-        CalculateBounds();
+        RecalculateBounds();
     }
 
     void UISprite::SetScale(float scale)
     {
-        CalculateBounds();
+        RecalculateBounds();
     }
 
-    void UISprite::CalculateBounds()
+    void UISprite::RecalculateBounds()
     {
-        UIElement::CalculateBounds();
+        UIElement::RecalculateBounds();
 
         //TODO:DrawnSprite.SetTargetRect(GetBounds(), GetOrigin());
     }
 
-    void UISprite::Render()
+    void UISprite::OnRender()
     {
-        UIElement::Render();
-
         Instance->UI->DrawSprite(DrawnSprite);
     }
 }

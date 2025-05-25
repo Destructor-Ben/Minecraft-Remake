@@ -12,7 +12,7 @@ namespace Minecraft
 
         void SetText(string text);
 
-        virtual void CalculateBounds() override;
-        virtual void Render() override;
+        virtual void RecalculateBounds() override;
+        virtual void OnRender() override;
     };
 }

@@ -10,21 +10,19 @@ namespace Minecraft
         Width.Pixels = size.x;
         Height.Pixels = size.y;
         Text.Text = text;
-        CalculateBounds();
+        RecalculateBounds();
     }
 
-    void UIText::CalculateBounds()
+    void UIText::RecalculateBounds()
     {
-        UIElement::CalculateBounds();
+        UIElement::RecalculateBounds();
 
         Text.Position = GetPosition();
         Text.Origin = GetOrigin();
     }
 
-    void UIText::Render()
+    void UIText::OnRender()
     {
-        UIElement::Render();
-
         TextRenderer::DrawText(Text);
     }
 }

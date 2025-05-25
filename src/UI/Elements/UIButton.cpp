@@ -27,10 +27,8 @@ namespace Minecraft
         SetButtonSize(TextRenderer::GetTextSize(text));
     }
 
-    void UIButton::Update()
+    void UIButton::OnUpdate()
     {
-        UIElement::Update();
-
         // Hover check
         m_IsHovered = GetBounds().ContainsPoint(Instance->Input->GetMousePos());
 
@@ -43,10 +41,8 @@ namespace Minecraft
             OnMouseUp();
     }
 
-    void UIButton::Render()
+    void UIButton::OnRender()
     {
-        UIElement::Render();
-
         // Setting up the sprite
         vec2i size = GetSize() - CornerSize * 2 * Scale; // Size of the edge sprites
         float scaledCornerSize = CornerSize * Scale;

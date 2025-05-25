@@ -19,7 +19,7 @@ namespace Minecraft
         void SetTexture(shared_ptr <Texture> texture);
         void SetScale(float scale);
 
-        virtual void CalculateBounds() override;
-        virtual void Render() override;
+        virtual void RecalculateBounds() override;
+        virtual void OnRender() override;
     };
 }

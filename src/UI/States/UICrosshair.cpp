@@ -6,7 +6,7 @@
 
 namespace Minecraft
 {
-    void UICrosshair::Init()
+    void UICrosshair::OnInit()
     {
         auto texture = Instance->Resources->RequestTexture("ui/crosshair");
         m_Crosshair = make_shared<UISprite>();
@@ -16,10 +16,7 @@ namespace Minecraft
         m_Crosshair->y.Percent = 0.5f;
         m_Crosshair->OriginX.Percent = 0.5f;
         m_Crosshair->OriginX.Percent = 0.5f;
-
         AddElement(m_Crosshair);
-
-        UIState::Init();
     }
 
     void UICrosshair::CheckActive()
