@@ -11,16 +11,17 @@ namespace Minecraft
 {
     void UIPauseMenu::OnInit()
     {
-        /*/ TODO: blur in the future
-        // TODO: fade in future
-        // TODO: make a separate layer
+        // TODO: Future changes
+        // - Blur
+        // - Fade in and out
+        // - Move to a separate layer so all things that open UI can create this effect
         auto backgroundTexture = Instance->Resources->RequestTexture("pixel");
         m_BlackBackground = make_shared<UISprite>();
         m_BlackBackground->DrawnSprite.SpriteTexture = backgroundTexture;
         m_BlackBackground->DrawnSprite.SpriteColor = Color(Colors::Black.RGB, 0.35f);
-        m_BlackBackground->Position = vec2i(0);
+        m_BlackBackground->Width.Percent = 1;
+        m_BlackBackground->Height.Percent = 1;
         AddElement(m_BlackBackground);
-        //*/
 
         m_PauseMenuText = make_shared<UIText>();
         m_PauseMenuText->SetText("Game is paused");
