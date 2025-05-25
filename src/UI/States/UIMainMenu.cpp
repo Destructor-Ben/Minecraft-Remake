@@ -15,9 +15,6 @@ namespace Minecraft
     void UIMainMenu::OnInit()
     {
         IsInGameUI = false;
-        
-        //auto testText = make_shared<UIText>();
-        //AddElement(testText);
 
         //auto testButton = make_shared<UIButton>();
         //AddElement(testButton);
@@ -71,8 +68,6 @@ namespace Minecraft
     void UIMainMenu::CheckActive()
     {
         Active = !Instance->InGame;
-
-        m_Background->DrawnSprite.Rotation = Instance->ElapsedSeconds;
 
         UIState::CheckActive();
     }

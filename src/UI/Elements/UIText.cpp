@@ -4,12 +4,15 @@
 
 namespace Minecraft
 {
-    void UIText::SetText(string text)
+    void UIText::SetText(string text, vec2 scale)
     {
-        vec2i size = TextRenderer::GetTextSize(text);
+        Text.Text = text;
+        Text.Scale = scale;
+
+        // Set size of the UI element
+        vec2i size = TextRenderer::GetTextSize(text, scale);
         Width.Pixels = size.x;
         Height.Pixels = size.y;
-        Text.Text = text;
         RecalculateBounds();
     }
 

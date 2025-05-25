@@ -10,7 +10,7 @@ namespace Minecraft
     public:
         TextDrawParams Text;
 
-        void SetText(string text);
+        void SetText(string text, vec2 scale = vec2(1));
 
         virtual void RecalculateBounds() override;
         virtual void OnRender() override;

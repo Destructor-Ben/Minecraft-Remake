@@ -6,6 +6,7 @@ namespace Minecraft
 {
     class UIButton;
     class UISprite;
+    class UIText;
 
     class UIMainMenu : public UIState
     {
@@ -19,5 +20,7 @@ namespace Minecraft
 
         shared_ptr <UIButton> m_PlayButton;
         shared_ptr <UIButton> m_ExitButton;
+
+        shared_ptr <UIText> m_TestText;
     };
 }

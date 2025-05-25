@@ -11,7 +11,7 @@ namespace Minecraft
         // Ignore position, origin, and size, since they are overwritten
         Sprite DrawnSprite;
 
-        void SetTextureAndScale(shared_ptr <Texture> texture, vec2 scale = vec2(1));
+        void SetTexture(shared_ptr <Texture> texture, vec2 scale = vec2(1));
 
         virtual void RecalculateBounds() override;
         virtual void OnRender() override;

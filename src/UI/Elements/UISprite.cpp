@@ -5,7 +5,7 @@
 
 namespace Minecraft
 {
-    void UISprite::SetTextureAndScale(shared_ptr <Texture> texture, vec2 scale)
+    void UISprite::SetTexture(shared_ptr <Texture> texture, vec2 scale)
     {
         vec2i size = texture->GetSize();
         Width.Pixels = size.x * scale.x;

@@ -15,4 +15,5 @@ namespace Minecraft::TextRenderer
 
     void DrawText(const TextDrawParams& text);
     vec2i GetTextSize(const string& text, vec2 scale = vec2(1));
+    inline vec2i GetTextSize(const TextDrawParams& text) { return GetTextSize(text.Text, text.Scale); }
 }
