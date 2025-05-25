@@ -20,6 +20,9 @@ namespace Minecraft::UI
         return ui.get();
     }
 
+    inline constexpr int SpriteScale = 3; // Since sprites are small
+    inline bool IsInLightMode = false;
+
     // Menu
     inline UIState* MainMenu;
 

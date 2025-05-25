@@ -67,10 +67,10 @@ namespace Minecraft
     {
         auto parentBounds = GetParentBounds();
 
-        vec2i position = vec2i(x.Calculate(parentBounds.Width), y.Calculate(parentBounds.Height));
-        vec2i size = vec2i(Width.Calculate(parentBounds.Width), Height.Calculate(parentBounds.Height));
-        m_Bounds = Rectangle(position, size);
-        m_Origin = vec2i(OriginX.Calculate(size.x), OriginY.Calculate(size.y));
+        m_Position = vec2i(x.Calculate(parentBounds.Width), y.Calculate(parentBounds.Height));
+        m_Size = vec2i(Width.Calculate(parentBounds.Width), Height.Calculate(parentBounds.Height));
+        m_Origin = vec2i(OriginX.Calculate(m_Size.x), OriginY.Calculate(m_Size.y));
+        m_Bounds = Rectangle(m_Position - m_Origin, m_Size);
 
         // Recalculate children
         for (auto& child : m_Children)

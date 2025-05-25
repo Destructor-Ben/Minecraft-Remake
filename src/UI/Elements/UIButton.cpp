@@ -6,6 +6,7 @@
 #include "Graphics/Renderers/TextRenderer.h"
 #include "Graphics/Renderers/UIRenderer.h"
 #include "Input/InputManager.h"
+#include "UI/UI.h"
 
 namespace Minecraft
 {
@@ -16,9 +17,10 @@ namespace Minecraft
 
     void UIButton::SetButtonSize(vec2i size)
     {
-        vec2i calculatedSize = size + (CornerSize * Scale + Padding) * 2;
+        vec2i calculatedSize = size + (CornerSize + Padding) * 2 * UI::SpriteScale;
         Width.Pixels = calculatedSize.x;
         Height.Pixels = calculatedSize.y;
+        RecalculateBounds();
     }
 
     void UIButton::SetText(string text)
@@ -27,13 +29,13 @@ namespace Minecraft
         SetButtonSize(TextRenderer::GetTextSize(text));
     }
 
+    // At some point, this input code will get moved to UIElement
     void UIButton::OnUpdate()
     {
         // Hover check
         m_IsHovered = GetBounds().ContainsPoint(Instance->Input->GetMousePos());
 
         // On mouse down and on mouse up
-        // TODO: support for all 3 mouse buttons
         if (m_IsHovered && Instance->Input->WasMouseButtonPressed(MouseButton::Left) && OnMouseDown)
             OnMouseDown();
 
@@ -43,103 +45,116 @@ namespace Minecraft
 
     void UIButton::OnRender()
     {
+        // Background
+        for (auto sprite : m_Sprites)
+        {
+            // Calculating the UV offset for color mode + hover effects
+            if (m_IsHovered)
+                sprite.UVs->x += CornerSize * 2 + EdgeSize + 1;
+
+            if (UI::IsInLightMode)
+                sprite.UVs->y += CornerSize * 2 + EdgeSize + 1;
+
+            // Draw
+            Instance->UI->DrawSprite(sprite);
+        }
+
+        // Text
+        if (Text.Text.empty())
+            return;
+
+        TextRenderer::DrawText(Text);
+    }
+
+    // Recalculate the sprites
+    void UIButton::RecalculateBounds()
+    {
+        UIElement::RecalculateBounds();
+
         // Setting up the sprite
-        vec2i size = GetSize() - CornerSize * 2 * Scale; // Size of the edge sprites
-        float scaledCornerSize = CornerSize * Scale;
+        int scaledCornerSize = CornerSize * UI::SpriteScale;
+        vec2i size = GetSize() - scaledCornerSize * 2; // Size of the contents and padding
+
         auto sprite = Sprite();
         sprite.SpriteTexture = m_Texture;
-        //sprite.Origin = GetOrigin();
+        sprite.Origin = GetOrigin();
         sprite.UVs = Rectangle();
-        //TODO:sprite.Scale = vec2(0);
+        sprite.Depth = Depth;
+        sprite.Rotation = Rotation; // TODO: finish rotation - need to transform the offset
 
-        // Calculating the UV offset for color mode + hover effects
-        vec2i uvOffset = vec2i(0);
-
-        if (m_IsHovered)
-            uvOffset.x += CornerSize * 2 + EdgeSize + 1;
-
-        // TODO: proper light + dark mode option - this code below does work, just needs a better condition
-        //if (!useDarkMode)
-        //    uvOffset.y += CornerSize * 2 + EdgeSize + 1;
-
-        // TODO: calculate these sprites in CalculateBounds
-        // TODO: use SetTargetRect
         // Bottom left corner
         sprite.Position = GetPosition();
         sprite.Size = vec2i(scaledCornerSize);
-        sprite.UVs->x = uvOffset.x;
-        sprite.UVs->y = uvOffset.y;
+        sprite.UVs->x = 0;
+        sprite.UVs->y = 0;
         sprite.UVs->Width = CornerSize;
         sprite.UVs->Height = CornerSize;
-        Instance->UI->DrawSprite(sprite);
+        m_Sprites[0] = sprite;
 
         // Bottom edge
         sprite.Position.x += scaledCornerSize;
         sprite.Size = vec2i(size.x, scaledCornerSize);
         sprite.UVs->x += CornerSize;
         sprite.UVs->Width = EdgeSize;
-        Instance->UI->DrawSprite(sprite);
+        m_Sprites[1] = sprite;
 
         // Bottom right corner
         sprite.Position.x += size.x;
         sprite.Size = vec2i(scaledCornerSize);
         sprite.UVs->x += EdgeSize;
         sprite.UVs->Width = CornerSize;
-        Instance->UI->DrawSprite(sprite);
+        m_Sprites[2] = sprite;
 
         // Left edge
         sprite.Position = GetPosition() + vec2i(0, scaledCornerSize);
         sprite.Size = vec2i(scaledCornerSize, size.y);
-        sprite.UVs->x = uvOffset.x;
-        sprite.UVs->y = uvOffset.y + CornerSize;
+        sprite.UVs->x = 0;
+        sprite.UVs->y = CornerSize;
         sprite.UVs->Width = CornerSize;
         sprite.UVs->Height = EdgeSize;
-        Instance->UI->DrawSprite(sprite);
+        m_Sprites[3] = sprite;
 
         // Middle
         sprite.Position.x += scaledCornerSize;
         sprite.Size = vec2i(size.x, size.y);
         sprite.UVs->x += CornerSize;
         sprite.UVs->Width = EdgeSize;
-        Instance->UI->DrawSprite(sprite);
+        m_Sprites[4] = sprite;
 
         // Right edge
         sprite.Position.x += size.x;
         sprite.Size = vec2i(scaledCornerSize, size.y);
         sprite.UVs->x += EdgeSize;
         sprite.UVs->Width = CornerSize;
-        Instance->UI->DrawSprite(sprite);
+        m_Sprites[5] = sprite;
 
         // Top left corner
         sprite.Position = GetPosition() + vec2i(0, scaledCornerSize + size.y);
         sprite.Size = vec2i(scaledCornerSize);
-        sprite.UVs->x = uvOffset.x;
-        sprite.UVs->y = uvOffset.y + CornerSize + EdgeSize;
+        sprite.UVs->x = 0;
+        sprite.UVs->y = CornerSize + EdgeSize;
         sprite.UVs->Width = CornerSize;
         sprite.UVs->Height = CornerSize;
-        Instance->UI->DrawSprite(sprite);
+        m_Sprites[6] = sprite;
 
         // Top edge
         sprite.Position.x += scaledCornerSize;
         sprite.Size = vec2i(size.x, scaledCornerSize);
         sprite.UVs->x += CornerSize;
         sprite.UVs->Width = EdgeSize;
-        Instance->UI->DrawSprite(sprite);
+        m_Sprites[7] = sprite;
 
         // Top right corner
         sprite.Position.x += size.x;
         sprite.Size = vec2i(scaledCornerSize);
         sprite.UVs->x += EdgeSize;
         sprite.UVs->Width = CornerSize;
-        Instance->UI->DrawSprite(sprite);
+        m_Sprites[8] = sprite;
 
-        // Text
-        if (Text.Text.empty())
-            return;
-
-        // TODO: do the updating in Update
-        Text.Position = GetPosition();
+        // Text - Always centered
+        Text.Position = GetPosition() - GetOrigin() + GetSize() / 2;
         Text.Origin = TextRenderer::GetTextSize(Text.Text) / 2;
-        TextRenderer::DrawText(Text);
+        Text.Depth = Depth;
+        Text.Rotation = Rotation;
     }
 }

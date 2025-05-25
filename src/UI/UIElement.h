@@ -42,8 +42,8 @@ namespace Minecraft
 
         Rectangle GetParentBounds() const;
         Rectangle GetBounds() const { return m_Bounds; }
-        vec2i GetPosition() const { return m_Bounds.GetPosition(); }
-        vec2i GetSize() const { return m_Bounds.GetSize(); }
+        vec2i GetPosition() const { return m_Position; }
+        vec2i GetSize() const { return m_Size; }
         vec2i GetOrigin() const { return m_Origin; }
 
         UIElement* GetParent() const { return m_Parent; }
@@ -54,6 +54,8 @@ namespace Minecraft
         vector <shared_ptr<UIElement>> m_Children = { };
 
         Rectangle m_Bounds = { };
+        vec2i m_Position = { };
+        vec2i m_Size = { };
         vec2i m_Origin = { };
     };
 }

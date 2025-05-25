@@ -7,7 +7,6 @@
 #include "Input/InputManager.h"
 #include "UI/Elements/UIButton.h"
 #include "UI/Elements/UISprite.h"
-#include "UI/Elements/UIText.h"
 #include "World/World.h"
 
 namespace Minecraft
@@ -16,8 +15,13 @@ namespace Minecraft
     {
         IsInGameUI = false;
 
-        //auto testButton = make_shared<UIButton>();
-        //AddElement(testButton);
+        m_ExitButton = make_shared<UIButton>();
+        m_ExitButton->SetText("Test!");
+        m_ExitButton->x.Percent = 0.5f;
+        m_ExitButton->y.Percent = 0.5f;
+        m_ExitButton->OriginX.Percent = 0.5f;
+        m_ExitButton->OriginY.Percent = 0.5f;
+        AddElement(m_ExitButton);
 
         /* TODO: reneable old UI
         auto backgroundTexture = Instance->Resources->RequestTexture("ui/menu/background");
@@ -68,6 +72,9 @@ namespace Minecraft
     void UIMainMenu::CheckActive()
     {
         Active = !Instance->InGame;
+
+        //m_ExitButton->Rotation = Instance->ElapsedSeconds;
+        m_ExitButton->RecalculateBounds();
 
         UIState::CheckActive();
     }

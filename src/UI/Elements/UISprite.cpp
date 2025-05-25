@@ -18,7 +18,8 @@ namespace Minecraft
     {
         UIElement::RecalculateBounds();
 
-        DrawnSprite.SetTargetRect(GetBounds());
+        DrawnSprite.Position = GetPosition();
+        DrawnSprite.Size = GetSize();
         DrawnSprite.Origin = GetOrigin();
     }
 
