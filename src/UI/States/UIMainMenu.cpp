@@ -20,6 +20,7 @@ namespace Minecraft
         backgroundTexture->SetWrappingModes(GL_REPEAT);
         m_Background = make_shared<UISprite>();
         m_Background->DrawnSprite.SpriteTexture = backgroundTexture;
+        // TODO: needs OnResize
         m_Background->DrawnSprite.UVs = Rectangle(vec2i(0), Instance->ScreenSize / 30);
         m_Background->Width.Percent = 1;
         m_Background->Height.Percent = 1;
