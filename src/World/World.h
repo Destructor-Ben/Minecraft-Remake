@@ -53,10 +53,14 @@ namespace Minecraft
         static constexpr int MinSpawnHeight = MinHeight;
         static constexpr int MaxSpawnHeight = MaxHeight;
 
+        // Player
+        static constexpr float PlayerReachDistance = 7.0f;
         Camera PlayerCamera;
+        optional <vec3i> PlayerTargetedBlockPos = nullopt; // TODO: make an optional<Block> after world class redesign
         vec3i PreviousPlayerChunkPos = { };
         bool HasPlayerMovedChunks = true;
 
+        // Chunk data
         unordered_map <vec3i, Chunk> Chunks = { };
 
         // Time

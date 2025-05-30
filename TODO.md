@@ -1,8 +1,16 @@
 # To Do List
 
+- Rework world class
+    - New coordinate system
+        - WorldPos - vec3 (don't make a struct for this)
+        - BlockPos - vec3i
+        - ChunkPos - vec3i
+        - BlockOffset - vec3i
+
 - Fix holes in meshes when generating chunks around the player
 - Worldgen border fixes + steps - look at how minecraft does it
 - The process segfaults on linux when exiting
+- Stars are broken on linux
 
 - Partial transparency support for blocks
 - Make all chunk loops that use radii circle instead of squares

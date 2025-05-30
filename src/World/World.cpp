@@ -8,6 +8,7 @@
 #include "Graphics/Renderers/Renderer.h"
 #include "Graphics/Renderers/SkyRenderer.h"
 #include "World/Chunk.h"
+#include "Physics/Physics.h"
 
 namespace Minecraft
 {
@@ -263,43 +264,75 @@ namespace Minecraft
     void World::UpdateBlockBreaking()
     {
         // Block breaking
-        // TODO: abstract into a ray object/raycast function
-        // TODO: wonky
-        vec3 rayPos = PlayerCamera.Position;
-        vec3 lookDir = PlayerCamera.GetForwardVector();
-        float maxDistance = 10.0f;
-        float stepSize = 0.01f;
-        int steps = maxDistance / stepSize;
+        auto ray = Physics::RaycastBlocks(PlayerCamera.Position, PlayerCamera.GetForwardVector(), PlayerReachDistance);
+        if (ray.DidHit)
+            PlayerTargetedBlockPos = ray.HitBlockPos;
+        else
+            PlayerTargetedBlockPos = nullopt;
 
-        optional <vec3i> targetBlockPos = nullopt;
+        if (!PlayerTargetedBlockPos.has_value())
+            return;
 
-        // Works via ray marching
-        for (int i = 0; i < steps; ++i)
-        {
-            // If the ray has intersected a block, get it
-            optional <Block> block = GetBlock(rayPos);
-            if (block.has_value() && block->Data.Type != Blocks::Air)
-            {
-                targetBlockPos = block->GetWorldPos();
-                break;
-            }
+        auto targetBlock = GetBlock(PlayerTargetedBlockPos.value());
+        if (!targetBlock.has_value())
+            return;
 
-            // Update the ray
-            rayPos += lookDir * stepSize;
-        }
-
+        // TODO: split these into more functions
         // Block breaking
-        if (targetBlockPos.has_value() && Instance->Input->WasMouseButtonPressed(MouseButton::Left))
+        if (Instance->Input->WasMouseButtonPressed(MouseButton::Left))
         {
-            auto block = GetBlock(targetBlockPos.value());
-
-            block->Data.Type = Blocks::Air;
+            targetBlock->Data.Type = Blocks::Air;
             // TODO: priority
-            Instance->ChunkGraphics->QueueMeshRegen(block->GetChunk());
+            // TODO: make a function to update meshes at a block position if it gets modified
+            Instance->ChunkGraphics->QueueMeshRegen(targetBlock->GetChunk());
 
             // Regen adjacent chunk meshes
-            auto chunkPos = block->GetChunk().GetChunkPos();
-            auto blockPos = block->GetBlockPos();
+            auto chunkPos = targetBlock->GetChunk().GetChunkPos();
+            auto blockPos = targetBlock->GetBlockPos();
+
+            if (blockPos.x == 0)
+                UpdateMeshInDirection(chunkPos, vec3i(-1, 0, 0));
+
+            if (blockPos.y == 0)
+                UpdateMeshInDirection(chunkPos, vec3i(0, -1, 0));
+
+            if (blockPos.z == 0)
+                UpdateMeshInDirection(chunkPos, vec3i(0, 0, -1));
+
+            if (blockPos.x == Chunk::Size - 1)
+                UpdateMeshInDirection(chunkPos, vec3i(1, 0, 0));
+
+            if (blockPos.y == Chunk::Size - 1)
+                UpdateMeshInDirection(chunkPos, vec3i(0, 1, 0));
+
+            if (blockPos.z == Chunk::Size - 1)
+                UpdateMeshInDirection(chunkPos, vec3i(0, 0, 1));
+
+            return;
+        }
+
+        // Block placing
+        // TODO: what if place + break in the same tick?
+        // TODO: wonky
+        if (Instance->Input->WasMouseButtonPressed(MouseButton::Right))
+        {
+            auto placedBlockPos = PlayerTargetedBlockPos.value() + ray.HitFaceNormal;
+            auto placedBlock = GetBlock(placedBlockPos);
+            if (!placedBlock.has_value())
+                return;
+
+            if (placedBlock->Data.Type != Blocks::Air)
+                return;
+
+            // TODO: allow selecting the block type
+            placedBlock->Data.Type = Blocks::Sand;
+            // TODO: priority
+            Instance->ChunkGraphics->QueueMeshRegen(placedBlock->GetChunk());
+
+            // Regen adjacent chunk meshes
+            // TODO: check this is correct for the placed block
+            auto chunkPos = placedBlock->GetChunk().GetChunkPos();
+            auto blockPos = placedBlock->GetBlockPos();
 
             if (blockPos.x == 0)
                 UpdateMeshInDirection(chunkPos, vec3i(-1, 0, 0));
@@ -324,7 +357,7 @@ namespace Minecraft
     void World::UpdateMeshInDirection(vec3i chunkPos, vec3i dir)
     {
         auto chunk = GetChunk(chunkPos + dir);
-        if (chunk.value())
+        if (chunk.has_value())
         {
             // TODO: priority
             Instance->ChunkGraphics->QueueMeshRegen(*chunk.value());

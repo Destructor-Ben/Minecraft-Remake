@@ -27,6 +27,7 @@ target_sources(Minecraft_Remake PRIVATE
 
 add_subdirectory(Graphics)
 add_subdirectory(Input)
+add_subdirectory(Physics)
 add_subdirectory(Random)
 add_subdirectory(UI)
 add_subdirectory(World)
