@@ -126,5 +126,8 @@ namespace Minecraft
         vector <ProfilerData> m_TickPerfData;
         vector <ProfilerData> m_UpdatePerfData;
         vector <ProfilerData> m_RenderPerfData;
+
+        GLFWcursor* m_LightCursor;
+        GLFWcursor* m_DarkCursor;
     };
 }

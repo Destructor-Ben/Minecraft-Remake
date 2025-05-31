@@ -121,6 +121,29 @@ namespace Minecraft
         SetVSyncEnabled(true);
         SetMouseHidden(false);
 
+        // Set window icon
+        auto iconTexture = Resources->RequestImageData("application/icon");
+        GLFWimage icon[1];
+        icon[0].width = iconTexture.Width;
+        icon[0].height = iconTexture.Height;
+        icon[0].pixels = iconTexture.Data.get();
+        glfwSetWindowIcon(Window, 1, icon);
+
+        // Set cursor
+        auto lightCursorTexture = Resources->RequestImageData("application/cursor-light");
+        auto darkCursorTexture = Resources->RequestImageData("application/cursor-dark");
+        GLFWimage lightCursor, darkCursor;
+        lightCursor.width = lightCursorTexture.Width;
+        lightCursor.height = lightCursorTexture.Height;
+        lightCursor.pixels = lightCursorTexture.Data.get();
+        darkCursor.width = darkCursorTexture.Width;
+        darkCursor.height = darkCursorTexture.Height;
+        darkCursor.pixels = darkCursorTexture.Data.get();
+        m_LightCursor = glfwCreateCursor(&lightCursor, 0, 0);
+        m_DarkCursor = glfwCreateCursor(&darkCursor, 0, 0);
+        // TODO: update cursor when UI color mode changes
+        glfwSetCursor(Window, UI::IsInLightMode ? m_LightCursor : m_DarkCursor);
+
         Logger->Info("GLFW Initialized");
 
         PerfProfiler->Pop();

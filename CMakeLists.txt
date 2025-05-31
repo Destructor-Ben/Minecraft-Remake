@@ -3,7 +3,7 @@ project(Minecraft_Remake VERSION 0.1.0 LANGUAGES CXX C)
 set(CMAKE_CXX_STANDARD 23)
 
 # Main executable
-add_executable(Minecraft_Remake)
+add_executable(Minecraft_Remake assets/textures/application/icon.rc)
 add_subdirectory(src)
 
 # Source generators

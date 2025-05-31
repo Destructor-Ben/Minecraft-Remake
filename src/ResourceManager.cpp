@@ -32,6 +32,7 @@ namespace Minecraft
     ImageData ResourceManager::RequestImageData(string path)
     {
         // Get the data
+        path = "assets/textures/" + path + ".png";
         auto compressedData = Instance->Resources->RequestResourceBytes(path);
 
         // Load it and calculate the format
@@ -62,7 +63,6 @@ namespace Minecraft
             return m_Textures[path];
 
         // Load the texture
-        path = "assets/textures/" + path + ".png";
         auto image = RequestImageData(path);
 
         // Set the data
@@ -89,7 +89,7 @@ namespace Minecraft
         for (int i = 0; i < m_CubeMapFaceNames.size(); i++)
         {
             // Load the data
-            string facePath = "assets/textures/" + path + "/" + m_CubeMapFaceNames[i] + ".png";
+            string facePath = path + "/" + m_CubeMapFaceNames[i];
             auto image = RequestImageData(facePath);
 
             // Set the data
