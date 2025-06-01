@@ -4,11 +4,23 @@
 #include "Logger.h"
 #include "Graphics/GL.h"
 
+// Change this when doing an actual build so the assets are read from the same folder instead of 2 folders back
+#define USE_DEV_ASSETS true
+
 namespace Minecraft
 {
+    string ResourceManager::GetResourcePath(string path)
+    {
+        #if USE_DEV_ASSETS
+        return "../../" + path;
+        #else
+        return path;
+        #endif
+    }
+
     string ResourceManager::RequestResourceText(string path)
     {
-        std::ifstream stream(path);
+        std::ifstream stream(GetResourcePath(path));
         if (stream.fail())
             Logger::Throw("Failed to load resource at path: " + path);
 
@@ -20,7 +32,7 @@ namespace Minecraft
 
     vector <byte> ResourceManager::RequestResourceBytes(string path)
     {
-        std::ifstream stream(path, std::ios::binary);
+        std::ifstream stream(GetResourcePath(path), std::ios::binary);
         if (stream.fail())
             Logger::Throw("Failed to load resource at path: " + path);
 

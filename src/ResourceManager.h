@@ -20,6 +20,7 @@ namespace Minecraft
     class ResourceManager
     {
     public:
+        string GetResourcePath(string path);
         string RequestResourceText(string path);
         vector<byte> RequestResourceBytes(string path);
         ImageData RequestImageData(string path);

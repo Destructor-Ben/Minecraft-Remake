@@ -33,13 +33,3 @@ target_link_libraries(Minecraft_Remake stb_image_write)
 target_link_libraries(Minecraft_Remake glad)
 target_link_libraries(Minecraft_Remake glm)
 target_link_libraries(Minecraft_Remake glfw ${GLFW_LIBRARIES})
-
-# Resources
-add_custom_command(
-    TARGET Minecraft_Remake
-    POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${CMAKE_SOURCE_DIR}/assets
-    ${CMAKE_CURRENT_BINARY_DIR}/assets
-    COMMENT "Copying assets to build folder"
-)
