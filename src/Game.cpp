@@ -4,7 +4,7 @@
 #include "Profiler.h"
 #include "ResourceManager.h"
 #include "Version.h"
-#include "Input/InputManager.h"
+#include "Input/Input.h"
 #include "Graphics/GL.h"
 #include "Graphics/Renderers/Renderer.h"
 #include "Graphics/Renderers/ChunkRenderer.h"
@@ -38,7 +38,6 @@ namespace Minecraft
 
         PerfProfiler->Push("MiscManagers");
 
-        Input = make_shared<InputManager>();
         Resources = make_shared<ResourceManager>();
         UIRenderer::Init();
         TextRenderer::Init();
@@ -75,11 +74,11 @@ namespace Minecraft
         ChunkGraphics = nullptr;
         Graphics = nullptr;
         Resources = nullptr;
-        Input = nullptr;
 
         glfwTerminate();
 
         PerfProfiler = nullptr;
+        Logger::Shutdown();
     }
 
     void Game::InitGLFW()
@@ -187,13 +186,13 @@ namespace Minecraft
     // TODO: also sometimes print all debug data if more chunks are generated on the same frame so I can tell if
     void Game::HandleProfilerData(const ProfilerData& data, Key debugKey, vector <ProfilerData>& previousData)
     {
-        if (Input->WasKeyPressed(debugKey))
+        if (Input::WasKeyPressed(debugKey))
             Logger::Debug("\n" + data.ToString());
 
-        if (Input->IsKeyDown(debugKey))
+        if (Input::IsKeyDown(debugKey))
             previousData.push_back(data);
 
-        if (Input->WasKeyReleased(debugKey))
+        if (Input::WasKeyReleased(debugKey))
         {
             previousData.push_back(data);
 
@@ -221,7 +220,7 @@ namespace Minecraft
     {
         PerfProfiler->BeginFrame("Update");
 
-        Input->Update();
+        Input::Update();
 
         // World updating
         if (InGame && !IsPaused && CurrentWorld)
@@ -230,7 +229,7 @@ namespace Minecraft
         // UI updating
         UIRenderer::Update();
 
-        Input->PostUpdate();
+        Input::PostUpdate();
 
         auto data = PerfProfiler->EndFrame();
         HandleProfilerData(data, Key::RightBracket, m_UpdatePerfData);
@@ -320,13 +319,13 @@ namespace Minecraft
     void Game::SetMouseHidden(bool hidden)
     {
         m_IsMouseHidden = hidden;
-        InputManager::SetRawMouseMotion(hidden);
-        InputManager::SetCursorDisabled(hidden);
+        Input::SetRawMouseMotion(hidden);
+        Input::SetCursorDisabled(hidden);
     }
 
     void Game::OnScroll(GLFWwindow* window, double xOffset, double yOffset)
     {
-        Instance->Input->UpdateScroll((float)xOffset, (float)yOffset);
+        Input::UpdateScroll((float)xOffset, (float)yOffset);
     }
 
     void Game::OnResize(GLFWwindow* window, int width, int height)

@@ -1,12 +1,26 @@
-#include "InputManager.h"
+#include "Input.h"
 
 #include "Game.h"
 
-namespace Minecraft
+// TODO: typing input
+// TODO: getting key names - possibly put it in localization
+// TODO: make key binds that can be reassigned
+// TODO: x axis scrolling with mouse wheel delta
+namespace Minecraft::Input
 {
-    // TODO: typing input
-    // TODO: getting key names - possibly put it in localization
-    // TODO: make key binds that can be reassigned
+    static constexpr int KeyCount = (int)Key::Count;
+    static constexpr int MouseButtonCount = (int)MouseButton::Count;
+
+    bool OldMousePosInitialized = false;
+    vec2 MousePos = vec2();
+    vec2 OldMousePos = vec2();
+    float ScrollDelta = 0.0f;
+
+    array<bool, KeyCount> KeysPressedThisFrame = { };
+    array<bool, KeyCount> KeysPressedLastFrame = { };
+
+    array<bool, MouseButtonCount> MouseButtonsPressedThisFrame = { };
+    array<bool, MouseButtonCount> MouseButtonsPressedLastFrame = { };
 
     static int GetGLFWKeyCode(Key key)
     {
@@ -266,29 +280,44 @@ namespace Minecraft
         }
     }
 
-    bool InputManager::IsCursorDisabled() { return glfwGetInputMode(Instance->Window, GLFW_CURSOR) == GLFW_CURSOR_DISABLED; }
-    void InputManager::SetCursorDisabled(bool disabled) { glfwSetInputMode(Instance->Window, GLFW_CURSOR, disabled ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL); }
-    bool InputManager::IsRawMouseMotionEnabled() { return glfwGetInputMode(Instance->Window, GLFW_RAW_MOUSE_MOTION) == GLFW_TRUE; }
-    void InputManager::SetRawMouseMotion(bool isRaw)
+    vec2 GetMousePos() { return MousePos; }
+    vec2 GetMousePosDelta() { return MousePos - OldMousePos; }
+
+    float GetScrollWheelDelta() { return ScrollDelta; }
+
+    bool IsMouseButtonDown(MouseButton button) { return MouseButtonsPressedThisFrame[(int)button]; }
+    bool IsMouseButtonUp(MouseButton button) { return !MouseButtonsPressedThisFrame[(int)button]; }
+    bool WasMouseButtonPressed(MouseButton button) { return MouseButtonsPressedThisFrame[(int)button] && !MouseButtonsPressedLastFrame[(int)button]; }
+    bool WasMouseButtonReleased(MouseButton button) { return !MouseButtonsPressedThisFrame[(int)button] && MouseButtonsPressedLastFrame[(int)button]; }
+
+    bool IsKeyDown(Key key) { return KeysPressedThisFrame[(int)key]; }
+    bool IsKeyUp(Key key) { return !KeysPressedThisFrame[(int)key]; }
+    bool WasKeyPressed(Key key) { return KeysPressedThisFrame[(int)key] && !KeysPressedLastFrame[(int)key]; }
+    bool WasKeyReleased(Key key) { return !KeysPressedThisFrame[(int)key] && KeysPressedLastFrame[(int)key]; }
+
+    bool IsCursorDisabled() { return glfwGetInputMode(Instance->Window, GLFW_CURSOR) == GLFW_CURSOR_DISABLED; }
+    void SetCursorDisabled(bool disabled) { glfwSetInputMode(Instance->Window, GLFW_CURSOR, disabled ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL); }
+    bool IsRawMouseMotionEnabled() { return glfwGetInputMode(Instance->Window, GLFW_RAW_MOUSE_MOTION) == GLFW_TRUE; }
+    void SetRawMouseMotion(bool isRaw)
     {
         if (glfwRawMouseMotionSupported())
             glfwSetInputMode(Instance->Window, GLFW_RAW_MOUSE_MOTION, isRaw ? GLFW_TRUE : GLFW_FALSE);
     }
 
-    void InputManager::Update()
+    void Update()
     {
         // Cursor
-        m_OldMousePos = m_MousePos;
+        OldMousePos = MousePos;
 
         double mouseX, mouseY;
         glfwGetCursorPos(Instance->Window, &mouseX, &mouseY);
-        m_MousePos.x = (float)mouseX;
-        m_MousePos.y = (float)(Instance->ScreenHeight - mouseY);
+        MousePos.x = (float)mouseX;
+        MousePos.y = (float)(Instance->ScreenHeight - mouseY);
 
-        if (!m_OldMousePosInitialized)
+        if (!OldMousePosInitialized)
         {
-            m_OldMousePosInitialized = true;
-            m_OldMousePos = m_MousePos;
+            OldMousePosInitialized = true;
+            OldMousePos = MousePos;
         }
 
         // Mouse buttons
@@ -299,8 +328,8 @@ namespace Minecraft
             if (id == -1)
                 continue;
 
-            m_MouseButtonsPressedLastFrame[i] = m_MouseButtonsPressedThisFrame[i];
-            m_MouseButtonsPressedThisFrame[i] = glfwGetMouseButton(Instance->Window, id) == GLFW_PRESS;
+            MouseButtonsPressedLastFrame[i] = MouseButtonsPressedThisFrame[i];
+            MouseButtonsPressedThisFrame[i] = glfwGetMouseButton(Instance->Window, id) == GLFW_PRESS;
         }
 
         // Keys
@@ -311,19 +340,18 @@ namespace Minecraft
             if (id == -1)
                 continue;
 
-            m_KeysPressedLastFrame[i] = m_KeysPressedThisFrame[i];
-            m_KeysPressedThisFrame[i] = glfwGetKey(Instance->Window, id) == GLFW_PRESS;
+            KeysPressedLastFrame[i] = KeysPressedThisFrame[i];
+            KeysPressedThisFrame[i] = glfwGetKey(Instance->Window, id) == GLFW_PRESS;
         }
     }
 
-    // TODO: x axis scrolling
-    void InputManager::UpdateScroll(float xOffset, float yOffset)
+    void UpdateScroll(float xOffset, float yOffset)
     {
-        m_ScrollDelta = yOffset;
+        ScrollDelta = yOffset;
     }
 
-    void InputManager::PostUpdate()
+    void PostUpdate()
     {
-        m_ScrollDelta = 0;
+        ScrollDelta = 0;
     }
 }

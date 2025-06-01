@@ -4,7 +4,7 @@
 #include "Logger.h"
 #include "ResourceManager.h"
 #include "Graphics/Renderers/UIRenderer.h"
-#include "Input/InputManager.h"
+#include "Input/Input.h"
 #include "UI/Elements/UIButton.h"
 #include "UI/Elements/UISprite.h"
 #include "World/World.h"

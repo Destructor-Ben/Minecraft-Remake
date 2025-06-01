@@ -2,7 +2,7 @@
 
 #include "Game.h"
 #include "ResourceManager.h"
-#include "Input/InputManager.h"
+#include "Input/Input.h"
 #include "UI/Elements/UIButton.h"
 #include "UI/Elements/UISprite.h"
 #include "UI/Elements/UIText.h"
@@ -74,7 +74,7 @@ namespace Minecraft
     void UIPauseMenu::CheckActive()
     {
         // Pausing with escape
-        if (Instance->InGame && Instance->Input->WasKeyReleased(Key::Escape))
+        if (Instance->InGame && Input::WasKeyReleased(Key::Escape))
         {
             Instance->IsPaused = !Instance->IsPaused;
             Instance->SetMouseHidden(!Instance->IsPaused);

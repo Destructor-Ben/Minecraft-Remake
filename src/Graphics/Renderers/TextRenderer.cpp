@@ -119,7 +119,7 @@ namespace Minecraft::TextRenderer
         DrawTextInternal(text);
     }
 
-    static void DrawTextInternal(const TextDrawParams& text)
+    void DrawTextInternal(const TextDrawParams& text)
     {
         vec2 scale = TextScale * text.Scale;
         float xOffset = 0;
@@ -215,7 +215,7 @@ namespace Minecraft::TextRenderer
         return (vec2)size * scale;
     }
 
-    static int GetWhitespaceWidth(char c)
+    int GetWhitespaceWidth(char c)
     {
         if (c == ' ')
             return 1;

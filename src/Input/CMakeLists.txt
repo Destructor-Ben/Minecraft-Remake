@@ -1,6 +1,6 @@
 target_sources(Minecraft_Remake PRIVATE
-    InputManager.cpp
-    InputManager.h
+    Input.cpp
+    Input.h
     Key.h
     MouseButton.h
 )

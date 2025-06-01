@@ -3,7 +3,7 @@
 #include "Game.h"
 #include "Logger.h"
 #include "Profiler.h"
-#include "Input/InputManager.h"
+#include "Input/Input.h"
 #include "Graphics/Renderers/ChunkRenderer.h"
 #include "Graphics/Renderers/Renderer.h"
 #include "Graphics/Renderers/SkyRenderer.h"
@@ -207,30 +207,30 @@ namespace Minecraft
         float speed = 12.5f * Instance->DeltaTime;
 
         // Rotation
-        m_CameraPitch += Instance->Input->GetMousePosDelta().y * sensitivity;
-        m_CameraYaw -= Instance->Input->GetMousePosDelta().x * sensitivity;
+        m_CameraPitch += Input::GetMousePosDelta().y * sensitivity;
+        m_CameraYaw -= Input::GetMousePosDelta().x * sensitivity;
         m_CameraPitch = glm::clamp(m_CameraPitch, -maxAngle, maxAngle);
         PlayerCamera.Rotation = quat(vec3(m_CameraPitch, m_CameraYaw, 0.0f));
 
         // Input
         vec3 movementDirection = vec3(0.0f);
 
-        if (Instance->Input->IsKeyDown(Key::W))
+        if (Input::IsKeyDown(Key::W))
             movementDirection.z -= 1;
 
-        if (Instance->Input->IsKeyDown(Key::S))
+        if (Input::IsKeyDown(Key::S))
             movementDirection.z += 1;
 
-        if (Instance->Input->IsKeyDown(Key::A))
+        if (Input::IsKeyDown(Key::A))
             movementDirection.x -= 1;
 
-        if (Instance->Input->IsKeyDown(Key::D))
+        if (Input::IsKeyDown(Key::D))
             movementDirection.x += 1;
 
-        if (Instance->Input->IsKeyDown(Key::Space))
+        if (Input::IsKeyDown(Key::Space))
             movementDirection.y += 1;
 
-        if (Instance->Input->IsKeyDown(Key::LeftShift))
+        if (Input::IsKeyDown(Key::LeftShift))
             movementDirection.y -= 1;
 
         // Vertical movement
@@ -279,7 +279,7 @@ namespace Minecraft
 
         // TODO: split these into more functions
         // Block breaking
-        if (Instance->Input->WasMouseButtonPressed(MouseButton::Left))
+        if (Input::WasMouseButtonPressed(MouseButton::Left))
         {
             targetBlock->Data.Type = Blocks::Air;
             // TODO: priority
@@ -314,7 +314,7 @@ namespace Minecraft
         // Block placing
         // TODO: what if place + break in the same tick?
         // TODO: wonky
-        if (Instance->Input->WasMouseButtonPressed(MouseButton::Right))
+        if (Input::WasMouseButtonPressed(MouseButton::Right))
         {
             auto placedBlockPos = PlayerTargetedBlockPos.value() + ray.HitFaceNormal;
             auto placedBlock = GetBlock(placedBlockPos);

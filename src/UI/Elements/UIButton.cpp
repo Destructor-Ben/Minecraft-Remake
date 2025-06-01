@@ -5,7 +5,7 @@
 #include "Graphics/Sprite.h"
 #include "Graphics/Renderers/TextRenderer.h"
 #include "Graphics/Renderers/UIRenderer.h"
-#include "Input/InputManager.h"
+#include "Input/Input.h"
 #include "UI/UI.h"
 
 namespace Minecraft
@@ -39,13 +39,13 @@ namespace Minecraft
     void UIButton::OnUpdate()
     {
         // Hover check
-        m_IsHovered = GetBounds().ContainsPoint(Instance->Input->GetMousePos());
+        m_IsHovered = GetBounds().ContainsPoint(Input::GetMousePos());
 
         // On mouse down and on mouse up
-        if (m_IsHovered && Instance->Input->WasMouseButtonPressed(MouseButton::Left) && OnMouseDown)
+        if (m_IsHovered && Input::WasMouseButtonPressed(MouseButton::Left) && OnMouseDown)
             OnMouseDown();
 
-        if (m_IsHovered && Instance->Input->WasMouseButtonReleased(MouseButton::Left) && OnMouseUp)
+        if (m_IsHovered && Input::WasMouseButtonReleased(MouseButton::Left) && OnMouseUp)
             OnMouseUp();
     }
 

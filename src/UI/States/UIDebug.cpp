@@ -2,7 +2,7 @@
 
 #include "Game.h"
 #include "Version.h"
-#include "Input/InputManager.h"
+#include "Input/Input.h"
 #include "Graphics/Renderers/ChunkRenderer.h"
 #include "Graphics/Renderers/Renderer.h"
 #include "Graphics/Renderers/TextRenderer.h"
@@ -57,7 +57,7 @@ namespace Minecraft
     void UIDebug::CheckActive()
     {
         // Toggling with the backtick key
-        if (Instance->Input->WasKeyReleased(Key::Grave))
+        if (Input::WasKeyReleased(Key::Grave))
             Active = !Active;
 
         // Don't need an in game check, this should run in the main menu too
@@ -66,10 +66,10 @@ namespace Minecraft
     void UIDebug::OnUpdate()
     {
         // Enable and disable debug tools
-        if (Instance->InGame && Instance->Input->WasKeyReleased(Key::B))
+        if (Instance->InGame && Input::WasKeyReleased(Key::B))
             Instance->ChunkGraphics->DrawChunkBorders = !Instance->ChunkGraphics->DrawChunkBorders;
 
-        if (Instance->Input->WasKeyReleased(Key::G))
+        if (Input::WasKeyReleased(Key::G))
             Instance->Graphics->DrawWireframes = !Instance->Graphics->DrawWireframes;
 
         // Update the text
