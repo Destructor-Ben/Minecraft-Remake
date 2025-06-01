@@ -67,7 +67,8 @@ namespace Minecraft
         vec2i ScreenSize = { };
         Rectangle ScreenRect = { };
 
-        // Managers
+        // Profilers
+        // TODO: make general purpose profiler and profiler for tick thread
         shared_ptr <Profiler> PerfProfiler = nullptr;
 
         // Renderers
