@@ -6,7 +6,6 @@
 // Includes all utils from the GL folder
 #include "Camera.h"
 #include "CameraFrustum.h"
-#include "CubeMap.h"
 #include "FragmentShader.h"
 #include "IndexBuffer.h"
 #include "Material.h"
