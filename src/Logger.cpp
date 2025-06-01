@@ -6,20 +6,20 @@
 
 namespace Minecraft::Logger
 {
-    std::ofstream m_LogFile = { };
+    std::ofstream LogFile = { };
 
     static void Log(const string& message, bool error = false);
     static string GetMessage(const string& message, const string& logLevel);
 
     void Init()
     {
-        m_LogFile.open("Minecraft_Remake.log", std::ofstream::out | std::ofstream::trunc);
-        m_LogFile << "Minecraft_Remake log file, version " << Version::String << "\n\n" << std::flush;
+        LogFile.open("Minecraft_Remake.log", std::ofstream::out | std::ofstream::trunc);
+        LogFile << "Minecraft_Remake log file, version " << Version::String << "\n\n" << std::flush;
     }
 
     void Shutdown()
     {
-        m_LogFile.close();
+        LogFile.close();
     }
 
     void Debug(const string& message)
@@ -167,11 +167,11 @@ namespace Minecraft::Logger
     void Log(const string& message, bool error)
     {
         (error ? std::cerr : std::cout) << message;
-        m_LogFile << message;
+        LogFile << message;
 
         // Flush buffer if it's an error
         if (error)
-            m_LogFile << std::flush;
+            LogFile << std::flush;
     }
 
     string GetMessage(const string& message, const string& logLevel)
