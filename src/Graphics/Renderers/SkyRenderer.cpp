@@ -239,10 +239,11 @@ namespace Minecraft
         view = mat4(mat3(view)); // Remove translation
         m_Transform = projection * view;
 
+        // TODO: a bunch of this updating should be done with the lighting calculations too
         // Rotate the sky objects while time changes
         // Z axis is east and west
         float skyboxAngle = timePercent * 2 * numbers::pi;
-        m_TransformRotated = m_Transform * mat4(glm::eulerAngleZ(skyboxAngle));
+        m_TransformRotated = m_Transform * glm::eulerAngleZ(skyboxAngle);
 
         // Update star twinkle time
         m_StarMaterial->Time = Instance->ElapsedSeconds;

@@ -1,6 +1,7 @@
 #pragma once
 
 // TODO: finish sky colors
+// TODO: reverse night sky colors
 namespace Minecraft
 {
     class Mesh;
@@ -19,6 +20,9 @@ namespace Minecraft
 
         void Update();
         void Render();
+
+        // TODO: temporary
+        float GetSkyDarkness() const { return m_SkyDarkness; }
 
     private:
         void PrepareSky();

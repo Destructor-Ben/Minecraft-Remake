@@ -16,11 +16,12 @@ namespace Minecraft
         shared_ptr<byte> Data = nullptr;
     };
 
+    // TODO: avoid copying assets and just directly access them from the root folder if a macro is enabled
     class ResourceManager
     {
     public:
         string RequestResourceText(string path);
-        vector <byte> RequestResourceBytes(string path);
+        vector<byte> RequestResourceBytes(string path);
         ImageData RequestImageData(string path);
 
         shared_ptr<Texture> RequestTexture(string path);
@@ -34,7 +35,7 @@ namespace Minecraft
         static void ImageDeleter(byte* data);
 
         // Order in this matters!
-        vector <string> m_CubeMapFaceNames = {
+        vector<string> m_CubeMapFaceNames = {
             "right",
             "left",
             "top",

@@ -6,6 +6,7 @@
 #include "Graphics/GL.h"
 #include "Graphics/Materials/ChunkMaterial.h"
 #include "Graphics/Renderers/Renderer.h"
+#include "Graphics/Renderers/SkyRenderer.h"
 #include "World/Chunk.h"
 #include "World/World.h"
 
@@ -45,6 +46,26 @@ namespace Minecraft
             RegenerateMesh(*chunk);
         }
         Instance->PerfProfiler->Pop();
+
+        // Update the material
+        // TODO: normals need to be transformed from local space to world space
+        // - This shouldn't actually have any effect for chunks since they aren't rotated but definitely leave a comment about it somewhere
+        // TODO: this should be moved somewhere else and cleaned up
+        // TODO: non solid blocks like tall grass stick out a lot - maybe make their other side get the same brightness?
+        // - I think cross shaped blocks just don't work very well with lighting
+        // - Use either another shape or make all the normals face up
+        // TODO: calculate a MaxBrightness value (each for night and day) and also the ambient brightness, and use those to calculate the brightness of the directional light
+        // - During the day, directional light should be less effective, but at night, it should be strong so we get cool directional light
+        float timePercent = Instance->CurrentWorld->TimePercent;
+        float skyDarkness = Instance->SkyGraphics->GetSkyDarkness();
+        float skyBrightness = (1 - skyDarkness);
+        float skyboxAngle = timePercent * 2 * numbers::pi;
+        auto rotationAmount = glm::eulerAngleZ(skyboxAngle);
+        m_ChunkMaterial->AmbientLight = vec3(glm::lerp(0.1f, 0.5f, skyBrightness));
+        m_ChunkMaterial->DirToSun = rotationAmount * vec4(1, 0, 0, 1);
+        m_ChunkMaterial->SunLight = vec3(0.5f) * skyBrightness;
+        m_ChunkMaterial->DirToMoon = -m_ChunkMaterial->DirToSun;
+        m_ChunkMaterial->MoonLight = vec3(0.3f) * skyDarkness;
 
         // Render the chunks
         Instance->PerfProfiler->Push("ChunkRenderer::RenderChunks");
@@ -173,6 +194,7 @@ namespace Minecraft
             Quad face { };
             face.Position = block.GetBlockPos();
             face.Rotation = m_GrassPlantFaceRotation * quat(glm::eulerAngleZ(Degrees90 * i));
+            // TODO: bring this back face.Normal = face.Rotation * vec4(face.Normal, 1.0);
             SetFaceTexture(face, dir, block.Data.Type->GetTextureCoords(dir));
 
             // Adjustment to make faces align with bounds
@@ -202,6 +224,7 @@ namespace Minecraft
         face.Position = block.GetBlockPos();
         face.Position += vec3(dir) * 0.5f;
         face.Rotation = rotation;
+        face.Normal = dir;
         SetFaceTexture(face, dir, block.Data.Type->GetTextureCoords(dir));
 
         // Adjustment to make faces align with bounds
@@ -225,6 +248,9 @@ namespace Minecraft
 
     vec3 ChunkRenderer::GetFaceTint(vec3i dir)
     {
+        // TODO: remove this entirely
+        return vec3(1);
+
         // Shading for lighting
         float strength = 1;
 
