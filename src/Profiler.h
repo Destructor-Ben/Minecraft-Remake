@@ -1,6 +1,5 @@
 #pragma once
 
-// TODO just use a flat array instead of a tree structure, it is much easier to deal with
 namespace Minecraft
 {
     enum class ProfilerTarget
@@ -13,39 +12,35 @@ namespace Minecraft
     struct ProfilerData
     {
         string Name;
-        float Ms;
-        ProfilerData* Parent;
-        vector <ProfilerData> Children;
+        float Ms = 0.0f;
+        int Calls = 0;
+        int Level = 0;
 
-        string ToString(int level = 0) const;
+        // Only used for calculations, not intended to be read from
+        chrono::high_resolution_clock::time_point StartTime;
     };
 
-    // TODO: add stuff to save + average the profile data every frame, since it's always recording it anyway
     // This is a class because we need a separate one for each thread
+    // TODO: make sure this doesn't slow anything down
     class Profiler
     {
     public:
-        vector<ProfilerData> TickPerfData = { };
-        vector<ProfilerData> UpdatePerfData = { };
-        vector<ProfilerData> RenderPerfData = { };
+        static vector <ProfilerData> TickPerfData;
+        static vector <ProfilerData> UpdatePerfData;
+        static vector <ProfilerData> RenderPerfData;
 
         void BeginFrame(string name);
-        ProfilerData EndFrame();
+        vector <ProfilerData> EndFrame();
 
         void Push(string name);
         void Pop();
 
-        void HandleProfilerData(const ProfilerData& data, vector<ProfilerData>& previousData, ProfilerTarget target);
+        static void HandleProfilerData(const vector <ProfilerData>& data, vector <ProfilerData>& previousData, ProfilerTarget target);
+        static string ToString(const vector <ProfilerData>& data);
 
     private:
-        struct Scope
-        {
-            string Name;
-            chrono::high_resolution_clock::time_point StartTime;
-        };
-
-        stack<Scope> m_Scopes = { };
-        ProfilerData* m_CurrentData = nullptr;
-        optional<ProfilerData> m_Data = nullopt;
+        vector <ProfilerData> m_Data = { };
+        vector<int> m_Scopes = { };
+        int m_CurrentLevel = 0;
     };
 }

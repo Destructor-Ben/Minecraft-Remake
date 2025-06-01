@@ -25,7 +25,7 @@ namespace Minecraft
         Logger::Info(format("Starting Minecraft_Remake version {}...", Version::String));
 
         PerfProfiler = make_shared<Profiler>();
-        PerfProfiler->BeginFrame("Load");
+        PerfProfiler->BeginFrame("Init");
 
         PerfProfiler->Push("WindowInit");
 
@@ -52,8 +52,8 @@ namespace Minecraft
 
         PerfProfiler->Pop();
 
-        auto frameData = PerfProfiler->EndFrame();
-        Logger::Debug("Load times:\n" + frameData.ToString());
+        auto loadTimeData = PerfProfiler->EndFrame();
+        Logger::Debug("Load times:\n" + Profiler::ToString(loadTimeData));
 
         // Running tests
         // Uncomment to run them
@@ -192,7 +192,7 @@ namespace Minecraft
             CurrentWorld->Tick();
 
         auto data = PerfProfiler->EndFrame();
-        Instance->PerfProfiler->HandleProfilerData(data, Instance->PerfProfiler->TickPerfData, ProfilerTarget::Tick);
+        Profiler::HandleProfilerData(data, Profiler::TickPerfData, ProfilerTarget::Tick);
     }
 
     void Game::Update()
@@ -211,7 +211,7 @@ namespace Minecraft
         Input::PostUpdate();
 
         auto data = PerfProfiler->EndFrame();
-        Instance->PerfProfiler->HandleProfilerData(data, Instance->PerfProfiler->UpdatePerfData, ProfilerTarget::Update);
+        Profiler::HandleProfilerData(data, Profiler::UpdatePerfData, ProfilerTarget::Update);
     }
 
     void Game::Render()
@@ -232,7 +232,7 @@ namespace Minecraft
         Graphics->PostRender();
 
         auto data = PerfProfiler->EndFrame();
-        Instance->PerfProfiler->HandleProfilerData(data, Instance->PerfProfiler->RenderPerfData, ProfilerTarget::Render);
+        Profiler::HandleProfilerData(data, Profiler::RenderPerfData, ProfilerTarget::Render);
     }
 
     #pragma endregion

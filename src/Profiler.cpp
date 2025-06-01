@@ -1,94 +1,79 @@
 #include "Profiler.h"
 
-#include "Game.h"
 #include "Logger.h"
+#include "Input/Input.h"
 
 namespace Minecraft
 {
-    string ProfilerData::ToString(int level) const
-    {
-        string heading = format("{} {:.3f}ms", Name, Ms);
-        for (int i = 0; i < level; ++i)
-        {
-            heading = "  " + heading;
-        }
-
-        string children = "";
-        for (auto child : Children)
-        {
-            children += child.ToString(level + 1);
-        }
-
-        return heading + "\n" + children;
-    }
+    vector <ProfilerData> Profiler::TickPerfData;
+    vector <ProfilerData> Profiler::UpdatePerfData;
+    vector <ProfilerData> Profiler::RenderPerfData;
 
     void Profiler::BeginFrame(string name)
     {
-        if (m_Data.has_value())
-            Logger::Throw("Started a profiler frame while another is already running");
-
-        m_Data = ProfilerData("<root>");
-        m_Scopes = { };
-        m_CurrentData = &m_Data.value();
-
+        m_Data.clear();
+        m_Scopes.clear();
+        m_CurrentLevel = 0;
         Push(name);
     }
 
-    ProfilerData Profiler::EndFrame()
+    vector <ProfilerData> Profiler::EndFrame()
     {
-        if (!m_Data.has_value())
-            Logger::Throw("Tried to end a profiler frame while there isn't one");
-
         Pop();
 
-        auto data = m_Data.value();
-        m_Data = nullopt;
+        if (m_CurrentLevel != 0)
+            Logger::Throw("More pushes than pops were made on the profiler");
 
-        if (data.Children.size() != 1)
-            Logger::Throw("Profiler went badly wrong");
-
-        return data.Children.at(0);
+        return m_Data;
     }
 
     void Profiler::Push(string name)
     {
-        if (!m_Data.has_value())
-            Logger::Throw("Profiler frame hasn't started yet");
+        // Check if the function has already been called
+        if (m_Data.size() > 0)
+        {
+            auto& existingData = m_Data.back();
+            if (existingData.Name == name)
+            {
+                // Shouldn't create new data
+                m_Scopes.push_back(m_Data.size() - 1);
+                existingData.StartTime = chrono::high_resolution_clock::now();
+                m_CurrentLevel++; // Since it always gets subtracted even if it wasn't necessarily incremented
+                return;
+            }
+        }
 
-        // Create the data
-        auto parent = m_CurrentData;
-        m_CurrentData = &m_CurrentData->Children.emplace_back(name);
-        m_CurrentData->Parent = parent;
-
-        // Do this last
-        auto startTime = chrono::high_resolution_clock::now();
-        m_Scopes.emplace(name, startTime);
+        // Create the data since the function hasn't been called yet
+        auto& data = m_Data.emplace_back(name);
+        data.Level = m_CurrentLevel;
+        m_CurrentLevel++;
+        m_Scopes.push_back(m_Data.size() - 1);
+        data.StartTime = chrono::high_resolution_clock::now(); // Do this last
     }
 
-    // TODO: validate that the correct number of Pop calls have taken place
     void Profiler::Pop()
     {
-        if (!m_Data.has_value())
-            Logger::Throw("Profiler frame hasn't started yet");
-
         // Measure time first
         auto endTime = chrono::high_resolution_clock::now();
-        auto scope = m_Scopes.top();
 
-        // Add to profile results
-        m_CurrentData->Ms = std::chrono::duration<float, std::milli>(endTime - scope.StartTime).count();
+        if (m_Data.size() <= 0)
+            Logger::Throw("Called pop too many times on the profiler");
 
-        // Update current data
-        m_CurrentData = m_CurrentData->Parent;
-
-        // Pop
-        m_Scopes.pop();
+        auto& currentData = m_Data[m_Scopes.back()];
+        currentData.Ms += std::chrono::duration<float, std::milli>(endTime - currentData.StartTime).count();
+        currentData.Calls++;
+        m_CurrentLevel--;
+        m_Scopes.pop_back();
     }
 
-    // TODO: processing the data
+    // TODO: processing the data - just keep recording it, since it is always being recorded anyway
     // TODO: also sometimes print all debug data if more chunks are generated on the same frame so I can tell if
-    void Profiler::HandleProfilerData(const ProfilerData& data, vector <ProfilerData>& previousData, ProfilerTarget target)
+    void Profiler::HandleProfilerData(const vector <ProfilerData>& data, vector <ProfilerData>& previousData, ProfilerTarget target)
     {
+        if (target == ProfilerTarget::Render && Input::WasKeyReleased(Key::LeftBracket))
+        {
+            Logger::Debug(ToString(data));
+        }
         /*
         if (Input::WasKeyPressed(debugKey))
             Logger::Debug("\n" + data.ToString());
@@ -107,5 +92,27 @@ namespace Minecraft
 
             previousData.clear();
         }*/
+    }
+
+    string Profiler::ToString(const vector <ProfilerData>& data)
+    {
+        string output = "";
+
+        for (auto& function : data)
+        {
+            for (int i = 0; i < function.Level * 2; ++i)
+            {
+                output += " ";
+            }
+
+            output += format("[{}]", function.Name);
+            if (function.Calls > 1)
+                output += format(" (x{})", function.Calls);
+
+            output += format(" {:.3f}ms", function.Ms);
+            output += "\n";
+        }
+
+        return output;
     }
 }
