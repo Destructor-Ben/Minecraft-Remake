@@ -4,9 +4,7 @@
 #include "Rectangle.h"
 #include "Input/Key.h"
 
-// TODO: color utils to convert to/from hex and rgb
 // TODO: proper name, namespace, and logo
-// TODO: icon and cursor
 // TODO: make all managers have an init function instead of doing stuff in ctors
 // - This is because sometimes they will need to refer to Instance->XXManager to init themselves, but the object exists, but hasn't been assigned to a variable yet
 // - If I use an init function, then all managers can be stored by value (no shared_ptr) because they won't init anything until Init is called, so the init order is still deterministic
