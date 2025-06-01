@@ -168,7 +168,7 @@ namespace Minecraft::TextRenderer
             sprite.SpriteTexture = FontTexture;
             sprite.SpriteColor = text.TextColor;
             sprite.UVs = charUVs;
-            Instance->UI->DrawSprite(sprite);
+            UIRenderer::DrawSprite(sprite);
 
             // Advance the position
             xOffset += charUVs.Width * scale.x; // Character size

@@ -8,15 +8,21 @@
 #include "Graphics/Renderers/Renderer.h"
 #include "UI/UI.h"
 
-namespace Minecraft
+namespace Minecraft::UIRenderer
 {
-    UIRenderer::UIRenderer()
+    static shared_ptr <Mesh> m_SpriteMesh;
+    static shared_ptr <SpriteMaterial> m_SpriteMaterial;
+
+    static void InitCamera();
+    static void InitMesh();
+
+    void Init()
     {
         InitCamera();
         InitMesh();
     }
 
-    void UIRenderer::InitCamera()
+    void InitCamera()
     {
         UICamera.IsPerspective = false;
         UICamera.NearClip = 0;
@@ -24,7 +30,7 @@ namespace Minecraft
         UICamera.Update();
     }
 
-    void UIRenderer::InitMesh()
+    void InitMesh()
     {
         // Create the material
         auto shader = Instance->Resources->RequestShader("sprite");
@@ -57,7 +63,7 @@ namespace Minecraft
         m_SpriteMesh->Materials[m_SpriteMaterial] = indices;
     }
 
-    void UIRenderer::Update()
+    void Update()
     {
         Instance->PerfProfiler->Push("UI::Update");
 
@@ -75,11 +81,9 @@ namespace Minecraft
         Instance->PerfProfiler->Pop();
     }
 
-    void UIRenderer::Render()
+    void Render()
     {
         Instance->PerfProfiler->Push("UI::Render");
-
-        Instance->Graphics->SceneCamera = &UICamera;
 
         // Draw the UI
         for (auto& state : UI::UIStateList)
@@ -93,11 +97,12 @@ namespace Minecraft
         Instance->PerfProfiler->Pop();
     }
 
-    void UIRenderer::OnResize()
+    void OnResize()
     {
         // Update camera matrices
         UICamera.Update();
 
+        // Recalculate UIStates
         for (auto& state : UI::UIStateList)
         {
             state->ScreenResized();
@@ -105,12 +110,13 @@ namespace Minecraft
         }
     }
 
-    void UIRenderer::DrawSprite(Sprite& sprite)
+    void DrawSprite(Sprite& sprite)
     {
         // Clear the existing depth buffer so it doesn't interfere with the game world
         glClear(GL_DEPTH_BUFFER_BIT);
 
         m_SpriteMaterial->DrawnSprite = &sprite;
-        Instance->Graphics->DrawMesh(*m_SpriteMesh, sprite.GetTransformationMatrix());
+        // Don't need to call the renderers draw function since we don't care about it
+        m_SpriteMesh->Draw(UICamera.ProjectionViewMatrix * sprite.GetTransformationMatrix());
     }
 }

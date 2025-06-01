@@ -25,6 +25,6 @@ namespace Minecraft
 
     void UISprite::OnRender()
     {
-        Instance->UI->DrawSprite(DrawnSprite);
+        UIRenderer::DrawSprite(DrawnSprite);
     }
 }

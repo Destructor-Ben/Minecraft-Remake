@@ -8,6 +8,7 @@
 
 namespace Minecraft::UI
 {
+    // TODO: move this registry boilerplate to a macro
     inline int UIStateCount = 0;
     inline vector<shared_ptr<UIState>> UIStateList = { };
 
@@ -20,9 +21,14 @@ namespace Minecraft::UI
         ui->Init();
         return ui.get();
     }
+    // END TODO
 
     inline constexpr int SpriteScale = 3; // Since sprites are small
+
+    // TODO: implement these 3 properly
+    inline bool ShowHud = true;
     inline bool IsInLightMode = false;
+    inline float UIScale = 1.0f;
 
     // Menu
     inline UIState* MainMenu;

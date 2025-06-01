@@ -37,7 +37,6 @@ namespace Minecraft
     class Renderer;
     class ChunkRenderer;
     class SkyRenderer;
-    class UIRenderer;
     class World;
 
     class Game;
@@ -81,7 +80,6 @@ namespace Minecraft
         shared_ptr <Renderer> Graphics = nullptr;
         shared_ptr <ChunkRenderer> ChunkGraphics = nullptr;
         shared_ptr <SkyRenderer> SkyGraphics = nullptr;
-        shared_ptr <UIRenderer> UI = nullptr;
 
         // World
         shared_ptr <World> CurrentWorld = nullptr;

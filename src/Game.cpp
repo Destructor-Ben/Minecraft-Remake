@@ -40,6 +40,9 @@ namespace Minecraft
 
         Input = make_shared<InputManager>();
         Resources = make_shared<ResourceManager>();
+        UIRenderer::Init();
+        TextRenderer::Init();
+        UI::Init();
 
         m_TickPerfData = { };
         m_UpdatePerfData = { };
@@ -52,17 +55,11 @@ namespace Minecraft
         Graphics = make_shared<Renderer>();
         ChunkGraphics = make_shared<ChunkRenderer>();
         SkyGraphics = make_shared<SkyRenderer>();
-        TextRenderer::Init();
-        UI = make_shared<UIRenderer>();
 
-        PerfProfiler->Pop();
-
-        PerfProfiler->Push("UIInit");
-        UI::Init();
         PerfProfiler->Pop();
 
         auto frameData = PerfProfiler->EndFrame();
-        Logger->Debug("Debug load times:\n" + frameData.ToString());
+        Logger->Debug("Load times:\n" + frameData.ToString());
 
         // Running tests
         // Uncomment to run them
@@ -232,7 +229,7 @@ namespace Minecraft
             CurrentWorld->Update();
 
         // UI updating
-        UI->Update();
+        UIRenderer::Update();
 
         Input->PostUpdate();
 
@@ -253,7 +250,7 @@ namespace Minecraft
             CurrentWorld->Render();
 
         // UI rendering
-        UI->Render();
+        UIRenderer::Render();
 
         Graphics->PostRender();
 
@@ -438,10 +435,7 @@ namespace Minecraft
         Instance->ScreenHeight = height;
         Instance->ScreenSize = vec2i(width, height);
         Instance->ScreenRect = Rectangle(0, 0, width, height);
-
-        // OnResize can get called before the UI is initialized
-        if (Instance->UI)
-            Instance->UI->OnResize();
+        UIRenderer::OnResize();
     }
 
     #pragma endregion

@@ -62,7 +62,7 @@ namespace Minecraft
                 sprite.UVs->y += CornerSize * 2 + EdgeSize + 1;
 
             // Draw
-            Instance->UI->DrawSprite(sprite);
+            UIRenderer::DrawSprite(sprite);
         }
 
         // Text
