@@ -12,7 +12,7 @@ namespace Minecraft
 {
     UIButton::UIButton()
     {
-        m_Texture = Instance->Resources->RequestTexture("ui/button");
+        m_Texture = Resources::RequestTexture("ui/button");
     }
 
     void UIButton::SetButtonSize(vec2i size)

@@ -38,7 +38,6 @@ namespace Minecraft
 
         PerfProfiler->Push("MiscManagers");
 
-        Resources = make_shared<ResourceManager>();
         UIRenderer::Init();
         TextRenderer::Init();
         UI::Init();
@@ -73,7 +72,6 @@ namespace Minecraft
         CurrentWorld = nullptr;
         ChunkGraphics = nullptr;
         Graphics = nullptr;
-        Resources = nullptr;
 
         glfwTerminate();
 
@@ -117,7 +115,7 @@ namespace Minecraft
         SetMouseHidden(false);
 
         // Set window icon
-        auto iconTexture = Resources->RequestImageData("application/icon");
+        auto iconTexture = Resources::RequestImageData("application/icon");
         GLFWimage icon[1];
         icon[0].width = iconTexture.Width;
         icon[0].height = iconTexture.Height;
@@ -125,8 +123,8 @@ namespace Minecraft
         glfwSetWindowIcon(Window, 1, icon);
 
         // Set cursor
-        auto lightCursorTexture = Resources->RequestImageData("application/cursor-light");
-        auto darkCursorTexture = Resources->RequestImageData("application/cursor-dark");
+        auto lightCursorTexture = Resources::RequestImageData("application/cursor-light");
+        auto darkCursorTexture = Resources::RequestImageData("application/cursor-dark");
         GLFWimage lightCursor, darkCursor;
         lightCursor.width = lightCursorTexture.Width;
         lightCursor.height = lightCursorTexture.Height;

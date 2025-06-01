@@ -19,7 +19,7 @@ namespace Minecraft::TextRenderer
     void Init()
     {
         // Request the font
-        FontTexture = Instance->Resources->RequestTexture("ui/font");
+        FontTexture = Resources::RequestTexture("ui/font");
 
         // Init the character map
         // Letters

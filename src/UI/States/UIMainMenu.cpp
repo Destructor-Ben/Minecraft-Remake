@@ -16,7 +16,7 @@ namespace Minecraft
         IsInGameUI = false;
 
         // Repeating dirt texture
-        auto backgroundTexture = Instance->Resources->RequestTexture("ui/menu/background");
+        auto backgroundTexture = Resources::RequestTexture("ui/menu/background");
         backgroundTexture->SetWrappingModes(GL_REPEAT);
         m_Background = make_shared<UISprite>();
         m_Background->DrawnSprite.SpriteTexture = backgroundTexture;
@@ -26,7 +26,7 @@ namespace Minecraft
         m_Background->Height.Percent = 1;
         AddElement(m_Background);
 
-        auto logoTexture = Instance->Resources->RequestTexture("ui/menu/logo");
+        auto logoTexture = Resources::RequestTexture("ui/menu/logo");
         m_Logo = make_shared<UISprite>();
         m_Logo->SetTexture(logoTexture, vec2(1.25));
         m_Logo->x.Percent = 0.5f;

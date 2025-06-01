@@ -45,7 +45,7 @@ namespace Minecraft
     void Renderer::InitDebugMeshes()
     {
         // Create debug material
-        auto shader = Instance->Resources->RequestShader("debug");
+        auto shader = Resources::RequestShader("debug");
         m_DebugMaterial = make_shared<DebugMaterial>(shader);
 
         // Create point mesh

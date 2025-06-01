@@ -33,7 +33,7 @@ namespace Minecraft::UIRenderer
     void InitMesh()
     {
         // Create the material
-        auto shader = Instance->Resources->RequestShader("sprite");
+        auto shader = Resources::RequestShader("sprite");
         m_SpriteMaterial = make_shared<SpriteMaterial>(shader);
 
         // Create the mesh

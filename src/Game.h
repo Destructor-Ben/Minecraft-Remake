@@ -31,7 +31,6 @@
 // TODO: for all color stuff, use Color
 namespace Minecraft
 {
-    class ResourceManager;
     class Renderer;
     class ChunkRenderer;
     class SkyRenderer;
@@ -69,7 +68,6 @@ namespace Minecraft
         Rectangle ScreenRect = { };
 
         // Managers
-        shared_ptr <ResourceManager> Resources = nullptr;
         shared_ptr <Profiler> PerfProfiler = nullptr;
 
         // Renderers

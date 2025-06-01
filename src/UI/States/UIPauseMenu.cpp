@@ -15,7 +15,7 @@ namespace Minecraft
         // - Blur
         // - Fade in and out
         // - Move to a separate layer so all things that open UI can create this effect
-        auto backgroundTexture = Instance->Resources->RequestTexture("pixel");
+        auto backgroundTexture = Resources::RequestTexture("pixel");
         m_BlackBackground = make_shared<UISprite>();
         m_BlackBackground->DrawnSprite.SpriteTexture = backgroundTexture;
         m_BlackBackground->DrawnSprite.SpriteColor = Color(Colors::Black.RGB, 0.35f);

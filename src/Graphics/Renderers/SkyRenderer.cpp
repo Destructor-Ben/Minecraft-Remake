@@ -23,13 +23,13 @@ namespace Minecraft
     void SkyRenderer::PrepareSky()
     {
         // Request textures
-        auto skyDayGradient = Instance->Resources->RequestTexture("sky/day-color");
-        auto skyNightGradient = Instance->Resources->RequestTexture("sky/night-color");
+        auto skyDayGradient = Resources::RequestTexture("sky/day-color");
+        auto skyNightGradient = Resources::RequestTexture("sky/night-color");
         skyDayGradient->SetFilters(GL_LINEAR);
         skyNightGradient->SetFilters(GL_LINEAR);
 
         // Create the material
-        auto shader = Instance->Resources->RequestShader("sky/sky");
+        auto shader = Resources::RequestShader("sky/sky");
         m_SkyMaterial = make_shared<SkyMaterial>(shader);
         m_SkyMaterial->SunsetColor = vec3(251.0f / 255.0f, 130.0f / 255.0f, 9.0f / 255.0f);
         m_SkyMaterial->DayGradient = skyDayGradient;
@@ -97,13 +97,13 @@ namespace Minecraft
     void SkyRenderer::PrepareStars()
     {
         // Create the material
-        auto shader = Instance->Resources->RequestShader("sky/star");
+        auto shader = Resources::RequestShader("sky/star");
         m_StarMaterial = make_shared<StarMaterial>(shader);
         m_StarMaterial->TemperatureStrength = 0.35f;
         m_StarMaterial->TwinkleStrength = 0.75f;
         m_StarMaterial->MaxBrightness = 0.9f;
-        m_StarMaterial->StarTexture = Instance->Resources->RequestTexture("sky/star");
-        m_StarMaterial->TemperatureGradient = Instance->Resources->RequestTexture("sky/star-temperature");
+        m_StarMaterial->StarTexture = Resources::RequestTexture("sky/star");
+        m_StarMaterial->TemperatureGradient = Resources::RequestTexture("sky/star-temperature");
         m_StarMaterial->TemperatureGradient->SetFilters(GL_LINEAR);
 
         // Create the stars
@@ -194,10 +194,10 @@ namespace Minecraft
     void SkyRenderer::PrepareSunAndMoon()
     {
         // Create the material
-        auto sunTexture = Instance->Resources->RequestTexture("sky/sun");
-        auto moonTexture = Instance->Resources->RequestTexture("sky/moon");
+        auto sunTexture = Resources::RequestTexture("sky/sun");
+        auto moonTexture = Resources::RequestTexture("sky/moon");
 
-        auto shader = Instance->Resources->RequestShader("sky/sun-moon");
+        auto shader = Resources::RequestShader("sky/sun-moon");
         m_SunAndMoonMaterial = make_shared<SunMoonMaterial>(shader);
         m_SunAndMoonMaterial->SunTexture = sunTexture;
         m_SunAndMoonMaterial->MoonTexture = moonTexture;
