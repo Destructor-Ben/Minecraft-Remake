@@ -67,7 +67,7 @@ namespace Minecraft
     }
 
     // TODO: processing the data - just keep recording it, since it is always being recorded anyway
-    // TODO: also sometimes print all debug data if more chunks are generated on the same frame so I can tell if
+    // TODO: if the frame time is high, just print the data to the console
     void Profiler::HandleProfilerData(const vector <ProfilerData>& data, vector <ProfilerData>& previousData, ProfilerTarget target)
     {
         if (target == ProfilerTarget::Render && Input::WasKeyReleased(Key::LeftBracket))

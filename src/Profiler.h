@@ -22,9 +22,11 @@ namespace Minecraft
 
     // This is a class because we need a separate one for each thread
     // TODO: make sure this doesn't slow anything down
+    // - Do an option in release mode where Push/Pop are blank and compare FPS
     class Profiler
     {
     public:
+        // TODO: make these vectors of vectors, also make them private
         static vector <ProfilerData> TickPerfData;
         static vector <ProfilerData> UpdatePerfData;
         static vector <ProfilerData> RenderPerfData;
@@ -35,6 +37,7 @@ namespace Minecraft
         void Push(string name);
         void Pop();
 
+        // TODO: remove the previousData param and just figure it out from target
         static void HandleProfilerData(const vector <ProfilerData>& data, vector <ProfilerData>& previousData, ProfilerTarget target);
         static string ToString(const vector <ProfilerData>& data);
 
