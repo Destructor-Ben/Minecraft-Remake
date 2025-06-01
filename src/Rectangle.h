@@ -9,7 +9,7 @@ namespace Minecraft
         int Width = 0;
         int Height = 0;
 
-        Rectangle() { }
+        Rectangle() = default;
         explicit Rectangle(int width, int height) : Width(width), Height(height) { }
         explicit Rectangle(int x, int y, int width, int height) : Width(width), Height(height), x(x), y(y) { }
         explicit Rectangle(vec2i size) : Width(size.x), Height(size.y) { }

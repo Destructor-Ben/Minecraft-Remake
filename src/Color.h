@@ -7,7 +7,7 @@ namespace Minecraft
         vec3 RGB = vec3(1);
         float Opacity = 1.0f;
 
-        Color() { }
+        Color() = default;
         explicit Color(vec4 rgba) : RGB(rgba.r, rgba.g, rgba.b), Opacity(rgba.a) { }
         explicit Color(vec3 rgb, float opacity = 1.0f) : RGB(rgb), Opacity(opacity) { }
         explicit Color(float r, float g, float b, float opacity = 1.0f) : RGB(r, g, b), Opacity(opacity) { }

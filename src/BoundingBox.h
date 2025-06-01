@@ -8,7 +8,7 @@ namespace Minecraft
         vec3 Min = vec3(0);
         vec3 Max = vec3(1);
 
-        BoundingBox() { }
+        BoundingBox() = default;
         explicit BoundingBox(vec3 min, vec3 max) : Min(min), Max(max) { }
 
         vec3 GetSize() const { return Max - Min; }
