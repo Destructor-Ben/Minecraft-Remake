@@ -85,35 +85,6 @@ namespace Minecraft
         return texture;
     }
 
-    shared_ptr <CubeMap> ResourceManager::RequestCubeMap(string path)
-    {
-        if (m_CubeMaps.contains(path))
-            return m_CubeMaps[path];
-
-        // Create the cubemap
-        auto cubeMap = make_shared<CubeMap>();
-        m_CubeMaps[path] = cubeMap;
-
-        // Disable image flipping (I don't know why but I need to)
-        stbi_set_flip_vertically_on_load(false);
-
-        // Set the data for each face
-        for (int i = 0; i < m_CubeMapFaceNames.size(); i++)
-        {
-            // Load the data
-            string facePath = path + "/" + m_CubeMapFaceNames[i];
-            auto image = RequestImageData(facePath);
-
-            // Set the data
-            cubeMap->SetFace(image.Data.get(), image.Width, image.Height, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, image.Format);
-        }
-
-        // Re-enable flipping
-        stbi_set_flip_vertically_on_load(true);
-
-        return cubeMap;
-    }
-
     shared_ptr <Shader> ResourceManager::RequestShader(string path)
     {
         if (m_Shaders.contains(path))
