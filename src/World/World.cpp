@@ -1,7 +1,7 @@
 #include "World.h"
 
 #include "Game.h"
-#include "LogManager.h"
+#include "Logger.h"
 #include "Profiler.h"
 #include "Input/InputManager.h"
 #include "Graphics/Renderers/ChunkRenderer.h"

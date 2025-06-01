@@ -1,7 +1,7 @@
 #include "Shader.h"
 
 #include "Game.h"
-#include "LogManager.h"
+#include "Logger.h"
 #include "Graphics/VertexShader.h"
 #include "Graphics/FragmentShader.h"
 #include "Graphics/CubeMap.h"
@@ -81,7 +81,7 @@ namespace Minecraft
 
         int location = glGetUniformLocation(m_ID, name.c_str());
         if (location == -1)
-            Instance->Logger->Warn(format("Uniform '{}' wasn't found - Location was -1", name));
+            Logger::Warn(format("Uniform '{}' wasn't found - Location was -1", name));
 
         m_UniformCache[name] = location;
         return location;

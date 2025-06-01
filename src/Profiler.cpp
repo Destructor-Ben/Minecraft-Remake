@@ -1,7 +1,7 @@
 #include "Profiler.h"
 
 #include "Game.h"
-#include "LogManager.h"
+#include "Logger.h"
 
 namespace Minecraft
 {
@@ -25,7 +25,7 @@ namespace Minecraft
     void Profiler::BeginFrame(string name)
     {
         if (m_Data.has_value())
-            Instance->Logger->Throw("Started a profiler frame while another is already running");
+            Logger::Throw("Started a profiler frame while another is already running");
 
         m_Data = ProfilerData("<root>");
         m_Scopes = { };
@@ -37,7 +37,7 @@ namespace Minecraft
     ProfilerData Profiler::EndFrame()
     {
         if (!m_Data.has_value())
-            Instance->Logger->Throw("Tried to end a profiler frame while there isn't one");
+            Logger::Throw("Tried to end a profiler frame while there isn't one");
 
         Pop();
 
@@ -45,7 +45,7 @@ namespace Minecraft
         m_Data = nullopt;
 
         if (data.Children.size() != 1)
-            Instance->Logger->Throw("Profiler went badly wrong");
+            Logger::Throw("Profiler went badly wrong");
 
         return data.Children.at(0);
     }
@@ -53,7 +53,7 @@ namespace Minecraft
     void Profiler::Push(string name)
     {
         if (!m_Data.has_value())
-            Instance->Logger->Throw("Profiler frame hasn't started yet");
+            Logger::Throw("Profiler frame hasn't started yet");
 
         // Create the data
         auto parent = m_CurrentData;
@@ -69,7 +69,7 @@ namespace Minecraft
     void Profiler::Pop()
     {
         if (!m_Data.has_value())
-            Instance->Logger->Throw("Profiler frame hasn't started yet");
+            Logger::Throw("Profiler frame hasn't started yet");
 
         // Measure time first
         auto endTime = chrono::high_resolution_clock::now();

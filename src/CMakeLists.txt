@@ -12,8 +12,8 @@ target_sources(Minecraft_Remake PRIVATE
     Game.cpp
     Game.h
     Hash.h
-    LogManager.cpp
-    LogManager.h
+    Logger.cpp
+    Logger.h
     Main.cpp
     Profiler.cpp
     Profiler.h

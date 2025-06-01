@@ -1,7 +1,7 @@
 #include "WorldGenerator.h"
 
 #include "Game.h"
-#include "LogManager.h"
+#include "Logger.h"
 #include "World/World.h"
 #include "World/BlockData.h"
 
@@ -100,6 +100,6 @@ namespace Minecraft
         int result = stbi_write_png(path.c_str(), width, height, channels, data.data(), width * channels);
 
         if (!result)
-            Instance->Logger->Throw("Failed to save texture at path: " + path);
+            Logger::Throw("Failed to save texture at path: " + path);
     }
 }

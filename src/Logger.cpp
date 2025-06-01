@@ -1,75 +1,79 @@
-#include "LogManager.h"
+#include "Logger.h"
 
 #include <cpptrace/cpptrace.hpp>
 
 #include "Version.h"
-#include "Game.h"
 
-namespace Minecraft
+namespace Minecraft::Logger
 {
-    LogManager::LogManager()
+    std::ofstream m_LogFile = { };
+
+    static void Log(const string& message, bool error = false);
+    static string GetMessage(const string& message, const string& logLevel);
+
+    void Init()
     {
         m_LogFile.open("Minecraft_Remake.log", std::ofstream::out | std::ofstream::trunc);
         m_LogFile << "Minecraft_Remake log file, version " << Version::String << "\n\n" << std::flush;
     }
 
-    LogManager::~LogManager()
+    void Shutdown()
     {
         m_LogFile.close();
     }
 
-    void LogManager::Debug(const string& message)
+    void Debug(const string& message)
     {
         Log(GetMessage(message, "DEBUG"));
     }
 
-    void LogManager::Info(const string& message)
+    void Info(const string& message)
     {
         Log(GetMessage(message, "INFO"));
     }
 
-    void LogManager::Warn(const string& message)
+    void Warn(const string& message)
     {
         Log(GetMessage(message, "WARN"));
     }
 
-    void LogManager::Error(const string& message)
+    void Error(const string& message)
     {
         Log(GetMessage(message, "ERROR"), true);
     }
 
-    void LogManager::Throw(const string& message)
+    void Throw(const string& message)
     {
         throw std::runtime_error(format("{}\n{}", message, cpptrace::generate_trace().to_string()));
     }
 
-    void LogManager::Assert(bool condition)
+    void Assert(bool condition)
     {
         if (!condition)
             Throw("Assertion failed");
     }
 
-    void LogManager::CatchUnknown()
+    void CatchUnknown()
     {
         Catch("Unknown exception occurred");
     }
 
-    void LogManager::Catch(const string& message)
+    void Catch(const string& message)
     {
         Log(GetMessage(message, "FATAL"), true);
     }
 
-    void LogManager::Catch(const std::exception& exception)
+    void Catch(const std::exception& exception)
     {
         Catch(exception.what());
     }
 
-    void LogManager::GLFWError(int code, cstring description)
+    void GLFWError(int code, cstring description)
     {
-        Instance->Logger->Error(format("GLFW Error (Code {}): {}", code, description));
+        Error(format("GLFW Error (Code {}): {}", code, description));
     }
 
-    void LogManager::GLError(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, cstring message, const void* userParam)
+    void GLError(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, cstring message, const void* userParam)
     {
         string sourceString;
         switch (source)
@@ -93,7 +97,7 @@ namespace Minecraft
                 sourceString = "Window System";
                 break;
             default:
-                Instance->Logger->Throw("Unknown GL Error source: " + to_string(source));
+                Throw("Unknown GL Error source: " + to_string(source));
                 break;
         }
 
@@ -128,7 +132,7 @@ namespace Minecraft
                 typeString = "Undefined Behaviour";
                 break;
             default:
-                Instance->Logger->Throw("Unknown GL Error type: " + to_string(source));
+                Throw("Unknown GL Error type: " + to_string(source));
                 break;
         }
 
@@ -148,19 +152,19 @@ namespace Minecraft
                 severityString = "Notification";
                 break;
             default:
-                Instance->Logger->Throw("Unknown GL Error severity: " + to_string(source));
+                Throw("Unknown GL Error severity: " + to_string(source));
                 break;
         }
 
         string logMessage = format("GL Error: {}\n  Source: {}\n  Type: {}\n  Severity: {}\n  ID: {}", message, sourceString, typeString, severityString, id);
 
         if (severity == GL_DEBUG_SEVERITY_HIGH)
-            Instance->Logger->Error(logMessage);
+            Error(logMessage);
         else
-            Instance->Logger->Warn(logMessage);
+            Warn(logMessage);
     }
 
-    void LogManager::Log(const string& message, bool error)
+    void Log(const string& message, bool error)
     {
         (error ? std::cerr : std::cout) << message;
         m_LogFile << message;
@@ -170,7 +174,7 @@ namespace Minecraft
             m_LogFile << std::flush;
     }
 
-    string LogManager::GetMessage(const string& message, const string& logLevel)
+    string GetMessage(const string& message, const string& logLevel)
     {
         auto now = std::chrono::system_clock::now();
         std::time_t nowCTime = std::chrono::system_clock::to_time_t(now);

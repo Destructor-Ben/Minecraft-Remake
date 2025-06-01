@@ -31,7 +31,6 @@
 // TODO: for all color stuff, use Color
 namespace Minecraft
 {
-    class LogManager;
     class InputManager;
     class ResourceManager;
     class Renderer;
@@ -71,7 +70,6 @@ namespace Minecraft
         Rectangle ScreenRect = { };
 
         // Managers
-        shared_ptr <LogManager> Logger = nullptr;
         shared_ptr <InputManager> Input = nullptr;
         shared_ptr <ResourceManager> Resources = nullptr;
         shared_ptr <Profiler> PerfProfiler = nullptr;

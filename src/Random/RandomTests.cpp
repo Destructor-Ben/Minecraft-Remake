@@ -1,7 +1,7 @@
 #include "RandomTests.h"
 
 #include "Game.h"
-#include "LogManager.h"
+#include "Logger.h"
 #include "Random/Random.h"
 
 namespace Minecraft
@@ -25,10 +25,10 @@ namespace Minecraft
 
         float average = (float)output / (float)TestCount;
         float error = abs(average - 0.5);
-        Instance->Logger->Debug(format("Bool randomness: {}, expected 0.5, error {}, count {}", average, error, TestCount));
+        Logger::Debug(format("Bool randomness: {}, expected 0.5, error {}, count {}", average, error, TestCount));
 
         if (error > AcceptableError)
-            Instance->Logger->Error("Unacceptable error!");
+            Logger::Error("Unacceptable error!");
     }
 
     static void TestInts(Random& random)
@@ -48,10 +48,10 @@ namespace Minecraft
             float average = (float)output / (float)TestCount;
             float expected = (rangeMin + rangeMax) / 2.0f;
             float error = abs(average - expected);
-            Instance->Logger->Debug(format("Int randomness: {}, expected {}, error {}, count {}, range [{},{}]", average, expected, error, TestCount, rangeMin, rangeMax));
+            Logger::Debug(format("Int randomness: {}, expected {}, error {}, count {}, range [{},{}]", average, expected, error, TestCount, rangeMin, rangeMax));
 
             if (error > AcceptableError)
-                Instance->Logger->Error("Unacceptable error!");
+                Logger::Error("Unacceptable error!");
         }
     }
 
@@ -71,16 +71,16 @@ namespace Minecraft
             float average = output / (float)TestCount;
             float expected = (rangeMin + rangeMax) / 2.0f;
             float error = abs(average - expected);
-            Instance->Logger->Debug(format("Float randomness: {}, expected {}, error {}, count {}, range [{},{}]", average, expected, error, TestCount, rangeMin, rangeMax));
+            Logger::Debug(format("Float randomness: {}, expected {}, error {}, count {}, range [{},{}]", average, expected, error, TestCount, rangeMin, rangeMax));
 
             if (error > AcceptableError)
-                Instance->Logger->Error("Unacceptable error!");
+                Logger::Error("Unacceptable error!");
         }
     }
 
     static void TestRandom(Random& random)
     {
-        Instance->Logger->Debug(format("[Seed {} Random Test]", random.Seed));
+        Logger::Debug(format("[Seed {} Random Test]", random.Seed));
 
         TestBools(random);
         TestInts(random);

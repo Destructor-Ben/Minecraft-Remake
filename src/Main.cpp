@@ -1,20 +1,20 @@
 #include <csignal>
 
 #include "Game.h"
-#include "LogManager.h"
+#include "Logger.h"
 
 using namespace Minecraft;
 
 // Super important to null out Logger, since we want it to deallocate and write to the log file
 #define HANDLE_EXCEPTION(function) \
-        Instance->Logger->function;\
-        Instance->Logger = nullptr;\
+        Logger::function;\
+        Logger::Shutdown();\
         return -1;
 
 // Let OSes shut this bitch down
 void SignalHandler(int signal)
 {
-    Instance->Logger->Info(format("Signal received: {}", signal));
+    Logger::Info(format("Signal received: {}", signal));
     Instance->Close();
 }
 

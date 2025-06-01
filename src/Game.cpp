@@ -1,6 +1,6 @@
 #include "Game.h"
 
-#include "LogManager.h"
+#include "Logger.h"
 #include "Profiler.h"
 #include "ResourceManager.h"
 #include "Version.h"
@@ -21,8 +21,8 @@ namespace Minecraft
 
     void Game::Initialize()
     {
-        Logger = make_shared<LogManager>();
-        Logger->Info(format("Starting Minecraft_Remake version {}...", Version::String));
+        Logger::Init();
+        Logger::Info(format("Starting Minecraft_Remake version {}...", Version::String));
 
         PerfProfiler = make_shared<Profiler>();
         PerfProfiler->BeginFrame("Load");
@@ -59,7 +59,7 @@ namespace Minecraft
         PerfProfiler->Pop();
 
         auto frameData = PerfProfiler->EndFrame();
-        Logger->Debug("Load times:\n" + frameData.ToString());
+        Logger::Debug("Load times:\n" + frameData.ToString());
 
         // Running tests
         // Uncomment to run them
@@ -68,7 +68,7 @@ namespace Minecraft
 
     void Game::Shutdown()
     {
-        Logger->Info("Exiting...");
+        Logger::Info("Exiting...");
 
         // We manually null these out because we need to deallocate the objects in a guaranteed order
         CurrentWorld = nullptr;
@@ -80,16 +80,15 @@ namespace Minecraft
         glfwTerminate();
 
         PerfProfiler = nullptr;
-        Logger = nullptr;
     }
 
     void Game::InitGLFW()
     {
         PerfProfiler->Push("InitGLFW");
 
-        Logger->Info("Initializing GLFW...");
+        Logger::Info("Initializing GLFW...");
 
-        glfwSetErrorCallback(LogManager::GLFWError);
+        glfwSetErrorCallback(Logger::GLFWError);
 
         glfwInit();
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -141,7 +140,7 @@ namespace Minecraft
         // TODO: update cursor when UI color mode changes
         glfwSetCursor(Window, UI::IsInLightMode ? m_LightCursor : m_DarkCursor);
 
-        Logger->Info("GLFW Initialized");
+        Logger::Info("GLFW Initialized");
 
         PerfProfiler->Pop();
     }
@@ -150,14 +149,14 @@ namespace Minecraft
     {
         PerfProfiler->Push("InitGL");
 
-        Logger->Info("Initializing OpenGL...");
+        Logger::Info("Initializing OpenGL...");
 
         gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
         #if DEBUG
         glEnable(GL_DEBUG_OUTPUT);
         glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-        glDebugMessageCallback(LogManager::GLError, nullptr);
+        glDebugMessageCallback(Logger::GLError, nullptr);
         #endif
 
         // Viewport settings
@@ -176,7 +175,7 @@ namespace Minecraft
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glBlendEquation(GL_FUNC_ADD);
 
-        Logger->Info("OpenGL Initialized");
+        Logger::Info("OpenGL Initialized");
 
         PerfProfiler->Pop();
     }
@@ -189,7 +188,7 @@ namespace Minecraft
     void Game::HandleProfilerData(const ProfilerData& data, Key debugKey, vector <ProfilerData>& previousData)
     {
         if (Input->WasKeyPressed(debugKey))
-            Logger->Debug("\n" + data.ToString());
+            Logger::Debug("\n" + data.ToString());
 
         if (Input->IsKeyDown(debugKey))
             previousData.push_back(data);
@@ -201,7 +200,7 @@ namespace Minecraft
             // TODO: average the data
             auto averageData = data;
 
-            //Logger->Debug("\n" + averageData.ToString());
+            //Logger::Debug("\n" + averageData.ToString());
 
             previousData.clear();
         }
@@ -266,7 +265,7 @@ namespace Minecraft
     {
         glfwSetTime(0);
         StartTime = chrono::steady_clock::now();
-        Logger->Info("Running window...");
+        Logger::Info("Running window...");
 
         while (Running)
         {

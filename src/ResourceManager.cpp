@@ -1,7 +1,7 @@
 #include "ResourceManager.h"
 
 #include "Game.h"
-#include "LogManager.h"
+#include "Logger.h"
 #include "Graphics/GL.h"
 
 namespace Minecraft
@@ -10,7 +10,7 @@ namespace Minecraft
     {
         std::ifstream stream(path);
         if (stream.fail())
-            Instance->Logger->Throw("Failed to load resource at path: " + path);
+            Logger::Throw("Failed to load resource at path: " + path);
 
         std::stringstream buffer;
         buffer << stream.rdbuf();
@@ -22,7 +22,7 @@ namespace Minecraft
     {
         std::ifstream stream(path, std::ios::binary);
         if (stream.fail())
-            Instance->Logger->Throw("Failed to load resource at path: " + path);
+            Logger::Throw("Failed to load resource at path: " + path);
 
         vector <byte> bytes((std::istreambuf_iterator<char>(stream)), std::istreambuf_iterator<char>());
         stream.close();
@@ -44,7 +44,7 @@ namespace Minecraft
 
         // Validate the data
         if (!data)
-            Instance->Logger->Throw("Failed to load texture at path: " + path);
+            Logger::Throw("Failed to load texture at path: " + path);
 
         // Turn into shared ptr with a deleter
         auto ptr = shared_ptr<byte>(data, ResourceManager::ImageDeleter);

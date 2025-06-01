@@ -1,7 +1,7 @@
 #include "UIMainMenu.h"
 
 #include "Game.h"
-#include "LogManager.h"
+#include "Logger.h"
 #include "ResourceManager.h"
 #include "Graphics/Renderers/UIRenderer.h"
 #include "Input/InputManager.h"
@@ -40,7 +40,7 @@ namespace Minecraft
         m_PlayButton->OnMouseUp = []()
         {
             // Generate world
-            Instance->Logger->Info("Entering world...");
+            Logger::Info("Entering world...");
             Instance->CurrentWorld = make_shared<World>();
             Instance->InGame = true;
             Instance->IsPaused = false;
