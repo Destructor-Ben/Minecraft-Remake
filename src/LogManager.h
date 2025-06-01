@@ -19,6 +19,9 @@ namespace Minecraft
         void Catch(const string& message);
         void Catch(const std::exception& exception);
 
+        static void GLError(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, cstring message, const void* userParam);
+        static void GLFWError(int code, cstring description);
+
     private:
         void Log(const string& message, bool error = false);
         static string GetMessage(const string& message, const string& logLevel);

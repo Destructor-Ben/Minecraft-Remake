@@ -89,7 +89,7 @@ namespace Minecraft
 
         Logger->Info("Initializing GLFW...");
 
-        glfwSetErrorCallback(GLFWError);
+        glfwSetErrorCallback(LogManager::GLFWError);
 
         glfwInit();
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -157,7 +157,7 @@ namespace Minecraft
         #if DEBUG
         glEnable(GL_DEBUG_OUTPUT);
         glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-        glDebugMessageCallback(GLError, nullptr);
+        glDebugMessageCallback(LogManager::GLError, nullptr);
         #endif
 
         // Viewport settings
@@ -323,104 +323,6 @@ namespace Minecraft
         m_IsMouseHidden = hidden;
         InputManager::SetRawMouseMotion(hidden);
         InputManager::SetCursorDisabled(hidden);
-    }
-
-    // TODO: should be in LogManager
-    void Game::GLFWError(int code, cstring description)
-    {
-        Instance->Logger->Error(format("GLFW Error (Code {}): {}", code, description));
-    }
-
-    // TODO: should be in LogManager
-    void Game::GLError(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, cstring message, const void* userParam)
-    {
-        string sourceString;
-        switch (source)
-        {
-            case GL_DEBUG_SOURCE_API:
-                sourceString = "API";
-                break;
-            case GL_DEBUG_SOURCE_APPLICATION:
-                sourceString = "Application";
-                break;
-            case GL_DEBUG_SOURCE_OTHER:
-                sourceString = "Other";
-                break;
-            case GL_DEBUG_SOURCE_SHADER_COMPILER:
-                sourceString = "Shader Compiler";
-                break;
-            case GL_DEBUG_SOURCE_THIRD_PARTY:
-                sourceString = "Third Party";
-                break;
-            case GL_DEBUG_SOURCE_WINDOW_SYSTEM:
-                sourceString = "Window System";
-                break;
-            default:
-                Instance->Logger->Throw("Unknown GL Error source: " + to_string(source));
-                break;
-        }
-
-        string typeString;
-        switch (type)
-        {
-            case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
-                typeString = "Deprecated Behaviour";
-                break;
-            case GL_DEBUG_TYPE_ERROR:
-                typeString = "Error";
-                break;
-            case GL_DEBUG_TYPE_MARKER:
-                typeString = "Marker";
-                break;
-            case GL_DEBUG_TYPE_OTHER:
-                typeString = "Other";
-                break;
-            case GL_DEBUG_TYPE_PERFORMANCE:
-                typeString = "Performance";
-                break;
-            case GL_DEBUG_TYPE_POP_GROUP:
-                typeString = "Pop Group";
-                break;
-            case GL_DEBUG_TYPE_PORTABILITY:
-                typeString = "Portability";
-                break;
-            case GL_DEBUG_TYPE_PUSH_GROUP:
-                typeString = "Push Group";
-                break;
-            case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
-                typeString = "Undefined Behaviour";
-                break;
-            default:
-                Instance->Logger->Throw("Unknown GL Error type: " + to_string(source));
-                break;
-        }
-
-        string severityString;
-        switch (severity)
-        {
-            case GL_DEBUG_SEVERITY_HIGH:
-                severityString = "High";
-                break;
-            case GL_DEBUG_SEVERITY_MEDIUM:
-                severityString = "Medium";
-                break;
-            case GL_DEBUG_SEVERITY_LOW:
-                severityString = "Low";
-                break;
-            case GL_DEBUG_SEVERITY_NOTIFICATION:
-                severityString = "Notification";
-                break;
-            default:
-                Instance->Logger->Throw("Unknown GL Error severity: " + to_string(source));
-                break;
-        }
-
-        string logMessage = format("GL Error: {}\n  Source: {}\n  Type: {}\n  Severity: {}\n  ID: {}", message, sourceString, typeString, severityString, id);
-
-        if (severity == GL_DEBUG_SEVERITY_HIGH)
-            Instance->Logger->Error(logMessage);
-        else
-            Instance->Logger->Warn(logMessage);
     }
 
     void Game::OnScroll(GLFWwindow* window, double xOffset, double yOffset)

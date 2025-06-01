@@ -107,10 +107,8 @@ namespace Minecraft
         void InitGL();
         void InitGLFW();
 
+        // TODO: move to profiler
         void HandleProfilerData(const ProfilerData& data, Key debugKey, vector <ProfilerData>& previousData);
-
-        static void GLError(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, cstring message, const void* userParam);
-        static void GLFWError(int code, cstring description);
 
         static void OnScroll(GLFWwindow* window, double xOffset, double yOffset);
         static void OnResize(GLFWwindow* window, int width, int height);
@@ -118,6 +116,7 @@ namespace Minecraft
         bool m_VSyncEnabled = false;
         bool m_IsMouseHidden = false;
 
+        // TODO: move to profiler
         vector <ProfilerData> m_TickPerfData;
         vector <ProfilerData> m_UpdatePerfData;
         vector <ProfilerData> m_RenderPerfData;
