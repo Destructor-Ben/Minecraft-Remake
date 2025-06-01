@@ -3,7 +3,6 @@
 namespace Minecraft
 {
     class Texture;
-    class CubeMap;
     class Shader;
     class VertexShader;
     class FragmentShader;
@@ -35,6 +34,7 @@ namespace Minecraft
 
         // Cache graphics resources that are requested multiple times
         // TODO: what if we modify some of them? should include an option to cache when requesting
+        // Also needs options to add to caches in case these are made manually
         unordered_map<string, shared_ptr<Texture>> m_Textures = { };
         unordered_map<string, shared_ptr<Shader>> m_Shaders = { };
         unordered_map<string, shared_ptr<VertexShader>> m_VertexShaders = { };

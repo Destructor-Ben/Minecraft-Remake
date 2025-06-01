@@ -6,7 +6,6 @@ namespace Minecraft
 {
     class Camera;
     class ChunkRenderer;
-    class CubeMap;
     class DebugMaterial;
     class FragmentShader;
     class Mesh;

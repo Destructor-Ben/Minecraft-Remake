@@ -4,7 +4,6 @@
 #include "Logger.h"
 #include "Graphics/VertexShader.h"
 #include "Graphics/FragmentShader.h"
-#include "Graphics/CubeMap.h"
 #include "Graphics/Texture.h"
 
 namespace Minecraft
@@ -56,12 +55,6 @@ namespace Minecraft
 
     // Textures and cube maps are different because they also have a slot parameter
     void Shader::SetUniform(const string& name, shared_ptr <Texture> value, int slot)
-    {
-        value->BindTextureUnit(slot);
-        SetUniform(name, slot);
-    }
-
-    void Shader::SetUniform(const string& name, shared_ptr <CubeMap> value, int slot)
     {
         value->BindTextureUnit(slot);
         SetUniform(name, slot);

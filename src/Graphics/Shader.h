@@ -5,7 +5,6 @@ namespace Minecraft
     class FragmentShader;
     class VertexShader;
     class Texture;
-    class CubeMap;
 
     class Shader
     {
@@ -40,7 +39,6 @@ namespace Minecraft
         void SetUniform(const string& name, mat4 value);
 
         void SetUniform(const string& name, shared_ptr<Texture> value, int slot);
-        void SetUniform(const string& name, shared_ptr<CubeMap> value, int slot);
 
         static void Unbind();
 
