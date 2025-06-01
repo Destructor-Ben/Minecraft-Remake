@@ -84,4 +84,28 @@ namespace Minecraft
         // Pop
         m_Scopes.pop();
     }
+
+    // TODO: processing the data
+    // TODO: also sometimes print all debug data if more chunks are generated on the same frame so I can tell if
+    void Profiler::HandleProfilerData(const ProfilerData& data, vector <ProfilerData>& previousData, ProfilerTarget target)
+    {
+        /*
+        if (Input::WasKeyPressed(debugKey))
+            Logger::Debug("\n" + data.ToString());
+
+        if (Input::IsKeyDown(debugKey))
+            previousData.push_back(data);
+
+        if (Input::WasKeyReleased(debugKey))
+        {
+            previousData.push_back(data);
+
+            // TODO: average the data
+            auto averageData = data;
+
+            //Logger::Debug("\n" + averageData.ToString());
+
+            previousData.clear();
+        }*/
+    }
 }

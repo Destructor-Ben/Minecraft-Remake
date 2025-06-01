@@ -42,10 +42,6 @@ namespace Minecraft
         TextRenderer::Init();
         UI::Init();
 
-        m_TickPerfData = { };
-        m_UpdatePerfData = { };
-        m_RenderPerfData = { };
-
         PerfProfiler->Pop();
 
         PerfProfiler->Push("GraphicsInit");
@@ -72,10 +68,9 @@ namespace Minecraft
         CurrentWorld = nullptr;
         ChunkGraphics = nullptr;
         Graphics = nullptr;
+        PerfProfiler = nullptr;
 
         glfwTerminate();
-
-        PerfProfiler = nullptr;
         Logger::Shutdown();
     }
 
@@ -114,6 +109,8 @@ namespace Minecraft
         SetVSyncEnabled(true);
         SetMouseHidden(false);
 
+        PerfProfiler->Push("Setting Window Icon");
+
         // Set window icon
         auto iconTexture = Resources::RequestImageData("application/icon");
         GLFWimage icon[1];
@@ -121,6 +118,10 @@ namespace Minecraft
         icon[0].height = iconTexture.Height;
         icon[0].pixels = iconTexture.Data.get();
         glfwSetWindowIcon(Window, 1, icon);
+
+        PerfProfiler->Pop();
+
+        PerfProfiler->Push("Creating Cursors");
 
         // Set cursor
         auto lightCursorTexture = Resources::RequestImageData("application/cursor-light");
@@ -136,6 +137,8 @@ namespace Minecraft
         m_DarkCursor = glfwCreateCursor(&darkCursor, 0, 0);
         // TODO: update cursor when UI color mode changes
         glfwSetCursor(Window, UI::IsInLightMode ? m_LightCursor : m_DarkCursor);
+
+        PerfProfiler->Pop();
 
         Logger::Info("GLFW Initialized");
 
@@ -181,28 +184,6 @@ namespace Minecraft
 
     #pragma region Update Functions
 
-    // TODO: also sometimes print all debug data if more chunks are generated on the same frame so I can tell if
-    void Game::HandleProfilerData(const ProfilerData& data, Key debugKey, vector <ProfilerData>& previousData)
-    {
-        if (Input::WasKeyPressed(debugKey))
-            Logger::Debug("\n" + data.ToString());
-
-        if (Input::IsKeyDown(debugKey))
-            previousData.push_back(data);
-
-        if (Input::WasKeyReleased(debugKey))
-        {
-            previousData.push_back(data);
-
-            // TODO: average the data
-            auto averageData = data;
-
-            //Logger::Debug("\n" + averageData.ToString());
-
-            previousData.clear();
-        }
-    }
-
     void Game::Tick()
     {
         PerfProfiler->BeginFrame("Tick");
@@ -211,7 +192,7 @@ namespace Minecraft
             CurrentWorld->Tick();
 
         auto data = PerfProfiler->EndFrame();
-        HandleProfilerData(data, Key::LeftBracket, m_TickPerfData);
+        Instance->PerfProfiler->HandleProfilerData(data, Instance->PerfProfiler->TickPerfData, ProfilerTarget::Tick);
     }
 
     void Game::Update()
@@ -230,7 +211,7 @@ namespace Minecraft
         Input::PostUpdate();
 
         auto data = PerfProfiler->EndFrame();
-        HandleProfilerData(data, Key::RightBracket, m_UpdatePerfData);
+        Instance->PerfProfiler->HandleProfilerData(data, Instance->PerfProfiler->UpdatePerfData, ProfilerTarget::Update);
     }
 
     void Game::Render()
@@ -251,7 +232,7 @@ namespace Minecraft
         Graphics->PostRender();
 
         auto data = PerfProfiler->EndFrame();
-        HandleProfilerData(data, Key::BackSlash, m_RenderPerfData);
+        Instance->PerfProfiler->HandleProfilerData(data, Instance->PerfProfiler->RenderPerfData, ProfilerTarget::Render);
     }
 
     #pragma endregion

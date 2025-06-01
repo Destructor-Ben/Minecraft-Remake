@@ -101,19 +101,11 @@ namespace Minecraft
         void InitGL();
         void InitGLFW();
 
-        // TODO: move to profiler
-        void HandleProfilerData(const ProfilerData& data, Key debugKey, vector <ProfilerData>& previousData);
-
         static void OnScroll(GLFWwindow* window, double xOffset, double yOffset);
         static void OnResize(GLFWwindow* window, int width, int height);
 
         bool m_VSyncEnabled = false;
         bool m_IsMouseHidden = false;
-
-        // TODO: move to profiler
-        vector <ProfilerData> m_TickPerfData;
-        vector <ProfilerData> m_UpdatePerfData;
-        vector <ProfilerData> m_RenderPerfData;
 
         GLFWcursor* m_LightCursor;
         GLFWcursor* m_DarkCursor;
