@@ -22,7 +22,7 @@ namespace Minecraft
 
         // Reserve memory - Guaranteed to know how big these will be
         uint numQuads = quads.size();
-        vertices.reserve(numQuads * 4 * 8); // 4 vertices per quad, 8 floats per vertex
+        vertices.reserve(numQuads * 4 * 11); // 4 vertices per quad, 11 floats per vertex
         indices.reserve(numQuads * 6); // 6 indices per quad
 
         for (const auto& quad : quads)
@@ -33,15 +33,17 @@ namespace Minecraft
             for (int i = 0; i < 4; ++i)
             {
                 vec4 vertexPos = transform * vec4(VertexPositions[i], 1.0f);
-                vec2 vertexUVs = VertexUVs[i] * quad.UVScale + quad.UVPosition;
+                vec2 vertexUVs = (VertexUVs[i] * (vec2)quad.UVs.GetSize() + (vec2)quad.UVs.GetPosition()) / (vec2)quad.TextureSize;
 
                 vertices.insert(vertices.end(), {
                     // Position
                     vertexPos.x, vertexPos.y, vertexPos.z,
+                    // Normal
+                    quad.Normal.x, quad.Normal.y, quad.Normal.z,
                     // UVs
                     vertexUVs.x, vertexUVs.y,
-                    // Shading
-                    quad.Shading.r, quad.Shading.g, quad.Shading.b,
+                    // Color
+                    quad.TintColor.RGB.r, quad.TintColor.RGB.g, quad.TintColor.RGB.b,
                 });
             }
 

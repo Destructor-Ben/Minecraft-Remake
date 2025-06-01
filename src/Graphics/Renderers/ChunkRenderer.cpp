@@ -17,10 +17,6 @@ namespace Minecraft
         m_ChunkTexture = Instance->Resources->RequestTexture("chunk");
         m_ChunkMaterial = make_shared<ChunkMaterial>(shader);
         m_ChunkMaterial->ChunkTexture = m_ChunkTexture;
-
-        // Precompute these texture values
-        m_BlockTextureSizeInUVCoords.x = (float)BlockTextureSize / m_ChunkTexture->GetWidth();
-        m_BlockTextureSizeInUVCoords.y = (float)BlockTextureSize / m_ChunkTexture->GetHeight();
     }
 
     void ChunkRenderer::RenderDebugChunkBorders()
@@ -40,6 +36,7 @@ namespace Minecraft
 
         // Remesh the chunks waiting in the queue (one at a time)
         // TODO: multi-thread
+        // TODO: should be done in Update
         // TODO: for some reason, this causes holes while generating chunks - might be an issue with the world generator
         Instance->PerfProfiler->Push("ChunkRenderer::RegenerateMeshes");
         while (!m_ChunkRemeshQueue.empty())
@@ -112,6 +109,8 @@ namespace Minecraft
         auto indexBuffer = make_shared<IndexBuffer>();
 
         auto vertexArray = make_shared<VertexArray>();
+        // TODO: make a function to create a VertexArray for this since regular meshes will all render the same
+        vertexArray->PushFloat(3);
         vertexArray->PushFloat(3);
         vertexArray->PushFloat(2);
         vertexArray->PushFloat(3);
@@ -119,6 +118,7 @@ namespace Minecraft
 
         auto bounds = BoundingBox(vec3(0), vec3(Chunk::Size));
         auto mesh = make_shared<Mesh>(vertexArray, bounds);
+        // TODO: do meshes even need multiple materials? they will all render with the same shader and indices anyway
         mesh->Materials[m_ChunkMaterial] = indexBuffer;
         m_ChunkMeshes[chunk.GetChunkPos()] = mesh;
     }
@@ -213,11 +213,14 @@ namespace Minecraft
 
     void ChunkRenderer::SetFaceTexture(Quad& face, vec3i dir, vec2i textureCoords)
     {
-        face.Shading = GetFaceTint(dir);
+        face.TintColor.RGB = GetFaceTint(dir);
 
         // Calculate the UVs
-        face.UVPosition = vec2(textureCoords.x * m_BlockTextureSizeInUVCoords.x, 1.0f - (textureCoords.y + 1) * m_BlockTextureSizeInUVCoords.y);
-        face.UVScale = vec2(m_BlockTextureSizeInUVCoords.x, m_BlockTextureSizeInUVCoords.y);
+        face.TextureSize = m_ChunkTexture->GetSize();
+        face.UVs.x = textureCoords.x * BlockTextureSize;
+        face.UVs.y = face.TextureSize.y - (textureCoords.y + 1) * BlockTextureSize;
+        face.UVs.Width = BlockTextureSize;
+        face.UVs.Height = BlockTextureSize;
     }
 
     vec3 ChunkRenderer::GetFaceTint(vec3i dir)

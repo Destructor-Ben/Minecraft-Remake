@@ -1,14 +1,17 @@
 #pragma once
 
+#include "Colors.h"
+#include "Rectangle.h"
 #include "Transform.h"
 
 namespace Minecraft
 {
     struct Quad : public Transform
     {
-        vec2 UVPosition = vec2(0.0f);
-        vec2 UVScale = vec2(1.0f);
-        vec3 Shading = vec3(1.0f);
+        vec3 Normal = { };
+        vec2i TextureSize = { 1, 1 }; // Used with the UVs rect to calculate the actual UV coords
+        Rectangle UVs = Rectangle(1, 1);
+        Color TintColor = Colors::White;
 
         static void ToRawData(const vector <Quad>& quads, vector<float>& vertices, vector <uint>& indices);
     };

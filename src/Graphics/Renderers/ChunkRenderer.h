@@ -48,8 +48,6 @@ namespace Minecraft
         // TODO: maybe the sun and moon should be directional lights
         vec3 GetFaceTint(vec3i dir);
 
-        vec2 m_BlockTextureSizeInUVCoords;
-
         static constexpr float Degrees180 = (float)numbers::pi;
         static constexpr float Degrees90 = (float)numbers::pi / 2.0f;
         static constexpr float Degrees45 = (float)numbers::pi / 4.0f;
@@ -73,9 +71,13 @@ namespace Minecraft
         shared_ptr <Texture> m_ChunkTexture;
         shared_ptr <ChunkMaterial> m_ChunkMaterial;
 
+        // TODO: ChunkMesh object
         unordered_map <vec3i, shared_ptr<Mesh>> m_ChunkMeshes = { };
         unordered_map<vec3i, bool> m_IsChunkMeshEmpty = { };
 
+        // TODO: kind of isn't needed if a ChunkMesh object exists, since there can just be fields in the chunkmesh for IsPopulated and Priority
+        // Then just look over the rendered chunks and check if they need a remesh in update
+        // Though a queue might be faster
         ChunkPriorityQueue m_ChunkRemeshQueue = { };
     };
 }
