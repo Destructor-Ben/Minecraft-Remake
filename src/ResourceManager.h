@@ -16,7 +16,6 @@ namespace Minecraft
         shared_ptr<byte> Data = nullptr;
     };
 
-    // TODO: avoid copying assets and just directly access them from the root folder if a macro is enabled
     class ResourceManager
     {
     public:
