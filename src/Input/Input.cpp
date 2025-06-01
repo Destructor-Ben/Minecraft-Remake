@@ -11,16 +11,16 @@ namespace Minecraft::Input
     static constexpr int KeyCount = (int)Key::Count;
     static constexpr int MouseButtonCount = (int)MouseButton::Count;
 
-    bool OldMousePosInitialized = false;
-    vec2 MousePos = vec2();
-    vec2 OldMousePos = vec2();
-    float ScrollDelta = 0.0f;
+    static bool OldMousePosInitialized = false;
+    static vec2 MousePos = vec2();
+    static vec2 OldMousePos = vec2();
+    static float ScrollDelta = 0.0f;
 
-    array<bool, KeyCount> KeysPressedThisFrame = { };
-    array<bool, KeyCount> KeysPressedLastFrame = { };
+    static array<bool, KeyCount> KeysPressedThisFrame = { };
+    static array<bool, KeyCount> KeysPressedLastFrame = { };
 
-    array<bool, MouseButtonCount> MouseButtonsPressedThisFrame = { };
-    array<bool, MouseButtonCount> MouseButtonsPressedLastFrame = { };
+    static array<bool, MouseButtonCount> MouseButtonsPressedThisFrame = { };
+    static array<bool, MouseButtonCount> MouseButtonsPressedLastFrame = { };
 
     static int GetGLFWKeyCode(Key key)
     {

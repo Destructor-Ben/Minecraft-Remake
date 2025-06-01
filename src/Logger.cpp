@@ -6,7 +6,7 @@
 
 namespace Minecraft::Logger
 {
-    std::ofstream LogFile = { };
+    static std::ofstream LogFile = { };
 
     static void Log(const string& message, bool error = false);
     static string GetMessage(const string& message, const string& logLevel);

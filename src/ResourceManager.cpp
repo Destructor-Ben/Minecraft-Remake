@@ -12,10 +12,10 @@ namespace Minecraft::Resources
     // Cache graphics resources that are requested multiple times
     // TODO: what if we modify some of them? should include an option to cache when requesting
     // - Also needs options to add to caches in case these are made manually
-    unordered_map <string, shared_ptr<Texture>> TextureCache = { };
-    unordered_map <string, shared_ptr<Shader>> ShaderCache = { };
-    unordered_map <string, shared_ptr<VertexShader>> VertexShaderCache = { };
-    unordered_map <string, shared_ptr<FragmentShader>> FragmentShaderCache = { };
+    static unordered_map <string, shared_ptr<Texture>> TextureCache = { };
+    static unordered_map <string, shared_ptr<Shader>> ShaderCache = { };
+    static unordered_map <string, shared_ptr<VertexShader>> VertexShaderCache = { };
+    static unordered_map <string, shared_ptr<FragmentShader>> FragmentShaderCache = { };
 
     string GetResourcePath(string path)
     {
