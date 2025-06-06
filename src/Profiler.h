@@ -33,7 +33,6 @@ namespace Minecraft
         void Push(string name);
         void Pop();
 
-        // TODO: remove the previousData param and just figure it out from target
         static void HandleProfilerData(const vector <ProfilerData>& data, ProfilerTarget target);
         static void RecordFrameOrTickRate(bool isFrameRate);
         static string ToString(const vector <ProfilerData>& data);
