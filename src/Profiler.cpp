@@ -1,5 +1,6 @@
 #include "Profiler.h"
 
+#include "Game.h"
 #include "Logger.h"
 #include "Input/Input.h"
 
@@ -8,9 +9,38 @@
 
 namespace Minecraft
 {
-    vector <ProfilerData> Profiler::TickPerfData;
-    vector <ProfilerData> Profiler::UpdatePerfData;
-    vector <ProfilerData> Profiler::RenderPerfData;
+    // This should always run because it is way less likely to affect performance so we can measure if the profiler affects it at all
+    void Profiler::RecordFrameOrTickRate(bool isFrameRate)
+    {
+        // Record the frame/tick rate
+        auto& data = isFrameRate ? m_FrameRateData : m_TickRateData;
+        float time = isFrameRate ? Instance->DeltaTime : Instance->TickDeltaTime;
+        float rate = 1.0f / time;
+        data.push_back(rate);
+
+        // Ensure the old data is deleted
+        while (data.size() > 60)
+        {
+            data.erase(data.cbegin());
+        }
+
+        // Calculate the frame rates
+        float& currentRate = isFrameRate ? m_CurrentFrameRate : m_CurrentTickRate;
+        float& avgRate = isFrameRate ? m_AvgFrameRate : m_AvgTickRate;
+        float& minRate = isFrameRate ? m_MinFrameRate : m_MinTickRate;
+
+        currentRate = rate;
+        avgRate = 0;
+        minRate = std::numeric_limits<float>::infinity();
+
+        for (float oldRate : data)
+        {
+            minRate = std::min(minRate, oldRate);
+            avgRate += oldRate;
+        }
+
+        avgRate /= (float)data.size();
+    }
 
     #if PROFILER_ENABLED
 
@@ -73,30 +103,9 @@ namespace Minecraft
 
     // TODO: processing the data - just keep recording it, since it is always being recorded anyway
     // TODO: if the frame time is high, just print the data to the console
-    void Profiler::HandleProfilerData(const vector <ProfilerData>& data, vector <ProfilerData>& previousData, ProfilerTarget target)
+    void Profiler::HandleProfilerData(const vector <ProfilerData>& data, ProfilerTarget target)
     {
-        if (target == ProfilerTarget::Render && Input::WasKeyReleased(Key::LeftBracket))
-        {
-            Logger::Debug(ToString(data));
-        }
-        /*
-        if (Input::WasKeyPressed(debugKey))
-            Logger::Debug("\n" + data.ToString());
 
-        if (Input::IsKeyDown(debugKey))
-            previousData.push_back(data);
-
-        if (Input::WasKeyReleased(debugKey))
-        {
-            previousData.push_back(data);
-
-            // TODO: average the data
-            auto averageData = data;
-
-            //Logger::Debug("\n" + averageData.ToString());
-
-            previousData.clear();
-        }*/
     }
 
     string Profiler::ToString(const vector <ProfilerData>& data)
@@ -131,7 +140,7 @@ namespace Minecraft
 
     void Profiler::Pop() { }
 
-    void Profiler::HandleProfilerData(const vector <ProfilerData>& data, vector <ProfilerData>& previousData, ProfilerTarget target) { }
+    void Profiler::HandleProfilerData(const vector <ProfilerData>& data, ProfilerTarget target) { }
 
     string Profiler::ToString(const vector <ProfilerData>& data) { return ""; }
 

@@ -76,8 +76,8 @@ namespace Minecraft
         // TODO: implement min and average frame and tick rates
         // TODO: implement FPS and TPS graphs, implement profiler data graph
         m_VSyncText->SetText(format("VSync: {}", Instance->IsVSyncEnabled()));
-        m_FrameRateText->SetText(format("FPS: Avg={:.3f} Min={}", Instance->GetFrameRate(), "TODO"));
-        m_TickRateText->SetText(format("TPS: Avg={:.3f} Min={}", Instance->GetTickRate(), "TODO"));
+        m_FrameRateText->SetText(format("FPS: Current={:.3f} Avg={:.3f} Min={:.3f} Target={:.1f}", Instance->PerfProfiler->GetCurrentFrameRate(), Instance->PerfProfiler->GetAvgFrameRate(), Instance->PerfProfiler->GetMinFrameRate(), Instance->TargetFrameRate));
+        m_TickRateText->SetText(format("TPS: Current={:.3f} Avg={:.3f} Min={:.3f} Target={:.1f}", Instance->PerfProfiler->GetCurrentTickRate(), Instance->PerfProfiler->GetAvgTickRate(), Instance->PerfProfiler->GetMinTickRate(), Instance->TargetTickRate));
 
         if (!Instance->InGame)
         {

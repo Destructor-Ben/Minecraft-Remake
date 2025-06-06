@@ -191,8 +191,10 @@ namespace Minecraft
         if (CurrentWorld)
             CurrentWorld->Tick();
 
+        Profiler::RecordFrameOrTickRate(false);
+
         auto data = PerfProfiler->EndFrame();
-        Profiler::HandleProfilerData(data, Profiler::TickPerfData, ProfilerTarget::Tick);
+        Profiler::HandleProfilerData(data, ProfilerTarget::Tick);
     }
 
     void Game::Update()
@@ -211,7 +213,7 @@ namespace Minecraft
         Input::PostUpdate();
 
         auto data = PerfProfiler->EndFrame();
-        Profiler::HandleProfilerData(data, Profiler::UpdatePerfData, ProfilerTarget::Update);
+        Profiler::HandleProfilerData(data, ProfilerTarget::Update);
     }
 
     void Game::Render()
@@ -231,8 +233,10 @@ namespace Minecraft
 
         Graphics->PostRender();
 
+        Profiler::RecordFrameOrTickRate(true);
+
         auto data = PerfProfiler->EndFrame();
-        Profiler::HandleProfilerData(data, Profiler::RenderPerfData, ProfilerTarget::Render);
+        Profiler::HandleProfilerData(data, ProfilerTarget::Render);
     }
 
     #pragma endregion

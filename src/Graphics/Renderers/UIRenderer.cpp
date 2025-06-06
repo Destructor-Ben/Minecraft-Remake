@@ -115,6 +115,7 @@ namespace Minecraft::UIRenderer
         Instance->PerfProfiler->Push("DrawSprite");
 
         // Clear the existing depth buffer so it doesn't interfere with the game world
+        // TODO: this should get moved to render since it only needs to be called once
         glClear(GL_DEPTH_BUFFER_BIT);
 
         m_SpriteMaterial->DrawnSprite = &sprite;

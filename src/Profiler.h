@@ -26,11 +26,6 @@ namespace Minecraft
     class Profiler
     {
     public:
-        // TODO: make these vectors of vectors, also make them private
-        static vector <ProfilerData> TickPerfData;
-        static vector <ProfilerData> UpdatePerfData;
-        static vector <ProfilerData> RenderPerfData;
-
         void BeginFrame(string name);
         vector <ProfilerData> EndFrame();
 
@@ -38,12 +33,35 @@ namespace Minecraft
         void Pop();
 
         // TODO: remove the previousData param and just figure it out from target
-        static void HandleProfilerData(const vector <ProfilerData>& data, vector <ProfilerData>& previousData, ProfilerTarget target);
+        static void HandleProfilerData(const vector <ProfilerData>& data, ProfilerTarget target);
+        static void RecordFrameOrTickRate(bool isFrameRate);
         static string ToString(const vector <ProfilerData>& data);
+
+        // Getters for all of the frame debug info
+        float GetCurrentFrameRate() const { return m_CurrentFrameRate; }
+        float GetCurrentTickRate() const { return m_CurrentTickRate; }
+        float GetAvgFrameRate() const { return m_AvgFrameRate; }
+        float GetAvgTickRate() const { return m_AvgTickRate; }
+        float GetMinFrameRate() const { return m_MinFrameRate; }
+        float GetMinTickRate() const { return m_MinTickRate; }
 
     private:
         vector <ProfilerData> m_Data = { };
         vector<int> m_Scopes = { };
         int m_CurrentLevel = 0;
+
+        // Data recorded while profiling
+        inline static float m_CurrentFrameRate = 0;
+        inline static float m_CurrentTickRate = 0;
+        inline static float m_AvgFrameRate = 0;
+        inline static float m_AvgTickRate = 0;
+        inline static float m_MinFrameRate = 0;
+        inline static float m_MinTickRate = 0;
+
+        inline static vector<float> m_FrameRateData = { };
+        inline static vector<float> m_TickRateData = { };
+        inline static vector <vector<ProfilerData>> m_TickPerfData = { };
+        inline static vector <vector<ProfilerData>> m_UpdatePerfData = { };
+        inline static vector <vector<ProfilerData>> m_RenderPerfData = { };
     };
 }
