@@ -23,6 +23,9 @@ void main()
     }
 
     // Calculate lighting
+    // TODO: this can be done easily in the vertex shader for directional lights since the lighting is consistent across faces with flat shading
+    // - Consider doing point/spot lights in vertex shader too and just interpolating for the fragment shader to make it more performant
+    //   - make this an option in settings
     // TODO: apparently normal needs to be transformed in the vertex shader/set as a uniform since it is in model space and needs to be in world space
     vec3 lighting = uAmbientLight;
     lighting += clamp(dot(Normal, uDirToSun), 0.0, 1.0) * uSunLight;
