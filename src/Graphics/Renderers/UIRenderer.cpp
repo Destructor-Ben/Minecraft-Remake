@@ -112,11 +112,15 @@ namespace Minecraft::UIRenderer
 
     void DrawSprite(Sprite& sprite)
     {
+        Instance->PerfProfiler->Push("DrawSprite");
+
         // Clear the existing depth buffer so it doesn't interfere with the game world
         glClear(GL_DEPTH_BUFFER_BIT);
 
         m_SpriteMaterial->DrawnSprite = &sprite;
         // Don't need to call the renderers draw function since we don't care about it
         m_SpriteMesh->Draw(UICamera.ProjectionViewMatrix * sprite.GetTransformationMatrix());
+
+        Instance->PerfProfiler->Pop();
     }
 }

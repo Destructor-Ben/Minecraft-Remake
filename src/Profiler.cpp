@@ -3,11 +3,16 @@
 #include "Logger.h"
 #include "Input/Input.h"
 
+// Set to false so all calls to the profiler contain nothing and are hopefully inlined
+#define PROFILER_ENABLED true
+
 namespace Minecraft
 {
     vector <ProfilerData> Profiler::TickPerfData;
     vector <ProfilerData> Profiler::UpdatePerfData;
     vector <ProfilerData> Profiler::RenderPerfData;
+
+    #if PROFILER_ENABLED
 
     void Profiler::BeginFrame(string name)
     {
@@ -115,4 +120,20 @@ namespace Minecraft
 
         return output;
     }
+
+    #else
+
+    void Profiler::BeginFrame(string name) { }
+
+    vector <ProfilerData> Profiler::EndFrame() { return { }; }
+
+    void Profiler::Push(string name) { }
+
+    void Profiler::Pop() { }
+
+    void Profiler::HandleProfilerData(const vector <ProfilerData>& data, vector <ProfilerData>& previousData, ProfilerTarget target) { }
+
+    string Profiler::ToString(const vector <ProfilerData>& data) { return ""; }
+
+    #endif
 }
