@@ -19,6 +19,7 @@ namespace Minecraft
         data.push_back(rate);
 
         // Ensure the old data is deleted
+        // TODO: this number is arbitrary, use a better number or calculate one on the fly
         while (data.size() > 60)
         {
             data.erase(data.cbegin());

@@ -85,6 +85,11 @@ namespace Minecraft::UIRenderer
     {
         Instance->PerfProfiler->Push("UI::Render");
 
+        // Clear the existing depth buffer so it doesn't interfere with the game world
+        glClear(GL_DEPTH_BUFFER_BIT);
+        // Allows sprites to draw on top of each other
+        glDepthFunc(GL_LEQUAL);
+
         // Draw the UI
         for (auto& state : UI::UIStateList)
         {
@@ -93,6 +98,9 @@ namespace Minecraft::UIRenderer
 
             state->Render();
         }
+
+        // Reset state
+        glDepthFunc(GL_LESS);
 
         Instance->PerfProfiler->Pop();
     }
@@ -113,10 +121,6 @@ namespace Minecraft::UIRenderer
     void DrawSprite(Sprite& sprite)
     {
         Instance->PerfProfiler->Push("DrawSprite");
-
-        // Clear the existing depth buffer so it doesn't interfere with the game world
-        // TODO: this should get moved to render since it only needs to be called once
-        glClear(GL_DEPTH_BUFFER_BIT);
 
         m_SpriteMaterial->DrawnSprite = &sprite;
         // Don't need to call the renderers draw function since we don't care about it
