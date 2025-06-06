@@ -158,7 +158,7 @@ namespace Minecraft
         Instance->PerfProfiler->Push("World::UpdateChunkList");
 
         // Only refresh chunks when moving along chunk borders
-        if (HasPlayerMovedChunks)
+        if (!HasPlayerMovedChunks)
         {
             Instance->PerfProfiler->Pop();
             return;

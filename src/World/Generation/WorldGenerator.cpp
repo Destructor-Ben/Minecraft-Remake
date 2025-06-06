@@ -41,7 +41,7 @@ namespace Minecraft
         Instance->PerfProfiler->Push("WorldGenerator::GenerateChunksAroundPlayer");
 
         // Only generate new chunks when moving along chunk borders
-        if (m_World->HasPlayerMovedChunks)
+        if (!m_World->HasPlayerMovedChunks)
         {
             Instance->PerfProfiler->Pop();
             return;
