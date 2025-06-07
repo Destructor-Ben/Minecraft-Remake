@@ -73,7 +73,6 @@ namespace Minecraft
             Instance->Graphics->DrawWireframes = !Instance->Graphics->DrawWireframes;
 
         // Update the text
-        // TODO: implement min and average frame and tick rates
         // TODO: implement FPS and TPS graphs, implement profiler data graph
         m_VSyncText->SetText(format("VSync: {}", Instance->IsVSyncEnabled()));
         m_FrameRateText->SetText(format("FPS: Current={:.3f} Avg={:.3f} Min={:.3f} Target={:.1f}", Instance->PerfProfiler->GetCurrentFrameRate(), Instance->PerfProfiler->GetAvgFrameRate(), Instance->PerfProfiler->GetMinFrameRate(), Instance->TargetFrameRate));
