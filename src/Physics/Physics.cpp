@@ -31,6 +31,15 @@ namespace Minecraft::Physics
             dir.z != 0 ? (voxelPos.z + (dir.z >= 0 ? 1 : 0) - rayOrigin.z) / dir.z : maxFloat
         );
 
+        // Initialize lastStepAxis based on the smallest initial tMax
+        int lastStepAxis;
+        if (tMax.x < tMax.y && tMax.x < tMax.z)
+            lastStepAxis = 0; // x-axis
+        else if (tMax.y < tMax.z)
+            lastStepAxis = 1; // y-axis
+        else
+            lastStepAxis = 2; // z-axis
+
         // Distance along the ray
         float t = 0.0f;
 
@@ -45,11 +54,10 @@ namespace Minecraft::Physics
                 result.HitBlockPos = voxelPos;
                 result.Length = t;
 
-                // Determine which face was hit based on the axis with smallest tMax
-                float minTMax = std::min({ tMax.x, tMax.y, tMax.z });
-                if (minTMax == tMax.x)
+                // Calculate the hit normal
+                if (lastStepAxis == 0)
                     result.HitFaceNormal = vec3i(-step.x, 0, 0);
-                else if (minTMax == tMax.y)
+                else if (lastStepAxis == 1)
                     result.HitFaceNormal = vec3i(0, -step.y, 0);
                 else
                     result.HitFaceNormal = vec3i(0, 0, -step.z);
@@ -63,18 +71,21 @@ namespace Minecraft::Physics
                 voxelPos.x += step.x;
                 t = tMax.x;
                 tMax.x += tDelta.x;
+                lastStepAxis = 0;
             }
             else if (tMax.y < tMax.z)
             {
                 voxelPos.y += step.y;
                 t = tMax.y;
                 tMax.y += tDelta.y;
+                lastStepAxis = 1;
             }
             else
             {
                 voxelPos.z += step.z;
                 t = tMax.z;
                 tMax.z += tDelta.z;
+                lastStepAxis = 2;
             }
         }
 

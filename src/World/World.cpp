@@ -327,7 +327,6 @@ namespace Minecraft
 
         // Block placing
         // TODO: what if place + break in the same tick?
-        // TODO: wonky
         if (Input::WasMouseButtonPressed(MouseButton::Right))
         {
             auto placedBlockPos = PlayerTargetedBlockPos.value() + ray.HitFaceNormal;
