@@ -29,7 +29,8 @@ namespace Minecraft
 
     void ChunkRenderer::OnExitWorld()
     {
-        // TODO: test if deleting chunk meshes here helps with RAM usage
+        m_ChunkMeshes.clear();
+        m_IsChunkMeshEmpty.clear();
     }
 
     void ChunkRenderer::RenderDebugChunkBorders()
@@ -55,7 +56,7 @@ namespace Minecraft
             auto* chunk = m_ChunkRemeshQueue.pop();
             RegenerateMesh(*chunk);
         }
-        
+
         Instance->PerfProfiler->Pop();
     }
 
