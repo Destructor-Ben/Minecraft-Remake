@@ -1,7 +1,6 @@
 #include "UIRenderer.h"
 
 #include "Game.h"
-#include "Logger.h"
 #include "ResourceManager.h"
 #include "Graphics/GL.h"
 #include "Graphics/Materials/SpriteMaterial.h"

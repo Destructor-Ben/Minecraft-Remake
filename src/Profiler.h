@@ -28,14 +28,14 @@ namespace Minecraft
     {
     public:
         void BeginFrame(string name);
-        vector <ProfilerData> EndFrame();
+        vector<ProfilerData> EndFrame();
 
         void Push(string name);
         void Pop();
 
-        static void HandleProfilerData(const vector <ProfilerData>& data, ProfilerTarget target);
+        static void HandleProfilerData(const vector<ProfilerData>& data, ProfilerTarget target);
         static void RecordFrameOrTickRate(bool isFrameRate);
-        static string ToString(const vector <ProfilerData>& data);
+        static string ToString(const vector<ProfilerData>& data);
 
         // Getters for all of the frame debug info
         float GetCurrentFrameRate() const { return m_CurrentFrameRate; }
@@ -46,11 +46,12 @@ namespace Minecraft
         float GetMinTickRate() const { return m_MinTickRate; }
 
     private:
-        vector <ProfilerData> m_Data = { };
+        vector<ProfilerData> m_Data = { };
         vector<int> m_Scopes = { };
         int m_CurrentLevel = 0;
 
         // Data recorded while profiling
+        // TODO: turn into a struct to make it easier to fetch?
         inline static float m_CurrentFrameRate = 0;
         inline static float m_CurrentTickRate = 0;
         inline static float m_AvgFrameRate = 0;
@@ -60,8 +61,8 @@ namespace Minecraft
 
         inline static vector<float> m_FrameRateData = { };
         inline static vector<float> m_TickRateData = { };
-        inline static vector <vector<ProfilerData>> m_TickPerfData = { };
-        inline static vector <vector<ProfilerData>> m_UpdatePerfData = { };
-        inline static vector <vector<ProfilerData>> m_RenderPerfData = { };
+        inline static vector<vector<ProfilerData>> m_TickPerfData = { };
+        inline static vector<vector<ProfilerData>> m_UpdatePerfData = { };
+        inline static vector<vector<ProfilerData>> m_RenderPerfData = { };
     };
 }

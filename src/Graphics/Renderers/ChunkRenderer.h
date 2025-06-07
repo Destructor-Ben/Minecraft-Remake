@@ -15,6 +15,7 @@ namespace Minecraft
     class VertexBuffer;
     class World;
 
+    // TODO: create and delete the chunk meshes when the world is created/deleted
     // TODO: split cubic blocks into one mesh and compress their data, since they all use ints for positions and normals, and use other shaped stuff in another mesh
     // - Leads to more draw calls but way less memory usage
     // - Definitely profile
