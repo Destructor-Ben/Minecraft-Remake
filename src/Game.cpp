@@ -186,7 +186,7 @@ namespace Minecraft
 
     void Game::Tick()
     {
-        if (!InGame || CurrentWorld == nullptr)
+        if (!InGame || IsPaused || CurrentWorld == nullptr)
             return;
 
         PerfProfiler->BeginFrame("Tick");
