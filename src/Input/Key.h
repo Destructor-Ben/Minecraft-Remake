@@ -5,6 +5,7 @@ namespace Minecraft
     enum class Key
     {
         // Numbers
+        // TODO: rename these to Number0, Number1, etc.
         Zero,
         One,
         Two,

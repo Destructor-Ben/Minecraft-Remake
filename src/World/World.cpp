@@ -277,6 +277,28 @@ namespace Minecraft
 
     void World::UpdateBlockBreaking()
     {
+        // Block selecting
+        if (Input::WasKeyReleased(Key::Zero))
+            SelectedBlock = nullptr;
+        else if (Input::WasKeyReleased(Key::One))
+            SelectedBlock = Blocks::Stone;
+        else if (Input::WasKeyReleased(Key::Two))
+            SelectedBlock = Blocks::Dirt;
+        else if (Input::WasKeyReleased(Key::Three))
+            SelectedBlock = Blocks::Grass;
+        else if (Input::WasKeyReleased(Key::Four))
+            SelectedBlock = Blocks::TallGrass;
+        else if (Input::WasKeyReleased(Key::Five))
+            SelectedBlock = Blocks::Sand;
+        else if (Input::WasKeyReleased(Key::Six))
+            SelectedBlock = Blocks::Clay;
+        else if (Input::WasKeyReleased(Key::Seven))
+            SelectedBlock = Blocks::IronOre;
+        else if (Input::WasKeyReleased(Key::Eight))
+            SelectedBlock = Blocks::Wood;
+        else if (Input::WasKeyReleased(Key::Nine))
+            SelectedBlock = Blocks::Leaves;
+
         // Block breaking
         auto ray = Physics::RaycastBlocks(PlayerCamera.Position, PlayerCamera.GetForwardVector(), PlayerReachDistance);
         if (ray.DidHit)
@@ -327,7 +349,7 @@ namespace Minecraft
 
         // Block placing
         // TODO: what if place + break in the same tick?
-        if (Input::WasMouseButtonPressed(MouseButton::Right))
+        if (Input::WasMouseButtonPressed(MouseButton::Right) && SelectedBlock != nullptr)
         {
             auto placedBlockPos = PlayerTargetedBlockPos.value() + ray.HitFaceNormal;
             auto placedBlock = GetBlock(placedBlockPos);
@@ -337,8 +359,7 @@ namespace Minecraft
             if (placedBlock->Data.Type != Blocks::Air)
                 return;
 
-            // TODO: allow selecting the block type
-            placedBlock->Data.Type = Blocks::Sand;
+            placedBlock->Data.Type = SelectedBlock;
             // TODO: priority
             Instance->ChunkGraphics->QueueMeshRegen(placedBlock->GetChunk());
 

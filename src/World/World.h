@@ -55,6 +55,7 @@ namespace Minecraft
 
         // Player
         static constexpr float PlayerReachDistance = 7.0f;
+        BlockType* SelectedBlock = nullptr;
         Camera PlayerCamera;
         optional <vec3i> PlayerTargetedBlockPos = nullopt; // TODO: make an optional<Block> after world class redesign
         vec3i PreviousPlayerChunkPos = { };
