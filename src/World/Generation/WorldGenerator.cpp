@@ -12,6 +12,7 @@ namespace Minecraft
         m_Seed(seed),
         m_Noise(seed)
     {
+        // TODO: should this be moved to below? any long init things should happen on the worldgen/tick thread in future
         InitBiomeMap();
         InitSurfaceBlocksMap();
     }

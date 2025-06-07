@@ -9,12 +9,12 @@ namespace Minecraft
     class BlockType;
     class Chunk;
     class World;
-
+    
     class WorldGenerator
     {
     public:
         WorldGenerator() = default;
-        explicit WorldGenerator(World* world, ulong seed = 0);
+        explicit WorldGenerator(World* world, ulong seed);
 
         // Generates the initial chunks in a world
         void Generate(int spawnRadius, int minHeight, int maxHeight);

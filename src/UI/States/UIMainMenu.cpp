@@ -36,17 +36,10 @@ namespace Minecraft
         m_Logo->OriginY.Percent = 0.5f;
         AddElement(m_Logo);
 
+        // TODO: change position of these + the buttons in the pause menu
         m_PlayButton = make_shared<UIButton>();
-        m_PlayButton->OnMouseUp = []()
-        {
-            // Generate world
-            Logger::Info("Entering world...");
-            Instance->CurrentWorld = make_shared<World>();
-            Instance->InGame = true;
-            Instance->IsPaused = false;
-            Instance->SetMouseHidden(true);
-        };
-
+        // TODO: custom seeds
+        m_PlayButton->OnMouseUp = []() { Instance->CreateAndEnterWorld(0); };
         m_PlayButton->x.Percent = 0.5f;
         m_PlayButton->y.Pixels = -500;
         m_PlayButton->y.Percent = 1.0f;

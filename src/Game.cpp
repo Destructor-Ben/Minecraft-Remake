@@ -62,7 +62,7 @@ namespace Minecraft
 
     void Game::Shutdown()
     {
-        Logger::Info("Exiting...");
+        Logger::Info("Exiting game...");
 
         // We manually null these out because we need to deallocate the objects in a guaranteed order
         CurrentWorld = nullptr;
@@ -190,6 +190,8 @@ namespace Minecraft
 
         if (CurrentWorld)
             CurrentWorld->Tick();
+        else
+            Logger::Throw("We are in game but no world has been created!");
 
         Profiler::RecordFrameOrTickRate(false);
 
@@ -245,15 +247,13 @@ namespace Minecraft
 
     void Game::Run()
     {
+        Logger::Info("Running window...");
         glfwSetTime(0);
         StartTime = chrono::steady_clock::now();
-        Logger::Info("Running window...");
 
         while (Running)
         {
-            if (!IsPaused)
-                Tick();
-
+            Tick(); // Eventually tick will run on a separate thread
             Update();
             Render();
 
@@ -279,9 +279,42 @@ namespace Minecraft
 
             if (IsPaused)
                 TickDeltaTime = 0;
+            // End temporary
 
             Running = !glfwWindowShouldClose(Window);
         }
+    }
+
+    #pragma endregion
+
+    #pragma region World Management
+
+    // TODO: queue the creation and exit of worlds so they don't happen mid update
+
+    void Game::CreateAndEnterWorld(ulong seed)
+    {
+        Logger::Info(format("Creating world with seed: {}", seed));
+        CurrentWorld = make_shared<World>(seed);
+
+        // TODO: in future, all stuff below should be executed on another thread to avoid blocking the main one
+        Logger::Info("Generating world...");
+        CurrentWorld->Generate();
+
+        Logger::Info("Entering world...");
+        InGame = true;
+        IsPaused = false;
+        SetMouseHidden(true);
+        CurrentWorld->OnEnter();
+    }
+
+    void Game::ExitCurrentWorld()
+    {
+        Logger::Info("Exiting world...");
+        CurrentWorld->OnExit();
+        CurrentWorld = nullptr;
+        InGame = false;
+        IsPaused = true;
+        SetMouseHidden(false);
     }
 
     #pragma endregion

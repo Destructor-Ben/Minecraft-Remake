@@ -39,9 +39,9 @@ namespace Minecraft
         m_BiomeMap[3][3] = Biomes::Jungle;
 
         // Debug exports
-        m_Noise.SaveTexture(1000, 1000, TemperatureMap, "TemperatureMap.png");
-        m_Noise.SaveTexture(1000, 1000, MoistureMap, "MoistureMap.png");
-        ExportBiomeMap();
+        // m_Noise.SaveTexture(1000, 1000, TemperatureMap, "TemperatureMap.png");
+        // m_Noise.SaveTexture(1000, 1000, MoistureMap, "MoistureMap.png");
+        // ExportBiomeMap();
     }
 
     void WorldGenerator::GenerateBiomes(Chunk& chunk)

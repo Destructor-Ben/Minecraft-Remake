@@ -61,13 +61,25 @@ namespace Minecraft
 
     #pragma endregion
 
-    World::World()
+    World::World(ulong seed)
+    {
+        m_Seed = seed;
+        m_WorldGenerator = WorldGenerator(this, seed);
+    }
+
+    void World::Generate()
+    {
+        m_WorldGenerator.Generate(SpawnRadius, MinSpawnHeight, MaxSpawnHeight);
+    }
+
+    void World::OnEnter()
     {
         PlayerCamera.FOV = 70.0f;
+    }
 
-        // TODO: random seed generation
-        m_WorldGenerator = WorldGenerator(this);
-        m_WorldGenerator.Generate(SpawnRadius, MinSpawnHeight, MaxSpawnHeight);
+    void World::OnExit()
+    {
+        // Empty for now
     }
 
     void World::Tick()

@@ -87,6 +87,9 @@ namespace Minecraft
         void Update();
         void Render();
 
+        void CreateAndEnterWorld(ulong seed);
+        void ExitCurrentWorld();
+
         void Close();
 
         bool IsVSyncEnabled() const { return m_VSyncEnabled; }

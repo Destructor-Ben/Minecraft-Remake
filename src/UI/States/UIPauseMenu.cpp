@@ -50,16 +50,7 @@ namespace Minecraft
         AddElement(m_BackButton);
 
         m_ExitButton = make_shared<UIButton>();
-        m_ExitButton->OnMouseUp = []()
-        {
-            Instance->IsPaused = true;
-            Instance->InGame = false;
-            // TODO: deleting the world now causes a blackflicker because the world doesn't get the chance to render this frame but the UI does
-            // - Resolve by delaying the deletion till after the render/the main menu loads
-            Instance->CurrentWorld = nullptr;
-            Instance->SetMouseHidden(false);
-        };
-
+        m_ExitButton->OnMouseUp = []() { Instance->ExitCurrentWorld(); };
         m_ExitButton->SetText("Exit");
         m_ExitButton->x.Percent = 0.5f;
         m_ExitButton->y.Pixels = -500 - m_BackButton->GetSize().y - 10;
