@@ -58,7 +58,7 @@ namespace Minecraft
         Camera PlayerCamera;
         optional <vec3i> PlayerTargetedBlockPos = nullopt; // TODO: make an optional<Block> after world class redesign
         vec3i PreviousPlayerChunkPos = { };
-        bool HasPlayerMovedChunks = true;
+        bool HasPlayerMovedChunks = true; // Set to true so when the world loads the chunk lists update
 
         // Chunk data
         unordered_map <vec3i, Chunk> Chunks = { };
