@@ -87,8 +87,9 @@ namespace Minecraft
         void Update();
         void Render();
 
-        void CreateAndEnterWorld(ulong seed);
-        void ExitCurrentWorld();
+        // These two queue the action because it's a bad idea to create/delete the entire world mid-frame
+        void CreateAndEnterWorld(ulong seed, bool actuallyEnter = false);
+        void ExitCurrentWorld(bool actuallyExit = false);
 
         void Close();
 
@@ -110,5 +111,9 @@ namespace Minecraft
 
         GLFWcursor* m_LightCursor;
         GLFWcursor* m_DarkCursor;
+
+        ulong m_WorldSeed = 0;
+        bool m_WantToCreateWorld = false;
+        bool m_WantToExitWorld = false;
     };
 }

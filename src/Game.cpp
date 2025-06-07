@@ -203,6 +203,20 @@ namespace Minecraft
     {
         PerfProfiler->BeginFrame("Update");
 
+        // Create and enter a world
+        if (m_WantToCreateWorld)
+        {
+            m_WantToCreateWorld = false;
+            CreateAndEnterWorld(m_WorldSeed, true);
+        }
+
+        // Exit the world
+        if (m_WantToExitWorld)
+        {
+            m_WantToExitWorld = false;
+            ExitCurrentWorld(true);
+        }
+
         Input::Update();
 
         // World updating
@@ -227,7 +241,7 @@ namespace Minecraft
         Graphics->PreRender();
 
         // World rendering
-        if (CurrentWorld)
+        if (InGame && CurrentWorld)
             CurrentWorld->Render();
 
         // UI rendering
@@ -291,8 +305,16 @@ namespace Minecraft
 
     // TODO: queue the creation and exit of worlds so they don't happen mid update
 
-    void Game::CreateAndEnterWorld(ulong seed)
+    void Game::CreateAndEnterWorld(ulong seed, bool actuallyEnter)
     {
+        // Queue the creation
+        if (!actuallyEnter)
+        {
+            m_WorldSeed = seed;
+            m_WantToCreateWorld = true;
+            return;
+        }
+
         Logger::Info(format("Creating world with seed: {}", seed));
         CurrentWorld = make_shared<World>(seed);
 
@@ -307,8 +329,15 @@ namespace Minecraft
         CurrentWorld->OnEnter();
     }
 
-    void Game::ExitCurrentWorld()
+    void Game::ExitCurrentWorld(bool actuallyExit)
     {
+        // Queue the exit
+        if (!actuallyExit)
+        {
+            m_WantToExitWorld = true;
+            return;
+        }
+
         Logger::Info("Exiting world...");
         CurrentWorld->OnExit();
         CurrentWorld = nullptr;
