@@ -186,12 +186,12 @@ namespace Minecraft
 
     void Game::Tick()
     {
+        if (!InGame || CurrentWorld == nullptr)
+            return;
+
         PerfProfiler->BeginFrame("Tick");
 
-        if (CurrentWorld)
-            CurrentWorld->Tick();
-        else
-            Logger::Throw("We are in game but no world has been created!");
+        CurrentWorld->Tick();
 
         Profiler::RecordFrameOrTickRate(false);
 
