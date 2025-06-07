@@ -25,6 +25,16 @@ namespace Minecraft
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
 
+    void Renderer::OnEnterWorld()
+    {
+        Instance->ChunkGraphics->OnEnterWorld();
+    }
+
+    void Renderer::OnExitWorld()
+    {
+        Instance->ChunkGraphics->OnExitWorld();
+    }
+
     // TODO: allow toggling frustum culling
     void Renderer::DrawMesh(const Mesh& mesh, mat4 transform)
     {

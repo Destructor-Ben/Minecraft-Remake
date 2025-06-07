@@ -1,6 +1,7 @@
 #include "ChunkRenderer.h"
 
 #include "Game.h"
+#include "Logger.h"
 #include "Profiler.h"
 #include "ResourceManager.h"
 #include "Graphics/GL.h"
@@ -20,6 +21,17 @@ namespace Minecraft
         m_ChunkMaterial->ChunkTexture = m_ChunkTexture;
     }
 
+    void ChunkRenderer::OnEnterWorld()
+    {
+        // Mesh the initial chunks
+        RegenerateMeshes();
+    }
+
+    void ChunkRenderer::OnExitWorld()
+    {
+        // TODO: test if deleting chunk meshes here helps with RAM usage
+    }
+
     void ChunkRenderer::RenderDebugChunkBorders()
     {
         auto playerPos = Instance->CurrentWorld->PlayerCamera.Position;
@@ -31,21 +43,28 @@ namespace Minecraft
         Instance->Graphics->DebugDrawBounds(chunkBounds.value(), glm::translate(ChunkToWorldPos(playerChunkPos)), vec3(1, 1, 0));
     }
 
-    void ChunkRenderer::RenderChunks(const vector<Chunk*>& chunks)
+    void ChunkRenderer::RegenerateMeshes()
     {
-        Instance->PerfProfiler->Push("ChunkRenderer::Render");
-
         // Remesh the chunks waiting in the queue (one at a time)
         // TODO: multi-thread
-        // TODO: should be done in Update
         // TODO: for some reason, this causes holes while generating chunks - might be an issue with the world generator
         Instance->PerfProfiler->Push("ChunkRenderer::RegenerateMeshes");
+
         while (!m_ChunkRemeshQueue.empty())
         {
             auto* chunk = m_ChunkRemeshQueue.pop();
             RegenerateMesh(*chunk);
         }
+        
         Instance->PerfProfiler->Pop();
+    }
+
+    void ChunkRenderer::RenderChunks(const vector<Chunk*>& chunks)
+    {
+        // TODO: should be done in Update
+        RegenerateMeshes();
+
+        Instance->PerfProfiler->Push("ChunkRenderer::Render");
 
         // Update the material
         // TODO: normals need to be transformed from local space to world space

@@ -75,11 +75,13 @@ namespace Minecraft
     void World::OnEnter()
     {
         PlayerCamera.FOV = 70.0f;
+
+        Instance->Graphics->OnEnterWorld();
     }
 
     void World::OnExit()
     {
-        // Empty for now
+        Instance->Graphics->OnExitWorld();
     }
 
     void World::Tick()

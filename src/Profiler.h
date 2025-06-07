@@ -22,6 +22,7 @@ namespace Minecraft
 
     // This is a class because we need a separate one for each thread
     // TODO: moving the mouse seems to lower the framerate
+    // TODO: make sure that the reepeated function calls work for repeated nested functions, e.g. GenerateMesh calls 2 functions but GenerateMesh is alwaus called
     // TODO: make sure this doesn't slow anything down
     // - Do an option in release mode where Push/Pop are blank and compare FPS
     class Profiler

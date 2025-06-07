@@ -13,6 +13,7 @@ namespace Minecraft
     class Texture;
     class VertexShader;
 
+    // TODO: maybe not here but make a CreateMesh function taking in vertcies, indices, a list of vertex attributes, and a shader
     class Renderer
     {
     public:
@@ -23,6 +24,10 @@ namespace Minecraft
 
         void PreRender();
         void PostRender();
+
+        // TODO: RenderWorld and move all rendering logic out of world class
+        void OnEnterWorld();
+        void OnExitWorld();
 
         void DrawMesh(const Mesh& mesh, mat4 transform);
 

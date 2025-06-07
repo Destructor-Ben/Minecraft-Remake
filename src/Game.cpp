@@ -325,8 +325,8 @@ namespace Minecraft
         Logger::Info("Entering world...");
         InGame = true;
         IsPaused = false;
-        SetMouseHidden(true);
         CurrentWorld->OnEnter();
+        SetMouseHidden(true);
     }
 
     void Game::ExitCurrentWorld(bool actuallyExit)

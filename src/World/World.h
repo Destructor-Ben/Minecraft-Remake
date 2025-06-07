@@ -36,7 +36,6 @@ namespace Minecraft
     vec3 ChunkToWorldPos(vec3i chunkPos);
     vec3 BlockAndChunkToWorldPos(vec3i chunkPos, vec3i blockPos);
 
-    // TODO: properly synchronise the renderer with this and alert it when entering/exiting a world to create/destroy meshes
     class World
     {
     public:
@@ -57,12 +56,12 @@ namespace Minecraft
         // Player
         static constexpr float PlayerReachDistance = 7.0f;
         Camera PlayerCamera;
-        optional<vec3i> PlayerTargetedBlockPos = nullopt; // TODO: make an optional<Block> after world class redesign
+        optional <vec3i> PlayerTargetedBlockPos = nullopt; // TODO: make an optional<Block> after world class redesign
         vec3i PreviousPlayerChunkPos = { };
         bool HasPlayerMovedChunks = true;
 
         // Chunk data
-        unordered_map<vec3i, Chunk> Chunks = { };
+        unordered_map <vec3i, Chunk> Chunks = { };
 
         // Time
         float Time = 0;
@@ -92,8 +91,8 @@ namespace Minecraft
         optional<Chunk*> GetChunk(int chunkX, int chunkY, int chunkZ) { return GetChunk(vec3i(chunkX, chunkY, chunkZ)); }
         optional<Chunk*> GetChunk(vec3i chunkPos);
 
-        optional<Block> GetBlock(int x, int y, int z) { return GetBlock(vec3i(x, y, z)); }
-        optional<Block> GetBlock(vec3i pos);
+        optional <Block> GetBlock(int x, int y, int z) { return GetBlock(vec3i(x, y, z)); }
+        optional <Block> GetBlock(vec3i pos);
 
     private:
         void UpdateChunkList(vector<Chunk*>& chunks, int radius);

@@ -28,6 +28,9 @@ namespace Minecraft
 
         ChunkRenderer();
 
+        void OnEnterWorld();
+        void OnExitWorld();
+
         void RenderChunks(const vector<Chunk*>& chunks);
         void RenderChunk(Chunk& chunk);
         void QueueMeshRegen(Chunk& chunk, int priority = 0);
@@ -35,6 +38,7 @@ namespace Minecraft
         void RenderDebugChunkBorders();
 
     private:
+        void RegenerateMeshes();
         void RegenerateMesh(Chunk& chunk);
         void CreateMesh(Chunk& chunk);
         void SetMeshData(Chunk& chunk, const vector<float>& vertices, const vector <uint>& indices);
