@@ -44,6 +44,8 @@ namespace Minecraft
         // Only generate new chunks when moving along chunk borders
         if (!m_World->HasPlayerMovedChunks)
         {
+            // TODO: just don't start the profiler unless the player has moved chunks
+            // TODO: repeat that pattern for other functions
             Instance->PerfProfiler->Pop();
             return;
         }

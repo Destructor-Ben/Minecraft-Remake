@@ -170,6 +170,7 @@ namespace Minecraft
         m_ChunkMeshes[chunk.GetChunkPos()]->Materials[m_ChunkMaterial]->SetData(indices, GL_DYNAMIC_DRAW);
     }
 
+    // TODO: this is the biggest factor that influences chunk meshing speed
     void ChunkRenderer::GetChunkFaces(Chunk& chunk, vector <Quad>& faces)
     {
         for_block_in_chunk(x, y, z, {

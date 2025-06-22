@@ -16,6 +16,22 @@
 - Make all chunk loops that use radii circle instead of squares
 - Make all materials automatically request their shaders? it makes no sense to make them not do it since it is passed in anyway
 
+## Proper Design
+
+- Internal server vs WorldAccess + syncing with TickThread?
+    - Internal server allows opening to LAN + single codebase
+- World class rework
+    - TODO
+- Renderer design
+    - Lighting
+        - Use minecraft style lightmap
+            - Used for pointlights when they aren't set to deferred mode
+            - Also used to calculate ambient light (from sun and moon), since caves should be darker than surface
+        - Shadows from directional lights
+        - Perhaps optiosn to use shadows for point lights
+    - Deferred renderer - Almost all geometry
+    - Forward - Partially transparent
+
 ## Build System
 
 - Make the libraries submodules instead of directly embedded

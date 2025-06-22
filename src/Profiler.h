@@ -29,6 +29,7 @@ namespace Minecraft
     {
     public:
         void BeginFrame(string name);
+        // TODO: return ProfilerFrame struct
         vector<ProfilerData> EndFrame();
 
         void Push(string name);
