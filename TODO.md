@@ -30,6 +30,13 @@
   - Faster world access
   - Faster looping over blocks
   - Support for multithreading
+  - Questions
+    - Can for_block_in_chunk NOT use macros?
+    - Is chunks size of 16 the best?
+      - Yes - x & 15 is the same as x % 16 (the former is faster), so it's easier to convert in coordinate systems
+      - mod 16 and divide by 16 are way faster with powers of 2 - & 15 and << 4
+      - Also because of memory + cache and other bullshit
+    - Use typedefs for the coordinate system?
 - Renderer design
   - Lighting
     - Use minecraft style lightmap
@@ -45,6 +52,7 @@
 - Make the libraries submodules instead of directly embedded
 - Statically link all libraries
 - Make assets use an asset bundle
+- Compile to WASM in future to allow modding support and JIT compilation
 
 ## Optimizations
 
@@ -65,7 +73,7 @@
   - TODO: figure out how to optimize
   - Cache the matrix?
 
-### Fix remeshing queue
+## Fix remeshing queue
 
 - Fix holes in meshes when generating chunks around the player
 - Generating chunks around the player
