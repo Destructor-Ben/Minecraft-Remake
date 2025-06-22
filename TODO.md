@@ -37,6 +37,9 @@
       - mod 16 and divide by 16 are way faster with powers of 2 - & 15 and << 4
       - Also because of memory + cache and other bullshit
     - Use typedefs for the coordinate system?
+      - No
+      - Explicity structs stop accidentally conversion and can contain just a vec3i so its still easy to use
+      - The structs can also contain the conversion functions
 - Renderer design
   - Lighting
     - Use minecraft style lightmap
