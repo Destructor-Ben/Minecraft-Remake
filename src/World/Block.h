@@ -1,5 +1,7 @@
 #pragma once
 
+#include "World/Coords.h"
+
 namespace Minecraft
 {
     class BlockData;
@@ -11,16 +13,14 @@ namespace Minecraft
     public:
         BlockData& Data; // Set when the block is created
 
-        Block(Chunk& chunk, byte blockX, byte blockY, byte blockZ, BlockData& data);
+        Block(Chunk& chunk, const BlockOffset& blockOffset, BlockData& data);
 
         Chunk& GetChunk() const { return m_Chunk; }
-        vec3 GetWorldPos() const;
-        vec3i GetBlockPos() const { return { m_BlockX, m_BlockY, m_BlockZ }; }
+        BlockPos GetBlockPos() const;
+        BlockOffset GetBlockOffset() const { return m_BlockOffset; }
 
     private:
         Chunk& m_Chunk;
-        byte m_BlockX;
-        byte m_BlockY;
-        byte m_BlockZ;
+        BlockOffset m_BlockOffset;
     };
 }

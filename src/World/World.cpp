@@ -12,55 +12,6 @@
 
 namespace Minecraft
 {
-    #pragma region Coordinate Conversion Functions
-
-    #pragma clang diagnostic push
-    #pragma ide diagnostic ignored "ConstantParameter"
-
-    static int FloorDivision(int x, int y)
-    {
-        return (x < 0) ? ((x - y + 1) / y) : (x / y);
-    }
-
-    static int Modulus(int x, int y)
-    {
-        return (x % y + y) % y;
-    }
-
-    #pragma clang diagnostic pop
-
-    // TODO: Chunk::Size can't be used here for some reason, the linker whines about it
-
-    vec3i WorldToChunkPos(vec3 pos)
-    {
-        return vec3i(
-            FloorDivision((int)std::floor(pos.x), Chunk::Size),
-            FloorDivision((int)std::floor(pos.y), 10),
-            FloorDivision((int)std::floor(pos.z), 10)
-        );
-    }
-
-    vec3i WorldToBlockPos(vec3 pos)
-    {
-        return vec3i(
-            Modulus((int)std::floor(pos.x), 10),
-            Modulus((int)std::floor(pos.y), 10),
-            Modulus((int)std::floor(pos.z), 10)
-        );
-    }
-
-    vec3 ChunkToWorldPos(vec3i chunkPos)
-    {
-        return vec3(chunkPos) * 10;
-    }
-
-    vec3 BlockAndChunkToWorldPos(vec3i chunkPos, vec3i blockPos)
-    {
-        return ChunkToWorldPos(chunkPos) + vec3(blockPos);
-    }
-
-    #pragma endregion
-
     World::World(ulong seed)
     {
         m_Seed = seed;
@@ -90,13 +41,6 @@ namespace Minecraft
 
         UpdateChunkList(m_LoadedChunks, SimulationDistance);
 
-        Instance->PerfProfiler->Push("World::TickChunks");
-        for (auto* chunk : GetLoadedChunks())
-        {
-            chunk->Tick();
-        }
-        Instance->PerfProfiler->Pop();
-
         Instance->PerfProfiler->Push("World::TickPlayer");
         UpdateCamera();
         HasPlayerMovedChunks = WorldToChunkPos(PlayerCamera.Position) != PreviousPlayerChunkPos;
@@ -114,13 +58,6 @@ namespace Minecraft
         Instance->PerfProfiler->Push("World::Update");
 
         UpdateChunkList(m_RenderedChunks, RenderDistance);
-
-        Instance->PerfProfiler->Push("World::UpdateChunks");
-        for (auto* chunk : GetRenderedChunks())
-        {
-            chunk->Update();
-        }
-        Instance->PerfProfiler->Pop();
 
         m_WorldGenerator.GenerateChunksAroundPlayer(PlayerCamera.Position, GenerationDistance, MinHeight, MaxHeight);
 

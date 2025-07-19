@@ -3,8 +3,11 @@
 #include "Hash.h"
 #include "Graphics/Camera.h"
 #include "World/Chunk.h"
+#include "World/Coords.h"
 #include "World/Generation/WorldGenerator.h"
 
+// TODO: either make these not macros or make them not suck
+// TODO: when storage order in Chunk is updated for blocks, remember to update the loops too
 #define for_block_in_chunk(blockX, blockY, blockZ, body) \
 for (int blockX = 0; blockX < Chunk::Size; ++blockX) \
 for (int blockY = 0; blockY < Chunk::Size; ++blockY) \
@@ -29,13 +32,6 @@ body
 
 namespace Minecraft
 {
-    // Utility functions to convert between different coordinate systems
-    vec3i WorldToChunkPos(vec3 pos);
-    vec3i WorldToBlockPos(vec3 pos);
-
-    vec3 ChunkToWorldPos(vec3i chunkPos);
-    vec3 BlockAndChunkToWorldPos(vec3i chunkPos, vec3i blockPos);
-
     class World
     {
     public:

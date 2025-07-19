@@ -86,6 +86,10 @@ namespace Minecraft
     typedef glm::vec<3, int, glm::defaultp> vec3i;
     typedef glm::vec<4, int, glm::defaultp> vec4i;
 
+    typedef glm::vec<2, byte, glm::defaultp> vec2b;
+    typedef glm::vec<3, byte, glm::defaultp> vec3b;
+    typedef glm::vec<4, byte, glm::defaultp> vec4b;
+
     using glm::vec2;
     using glm::vec3;
     using glm::vec4;

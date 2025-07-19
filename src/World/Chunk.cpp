@@ -1,40 +1,27 @@
 #include "Chunk.h"
 
-#include "Game.h"
+#include "BoundingBox.h"
 #include "Logger.h"
-#include "Graphics/Renderers/ChunkRenderer.h"
-#include "Graphics/Renderers/Renderer.h"
 #include "World/BlockData.h"
 
 namespace Minecraft
 {
-    bool Chunk::ContainsBlockPos(int blockX, int blockY, int blockZ)
+    uint Chunk::GetBlockID(const BlockOffset& blockOffset)
     {
-        if (blockX < 0 || blockX >= Chunk::Size)
-            return false;
-
-        if (blockY < 0 || blockY >= Chunk::Size)
-            return false;
-
-        if (blockZ < 0 || blockZ >= Chunk::Size)
-            return false;
-
-        return true;
+        // XYZ order here, so z changes fastest, meaning XYZ order in for loops
+        // TODO: consider changing this
+        return (blockOffset.x << 8) + (blockOffset.y << 4) + blockOffset.z;
     }
 
-    Block Chunk::GetBlock(byte blockX, byte blockY, byte blockZ)
+    Block Chunk::GetBlock(const BlockOffset& blockOffset)
     {
         // Can't be smaller than 0 since they're unsigned, only need to check upper bound
-        Logger::Assert(blockX < Size);
-        Logger::Assert(blockY < Size);
-        Logger::Assert(blockZ < Size);
+        // Bitwise operations are very fast :)
+        Logger::Assert((blockOffset.x & 15) == blockOffset.x &&
+                       (blockOffset.y & 15) == blockOffset.y &&
+                       (blockOffset.z & 15) == blockOffset.z);
 
-        return { *this, blockX, blockY, blockZ, GetBlockData(GetBlockID(blockX, blockY, blockZ)) };
-    }
-
-    uint Chunk::GetBlockID(byte blockX, byte blockY, byte blockZ)
-    {
-        return blockX * Size * Size + blockY * Size + blockZ;
+        return { *this, blockOffset, GetBlockData(GetBlockID(blockOffset)) };
     }
 
     BlockData& Chunk::GetBlockData(uint blockID)
@@ -42,13 +29,30 @@ namespace Minecraft
         return m_BlockData.at(blockID);
     }
 
-    void Chunk::Tick()
+    bool Chunk::ContainsPos(const vec3& pos) const
     {
-
+        return pos.x >= 0 && pos.x < Chunk::Size &&
+               pos.y >= 0 && pos.y < Chunk::Size &&
+               pos.z >= 0 && pos.z < Chunk::Size;
     }
 
-    void Chunk::Update()
+    bool Chunk::ContainsPos(const BlockPos& pos) const
     {
+        return pos.x >= 0 && pos.x < Chunk::Size &&
+               pos.y >= 0 && pos.y < Chunk::Size &&
+               pos.z >= 0 && pos.z < Chunk::Size;
+    }
 
+    bool Chunk::ContainsPos(const BlockOffset& pos) const
+    {
+        return pos.x >= 0 && pos.x < Chunk::Size &&
+               pos.y >= 0 && pos.y < Chunk::Size &&
+               pos.z >= 0 && pos.z < Chunk::Size;
+    }
+
+    BoundingBox Chunk::GetBounds() const
+    {
+        auto corner = m_ChunkPos.ToWorldPos();
+        return BoundingBox(corner, corner + vec3(Size));
     }
 }

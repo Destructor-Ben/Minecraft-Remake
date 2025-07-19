@@ -17,14 +17,26 @@
     - Chunk meshing
     - Chunk generation
 - World class rework
-  - New coordinate system
+  - ✅ New coordinate system
     - WorldPos - vec3 (don't make a struct for this)
     - BlockPos - vec3i
     - ChunkPos - vec3i
     - BlockOffset - vec3i
+    - Conversions
+      - WorldPos <-> BlockPos
+      - WorldPos <-> ChunkPos
+      - WorldPos <-> ChunkPos + BlockOffset
+        - Will be part of the BlockOffset class
   - Entities
   - Dimensions
-  - NO biomes
+  - Chunk status (progressive chunk data creation)
+    - Basically increments whenever a generation pass finishes
+  - Chunk messages/whatever minecraft calls them
+    - Basically, when doing smth to world like breaking a block, a "message" is sent
+    - The message is executed, so the block is broken on the client, then the message is also forwarded to the server
+  - Saving + loading
+  - NO biomes - will be done later
+    - Maybe biomes but make it so there aren't horrible ugly biome borders
   - Components
   - Faster coordinate calculations/conversions
   - Faster world access

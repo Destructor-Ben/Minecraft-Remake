@@ -1,45 +1,40 @@
 #pragma once
 
+#include "World/Coords.h"
 #include "World/Block.h"
 #include "World/BlockData.h"
 
 namespace Minecraft
 {
+    class BoundingBox;
+
     // Chunks contain the actual block data and information about it's size, as wel as getters for blocks that access the data
     class Chunk
     {
     public:
-        static constexpr byte Size = 10;
+        static constexpr byte Size = 16;
         static constexpr uint Volume = Size * Size * Size;
 
-        // Parameterless ctor only needed for use in unordered_map
-        Chunk() = default;
-        Chunk(int chunkX, int chunkY, int chunkZ) : m_ChunkX(chunkX), m_ChunkY(chunkY), m_ChunkZ(chunkZ) { }
-
-        bool ContainsBlockPos(int blockX, int blockY, int blockZ);
-        bool ContainsBlockPos(vec3i blockPos) { return ContainsBlockPos(blockPos.x, blockPos.y, blockPos.z); }
-
-        Block GetBlock(byte blockX, byte blockY, byte blockZ);
-        Block GetBlock(vec3i blockPos) { return GetBlock((byte)blockPos.x, (byte)blockPos.y, (byte)blockPos.z); }
+        Chunk() = default; // Parameterless ctor only needed for use in unordered_map
+        Chunk(const ChunkPos& pos) : m_ChunkPos(pos) { }
 
         // Index of the block used for accessing the arrays of data in the chunks
-        static uint GetBlockID(Block block) { return GetBlockID(block.GetBlockPos()); }
-        static uint GetBlockID(vec3i blockPos) { return GetBlockID((byte)blockPos.x, (byte)blockPos.y, (byte)blockPos.z); }
-        static uint GetBlockID(byte blockX, byte blockY, byte blockZ);
+        static uint GetBlockID(const Block& block) { return GetBlockID(block.GetBlockOffset()); }
+        static uint GetBlockID(const BlockOffset& blockOffset);
 
+        Block GetBlock(const BlockOffset& blockOffset);
         BlockData& GetBlockData(uint blockID);
 
-        vec3 GetWorldPos() const { return vec3(GetChunkPos() * (int)Size); }
-        vec3i GetChunkPos() const { return { m_ChunkX, m_ChunkY, m_ChunkZ }; }
+        bool ContainsPos(const vec3& pos) const;
+        bool ContainsPos(const BlockPos& pos) const;
+        bool ContainsPos(const BlockOffset& pos) const;
+        BoundingBox GetBounds() const;
 
-        void Tick();
-        void Update();
+        vec3 GetWorldPos() const { return m_ChunkPos.ToWorldPos(); }
+        ChunkPos GetChunkPos() const { return m_ChunkPos; }
 
     private:
-        int m_ChunkX = 0;
-        int m_ChunkY = 0;
-        int m_ChunkZ = 0;
-
+        ChunkPos m_ChunkPos = { };
         array <BlockData, Volume> m_BlockData = { };
     };
 }

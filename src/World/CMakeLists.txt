@@ -9,6 +9,7 @@ target_sources(Minecraft_Remake PRIVATE
     Chunk.h
     ChunkPriorityQueue.cpp
     ChunkPriorityQueue.h
+    Coords.h
     World.cpp
     World.h
 )
