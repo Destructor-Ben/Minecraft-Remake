@@ -1,5 +1,7 @@
 #include "Game.h"
 
+#include <thread>
+
 #include "Logger.h"
 #include "Profiler.h"
 #include "ResourceManager.h"

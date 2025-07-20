@@ -16,7 +16,6 @@
 #include <ranges>
 #include <sstream>
 #include <string>
-#include <thread>
 #include <variant>
 
 // Collections
@@ -32,6 +31,7 @@
 #include <unordered_set>
 
 // Libraries
+// TODO: stb image, glad, and glfw do not need to be in every single file
 #include <fmt/core.h>
 #include <fmt/chrono.h>
 #include <glad/glad.h>
