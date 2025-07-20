@@ -85,12 +85,13 @@ namespace Minecraft
 
         // TODO: properly choose threadpool size
         // TODO: don't recreate the threadpool, reuse an existing one
-        dp::thread_pool chunkGenThreadPool(8);
+        dp::thread_pool chunkGenThreadPool(1);
         std::mutex chunkMutex;
         std::mutex meshRegenMutex;
 
         auto playerChunkPos = ChunkPos::FromWorldPos(playerPos);
 
+        // TODO: what the fuck why isn't this working!!
         for_chunk_in_radius(x, y, z, radius, {
             // TODO: maybe multithread this part? [[
             // Calculate chunk pos
@@ -100,40 +101,46 @@ namespace Minecraft
             // Check if the y position is out of bounds
             if (chunkPos.y < minHeight || chunkPos.y > maxHeight)
                 continue;
-
-            // Check if the chunk exists
-            auto existingChunk = m_World->GetChunk(chunkPos);
-            if (existingChunk.has_value())
-                continue;
             // TODO END ]]
 
             chunkGenThreadPool.enqueue_detach(
                 [this, &chunkPos, &chunkMutex, &meshRegenMutex]()
                 {
-                    // Generate the chunk
-                    // TODO: make the regular function threadsafe
+                    // Check if the chunk exists and create it
                     Chunk* chunk = nullptr;
 
+                    // TODO: use a function
+                    // TEMP - need a lock here, handle this better in the future
                     {
                         std::lock_guard lock(chunkMutex);
+
+                        auto existingChunk = m_World->GetChunk(chunkPos);
+                        if (existingChunk.has_value())
+                            return;
+
                         m_World->Chunks.emplace(chunkPos, Chunk(chunkPos));
+                        Logger::Debug(format("Making a new chunk, count is at {}", m_World->Chunks.size()));
                         chunk = &m_World->Chunks.at(chunkPos);
                     }
 
+                    // Generate the chunk
                     Generate(*chunk);
 
                     // Regenerate chunk meshes
                     // m_ChunkRemeshDirections includes the current chunk and all neighbors
-                    for (const auto& direction : m_ChunkRemeshDirections)
                     {
-                        auto otherChunkPos = chunkPos;
-                        otherChunkPos.Pos += direction;
-                        auto chunkToRemesh = m_World->GetChunk(otherChunkPos); // TODO: maybe this line should have a lock
-                        if (chunkToRemesh.has_value())
+                        std::lock_guard lock(meshRegenMutex);
+
+                        for (const auto& direction : m_ChunkRemeshDirections)
                         {
-                            std::lock_guard lock(meshRegenMutex);
-                            // TODO: priority
-                            Instance->ChunkGraphics->QueueMeshRegen(*chunkToRemesh.value());
+                            auto otherChunkPos = chunkPos;
+                            otherChunkPos.Pos += direction;
+                            auto chunkToRemesh = m_World->GetChunk(otherChunkPos); // TODO: maybe this line should have a lock
+                            if (chunkToRemesh.has_value())
+                            {
+                                // TODO: priority
+                                Instance->ChunkGraphics->QueueMeshRegen(*chunkToRemesh.value());
+                            }
                         }
                     }
                 }
