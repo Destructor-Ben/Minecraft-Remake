@@ -274,13 +274,14 @@ namespace Minecraft
             Render();
 
             // Manually handle delays if we don't have VSync
-            if (!IsVSyncEnabled())
+            // TODO: this is shit
+            /*if (!IsVSyncEnabled())
             {
                 // There will likely be inaccuracies with the loop delays, so be careful when adjusting this code
                 double iterations = glfwGetTime() * TargetFrameRate;
                 double nextStart = (iterations + 1) / TargetFrameRate;
                 std::this_thread::sleep_until(StartTime + chrono::duration<double>(nextStart));
-            }
+            }*/
 
             glfwSwapBuffers(Window);
             glfwPollEvents();
