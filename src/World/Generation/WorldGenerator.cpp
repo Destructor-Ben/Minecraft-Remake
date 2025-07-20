@@ -25,6 +25,7 @@ namespace Minecraft
     {
         Instance->PerfProfiler->Push("WorldGenerator::Generate");
 
+        // TODO: properly choose threadpool size
         dp::thread_pool chunkGenThreadPool(8);
         std::mutex chunkMutex;
         std::mutex meshRegenMutex;
@@ -82,6 +83,12 @@ namespace Minecraft
             return;
         }
 
+        // TODO: properly choose threadpool size
+        // TODO: don't recreate the threadpool, reuse an existing one
+        //dp::thread_pool chunkGenThreadPool(8);
+        //std::mutex chunkMutex;
+        //std::mutex meshRegenMutex;
+
         auto playerChunkPos = ChunkPos::FromWorldPos(playerPos);
 
         for_chunk_in_radius(x, y, z, radius, {
@@ -104,11 +111,16 @@ namespace Minecraft
             // Regenerate chunk meshes
             for (const auto& direction : m_ChunkRemeshDirections)
             {
-                auto chunkToRemesh = m_World->GetChunk(chunkPos);
+                auto otherChunkPos = chunkPos;
+                otherChunkPos.Pos += direction;
+                auto chunkToRemesh = m_World->GetChunk(otherChunkPos);
                 if (chunkToRemesh.has_value())
                     Instance->ChunkGraphics->QueueMeshRegen(*chunkToRemesh.value()); // TODO: priority
             }
         })
+
+        // TODO: read the above threadpool impl
+        //chunkGenThreadPool.wait_for_tasks();
 
         Instance->PerfProfiler->Pop();
     }
