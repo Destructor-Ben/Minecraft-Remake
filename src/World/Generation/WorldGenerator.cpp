@@ -25,7 +25,7 @@ namespace Minecraft
             for (int y = minHeight; y <= maxHeight; ++y)
             {
                 // Create and generate the chunk
-                auto chunkPos = vec3i(x, y, z);
+                auto chunkPos = ChunkPos(x, y, z);
                 auto& chunk = CreateChunk(chunkPos);
 
                 // Remesh the chunk
