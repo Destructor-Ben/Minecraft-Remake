@@ -214,7 +214,7 @@ namespace Minecraft
             vec3i dir = vec3i();
 
             Quad face { };
-            face.Position = block.GetWorldPos();
+            face.Position = block.GetBlockOffset().Pos;
             face.Rotation = m_GrassPlantFaceRotation * quat(glm::eulerAngleZ(Degrees90 * i));
             // TODO: bring this back face.Normal = face.Rotation * vec4(face.Normal, 1.0);
             SetFaceTexture(face, dir, block.Data->Type->GetTextureCoords(dir));
@@ -252,7 +252,7 @@ namespace Minecraft
 
         // Creating face
         Quad face { };
-        face.Position = block.GetWorldPos();
+        face.Position = block.GetBlockOffset().Pos;
         face.Position += vec3(dir) * 0.5f;
         face.Rotation = rotation;
         face.Normal = dir;
