@@ -10,6 +10,12 @@
 
 ## Proper Design
 
+- Memory management (ENFORCE EVERYWHERE)
+  - Smart pointers for ownership
+  - Pointers for referencing
+  - NO normal references
+  - Primitive types don't need references
+  - Const references for everything else
 - Internal server vs WorldAccess + syncing with TickThread?
   - Internal server allows opening to LAN + single codebase
   - Only separate thread is the server thread
@@ -18,15 +24,6 @@
     - Chunk generation
 - World class rework
   - ✅ New coordinate system
-    - WorldPos - vec3 (don't make a struct for this)
-    - BlockPos - vec3i
-    - ChunkPos - vec3i
-    - BlockOffset - vec3i
-    - Conversions
-      - WorldPos <-> BlockPos
-      - WorldPos <-> ChunkPos
-      - WorldPos <-> ChunkPos + BlockOffset
-        - Will be part of the BlockOffset class
   - Entities
   - Dimensions
   - Chunk status (progressive chunk data creation)

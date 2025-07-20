@@ -46,8 +46,9 @@ namespace Minecraft::Physics
         while (t < maxDistance)
         {
             // Check if the current voxel is a solid block
-            auto block = Instance->CurrentWorld->GetBlock(voxelPos);
-            if (block.has_value() && block->Data.Type != Blocks::Air)
+            auto block = Instance->CurrentWorld->GetBlock(BlockPos(voxelPos));
+            // TODO: replace with an IsSolid bool? or perhaps allow passing in the condition for the collision
+            if (block.has_value() && block->Data->Type != Blocks::Air)
             {
                 result.DidHit = true;
                 result.HitPos = rayOrigin + t * dir;

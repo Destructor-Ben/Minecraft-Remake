@@ -1,5 +1,7 @@
 #pragma once
 
+#include "World/Coords.h"
+
 // Implementation of an automatic hashing system for unordered_map
 // Based on https://stackoverflow.com/a/38140932/12259381
 
@@ -39,4 +41,6 @@ namespace Minecraft
         }\
     };
 
-MINECRAFT_MAKE_HASHABLE(Minecraft::vec3i, t.x, t.y, t.z)
+MINECRAFT_MAKE_HASHABLE(Minecraft::BlockPos, t.x, t.y, t.z)
+MINECRAFT_MAKE_HASHABLE(Minecraft::ChunkPos, t.x, t.y, t.z)
+MINECRAFT_MAKE_HASHABLE(Minecraft::BlockOffset, t.x, t.y, t.z)

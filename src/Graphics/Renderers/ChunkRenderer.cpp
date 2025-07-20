@@ -36,12 +36,12 @@ namespace Minecraft
     void ChunkRenderer::RenderDebugChunkBorders()
     {
         auto playerPos = Instance->CurrentWorld->PlayerCamera.Position;
-        auto playerChunkPos = WorldToChunkPos(playerPos);
+        auto playerChunkPos = ChunkPos::FromWorldPos(playerPos);
         if (!m_ChunkMeshes.contains(playerChunkPos))
             return;
 
         auto chunkBounds = m_ChunkMeshes.at(playerChunkPos)->Bounds;
-        Instance->Graphics->DebugDrawBounds(chunkBounds.value(), glm::translate(ChunkToWorldPos(playerChunkPos)), vec3(1, 1, 0));
+        Instance->Graphics->DebugDrawBounds(chunkBounds.value(), glm::translate(playerChunkPos.ToWorldPos()), vec3(1, 1, 0));
     }
 
     void ChunkRenderer::RegenerateMeshes()
@@ -128,6 +128,7 @@ namespace Minecraft
         //   - This only helps when breaking blocks however
         // TODO: reuse this vector to avoid reallocating it - how to do with multithreading?
         // - If I do that, then it will be much easier to prellocate the size
+        // - Just use a vecctor for each thread if I want to reuse it
         auto faces = vector<Quad>();
         GetChunkFaces(chunk, faces);
 
@@ -176,7 +177,7 @@ namespace Minecraft
         for_block_in_chunk(x, y, z, {
             auto block = chunk.GetBlock(x, y, z);
 
-            switch (block.Data.Type->MeshType)
+            switch (block.Data->Type->MeshType)
             {
                 case BlockMeshType::None:
                     break;
@@ -213,10 +214,10 @@ namespace Minecraft
             vec3i dir = vec3i();
 
             Quad face { };
-            face.Position = block.GetBlockPos();
+            face.Position = block.GetWorldPos();
             face.Rotation = m_GrassPlantFaceRotation * quat(glm::eulerAngleZ(Degrees90 * i));
             // TODO: bring this back face.Normal = face.Rotation * vec4(face.Normal, 1.0);
-            SetFaceTexture(face, dir, block.Data.Type->GetTextureCoords(dir));
+            SetFaceTexture(face, dir, block.Data->Type->GetTextureCoords(dir));
 
             // Adjustment to make faces align with bounds
             face.Position += vec3(0.5);
@@ -227,26 +228,35 @@ namespace Minecraft
 
     void ChunkRenderer::AddFaceInDirection(Block& block, vector <Quad>& faces, vec3i dir, quat rotation)
     {
+        // TODO: [[
+        // - this is the slowest part of the algorithm
+        // - testing against adjacent blocks is very slow
+        // - Best solution is to make a bitfield of blocks exposed to air
+        // - This would be updated whenever blocks are set, and not recalculated here
+        // - Comments for this are in Chunk.h too
+
         // Getting other block
         auto otherBlockWorldPos = vec3i(block.GetWorldPos().x + dir.x, block.GetWorldPos().y + dir.y, block.GetWorldPos().z + dir.z);
-        auto otherBlock = Instance->CurrentWorld->GetBlock(otherBlockWorldPos);
+        auto otherBlock = Instance->CurrentWorld->GetBlock(BlockPos::FromWorldPos(otherBlockWorldPos));
 
         // Only create faces next to transparent blocks
-        bool isOtherBlockSolid = !otherBlock.has_value() || otherBlock.value().Data.Type->MeshType == BlockMeshType::SolidCube;
-        auto otherBlockChunkPos = WorldToChunkPos(otherBlockWorldPos);
+        bool isOtherBlockSolid = !otherBlock.has_value() || otherBlock.value().Data->Type->MeshType == BlockMeshType::SolidCube;
+        auto otherBlockChunkPos = ChunkPos::FromWorldPos(otherBlockWorldPos);
         bool isInWorldLimits = otherBlockChunkPos.y <= World::MaxHeight && otherBlockChunkPos.y >= World::MinHeight;
         // We want the top and bottom blocks of the world to have faces there otherwise it is ugly
         // So we only return if the adjacent block is in the world limits so the ones outside are treated as solid
         if (isOtherBlockSolid && isInWorldLimits)
             return;
 
+        // END TODO ]]
+
         // Creating face
         Quad face { };
-        face.Position = block.GetBlockPos();
+        face.Position = block.GetWorldPos();
         face.Position += vec3(dir) * 0.5f;
         face.Rotation = rotation;
         face.Normal = dir;
-        SetFaceTexture(face, dir, block.Data.Type->GetTextureCoords(dir));
+        SetFaceTexture(face, dir, block.Data->Type->GetTextureCoords(dir));
 
         // Adjustment to make faces align with bounds
         face.Position += vec3(0.5);

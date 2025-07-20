@@ -21,6 +21,9 @@ namespace Minecraft
     void World::Generate()
     {
         m_WorldGenerator.Generate(SpawnRadius, MinSpawnHeight, MaxSpawnHeight);
+
+        // TODO: Reset time now since it will take time for the world to generate
+        // Time = Dawn;
     }
 
     void World::OnEnter()
@@ -43,7 +46,7 @@ namespace Minecraft
 
         Instance->PerfProfiler->Push("World::TickPlayer");
         UpdateCamera();
-        HasPlayerMovedChunks = WorldToChunkPos(PlayerCamera.Position) != PreviousPlayerChunkPos;
+        HasPlayerMovedChunks = ChunkPos::FromWorldPos(PlayerCamera.Position) != PreviousPlayerChunkPos;
         PlayerCamera.Update();
         UpdateBlockBreaking();
         Instance->PerfProfiler->Pop();
@@ -82,7 +85,7 @@ namespace Minecraft
         Instance->PerfProfiler->Pop();
     }
 
-    optional<Chunk*> World::GetChunk(vec3i chunkPos)
+    optional<Chunk*> World::GetChunk(const ChunkPos& chunkPos)
     {
         if (!Chunks.contains(chunkPos))
             return nullopt;
@@ -90,18 +93,18 @@ namespace Minecraft
         return &Chunks.at(chunkPos);
     }
 
-    optional <Block> World::GetBlock(vec3i pos)
+    optional <Block> World::GetBlock(const BlockPos& pos)
     {
         // Calculate coordinates
-        vec3i chunkPos = WorldToChunkPos(pos);
-        vec3i blockPos = WorldToBlockPos(pos);
+        ChunkPos chunkPos = ChunkPos::FromBlockPos(pos);
+        BlockOffset blockOffset = BlockOffset::FromBlockPos(pos);
 
         // Get block from chunk
         auto chunk = GetChunk(chunkPos);
         if (!chunk.has_value())
             return nullopt;
 
-        return chunk.value()->GetBlock(blockPos);
+        return chunk.value()->GetBlock(blockOffset);
     }
 
     void World::UpdateChunkList(vector<Chunk*>& chunks, int radius)
@@ -115,13 +118,13 @@ namespace Minecraft
             return;
         }
 
-        auto playerChunkPos = WorldToChunkPos(PlayerCamera.Position);
+        auto playerChunkPos = ChunkPos::FromWorldPos(PlayerCamera.Position);
         chunks.clear();
 
         for_chunk_in_radius(x, y, z, radius, {
             // Calculate chunk pos
-            auto chunkPos = vec3i(x, y, z);
-            chunkPos += playerChunkPos;
+            auto chunkPos = ChunkPos(x, y, z);
+            chunkPos.Pos += playerChunkPos.Pos;
 
             // Add the chunk
             auto chunk = GetChunk(chunkPos);
@@ -151,7 +154,7 @@ namespace Minecraft
 
     void World::UpdateCamera()
     {
-        PreviousPlayerChunkPos = WorldToChunkPos(PlayerCamera.Position);
+        PreviousPlayerChunkPos = ChunkPos::FromWorldPos(PlayerCamera.Position);
 
         const float sensitivity = 0.005f;
         const float maxAngle = glm::radians(89.0f);
@@ -239,14 +242,14 @@ namespace Minecraft
         // Block breaking
         auto ray = Physics::RaycastBlocks(PlayerCamera.Position, PlayerCamera.GetForwardVector(), PlayerReachDistance);
         if (ray.DidHit)
-            PlayerTargetedBlockPos = ray.HitBlockPos;
+            PlayerTargetBlock = GetBlock(BlockPos::FromWorldPos(ray.HitBlockPos));
         else
-            PlayerTargetedBlockPos = nullopt;
+            PlayerTargetBlock = nullopt;
 
-        if (!PlayerTargetedBlockPos.has_value())
+        if (!PlayerTargetBlock.has_value())
             return;
 
-        auto targetBlock = GetBlock(PlayerTargetedBlockPos.value());
+        auto targetBlock = PlayerTargetBlock;
         if (!targetBlock.has_value())
             return;
 
@@ -254,13 +257,13 @@ namespace Minecraft
         // Block breaking
         if (Input::WasMouseButtonPressed(MouseButton::Left))
         {
-            targetBlock->Data.Type = Blocks::Air;
+            targetBlock->Data->Type = Blocks::Air;
             // TODO: priority
             // TODO: make a function to update meshes at a block position if it gets modified
-            Instance->ChunkGraphics->QueueMeshRegen(targetBlock->GetChunk());
+            Instance->ChunkGraphics->QueueMeshRegen(*targetBlock->GetChunk());
 
             // Regen adjacent chunk meshes
-            auto chunkPos = targetBlock->GetChunk().GetChunkPos();
+            auto chunkPos = targetBlock->GetChunk()->GetChunkPos();
             auto blockPos = targetBlock->GetBlockPos();
 
             if (blockPos.x == 0)
@@ -288,21 +291,22 @@ namespace Minecraft
         // TODO: what if place + break in the same tick?
         if (Input::WasMouseButtonPressed(MouseButton::Right) && SelectedBlock != nullptr)
         {
-            auto placedBlockPos = PlayerTargetedBlockPos.value() + ray.HitFaceNormal;
+            auto placedBlockPos = PlayerTargetBlock.value().GetBlockPos();
+            placedBlockPos.Pos += ray.HitFaceNormal;
             auto placedBlock = GetBlock(placedBlockPos);
             if (!placedBlock.has_value())
                 return;
 
-            if (placedBlock->Data.Type != Blocks::Air)
+            if (placedBlock->Data->Type != Blocks::Air)
                 return;
 
-            placedBlock->Data.Type = SelectedBlock;
+            placedBlock->Data->Type = SelectedBlock;
             // TODO: priority
-            Instance->ChunkGraphics->QueueMeshRegen(placedBlock->GetChunk());
+            Instance->ChunkGraphics->QueueMeshRegen(*placedBlock->GetChunk());
 
             // Regen adjacent chunk meshes
             // TODO: check this is correct for the placed block
-            auto chunkPos = placedBlock->GetChunk().GetChunkPos();
+            auto chunkPos = placedBlock->GetChunk()->GetChunkPos();
             auto blockPos = placedBlock->GetBlockPos();
 
             if (blockPos.x == 0)
@@ -325,9 +329,11 @@ namespace Minecraft
         }
     }
 
-    void World::UpdateMeshInDirection(vec3i chunkPos, vec3i dir)
+    void World::UpdateMeshInDirection(const ChunkPos& chunkPos, vec3i dir)
     {
-        auto chunk = GetChunk(chunkPos + dir);
+        auto newChunkPos = chunkPos;
+        newChunkPos.Pos += dir;
+        auto chunk = GetChunk(newChunkPos);
         if (chunk.has_value())
         {
             // TODO: priority

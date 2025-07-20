@@ -21,23 +21,25 @@ namespace Minecraft
                        (blockOffset.y & 15) == blockOffset.y &&
                        (blockOffset.z & 15) == blockOffset.z);
 
-        return { *this, blockOffset, GetBlockData(GetBlockID(blockOffset)) };
+        return { this, blockOffset, GetBlockData(GetBlockID(blockOffset)) };
     }
 
-    BlockData& Chunk::GetBlockData(uint blockID)
+    BlockData* Chunk::GetBlockData(uint blockID)
     {
-        return m_BlockData.at(blockID);
+        return &m_BlockData.at(blockID);
     }
 
-    bool Chunk::ContainsPos(const vec3& pos) const
+    bool Chunk::ContainsPos(const vec3& worldPos) const
     {
+        auto pos = worldPos - GetWorldPos();
         return pos.x >= 0 && pos.x < Chunk::Size &&
                pos.y >= 0 && pos.y < Chunk::Size &&
                pos.z >= 0 && pos.z < Chunk::Size;
     }
 
-    bool Chunk::ContainsPos(const BlockPos& pos) const
+    bool Chunk::ContainsPos(const BlockPos& blockPos) const
     {
+        auto pos = blockPos.ToWorldPos() - GetWorldPos();
         return pos.x >= 0 && pos.x < Chunk::Size &&
                pos.y >= 0 && pos.y < Chunk::Size &&
                pos.z >= 0 && pos.z < Chunk::Size;

@@ -9,6 +9,13 @@ namespace Minecraft
     class BoundingBox;
 
     // Chunks contain the actual block data and information about it's size, as wel as getters for blocks that access the data
+    // TODO: add some fields that are recalculated when the chunk is loaded/modified
+    // - IsEmpty - whether the entire chunk is air
+    // - BitField for blocks that are exposed to air
+    //   - Used to significantly speed up chunk meshing
+    //   - Comments are also in ChunkRendererer
+    // - Maybe a BitField for solid blocks too, could be useful for collision
+    // - 64 uint64s (ulongs) are needed for a bitfield
     class Chunk
     {
     public:
@@ -22,12 +29,13 @@ namespace Minecraft
         static uint GetBlockID(const Block& block) { return GetBlockID(block.GetBlockOffset()); }
         static uint GetBlockID(const BlockOffset& blockOffset);
 
+        Block GetBlock(byte x, byte y, byte z) { return GetBlock(BlockOffset(x, y, z)); }
         Block GetBlock(const BlockOffset& blockOffset);
-        BlockData& GetBlockData(uint blockID);
+        BlockData* GetBlockData(uint blockID);
 
-        bool ContainsPos(const vec3& pos) const;
-        bool ContainsPos(const BlockPos& pos) const;
-        bool ContainsPos(const BlockOffset& pos) const;
+        bool ContainsPos(const vec3& worldPos) const;
+        bool ContainsPos(const BlockPos& blockPos) const;
+        bool ContainsPos(const BlockOffset& offset) const;
         BoundingBox GetBounds() const;
 
         vec3 GetWorldPos() const { return m_ChunkPos.ToWorldPos(); }

@@ -6,7 +6,15 @@
 #include "World/Coords.h"
 #include "World/Generation/WorldGenerator.h"
 
-// TODO: either make these not macros or make them not suck
+// TODO: make these functions that accept lambdas
+/*template <typename Func>
+inline void for_each_block(Func&& func) {
+    for (int blockX = 0; blockX < Chunk::Size; ++blockX)
+        for (int blockY = 0; blockY < Chunk::Size; ++blockY)
+            for (int blockZ = 0; blockZ < Chunk::Size; ++blockZ)
+                func(blockX, blockY, blockZ);
+}*/
+
 // TODO: when storage order in Chunk is updated for blocks, remember to update the loops too
 #define for_block_in_chunk(blockX, blockY, blockZ, body) \
 for (int blockX = 0; blockX < Chunk::Size; ++blockX) \
@@ -32,6 +40,7 @@ body
 
 namespace Minecraft
 {
+    // TODO: do a big review of this class and see if there is anything I can do to optimize it
     class World
     {
     public:
@@ -50,15 +59,17 @@ namespace Minecraft
         static constexpr int MaxSpawnHeight = MaxHeight;
 
         // Player
+        // TODO: move to player entity
         static constexpr float PlayerReachDistance = 7.0f;
         BlockType* SelectedBlock = nullptr;
         Camera PlayerCamera;
-        optional <vec3i> PlayerTargetedBlockPos = nullopt; // TODO: make an optional<Block> after world class redesign
-        vec3i PreviousPlayerChunkPos = { };
+        optional <Block> PlayerTargetBlock = nullopt;
+        ChunkPos PreviousPlayerChunkPos = { };
         bool HasPlayerMovedChunks = true; // Set to true so when the world loads the chunk lists update
 
+        // TODO: move below data to a Dimension class
         // Chunk data
-        unordered_map <vec3i, Chunk> Chunks = { };
+        unordered_map <ChunkPos, Chunk> Chunks = { };
 
         // Time
         float Time = 0;
@@ -82,14 +93,14 @@ namespace Minecraft
         void Render();
 
         // Interface for chunks
+        // TODO: should be const references
         vector<Chunk*> GetLoadedChunks() { return m_LoadedChunks; }
         vector<Chunk*> GetRenderedChunks() { return m_RenderedChunks; }
 
-        optional<Chunk*> GetChunk(int chunkX, int chunkY, int chunkZ) { return GetChunk(vec3i(chunkX, chunkY, chunkZ)); }
-        optional<Chunk*> GetChunk(vec3i chunkPos);
-
-        optional <Block> GetBlock(int x, int y, int z) { return GetBlock(vec3i(x, y, z)); }
-        optional <Block> GetBlock(vec3i pos);
+        optional<Chunk*> GetChunk(int x, int y, int z) { return GetChunk(ChunkPos(x, y, z)); }
+        optional<Chunk*> GetChunk(const ChunkPos& chunkPos);
+        optional <Block> GetBlock(int x, int y, int z) { return GetBlock(BlockPos(x, y, z)); }
+        optional <Block> GetBlock(const BlockPos& pos);
 
     private:
         void UpdateChunkList(vector<Chunk*>& chunks, int radius);
@@ -98,8 +109,10 @@ namespace Minecraft
 
         void UpdateCamera();
         void UpdateBlockBreaking();
-        void UpdateMeshInDirection(vec3i chunkPos, vec3i dir);
+        void UpdateMeshInDirection(const ChunkPos& chunkPos, vec3i dir);
 
+        // TODO: these could be arrays maybe instead of vectors? their size will be fixed unless the render distance changes
+        // - Or just preallocate the size of the vectors, use emplace_back - rewatch cherno video on proper use of vectors
         vector<Chunk*> m_LoadedChunks = { };
         vector<Chunk*> m_RenderedChunks = { };
 

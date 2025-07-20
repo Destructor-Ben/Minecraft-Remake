@@ -89,9 +89,9 @@ namespace Minecraft
         {
             vec3 playerPos = Instance->CurrentWorld->PlayerCamera.Position;
             m_PlayerPosText->SetText(format("PlayerPos: ({},{},{}) ({:.3f},{:.3f},{:.3f})", (int)playerPos.x, (int)playerPos.y, (int)playerPos.z, playerPos.x, playerPos.y, playerPos.z));
-            vec3i chunkPos = WorldToChunkPos(playerPos);
+            auto chunkPos = ChunkPos::FromWorldPos(playerPos);
             m_PlayerChunkText->SetText(format("PlayerChunk: ({},{},{})", chunkPos.x, chunkPos.y, chunkPos.z));
-            vec3i blockPos = WorldToBlockPos(playerPos);
+            auto blockPos = BlockPos::FromWorldPos(playerPos);
             m_PlayerBlockPosText->SetText(format("BlockPos: ({},{},{})", blockPos.x, blockPos.y, blockPos.z));
             vec3 playerRot = glm::eulerAngles(Instance->CurrentWorld->PlayerCamera.Rotation);
             m_PlayerDirectionText->SetText(""); // TODO: idk how to do this

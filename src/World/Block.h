@@ -11,16 +11,20 @@ namespace Minecraft
     class Block
     {
     public:
-        BlockData& Data; // Set when the block is created
+        BlockData* Data; // Set when the block is created
 
-        Block(Chunk& chunk, const BlockOffset& blockOffset, BlockData& data);
+        Block(Chunk* chunk, const BlockOffset& blockOffset, BlockData* data) :
+            Data(data),
+            m_Chunk(chunk),
+            m_BlockOffset(blockOffset) { }
 
-        Chunk& GetChunk() const { return m_Chunk; }
+        vec3 GetWorldPos() const { return GetBlockPos().ToWorldPos(); }
         BlockPos GetBlockPos() const;
         BlockOffset GetBlockOffset() const { return m_BlockOffset; }
+        Chunk* GetChunk() const { return m_Chunk; }
 
     private:
-        Chunk& m_Chunk;
+        Chunk* m_Chunk;
         BlockOffset m_BlockOffset;
     };
 }

@@ -80,8 +80,8 @@ namespace Minecraft
         shared_ptr <ChunkMaterial> m_ChunkMaterial;
 
         // TODO: ChunkMesh object
-        unordered_map <vec3i, shared_ptr<Mesh>> m_ChunkMeshes = { };
-        unordered_map<vec3i, bool> m_IsChunkMeshEmpty = { };
+        unordered_map <ChunkPos, shared_ptr<Mesh>> m_ChunkMeshes = { };
+        unordered_map<ChunkPos, bool> m_IsChunkMeshEmpty = { };
 
         // TODO: kind of isn't needed if a ChunkMesh object exists, since there can just be fields in the chunkmesh for IsPopulated and Priority
         // Then just look over the rendered chunks and check if they need a remesh in update

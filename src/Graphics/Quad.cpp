@@ -21,6 +21,7 @@ namespace Minecraft
         uint currentIndex = 0;
 
         // Reserve memory - Guaranteed to know how big these will be
+        // TODO: test to make sure there is only 1 allocation being made
         uint numQuads = quads.size();
         vertices.reserve(numQuads * 4 * 11); // 4 vertices per quad, 11 floats per vertex
         indices.reserve(numQuads * 6); // 6 indices per quad
