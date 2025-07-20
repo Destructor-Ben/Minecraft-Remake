@@ -332,7 +332,7 @@ namespace Minecraft
     void World::UpdateMeshInDirection(const ChunkPos& chunkPos, vec3i dir)
     {
         auto newChunkPos = chunkPos;
-        newChunkPos.Pos = newChunkPos.Pos + dir; // TODO: wtf?
+        newChunkPos.Pos += dir; // TODO: wtf?
         auto chunk = GetChunk(newChunkPos);
         if (chunk.has_value())
         {
