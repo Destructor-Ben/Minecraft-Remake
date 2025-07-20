@@ -264,24 +264,24 @@ namespace Minecraft
 
             // Regen adjacent chunk meshes
             auto chunkPos = targetBlock->GetChunk()->GetChunkPos();
-            auto blockPos = targetBlock->GetBlockPos();
+            auto blockOffset = targetBlock->GetBlockOffset();
 
-            if (blockPos.x == 0)
+            if (blockOffset.x == 0)
                 UpdateMeshInDirection(chunkPos, vec3i(-1, 0, 0));
 
-            if (blockPos.y == 0)
+            if (blockOffset.y == 0)
                 UpdateMeshInDirection(chunkPos, vec3i(0, -1, 0));
 
-            if (blockPos.z == 0)
+            if (blockOffset.z == 0)
                 UpdateMeshInDirection(chunkPos, vec3i(0, 0, -1));
 
-            if (blockPos.x == Chunk::Size - 1)
+            if (blockOffset.x == Chunk::Size - 1)
                 UpdateMeshInDirection(chunkPos, vec3i(1, 0, 0));
 
-            if (blockPos.y == Chunk::Size - 1)
+            if (blockOffset.y == Chunk::Size - 1)
                 UpdateMeshInDirection(chunkPos, vec3i(0, 1, 0));
 
-            if (blockPos.z == Chunk::Size - 1)
+            if (blockOffset.z == Chunk::Size - 1)
                 UpdateMeshInDirection(chunkPos, vec3i(0, 0, 1));
 
             return;
@@ -307,24 +307,24 @@ namespace Minecraft
             // Regen adjacent chunk meshes
             // TODO: check this is correct for the placed block
             auto chunkPos = placedBlock->GetChunk()->GetChunkPos();
-            auto blockPos = placedBlock->GetBlockPos();
+            auto blockOffset = placedBlock->GetBlockOffset();
 
-            if (blockPos.x == 0)
+            if (blockOffset.x == 0)
                 UpdateMeshInDirection(chunkPos, vec3i(-1, 0, 0));
 
-            if (blockPos.y == 0)
+            if (blockOffset.y == 0)
                 UpdateMeshInDirection(chunkPos, vec3i(0, -1, 0));
 
-            if (blockPos.z == 0)
+            if (blockOffset.z == 0)
                 UpdateMeshInDirection(chunkPos, vec3i(0, 0, -1));
 
-            if (blockPos.x == Chunk::Size - 1)
+            if (blockOffset.x == Chunk::Size - 1)
                 UpdateMeshInDirection(chunkPos, vec3i(1, 0, 0));
 
-            if (blockPos.y == Chunk::Size - 1)
+            if (blockOffset.y == Chunk::Size - 1)
                 UpdateMeshInDirection(chunkPos, vec3i(0, 1, 0));
 
-            if (blockPos.z == Chunk::Size - 1)
+            if (blockOffset.z == Chunk::Size - 1)
                 UpdateMeshInDirection(chunkPos, vec3i(0, 0, 1));
         }
     }
@@ -332,7 +332,7 @@ namespace Minecraft
     void World::UpdateMeshInDirection(const ChunkPos& chunkPos, vec3i dir)
     {
         auto newChunkPos = chunkPos;
-        newChunkPos.Pos += dir;
+        newChunkPos.Pos = newChunkPos.Pos + dir; // TODO: wtf?
         auto chunk = GetChunk(newChunkPos);
         if (chunk.has_value())
         {
