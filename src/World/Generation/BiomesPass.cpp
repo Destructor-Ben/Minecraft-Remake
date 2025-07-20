@@ -48,7 +48,7 @@ namespace Minecraft
     {
         for_block_in_chunk(x, y, z, {
             auto block = chunk.GetBlock(x, y, z);
-            block.Data.Biome = CalculateBiome(block.GetWorldPos());
+            block.Data->Biome = CalculateBiome(block.GetWorldPos());
         })
     }
 

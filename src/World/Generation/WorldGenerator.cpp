@@ -50,12 +50,12 @@ namespace Minecraft
             return;
         }
 
-        auto playerChunkPos = WorldToChunkPos(playerPos);
+        auto playerChunkPos = ChunkPos::FromWorldPos(playerPos);
 
         for_chunk_in_radius(x, y, z, radius, {
             // Calculate chunk pos
-            auto chunkPos = vec3i(x, y, z);
-            chunkPos += playerChunkPos;
+            auto chunkPos = ChunkPos(x, y, z);
+            chunkPos.Pos += playerChunkPos.Pos;
 
             // Check if the y position is out of bounds
             if (chunkPos.y < minHeight || chunkPos.y > maxHeight)
@@ -81,15 +81,15 @@ namespace Minecraft
         Instance->PerfProfiler->Pop();
     }
 
-    Chunk& WorldGenerator::CreateChunk(vec3i chunkPos)
+    Chunk& WorldGenerator::CreateChunk(const ChunkPos& pos)
     {
         // TODO: this and below flood the console
         // TODO: make the profiler just add the duration onto calls of the same name + increment a counter so we know how many times a method was called
         //Instance->PerfProfiler->Push("WorldGenerator::CreateChunk");
 
         // Avoid copying the chunk into the map, just create it in there and retrieve its reference
-        m_World->Chunks.emplace(chunkPos, Chunk(chunkPos.x, chunkPos.y, chunkPos.z));
-        auto& chunk = m_World->Chunks[chunkPos];
+        m_World->Chunks.emplace(pos, Chunk(pos));
+        auto& chunk = m_World->Chunks[pos];
         Generate(chunk);
 
         //Instance->PerfProfiler->Pop();

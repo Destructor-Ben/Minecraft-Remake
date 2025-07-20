@@ -1,5 +1,6 @@
 #pragma once
 
+#include "World/Coords.h"
 #include "Random/NoiseGenerator.h"
 
 namespace Minecraft
@@ -9,7 +10,7 @@ namespace Minecraft
     class BlockType;
     class Chunk;
     class World;
-    
+
     class WorldGenerator
     {
     public:
@@ -24,7 +25,7 @@ namespace Minecraft
 
     private:
         // Creates a chunk at the given positions and generates it
-        Chunk& CreateChunk(vec3i chunkPos);
+        Chunk& CreateChunk(const ChunkPos& pos);
 
         // Generates the terrain of an individual chunk, used above
         void Generate(Chunk& chunk);

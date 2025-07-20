@@ -32,7 +32,7 @@ namespace Minecraft
                     float yPos = block.GetWorldPos().y;
 
                     // Set the block type
-                    auto biome = block.Data.Biome;
+                    auto biome = block.Data->Biome;
                     auto blockType = Blocks::Air;
                     int surfaceHeight = GetSurfaceHeight(samplePos);
 
@@ -48,7 +48,7 @@ namespace Minecraft
                     if (yPos <= height - surfaceHeight)
                         blockType = Blocks::Stone;
 
-                    block.Data.Type = blockType;
+                    block.Data->Type = blockType;
                 }
             }
         }

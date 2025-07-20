@@ -26,7 +26,7 @@ namespace Minecraft
         GenerateGrass(chunk);
     }
 
-    void WorldGenerator::GenerateGrass(Minecraft::Chunk& chunk)
+    void WorldGenerator::GenerateGrass(Chunk& chunk)
     {
         // TODO: use for_block_in_chunk
         for (int x = 0; x < Chunk::Size; ++x)
@@ -36,12 +36,12 @@ namespace Minecraft
                 for (int z = 0; z < Chunk::Size; ++z)
                 {
                     // Check if grass can be placed
-                    Block block = chunk.GetBlock(x, y, z);
+                    Block block = chunk.GetBlock(BlockOffset(x, y, z));
                     if (!ContainsGrass(block))
                         continue;
 
                     // Place the grass
-                    block.Data.Type = Blocks::TallGrass;
+                    block.Data->Type = Blocks::TallGrass;
                 }
             }
         }
@@ -60,11 +60,11 @@ namespace Minecraft
             return false;
 
         // Air check
-        if (block.Data.Type != Blocks::Air)
+        if (block.Data->Type != Blocks::Air)
             return false;
 
         // Biome check
-        BiomeType* biome = block.Data.Biome;
+        BiomeType* biome = block.Data->Biome;
         if (biome == Biomes::Tundra || biome == Biomes::SnowyForest || biome == Biomes::Desert)
             return false;
 
@@ -115,14 +115,14 @@ namespace Minecraft
         // Trunk
         for (int trunkY = 0; trunkY < treeHeight; ++trunkY)
         {
-            vec3i trunkPos = blockPos;
+            auto trunkPos = BlockOffset(blockPos);
             trunkPos.y += trunkY;
 
-            if (!chunk.ContainsBlockPos(trunkPos))
+            if (!chunk.ContainsPos(trunkPos))
                 continue;
 
             auto block = chunk.GetBlock(trunkPos);
-            block.Data.Type = Blocks::Wood;
+            block.Data->Type = Blocks::Wood;
         }
 
         // Leaves
@@ -132,17 +132,18 @@ namespace Minecraft
             {
                 for (int z = 0; z < 5; ++z)
                 {
-                    vec3i leafPos = topOfTree + vec3i(x - 2, y - 1, z - 2);
+                    auto leafPos = BlockOffset(topOfTree);
+                    leafPos.Pos += vec3i(x - 2, y - 1, z - 2);
 
-                    if (!chunk.ContainsBlockPos(leafPos))
+                    if (!chunk.ContainsPos(leafPos))
                         continue;
 
                     auto block = chunk.GetBlock(leafPos);
 
-                    if (block.Data.Type != Blocks::Air)
+                    if (block.Data->Type != Blocks::Air)
                         continue;
 
-                    block.Data.Type = Blocks::Leaves;
+                    block.Data->Type = Blocks::Leaves;
                 }
             }
         }
@@ -153,17 +154,18 @@ namespace Minecraft
             {
                 for (int z = 0; z < 3; ++z)
                 {
-                    vec3i leafPos = topOfTree + vec3i(x - 1, y + 1, z - 1);
+                    auto leafPos = BlockOffset(topOfTree);
+                    leafPos.Pos += vec3i(x - 1, y + 1, z - 1);
 
-                    if (!chunk.ContainsBlockPos(leafPos))
+                    if (!chunk.ContainsPos(leafPos))
                         continue;
 
                     auto block = chunk.GetBlock(leafPos);
 
-                    if (block.Data.Type != Blocks::Air)
+                    if (block.Data->Type != Blocks::Air)
                         continue;
 
-                    block.Data.Type = Blocks::Leaves;
+                    block.Data->Type = Blocks::Leaves;
                 }
             }
         }
