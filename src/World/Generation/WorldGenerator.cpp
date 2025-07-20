@@ -1,6 +1,10 @@
 #include "WorldGenerator.h"
 
+#include <thread>
+#include <thread_pool/thread_pool.h>
+
 #include "Game.h"
+#include "Logger.h"
 #include "Profiler.h"
 #include "Graphics/Renderers/ChunkRenderer.h"
 #include "World/World.h"
@@ -21,18 +25,46 @@ namespace Minecraft
     {
         Instance->PerfProfiler->Push("WorldGenerator::Generate");
 
+        dp::thread_pool chunkGenThreadPool(8);
+        std::mutex chunkMutex;
+        std::mutex meshRegenMutex;
+
         for_chunk_in_radius_2D(x, z, spawnRadius, {
             for (int y = minHeight; y <= maxHeight; ++y)
             {
-                // Create and generate the chunk
-                auto chunkPos = ChunkPos(x, y, z);
-                auto& chunk = CreateChunk(chunkPos);
+                chunkGenThreadPool.enqueue_detach(
+                    [this, x, y, z, &chunkMutex, &meshRegenMutex]()
+                    {
+                        // Create and generate the chunk
+                        auto pos = ChunkPos(x, y, z);
 
-                // Remesh the chunk
-                // TODO: priority
-                Instance->ChunkGraphics->QueueMeshRegen(chunk);
+                        // TODO: make the regular function threadsafe
+                        Chunk* chunk = nullptr;
+
+                        {
+                            std::lock_guard lock(chunkMutex);
+                            m_World->Chunks.emplace(pos, Chunk(pos));
+                            chunk = &m_World->Chunks.at(pos);
+                        }
+
+                        Generate(*chunk);
+
+                        // Remesh the chunk
+                        {
+                            std::lock_guard lock(meshRegenMutex);
+                            // TODO: priority
+                            Instance->ChunkGraphics->QueueMeshRegen(*chunk);
+                        }
+                    }
+                );
             }
         })
+
+        // TODO: in future, don't wait and run while the game updates
+        // - Perhaps at a certain point each frame, check the status of each task and if some are done,
+        //   take the finished chunks and add them, and the unfinished chunks can continue to be worked on.
+        //   Rinse and repeat until all of the chunks are generated.
+        chunkGenThreadPool.wait_for_tasks();
 
         Instance->PerfProfiler->Pop();
     }
