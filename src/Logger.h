@@ -1,5 +1,6 @@
 #pragma once
 
+// TODO: fix traces only being shown for exceptions thrown by my code instead of all code
 namespace Minecraft::Logger
 {
     void Init();
