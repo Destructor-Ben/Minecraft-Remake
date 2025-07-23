@@ -85,7 +85,8 @@ namespace Minecraft
 
         // TODO: properly choose threadpool size
         // TODO: don't recreate the threadpool, reuse an existing one
-        dp::thread_pool chunkGenThreadPool(1);
+        // TODO-IMPORTANT: COMPARE MULTITHREADED + SINGLE THREADED PERF =================================================
+        dp::thread_pool chunkGenThreadPool(8);
         std::mutex chunkMutex;
         std::mutex meshRegenMutex;
 
@@ -104,7 +105,7 @@ namespace Minecraft
             // TODO END ]]
 
             chunkGenThreadPool.enqueue_detach(
-                [this, &chunkPos, &chunkMutex, &meshRegenMutex]()
+                [this, chunkPos, &chunkMutex, &meshRegenMutex]()
                 {
                     // Check if the chunk exists and create it
                     Chunk* chunk = nullptr;
@@ -119,7 +120,6 @@ namespace Minecraft
                             return;
 
                         m_World->Chunks.emplace(chunkPos, Chunk(chunkPos));
-                        Logger::Debug(format("Making a new chunk, count is at {}", m_World->Chunks.size()));
                         chunk = &m_World->Chunks.at(chunkPos);
                     }
 
@@ -149,7 +149,6 @@ namespace Minecraft
 
         // TODO: read the above threadpool impl
         chunkGenThreadPool.wait_for_tasks();
-        Logger::Debug(to_string(m_World->Chunks.size()));
 
         Instance->PerfProfiler->Pop();
     }
