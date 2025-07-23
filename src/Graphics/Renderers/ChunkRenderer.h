@@ -87,5 +87,7 @@ namespace Minecraft
         // Then just look over the rendered chunks and check if they need a remesh in update
         // Though a queue might be faster
         ChunkPriorityQueue m_ChunkRemeshQueue = { };
+
+        std::mutex chunkMeshMutex;
     };
 }

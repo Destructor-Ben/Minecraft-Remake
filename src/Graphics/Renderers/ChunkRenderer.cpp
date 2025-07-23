@@ -1,5 +1,8 @@
 #include "ChunkRenderer.h"
 
+#include <thread>
+#include <thread_pool/thread_pool.h>
+
 #include "Game.h"
 #include "Logger.h"
 #include "Profiler.h"
@@ -46,15 +49,70 @@ namespace Minecraft
 
     void ChunkRenderer::RegenerateMeshes()
     {
-        // Remesh the chunks waiting in the queue (one at a time)
-        // TODO: multi-thread
-        // TODO: for some reason, this causes holes while generating chunks - might be an issue with the world generator
+        // Remesh the chunks waiting in the queue
         Instance->PerfProfiler->Push("ChunkRenderer::RegenerateMeshes");
+
+        // TODO: don't constantly recreate threadpools
+        // TODO: compare to before it was multithreaded
+        dp::thread_pool threadPool(8);
+
+        vector<std::future<optional<std::tuple<Chunk*, vector<float>, vector<uint>>>>> futures;
 
         while (!m_ChunkRemeshQueue.empty())
         {
             auto* chunk = m_ChunkRemeshQueue.pop();
-            RegenerateMesh(*chunk);
+            //RegenerateMesh(*chunk);
+
+            // TODO: temp
+            {
+                std::lock_guard lock(chunkMeshMutex);
+
+                m_IsChunkMeshEmpty[chunk->GetChunkPos()] = false;
+
+                if (!m_ChunkMeshes.contains(chunk->GetChunkPos()))
+                    CreateMesh(*chunk);
+            }
+
+            futures.push_back(threadPool.enqueue(
+                [this, chunk]() -> optional<std::tuple<Chunk*, vector<float>, vector<uint>>>
+                {
+                    auto faces = vector<Quad>();
+                    GetChunkFaces(*chunk, faces);
+
+                    if (faces.empty())
+                    {
+                        std::lock_guard lock(chunkMeshMutex);
+                        m_IsChunkMeshEmpty[chunk->GetChunkPos()] = true;
+                        return nullopt;
+                    }
+
+                    // TODO: reuse this vector to avoid reallocating it - how to do with multithreading?
+                    auto vertices = vector<float>();
+                    auto indices = vector<uint>();
+                    Quad::ToRawData(faces, vertices, indices);
+
+                    return std::tuple<Chunk*, vector<float>, vector<uint>>(chunk, vertices, indices);
+
+                    /*{
+                        std::lock_guard lock(chunkMeshMutex);
+                        SetMeshData(chunk, vertices, indices);
+                    }*/
+                }
+            ));
+        }
+
+        // TODO: read worldgen threadpool impl
+        // TODO: not needed in this TEMP setup threadPool.wait_for_tasks();
+
+        // TODO: temporary
+        for (auto& future : futures)
+        {
+            auto futureValue = future.get();
+            if (!futureValue.has_value())
+                continue;
+
+            auto value = futureValue.value();
+            SetMeshData(*std::get<0>(value), std::get<1>(value), std::get<2>(value));
         }
 
         Instance->PerfProfiler->Pop();
@@ -116,10 +174,15 @@ namespace Minecraft
 
     void ChunkRenderer::RegenerateMesh(Chunk& chunk)
     {
-        m_IsChunkMeshEmpty[chunk.GetChunkPos()] = false;
+        /* TODO: opengl functions have to be called on the main thread
+        {
+            std::lock_guard lock(chunkMeshMutex);
 
-        if (!m_ChunkMeshes.contains(chunk.GetChunkPos()))
-            CreateMesh(chunk);
+            m_IsChunkMeshEmpty[chunk.GetChunkPos()] = false;
+
+            if (!m_ChunkMeshes.contains(chunk.GetChunkPos()))
+                CreateMesh(chunk);
+        }*/
 
         // TODO: preallocate size
         // - Possibly just estimate with say 50% of the max faces
@@ -128,12 +191,13 @@ namespace Minecraft
         //   - This only helps when breaking blocks however
         // TODO: reuse this vector to avoid reallocating it - how to do with multithreading?
         // - If I do that, then it will be much easier to prellocate the size
-        // - Just use a vecctor for each thread if I want to reuse it
+        // - Just use a vector for each thread if I want to reuse it
         auto faces = vector<Quad>();
         GetChunkFaces(chunk, faces);
 
         if (faces.empty())
         {
+            std::lock_guard lock(chunkMeshMutex);
             m_IsChunkMeshEmpty[chunk.GetChunkPos()] = true;
             return;
         }
@@ -142,7 +206,11 @@ namespace Minecraft
         auto vertices = vector<float>();
         auto indices = vector<uint>();
         Quad::ToRawData(faces, vertices, indices);
-        SetMeshData(chunk, vertices, indices);
+
+        {
+            std::lock_guard lock(chunkMeshMutex);
+            SetMeshData(chunk, vertices, indices);
+        }
     }
 
     void ChunkRenderer::CreateMesh(Chunk& chunk)
