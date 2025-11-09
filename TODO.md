@@ -10,6 +10,35 @@
 
 ## Proper Design
 
+- Investigate whether an unordered_map is appropriate for storing chunks
+
+- Multithreading
+  - Use ONE threadpool for the entire game
+    - This is because of the overhead of creating the threadpool
+    - Allow the size to be set in settings
+  - Priority queues
+    - I need a custom type fo priortiy queue for deciding which chunks to remesh/generate
+    - Currently it is called ChunkPriorityQueue
+    - It needs to be a priority queue, but if a duplicate element is pushed on, it won't add a new entry
+    - Instead, if the priority of the new element is higher, it adjusts the priority of the existing element. Otherwise, it will do nothing, since the priority will be the same or less
+    - Chunk generation will need a slightly modified approach, since it needs to work with priority AND chunk status
+    - Since chunk status will need to be updated too if a duplicate is pushed on, even if it doesn't have a higher priority
+    - Priority will just be the taxicab distance (x + y + z) from the player causing the generation/meshing
+  - Running in parallel to the game
+    - Currently, the threadpools still take a whole frame to do their stuff, they can't run tasks across multiple frames
+    - To run stuff across multiple frames, when pushing tasks on, get them to return their result
+    - Also store the std::future of the threads, and then every frame, check which are done. If they are done, do the stuff with them that needs to happen, e.g. set mesh data for chunk meshing, or add the chunk to the World.Chunks hashmap
+    - Threads should be able to READ data, but should never WRITE data - That should usually be done on the main thread
+      - TODO: check if this is a good idea
+    - TODO: maybe for world generation, don't use futures, scrap READ/Write idea from above and just assign in the thread
+    - TODO: world world generation, think about how chunks will work with chunk status
+  - Chunk Generation
+    - TODO
+  - Chunk Meshing
+    - OpenGL functions can only be called on the main thread
+    - So the only part capable of being parallelized is the mesh DATA generation, e.g. taking chunk data, converting to faces, then faces to vertices/indices
+    - The std::future approach is needed
+
 - Memory management (ENFORCE EVERYWHERE)
   - Smart pointers for ownership
   - Pointers for referencing

@@ -40,6 +40,8 @@ body
 
 namespace Minecraft
 {
+    // hello you. this is a friend of the creator, dont try to understand this mess. Have a great day (:
+
     // TODO: do a big review of this class and see if there is anything I can do to optimize it
     class World
     {
