@@ -68,6 +68,7 @@ namespace Minecraft
 
         // We manually null these out because we need to deallocate the objects in a guaranteed order
         CurrentWorld = nullptr;
+        SkyGraphics = nullptr;
         ChunkGraphics = nullptr;
         Graphics = nullptr;
         PerfProfiler = nullptr;

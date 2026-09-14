@@ -29,6 +29,7 @@ int main()
         Instance->Initialize();
         Instance->Run();
         Instance->Shutdown();
+        Instance = nullptr;
     }
     catch (const std::exception& exception)
     {
