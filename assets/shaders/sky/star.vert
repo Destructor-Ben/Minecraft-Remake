@@ -17,7 +17,7 @@ out float Brightness;
 out float Temperature;
 out float TwinkleSpeed;
 out float TwinkleOffset;
-out int TextureIndex;
+flat out int TextureIndex;
 
 void main()
 {
