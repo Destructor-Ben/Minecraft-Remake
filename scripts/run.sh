@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [ "$1" == "debug" ]; then
   cd bin/debug
@@ -7,6 +7,3 @@ else
 fi
 
 ./Minecraft_Remake
-
-echo "Press any key to exit..."
-read -n 1 -s
