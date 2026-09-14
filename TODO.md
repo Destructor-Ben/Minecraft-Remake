@@ -4,17 +4,16 @@
 
 - added nix support
   - still need to make wayland work
-- fixed main menu background not scaling properly
-- fixed star shader not working (shader logs weren't printing errors)
-  - TODO: add an option to do a release build with with Gl debug enabled so I can see the errors in the terminal
 - still need to fix segfault
 - make all libraries submodules
 
 # Old
 
+// TODO: reuse shaders and meshes more, i did design this so i can
+// TODO: rework materials - keep in mind that Shader.SetUniform doesn't do any bining
+
 - Worldgen border fixes + steps - look at how minecraft does it
 - The process segfaults on linux when exiting
-- Stars are broken on linux
 
 - Partial transparency support for blocks
 - Make all chunk loops that use radii circle instead of squares

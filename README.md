@@ -4,18 +4,19 @@ A Minecraft remake in C++ and OpenGL.
 
 ## Building
 
-The build system uses CMake (at least v3.22), along with some bash scripts in the `./scripts` folder to automate some of the build process and profiling. These are:
+The build system uses CMake (at least v3.22), along with some bash scripts for Linux in the `./scripts` folder to automate some of the build process and profiling. These are:
 - `build.sh`: Build the game in release mode. Add the `debug` arg to build a debug version.
 - `run.sh`: Run the release build of the game. Requires `build.sh` to have already been run. Add the `debug` arg to run the debug build.
 - `run.sh`: Run the game with the `perf` profiler in release mode. Requires `build.sh` to have already been run. Add the `debug` arg to profile the debug build.
 - `clean.sh`: Remove the `./bin` directory.
 
-These dependencies must be installed to build the game:
-- TODO
-
-### NixOS
+To build on windows, run `cmake -DCMAKE_BUILD_TYPE=Release -B bin/` and `cmake --build bin/` to build the game. To run it, run `./bin/Minecraft_Remake.exe`.
 
 On NixOS, run `nix develop` to enter a devshell with the `./scripts` folder on `$PATH` and to install the required dependencies.
+
+### Dependencies
+
+TODO
 
 ## Design Constraints
 
