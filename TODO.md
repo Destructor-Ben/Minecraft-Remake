@@ -1,5 +1,17 @@
 # To Do List
 
+## Uncomiitted changes
+
+- added nix support
+  - still need to make wayland work
+- fixed main menu background not scaling properly
+- fixed star shader not working (shader logs weren't printing errors)
+  - TODO: add an option to do a release build with with Gl debug enabled so I can see the errors in the terminal
+- still need to fix segfault
+- make all libraries submodules
+
+# Old
+
 - Worldgen border fixes + steps - look at how minecraft does it
 - The process segfaults on linux when exiting
 - Stars are broken on linux
