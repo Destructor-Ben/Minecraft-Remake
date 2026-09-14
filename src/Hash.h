@@ -32,7 +32,6 @@ namespace Minecraft
     }
 }
 
-// Making types hashable
 #define MINECRAFT_MAKE_HASHABLE(type, ...) \
     template<>\
     struct std::hash<type> {\

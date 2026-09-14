@@ -14,6 +14,23 @@ namespace Minecraft
         glAttachShader(m_ID, vertexShader.GetID());
         glAttachShader(m_ID, fragmentShader.GetID());
         glLinkProgram(m_ID);
+
+        GLint linkSucceeded;
+        glGetProgramiv(m_ID, GL_LINK_STATUS, &linkSucceeded);
+        if (linkSucceeded != GL_TRUE)
+        {
+            int bufferSize = 1024;
+            GLsizei logLength = 0;
+            GLchar message[bufferSize];
+            glGetShaderInfoLog(m_ID, bufferSize, &logLength, message);
+            string messageStr = string(message);
+            Logger::Warn(format(
+                "Failed to link shader program with vsh '{}' and fsh '{}. Message: {}",
+                vertexShader.GetName(),
+                fragmentShader.GetName(),
+                messageStr
+            ));
+        }
     }
 
     Shader::~Shader()
@@ -54,7 +71,7 @@ namespace Minecraft
     UNIFORM_FUNCTION(mat4, glUniformMatrix4fv(location, 1, false, glm::value_ptr(value)))
 
     // Textures and cube maps are different because they also have a slot parameter
-    void Shader::SetUniform(const string& name, shared_ptr <Texture> value, int slot)
+    void Shader::SetUniform(const string& name, shared_ptr<Texture> value, int slot)
     {
         value->BindTextureUnit(slot);
         SetUniform(name, slot);
@@ -74,7 +91,7 @@ namespace Minecraft
 
         int location = glGetUniformLocation(m_ID, name.c_str());
         if (location == -1)
-            Logger::Warn(format("Uniform '{}' wasn't found - Location was -1", name));
+            Logger::Warn(format("Uniform '{}' wasn't found, location was -1", name));
 
         m_UniformCache[name] = location;
         return location;

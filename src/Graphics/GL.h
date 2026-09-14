@@ -1,9 +1,5 @@
 #pragma once
 
-// TODO: reuse shaders and meshes more, i did design this so i can
-// TODO: rework materials - keep in mind that Shader.SetUniform doesn't do any bining
-
-// Includes all utils from the GL folder
 #include "Camera.h"
 #include "CameraFrustum.h"
 #include "FragmentShader.h"

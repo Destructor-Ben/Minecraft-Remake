@@ -5,7 +5,7 @@ namespace Minecraft
     class VertexShader
     {
     public:
-        explicit VertexShader(const string& source);
+        explicit VertexShader(const string& name, const string& source);
         ~VertexShader();
 
         VertexShader(const VertexShader& other) = delete;
@@ -14,8 +14,10 @@ namespace Minecraft
         VertexShader& operator =(VertexShader&& other) = delete;
 
         uint GetID() const { return m_ID; }
+        string GetName() const { return m_Name; }
 
     private:
         uint m_ID = 0;
+        string m_Name = "";
     };
 }
