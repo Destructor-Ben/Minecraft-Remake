@@ -19,8 +19,6 @@
         )
         build-script-files;
 
-        # TODO: see what is/isn't needed as deps
-
         x11-deps = with pkgs; [
           libx11
           libxcursor
@@ -32,7 +30,9 @@
         wayland-deps = with pkgs; [
           wayland
           wayland-protocols
+          wayland-scanner
           libdecor
+          libffi
         ];
 
         runtime-deps = with pkgs; [
@@ -40,6 +40,7 @@
           udev
           libxkbcommon
           libGL
+          pkg-config
         ] ++ x11-deps ++ wayland-deps;
 
         compiletime-deps = with pkgs; [
@@ -49,12 +50,14 @@
         ] ++ build-scripts;
 
         ld-lib-path = runtime-deps;
+        pkg-config-path = lib.filter (pkg: pkg ? "dev") runtime-deps;
       in
       {
         devShells.default = pkgs.mkShell {
           nativeBuildInputs = compiletime-deps;
           buildInputs = runtime-deps;
           LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath ld-lib-path;
+          PKG_CONFIG_PATH = lib.strings.join ":" (lib.map (pkg: "${pkg.dev}/lib/pkgconfig") pkg-config-path);
         };
       }
     );

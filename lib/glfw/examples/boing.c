@@ -36,6 +36,7 @@
 #include <stdlib.h>
 #include <math.h>
 
+#define GLAD_GL_IMPLEMENTATION
 #include <glad/gl.h>
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
@@ -298,7 +299,7 @@ void cursor_position_callback( GLFWwindow* window, double x, double y )
 }
 
 /*****************************************************************************
- * DrawMesh the Boing ball.
+ * Draw the Boing ball.
  *
  * The Boing ball is sphere in which each facet is a rectangle.
  * Facet colors alternate between red and white.
@@ -430,7 +431,7 @@ void BounceBall( double delta_t )
 
 
 /*****************************************************************************
- * DrawMesh a faceted latitude band of the Boing ball.
+ * Draw a faceted latitude band of the Boing ball.
  *
  * Parms:   long_lo, long_hi
  *          Low and high longitudes of slice, resp.
@@ -536,7 +537,7 @@ void DrawBoingBallBand( GLfloat long_lo,
 
 
 /*****************************************************************************
- * DrawMesh the purple grid of lines, behind the Boing ball.
+ * Draw the purple grid of lines, behind the Boing ball.
  * When the Workbench is dropped to the bottom, Boing shows 12 rows.
  *****************************************************************************/
 void DrawGrid( void )
@@ -676,3 +677,4 @@ int main( void )
    glfwTerminate();
    exit( EXIT_SUCCESS );
 }
+

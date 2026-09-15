@@ -6,14 +6,18 @@ excludes other invaluable contributions like language bindings and text and
 video tutorials.
 
  - Bobyshev Alexander
+ - Alzathar
  - Laurent Aphecetche
  - Matt Arsenault
  - Takuro Ashie
  - ashishgamedev
+ - avagordon01
  - David Avedissian
+ - Luca Bacci
  - Keith Bauer
  - John Bartholomew
  - Coşku Baş
+ - Bayemite
  - Niklas Behrens
  - Andrew Belt
  - Nevyn Bengtsson
@@ -21,6 +25,7 @@ video tutorials.
  - Denis Bernard
  - BiBi
  - Doug Binks
+ - bitb4ker
  - blanco
  - Waris Boonyasiriwat
  - Kyle Brenneman
@@ -31,8 +36,11 @@ video tutorials.
  - Nicolas Caramelli
  - David Carlier
  - Arturo Castro
+ - Jose Luis Cercós Pita
  - Chi-kwan Chan
+ - Victor Chernyakin
  - TheChocolateOre
+ - Ali Chraghi
  - Joseph Chua
  - Ian Clarkson
  - Michał Cichoń
@@ -44,10 +52,15 @@ video tutorials.
  - Andrew Corrigan
  - Bailey Cosier
  - Noel Cower
+ - James Cowgill
  - CuriouserThing
+ - Bill Currie
  - Jason Daly
  - danhambleton
+ - danijel1023
  - Jarrod Davis
+ - Aaron Day
+ - decce
  - Olivier Delannoy
  - Paul R. Deppe
  - Michael Dickens
@@ -60,14 +73,18 @@ video tutorials.
  - Robin Eklind
  - Jan Ekström
  - Siavash Eliasi
- - TheExileFox
+ - er-azh
+ - Jan Hendrik Farr
+ - Ahmad Fatoum
  - Nikita Fediuchin
  - Felipe Ferreira
  - Michael Fogleman
+ - Folling
  - forworldm
  - Jason Francis
  - Gerald Franz
  - Mário Freitas
+ - Friz64
  - GeO4d
  - Marcus Geelnard
  - Gegy
@@ -83,6 +100,7 @@ video tutorials.
  - Andrew Gutekanst
  - Stephen Gutekanst
  - Jonathan Hale
+ - halx99
  - Daniel Hauser
  - hdf89shfdfs
  - Moritz Heinemann
@@ -96,6 +114,7 @@ video tutorials.
  - Warren Hu
  - Charles Huber
  - Brent Huisman
+ - Florian Hülsmann
  - illustris
  - InKryption
  - IntellectualKitty
@@ -112,12 +131,14 @@ video tutorials.
  - Josh Kilmer
  - Byunghoon Kim
  - Cameron King
+ - knokko
  - Peter Knut
  - Christoph Kubisch
  - Yuri Kunde Schlesner
  - Rokas Kupstys
  - Konstantin Käfer
  - Eric Larson
+ - Guillaume Lebrun
  - Francis Lecavalier
  - Jong Won Lee
  - Robin Leffmann
@@ -129,6 +150,7 @@ video tutorials.
  - lo-v-ol
  - Eyal Lotem
  - Aaron Loucks
+ - Ned Loynd
  - Luflosi
  - lukect
  - Tristam MacDonald
@@ -145,7 +167,10 @@ video tutorials.
  - Bryce Mehring
  - Jonathan Mercier
  - Marcel Metz
+ - Lucas Michaudel
  - Liam Middlebrook
+ - mightgoyardstill
+ - Mihail
  - Ave Milia
  - Icyllis Milica
  - Jonathan Miller
@@ -159,20 +184,29 @@ video tutorials.
  - Jon Morton
  - Pierre Moulon
  - Martins Mozeiko
+ - Tomáš Mráz
+ - Pascal Muetschard
  - James Murphy
  - Julian Møller
+ - Julius Häger
+ - Nat!
+ - NateIsStalling
  - ndogxj
  - F. Nedelec
+ - n3rdopolis
  - Kristian Nielsen
  - Joel Niemelä
+ - Victor Nova
  - Kamil Nowakowski
  - onox
  - Denis Ovod
  - Ozzy
  - Andri Pálsson
+ - luz paz
  - Peoro
  - Braden Pellett
  - Christopher Pelloux
+ - Michael Pennington
  - Arturo J. Pérez
  - Vladimir Perminov
  - Olivier Perret
@@ -185,25 +219,33 @@ video tutorials.
  - Stanislav Podgorskiy
  - Konstantin Podsvirov
  - Nathan Poirier
+ - Pokechu22
  - Alexandre Pretyman
  - Pablo Prietz
  - przemekmirek
  - pthom
  - Martin Pulec
  - Guillaume Racicot
+ - Juan Ramos
  - Christian Rauch
  - Philip Rideout
  - Eddie Ringle
  - Max Risuhin
+ - road2react
  - Joe Roback
  - Jorge Rodriguez
+ - Jari Ronkainen
  - Luca Rood
  - Ed Ropple
  - Aleksey Rybalkin
  - Mikko Rytkönen
+ - saikyun
  - Riku Salminen
+ - Yoshinori Sano
  - Brandon Schaefer
  - Sebastian Schuberth
+ - Scr3amer
+ - Jan Schürkamp
  - Christian Sdunek
  - Matt Sealey
  - Steve Sexton
@@ -214,9 +256,11 @@ video tutorials.
  - Dmitri Shuralyov
  - Joao da Silva
  - Daniel Sieger
+ - Daljit Singh
  - Michael Skec
  - Daniel Skorupski
  - Slemmie
+ - Anthony Smith
  - Bradley Smith
  - Cliff Smolinsky
  - Patrick Snape
@@ -231,6 +275,8 @@ video tutorials.
  - Paul Sultana
  - Nathan Sweet
  - TTK-Bandit
+ - Nuno Teixeira
+ - Jared Tiala
  - Sergey Tikhomirov
  - Arthur Tombs
  - TronicLabs
@@ -248,14 +294,18 @@ video tutorials.
  - Corentin Wallez
  - Torsten Walluhn
  - Patrick Walton
+ - Ivor Wanders
  - Jim Wang
  - Xo Wang
+ - Andre Weissflog
  - Jay Weisskopf
+ - Drew Weymouth
  - Frank Wille
+ - Andy Williams
+ - Joel Winarske
  - Richard A. Wilkes
  - Tatsuya Yatagawa
  - Ryogo Yoshimura
- - Rácz Zalán
  - Lukas Zanner
  - Andrey Zholos
  - Aihui Zhu

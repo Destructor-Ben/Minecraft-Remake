@@ -31,13 +31,14 @@
 #include <stdio.h>
 #include <string.h>
 
+#define GLAD_GL_IMPLEMENTATION
 #include <glad/gl.h>
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
 /**
 
-  DrawMesh a gear wheel.  You'll probably want to call this function when
+  Draw a gear wheel.  You'll probably want to call this function when
   building a display list since we do a lot of trig here.
 
   Input:  inner_radius - radius of hole at center
@@ -357,3 +358,4 @@ int main(int argc, char *argv[])
     // Exit program
     exit( EXIT_SUCCESS );
 }
+

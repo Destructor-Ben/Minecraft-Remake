@@ -2,8 +2,6 @@
 
 A Minecraft remake in C++ and OpenGL.
 
-TODO: screenshot
-
 ## Building
 
 The build system uses CMake (at least v3.22), along with some bash scripts for Linux in the `./scripts` folder to automate some of the build process and profiling. These are:
@@ -18,7 +16,9 @@ On NixOS, run `nix develop` to enter a devshell with the `./scripts` folder on `
 
 ### Dependencies
 
-TODO
+No dependencies should be needed to be installed to build or run this, since all used libraries are either typically installed by default or packaged with the source code.
+
+However, if you do have issues with dependencies on Linux, please take a look at [`flake.nix`](./flake.nix) lines 22 to 50 to see if any of the listed dependencies must be installed.
 
 ## Design Constraints
 
@@ -38,6 +38,8 @@ These were chosen so I could learn how to use these specific tools and programmi
 
 Note that `fmt` is included as a library because of poor support for `std::fmt` in C++.
 
+<!--
 ## Design Decisions
 
 - TODO: discuss them (these are the ones that I try to optimize the most)
+-->
