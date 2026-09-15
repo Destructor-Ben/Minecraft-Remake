@@ -39,19 +39,16 @@
           alsa-lib
           udev
           libxkbcommon
-          vulkan-loader
-          vulkan-validation-layers
+          libGL
         ] ++ x11-deps ++ wayland-deps;
 
         compiletime-deps = with pkgs; [
           gcc
-          cmake
           gdb
+          cmake
         ] ++ build-scripts;
 
-        ld-lib-path = with pkgs; [
-          libGL
-        ];
+        ld-lib-path = runtime-deps;
       in
       {
         devShells.default = pkgs.mkShell {

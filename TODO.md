@@ -6,6 +6,11 @@
   - still need to make wayland work
 - still need to fix segfault
 - make all libraries submodules
+- update textures
+- add a screenshot
+
+- TODO: i think i don't need any dependencies at all?
+- TODO: add an ai usage disclosure: used to ocassionally use AI, now i don't
 
 # Old
 

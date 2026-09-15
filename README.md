@@ -2,6 +2,8 @@
 
 A Minecraft remake in C++ and OpenGL.
 
+TODO: screenshot
+
 ## Building
 
 The build system uses CMake (at least v3.22), along with some bash scripts for Linux in the `./scripts` folder to automate some of the build process and profiling. These are:
