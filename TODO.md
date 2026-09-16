@@ -2,11 +2,20 @@
 
 ## Uncomiitted changes
 
-- still need to fix segfault
-- make all libraries submodules
 - update textures
 - add a screenshot
-- add an ai usage disclosure: used to ocassionally use AI, now i don't
+
+- still need to fix segfault
+  - FINALLY FIXED!
+
+- make proper test system
+
+- make all libraries submodules
+
+- clean up comments
+
+- test on windows
+- test outside of NixOS
 
 # Old
 
