@@ -57,6 +57,7 @@ namespace Minecraft
         auto loadTimeData = PerfProfiler->EndFrame();
         Logger::Debug("Load times:\n" + Profiler::ToString(loadTimeData));
 
+        // TODO: move this to a proper testing module
         // Running tests
         // Uncomment to run them
         // RunRandomTests();
@@ -65,6 +66,12 @@ namespace Minecraft
     void Game::Shutdown()
     {
         Logger::Info("Exiting game...");
+
+        Resources::Shutdown();
+
+        UI::Shutdown();
+        TextRenderer::Shutdown();
+        UIRenderer::Shutdown();
 
         // We manually null these out because we need to deallocate the objects in a guaranteed order
         CurrentWorld = nullptr;
@@ -114,7 +121,6 @@ namespace Minecraft
 
         PerfProfiler->Push("Setting Window Icon");
 
-        // Set window icon
         auto iconTexture = Resources::RequestImageData("application/icon");
         GLFWimage icon[1];
         icon[0].width = iconTexture.Width;
@@ -126,7 +132,6 @@ namespace Minecraft
 
         PerfProfiler->Push("Creating Cursors");
 
-        // Set cursor
         auto lightCursorTexture = Resources::RequestImageData("application/cursor-light");
         auto darkCursorTexture = Resources::RequestImageData("application/cursor-dark");
         GLFWimage lightCursor, darkCursor;
@@ -206,14 +211,12 @@ namespace Minecraft
     {
         PerfProfiler->BeginFrame("Update");
 
-        // Create and enter a world
         if (m_WantToCreateWorld)
         {
             m_WantToCreateWorld = false;
             CreateAndEnterWorld(m_WorldSeed, true);
         }
 
-        // Exit the world
         if (m_WantToExitWorld)
         {
             m_WantToExitWorld = false;
@@ -222,11 +225,9 @@ namespace Minecraft
 
         Input::Update();
 
-        // World updating
         if (InGame && !IsPaused && CurrentWorld)
             CurrentWorld->Update();
 
-        // UI updating
         UIRenderer::Update();
 
         Input::PostUpdate();
@@ -243,11 +244,9 @@ namespace Minecraft
 
         Graphics->PreRender();
 
-        // World rendering
         if (InGame && CurrentWorld)
             CurrentWorld->Render();
 
-        // UI rendering
         UIRenderer::Render();
 
         Graphics->PostRender();

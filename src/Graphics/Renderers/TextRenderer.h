@@ -12,6 +12,7 @@ namespace Minecraft::TextRenderer
     constexpr int ShadowOffset = 1;
 
     void Init();
+    void Shutdown();
 
     void DrawText(const TextDrawParams& text);
     vec2i GetTextSize(const string& text, vec2 scale = vec2(1));

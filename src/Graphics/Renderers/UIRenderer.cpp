@@ -9,8 +9,8 @@
 
 namespace Minecraft::UIRenderer
 {
-    static shared_ptr <Mesh> m_SpriteMesh;
-    static shared_ptr <SpriteMaterial> m_SpriteMaterial;
+    static shared_ptr<Mesh> m_SpriteMesh;
+    static shared_ptr<SpriteMaterial> m_SpriteMaterial;
 
     static void InitCamera();
     static void InitMesh();
@@ -19,6 +19,12 @@ namespace Minecraft::UIRenderer
     {
         InitCamera();
         InitMesh();
+    }
+
+    void Shutdown()
+    {
+        m_SpriteMesh = nullptr;
+        m_SpriteMaterial = nullptr;
     }
 
     void InitCamera()

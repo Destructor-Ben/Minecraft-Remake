@@ -98,6 +98,11 @@ namespace Minecraft::TextRenderer
         CharacterMap['&'] = Rectangle(123, 2, 5, 5);
     }
 
+    void Shutdown()
+    {
+        FontTexture = nullptr;
+    }
+
     void DrawText(const TextDrawParams& text)
     {
         // Draw shadow

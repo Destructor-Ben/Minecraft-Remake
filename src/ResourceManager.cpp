@@ -17,6 +17,14 @@ namespace Minecraft::Resources
     static unordered_map<string, shared_ptr<VertexShader>> VertexShaderCache = { };
     static unordered_map<string, shared_ptr<FragmentShader>> FragmentShaderCache = { };
 
+    void Shutdown()
+    {
+        TextureCache.clear();
+        ShaderCache.clear();
+        VertexShaderCache.clear();
+        FragmentShaderCache.clear();
+    }
+
     // This is to avoid having to constantly remember to refresh the cmake project to update the resources
     string GetResourcePath(string path)
     {

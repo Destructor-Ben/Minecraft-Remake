@@ -6,4 +6,4 @@ else
   cd bin/release
 fi
 
-perf record -g ./Minecraft_Remake
+valgrind ./Minecraft_Remake

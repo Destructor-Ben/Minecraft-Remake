@@ -18,6 +18,8 @@ namespace Minecraft
 
 namespace Minecraft::Resources
 {
+    void Shutdown();
+
     string GetResourcePath(string path);
     string RequestResourceText(string path);
     vector<byte> RequestResourceBytes(string path);

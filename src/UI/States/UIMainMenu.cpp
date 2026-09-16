@@ -11,11 +11,6 @@
 
 namespace Minecraft
 {
-    void UIMainMenu::OnResize()
-    {
-        m_Background->DrawnSprite.UVs = Rectangle(vec2i(0), Instance->ScreenSize / 30);
-    }
-
     void UIMainMenu::OnInit()
     {
         IsInGameUI = false;
@@ -25,7 +20,6 @@ namespace Minecraft
         backgroundTexture->SetWrappingModes(GL_REPEAT);
         m_Background = make_shared<UISprite>();
         m_Background->DrawnSprite.SpriteTexture = backgroundTexture;
-        m_Background->DrawnSprite.UVs = Rectangle(vec2i(0), Instance->ScreenSize / 30);
         m_Background->Width.Percent = 1;
         m_Background->Height.Percent = 1;
         AddElement(m_Background);
@@ -65,6 +59,13 @@ namespace Minecraft
         m_ExitButton->Width.MinPixels = 300;
         m_ExitButton->SetText("Exit");
         AddElement(m_ExitButton);
+
+        OnResize();
+    }
+
+    void UIMainMenu::OnResize()
+    {
+        m_Background->DrawnSprite.UVs = Rectangle(vec2i(0), Instance->ScreenSize / 30);
     }
 
     void UIMainMenu::CheckActive()

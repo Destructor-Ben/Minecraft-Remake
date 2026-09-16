@@ -17,13 +17,7 @@
 // - After looking online, just make a namespace
 // TODO: minimum window size
 // TODO: ensure graceful shutdown
-// - Make sure all of the system signals are respected
-//   - SIGINT
-//   - SIGTERM
-//   - SIGKILL
-//   - Any others for killing processes
 // - Error message dialog box if there is an error as well as print to error log
-// - Also allow segfaults to give an error message - I think its also a process signal
 // - Ctrl + c interrupting
 // TODO: better game loops
 // TODO: multithread loading and initial world generation to stop the main thread being blocked (it shouldn't be too hard right?)

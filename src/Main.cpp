@@ -11,7 +11,6 @@ using namespace Minecraft;
         Logger::Shutdown();\
         return -1;
 
-// Let OSes shut this bitch down
 void SignalHandler(int signal)
 {
     Logger::Info(format("Signal received: {}", signal));
@@ -22,7 +21,6 @@ int main()
 {
     try
     {
-        std::signal(SIGINT, SignalHandler);
         std::signal(SIGTERM, SignalHandler);
 
         Instance = make_shared<Game>();

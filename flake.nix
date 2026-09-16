@@ -44,9 +44,11 @@
         ] ++ x11-deps ++ wayland-deps;
 
         compiletime-deps = with pkgs; [
+          cmake
           gcc
           gdb
-          cmake
+          perf
+          valgrind
         ] ++ build-scripts;
 
         ld-lib-path = runtime-deps;

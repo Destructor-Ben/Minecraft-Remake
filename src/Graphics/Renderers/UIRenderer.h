@@ -10,6 +10,7 @@ namespace Minecraft::UIRenderer
     inline Camera UICamera;
 
     void Init();
+    void Shutdown();
 
     void Update();
     void Render();

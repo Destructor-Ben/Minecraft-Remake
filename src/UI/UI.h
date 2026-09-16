@@ -47,4 +47,15 @@ namespace Minecraft::UI
         PauseMenu = CreateUI<UIPauseMenu>();
         DebugMenu = CreateUI<UIDebug>();
     }
+
+    inline void Shutdown()
+    {
+        MainMenu = nullptr;
+
+        Crosshair = nullptr;
+        PauseMenu = nullptr;
+        DebugMenu = nullptr;
+
+        UIStateList.clear();
+    }
 }
