@@ -13,6 +13,7 @@
 - make all libraries submodules
 
 - clean up comments
+- manager rework
 
 - test on windows
 - test outside of NixOS

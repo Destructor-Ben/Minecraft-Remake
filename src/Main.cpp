@@ -11,7 +11,7 @@ using namespace Minecraft;
         Logger::Shutdown();\
         return -1;
 
-void SignalHandler(int signal)
+static void SignalHandler(int signal)
 {
     Logger::Info(format("Signal received: {}", signal));
     Instance->Close();

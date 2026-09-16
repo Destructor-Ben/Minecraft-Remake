@@ -14,7 +14,7 @@ The build system uses CMake (at least v3.22), along with some bash scripts for L
 
 To build on Windows, run `cmake -DCMAKE_BUILD_TYPE=Release -B bin/` and `cmake --build bin/` to build the game. To run it, run `./bin/Minecraft_Remake.exe`.
 
-On NixOS, run `nix develop` to enter a devshell with the `./scripts` folder on `$PATH` and to install the required dependencies.
+On NixOS, run `nix develop` to enter a devshell with the `./scripts` folder on `$PATH` and to setup the required dependencies.
 
 ### Dependencies
 
@@ -67,13 +67,13 @@ The game uses 3 update functions:
 - `Update()`
 - `Tick()`
 
-Tick should handle game logic, which runs at a fixed tick rate. Update runs every frame before Render and handles non-game logic, typically preparing client state used in rendering, such as UI state or updating shader settings. Render runs every frame and should only make draw calls without modifying game state.
+`Tick()` should handle game logic, which runs at a fixed tick rate. `Update()` runs every frame before `Render()` and handles non-game logic, typically preparing client state used in rendering, such as UI state or updating shader settings. `Render()` runs every frame and should only make draw calls without modifying game state.
 
-This was decided on because it makes it easy to extend the behaviour of the game in ways I may want to in the future, such as bythe following:
-- Create a dedicated server: Remove Update and Render functions to only get game logic.
-- Create a multiplayer client: Remove Tick functions to get only client logic. The game state is then streamed from a server.
-- Make a screenshot or screen recording tool: Store the game state/the changes to game state for a frame or multiple frames, then call Render for each of those states without Tick or Update causing any state mutation.
-- Pausing: Don't call Tick, and ensure Update knows that the game is paused.
+This was decided on because it makes it easy to extend the behaviour of the game in ways I may want to in the future, such as the following:
+- Create a dedicated server: Remove `Update()` and `Render()` functions to only get game logic.
+- Create a multiplayer client: Remove `Tick()` functions to get only client logic. The game state is then streamed from a server.
+- Make a screenshot or screen recording tool: Store the game state/the changes to game state for a frame or multiple frames, then call `Render()` for each of those states without `Tick()` or `Update()` causing any state mutation.
+- Pausing: Don't call `Tick()`, and ensure `Update()` knows that the game is paused.
 
 <!--
 
