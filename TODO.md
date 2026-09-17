@@ -15,6 +15,8 @@
 - clean up comments
 - manager rework
 
+- fix sun and moon glow and orientation (should face the player, smoother glow)
+
 - test on windows
 - test outside of NixOS
 

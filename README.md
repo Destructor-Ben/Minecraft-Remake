@@ -4,7 +4,7 @@ A Minecraft remake in C++ and OpenGL.
 
 ## Building
 
-The build system uses CMake (at least v3.22), along with some bash scripts for Linux in the `./scripts` folder to automate some of the build process and profiling. These are:
+The build system uses CMake (at least v3.22), along with some bash scripts for Linux in the `./scripts` folder to automate some of the build process and profiling. They must be run from the project directory, not the `./scripts` folder. These are:
 - `build.sh`: Build the game in release mode. Add the `debug` arg to build a debug version.
 - `run.sh`: Run the release build of the game. Requires `build.sh` to have already been run. Add the `debug` arg to run the debug build.
 - `clean.sh`: Remove the `./bin` directory.
@@ -18,7 +18,11 @@ On NixOS, run `nix develop` to enter a devshell with the `./scripts` folder on `
 
 ### Dependencies
 
-No dependencies should be needed to be installed to build or run this, since all used libraries are either typically installed by default or packaged with the source code.
+The following will need to be installed to build the game:
+- CMake (minimum version 3.22)
+- GCC (or equivalent) with C++ 23 support
+
+No runtime dependencies should be needed to be installed to build or run this, since all used libraries are either typically installed by default or packaged with the source code.
 
 However, if you do have issues with dependencies on Linux, please take a look at [`flake.nix`](./flake.nix) lines 22 to 50 to see if any of the listed dependencies must be installed.
 
