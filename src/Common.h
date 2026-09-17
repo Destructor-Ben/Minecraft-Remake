@@ -12,6 +12,7 @@
 #include <functional>
 #include <iostream>
 #include <memory>
+#include <mutex>
 #include <numbers>
 #include <ranges>
 #include <sstream>
