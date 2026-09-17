@@ -5,15 +5,13 @@
 - update textures
 - add a screenshot
 
-- still need to fix segfault
-  - FINALLY FIXED!
+- make config files for colours
 
 - make proper test system
+- make all libraries submodules/cmake installed
 
-- make all libraries submodules
-
-- clean up comments
 - manager rework
+- clean up comments
 
 - fix sun and moon glow and orientation (should face the player, smoother glow)
 

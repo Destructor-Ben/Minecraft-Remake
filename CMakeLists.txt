@@ -35,3 +35,13 @@ target_link_libraries(Minecraft_Remake stb_image_write)
 target_link_libraries(Minecraft_Remake glad)
 target_link_libraries(Minecraft_Remake glm)
 target_link_libraries(Minecraft_Remake glfw ${GLFW_LIBRARIES})
+target_link_libraries(Minecraft_Remake yaml-cpp::yaml-cpp)
+
+include(FetchContent)
+
+FetchContent_Declare(
+  yaml-cpp
+  GIT_REPOSITORY https://github.com/jbeder/yaml-cpp.git
+  GIT_TAG yaml-cpp-0.9.0
+)
+FetchContent_MakeAvailable(yaml-cpp)
