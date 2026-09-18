@@ -9,6 +9,8 @@ target_sources(Minecraft_Remake PRIVATE
     Color.h
     Colors.h
     Common.h
+    Config.cpp
+    Config.h
     Game.cpp
     Game.h
     Hash.h

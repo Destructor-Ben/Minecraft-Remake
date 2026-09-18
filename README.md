@@ -49,6 +49,7 @@ Note that `fmt` is included as a library because of poor support for `std::fmt` 
 These guidelines were decided on to ensure that my code is readable, testable, and easy to extend or optimize (such as through concurrency). These are only guidelines and may be broken if I feel they don't fit specific cirumstances. They are as follows:
 
 - Write independent tests for functionality that can be tested independently from the game, such as random number generation or noise functions.
+- Avoid exceptions, since they make it harder to see control flow.
 - Avoid global variables, since it isn't clear what variables a function accesses if they are used. Ideally, only access function parameters.
   - Global variables also have issues with de-initializing smart pointers, which can cause segfaults when exiting the program.
   - They also make parallelization harder because they obscure what data a function accesses.

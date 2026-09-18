@@ -1,7 +1,5 @@
 # To Do List
 
-## Uncomiitted changes
-
 - update textures
 - add a screenshot
 
@@ -19,6 +17,20 @@
 
 - test on windows
 - test outside of NixOS
+
+## Classes Needing Tests
+
+- Transform
+- Rectangle
+- BoundingBox
+- Hash
+- Color
+
+- Profiler
+- Logger
+
+- Physics/
+- Random/
 
 # Old
 

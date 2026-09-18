@@ -20,14 +20,16 @@ namespace Minecraft::Colors
 
     #pragma region Rarity Colors
 
-    inline const Color RarityRed = Color::FromHex("#ff5959");
-    inline const Color RarityOrange = Color::FromHex("#ffa459");
-    inline const Color RarityYellow = Color::FromHex("#ffec59");
-    inline const Color RarityGreen = Color::FromHex("#59ff5f");
-    inline const Color RarityCyan = Color::FromHex("#59f9ff");
-    inline const Color RarityBlue = Color::FromHex("#596cff");
-    inline const Color RarityPurple = Color::FromHex("#c859ff");
-    inline const Color RarityPink = Color::FromHex("#ff59f7");
+    // TODO: redo these, load from config file
+
+    inline const Color RarityRed = Color::FromHex("#ff5959").value();
+    inline const Color RarityOrange = Color::FromHex("#ffa459").value();
+    inline const Color RarityYellow = Color::FromHex("#ffec59").value();
+    inline const Color RarityGreen = Color::FromHex("#59ff5f").value();
+    inline const Color RarityCyan = Color::FromHex("#59f9ff").value();
+    inline const Color RarityBlue = Color::FromHex("#596cff").value();
+    inline const Color RarityPurple = Color::FromHex("#c859ff").value();
+    inline const Color RarityPink = Color::FromHex("#ff59f7").value();
 
     #pragma endregion
 }

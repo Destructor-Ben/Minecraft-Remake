@@ -40,6 +40,8 @@ namespace Minecraft
 
         PerfProfiler->Push("MiscManagers");
 
+        Resources::Init();
+
         UIRenderer::Init();
         TextRenderer::Init();
         UI::Init();

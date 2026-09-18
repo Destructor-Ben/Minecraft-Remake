@@ -1,5 +1,6 @@
 #include "ResourceManager.h"
 
+#include "Config.h"
 #include "Game.h"
 #include "Logger.h"
 #include "Graphics/GL.h"
@@ -17,8 +18,20 @@ namespace Minecraft::Resources
     static unordered_map<string, shared_ptr<VertexShader>> VertexShaderCache = { };
     static unordered_map<string, shared_ptr<FragmentShader>> FragmentShaderCache = { };
 
+    static shared_ptr<Texture> MagicPixel = nullptr;
+
+    void Init()
+    {
+        // Create magic pixel
+        byte data[] = { 255, 255, 255 };
+        MagicPixel = make_shared<Texture>();
+        MagicPixel->SetData(&data[0], 1, 1, GL_RGB);
+    }
+
     void Shutdown()
     {
+        MagicPixel = nullptr;
+
         TextureCache.clear();
         ShaderCache.clear();
         VertexShaderCache.clear();
@@ -82,6 +95,23 @@ namespace Minecraft::Resources
         return { width, height, format, ptr };
     }
 
+    Config RequestConfig(string path)
+    {
+        path = "assets/configs/" + path + ".yml";
+        string configText = RequestResourceText(path);
+
+        try
+        {
+            auto config = YAML::Load(configText);
+            return Config(config);
+        }
+        catch (const std::exception& exception)
+        {
+            Logger::Throw(format("Error while trying to load config '{}': {}", path, exception.what()));
+            throw;
+        }
+    }
+
     shared_ptr<Texture> RequestTexture(string path)
     {
         if (TextureCache.contains(path))
@@ -133,5 +163,10 @@ namespace Minecraft::Resources
 
         FragmentShaderCache[path] = shader;
         return shader;
+    }
+
+    shared_ptr<Texture> GetMagicPixel()
+    {
+        return MagicPixel;
     }
 }

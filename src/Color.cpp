@@ -1,21 +1,26 @@
 #include "Color.h"
 
-#include "Colors.h"
+#include "Logger.h"
 
 namespace Minecraft
 {
-    string Color::ToHex() const
+    string Color::ToHex(bool hex8) const
     {
-        // Remap from 0-1 to 0-255
         int r = (int)(std::clamp(RGB.r * 255.0f, 0.0f, 255.0f));
         int g = (int)(std::clamp(RGB.g * 255.0f, 0.0f, 255.0f));
         int b = (int)(std::clamp(RGB.b * 255.0f, 0.0f, 255.0f));
 
-        // Format
         std::stringstream ss;
         ss << "#" << std::hex << std::setw(2) << std::setfill('0') << r
            << std::setw(2) << std::setfill('0') << g
            << std::setw(2) << std::setfill('0') << b;
+
+        if (hex8)
+        {
+            int a = (int)(std::clamp(Opacity * 255.0f, 0.0f, 255.0f));
+            ss << std::setw(2) << std::setfill('0') << a;
+        }
+
         return ss.str();
     }
 
@@ -61,18 +66,26 @@ namespace Minecraft
         return vec4(RGB, Opacity);
     }
 
-    Color Color::FromHex(string hex)
+    optional<Color> Color::FromHex(string hex)
     {
         if (hex.empty())
-            return Colors::White;
+            return nullopt;
 
-        // Remove hash if present
         if (hex[0] == '#')
             hex = hex.substr(1);
 
-        // Check length
+        // Convert 3 char codes to 6 char codes
+        if (hex.length() == 3)
+        {
+            char r = hex[0];
+            char g = hex[1];
+            char b = hex[2];
+
+            hex = format("{0}{0}{1}{1}{2}{2}", r, g, b);
+        }
+
         if (hex.length() != 6 && hex.length() != 8)
-            return Colors::White;
+            return nullopt;
 
         // Parse hex to integers
         std::stringstream ss(hex);

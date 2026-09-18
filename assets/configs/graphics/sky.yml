@@ -1,0 +1,13 @@
+# TODO: set
+sky-gradient:
+  day:
+    start: "#f0f"
+    end: "#f0f"
+  night:
+    start: "#f0f"
+    end: "#f0f"
+
+sunset-col: "#fb8209"
+# TODO: set
+sun-glow-col: "#fff"
+moon-glow-col: "#f0f"

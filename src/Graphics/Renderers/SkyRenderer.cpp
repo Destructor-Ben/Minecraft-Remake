@@ -1,6 +1,8 @@
 #include "SkyRenderer.h"
 
+#include "Colors.h"
 #include "Game.h"
+#include "Logger.h"
 #include "Profiler.h"
 #include "ResourceManager.h"
 #include "Graphics/GL.h"
@@ -11,10 +13,15 @@
 #include "Random/Random.h"
 #include "World/World.h"
 
+#include <yaml-cpp/yaml.h>
+
 namespace Minecraft
 {
     SkyRenderer::SkyRenderer()
     {
+        // TODO: make a FetchConfig function that fetches config values and stores them in state structs
+        m_Config = Resources::RequestConfig("graphics/sky");
+
         PrepareSky();
         PrepareStars();
         PrepareSunAndMoon();
@@ -22,7 +29,10 @@ namespace Minecraft
 
     void SkyRenderer::PrepareSky()
     {
-        // Request textures
+        // TODO: store this in a struct, perhaps sky visual state
+        auto sunsetColor = m_Config.TryGetValue<Color>("sunset-col").value_or(Colors::White);
+
+        // TODO: convert these to color values
         auto skyDayGradient = Resources::RequestTexture("sky/day-color");
         auto skyNightGradient = Resources::RequestTexture("sky/night-color");
         skyDayGradient->SetFilters(GL_LINEAR);
@@ -31,13 +41,15 @@ namespace Minecraft
         // Create the material
         auto shader = Resources::RequestShader("sky/sky");
         m_SkyMaterial = make_shared<SkyMaterial>(shader);
-        m_SkyMaterial->SunsetColor = vec3(251.0f / 255.0f, 130.0f / 255.0f, 9.0f / 255.0f);
+        m_SkyMaterial->SunsetColor = sunsetColor.RGB;
         m_SkyMaterial->DayGradient = skyDayGradient;
         m_SkyMaterial->NightGradient = skyNightGradient;
 
         // Create the vertex and index buffers
         auto vertexBuffer = make_shared<VertexBuffer>();
         auto indexBuffer = make_shared<IndexBuffer>();
+
+        // TODO: just use my quad system to create the mesh data
 
         // Set the mesh data
         vertexBuffer->SetData(
@@ -372,7 +384,10 @@ namespace Minecraft
         Instance->PerfProfiler->Pop();
     }
 
-    shared_ptr <VertexBuffer> SkyRenderer::CreateQuadVertices()
+
+    // TODO: just use my quad system to create the mesh data
+
+    shared_ptr<VertexBuffer> SkyRenderer::CreateQuadVertices()
     {
         auto vertexBuffer = make_shared<VertexBuffer>();
 
@@ -392,7 +407,7 @@ namespace Minecraft
         return vertexBuffer;
     }
 
-    shared_ptr <IndexBuffer> SkyRenderer::CreateQuadIndices()
+    shared_ptr<IndexBuffer> SkyRenderer::CreateQuadIndices()
     {
         auto indexBuffer = make_shared<IndexBuffer>();
 

@@ -33,6 +33,7 @@
 
 // Libraries
 // TODO: stb image, glad, and glfw do not need to be in every single file
+// - along with most dependencies
 #include <fmt/core.h>
 #include <fmt/chrono.h>
 #include <glad/glad.h>
