@@ -1,7 +1,6 @@
 #include "Config.h"
 
 #include "Color.h"
-#include "Logger.h"
 
 namespace YAML
 {
