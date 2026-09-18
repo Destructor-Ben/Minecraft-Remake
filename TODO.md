@@ -6,6 +6,8 @@
 - add a screenshot
 
 - make config files for colours
+- make Colors.cpp set from a config file
+- make colours have a custom config serializer/deserializer
 
 - make proper test system
 - make all libraries submodules/cmake installed

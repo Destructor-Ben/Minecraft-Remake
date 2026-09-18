@@ -49,6 +49,7 @@
           gdb
           perf
           valgrind
+          clang-tools # For clangd
         ] ++ build-scripts;
 
         ld-lib-path = runtime-deps;

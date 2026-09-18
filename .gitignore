@@ -1,9 +1,11 @@
-.vs/
-.vscode/
-.idea/
-bin/
-obj/
-build/
+/.vs/
+/.vscode/
+/.idea/
+/.cache/
+/bin/
+/obj/
+/build/
 *.user
 *.make
 Makefile
+compile_commands.json
