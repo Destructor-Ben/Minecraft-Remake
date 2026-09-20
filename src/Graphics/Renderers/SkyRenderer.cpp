@@ -1,5 +1,6 @@
 #include "SkyRenderer.h"
 
+#include "Color.h"
 #include "Colors.h"
 #include "Game.h"
 #include "Logger.h"
@@ -15,6 +16,7 @@
 
 #include <yaml-cpp/yaml.h>
 
+// TODO: rotate moon texture 180 deg around it's local z
 namespace Minecraft
 {
     SkyRenderer::SkyRenderer()
@@ -30,9 +32,8 @@ namespace Minecraft
     void SkyRenderer::PrepareSky()
     {
         // TODO: store this in a struct, perhaps sky visual state
-        auto sunsetColor = m_Config.TryGetValue<Color>("sunset-col").value_or(Colors::White);
+        auto sunsetColor = m_Config.TryGetValue<Color>("sunset-color").value_or(Colors::White);
 
-        // TODO: convert these to color values
         auto skyDayGradient = Resources::RequestTexture("sky/day-color");
         auto skyNightGradient = Resources::RequestTexture("sky/night-color");
         skyDayGradient->SetFilters(GL_LINEAR);
@@ -213,6 +214,12 @@ namespace Minecraft
         m_SunAndMoonMaterial = make_shared<SunMoonMaterial>(shader);
         m_SunAndMoonMaterial->SunTexture = sunTexture;
         m_SunAndMoonMaterial->MoonTexture = moonTexture;
+        m_SunAndMoonMaterial->SunGlowColor = m_Config.TryGetValue<Color>("sun-glow/color").value_or(Colors::Magenta).RGB;
+        m_SunAndMoonMaterial->MoonGlowColor = m_Config.TryGetValue<Color>("moon-glow/color").value_or(Colors::Magenta).RGB;
+        m_SunAndMoonMaterial->SunGlowSize = m_Config.TryGetValue<float>("sun-glow/size").value_or(1.0);
+        m_SunAndMoonMaterial->MoonGlowSize = m_Config.TryGetValue<float>("moon-glow/size").value_or(1.0);
+        m_SunAndMoonMaterial->SunGlowStrength = m_Config.TryGetValue<float>("sun-glow/strength").value_or(1.0);
+        m_SunAndMoonMaterial->MoonGlowStrength = m_Config.TryGetValue<float>("moon-glow/strength").value_or(1.0);
 
         // Create the mesh
         auto vertexBuffer = CreateQuadVertices();
