@@ -16,7 +16,6 @@
 
 #include <yaml-cpp/yaml.h>
 
-// TODO: rotate moon texture 180 deg around it's local z
 namespace Minecraft
 {
     SkyRenderer::SkyRenderer()
@@ -242,6 +241,7 @@ namespace Minecraft
         auto moonTransform = Transform();
         moonTransform.Position.x = -1;
         moonTransform.Rotation = quat(glm::eulerAngleY(numbers::pi / 2.0f));
+        moonTransform.Rotation *= quat(glm::eulerAngleZ(numbers::pi));
         moonTransform.Scale *= 0.1f;
 
         m_SunTransform = sunTransform.GetTransformationMatrix();
