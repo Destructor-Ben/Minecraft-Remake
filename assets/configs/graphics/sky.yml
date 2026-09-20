@@ -9,3 +9,11 @@ moon-glow:
   color: "#fcfcff"
   size: 0.5
   strength: 0.35
+
+stars:
+  count: 750
+  seed: 0xf63a0f1fc91367d8
+  scale: 0.005
+  scale-percent-variance: 0.25
+  min-twinkle-speed: 1.0
+  max-twinkle-speed: 2.0

@@ -120,39 +120,39 @@ namespace Minecraft
         m_StarMaterial->TemperatureGradient->SetFilters(GL_LINEAR);
 
         // Create the stars
-        constexpr int StarCount = 750;
-        constexpr float StarScale = 0.005f;
-        constexpr ulong StarSeed = 0xf63a0f1fc91367d8;
+        m_StarCount = m_Config.TryGetValue<int>("stars/count").value_or(100);
+        ulong starSeed = m_Config.TryGetValue<ulong>("stars/seed").value_or(123);
+        float starScale = m_Config.TryGetValue<float>("stars/scale").value_or(1.0f);
+        float starScalePercentVariance = m_Config.TryGetValue<float>("stars/scale-percent-variance").value_or(0.0f);
+        float minTwinkleSpeed = m_Config.TryGetValue<float>("stars/min-twinkle-speed").value_or(0.0f);
+        float maxTwinkleSpeed = m_Config.TryGetValue<float>("stars/max-twinkle-speed").value_or(0.0f);
 
-        m_StarCount = StarCount;
-        vector <mat4> starMatrix;
+        vector<mat4> starMatrix;
         vector<float> starBrightness;
         vector<float> starTemperature;
         vector<float> starTwinkleSpeed;
         vector<float> starTwinkleOffset;
         vector<int> starTextureIndex;
 
-        Random starRandom(StarSeed);
+        Random starRandom(starSeed);
 
-        for (int i = 0; i < StarCount; ++i)
+        for (int i = 0; i < m_StarCount; ++i)
         {
-            // Transform
             vec3 position = starRandom.NextPointOnSphere();
             float rotation = starRandom.NextFloat() * numbers::pi * 2;
-            float scale = starRandom.NextFloat(0.75f, 1.25f);
+            float scale = starRandom.NextFloat(1.0 - starScalePercentVariance, 1.0 + starScalePercentVariance);
 
             mat4 transform = mat4(1.0f);
-            transform *= glm::translate(position); // Position
-            transform *= glm::toMat4(glm::quatLookAt(glm::normalize(position), vec3(0, 1, 0))); // Face the world center
-            transform *= glm::eulerAngleZ(rotation); // Rotate
-            transform *= glm::scale(vec3((StarScale * scale))); // Scale
+            transform *= glm::translate(position);
+            transform *= glm::toMat4(glm::quatLookAt(glm::normalize(position), vec3(0, 1, 0)));
+            transform *= glm::eulerAngleZ(rotation);
+            transform *= glm::scale(vec3((starScale * scale)));
 
             starMatrix.push_back(transform);
 
-            // Other values
             float brightness = starRandom.NextFloat();
             float temperature = starRandom.NextFloat();
-            float twinkleSpeed = starRandom.NextFloat(1.0f, 2.0f);
+            float twinkleSpeed = starRandom.NextFloat(minTwinkleSpeed, maxTwinkleSpeed);
             float twinkleOffset = starRandom.NextFloat();
             int textureIndex = starRandom.NextInt(0, 2);
 
