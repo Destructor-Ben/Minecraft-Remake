@@ -15,10 +15,10 @@ namespace Minecraft
         glGetShaderiv(m_ID, GL_COMPILE_STATUS, &compileSucceeded);
         if (compileSucceeded != GL_TRUE)
         {
-            int bufferSize = 1024;
+            constexpr int BufferSize = 1024;
             GLsizei logLength = 0;
-            GLchar message[bufferSize];
-            glGetShaderInfoLog(m_ID, bufferSize, &logLength, message);
+            GLchar message[BufferSize];
+            glGetShaderInfoLog(m_ID, BufferSize, &logLength, message);
             string messageStr = string(message);
             Logger::Warn(format("Failed to compile fragment shader '{}'. Message: {}", name, messageStr));
         }

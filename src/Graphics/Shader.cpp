@@ -19,10 +19,10 @@ namespace Minecraft
         glGetProgramiv(m_ID, GL_LINK_STATUS, &linkSucceeded);
         if (linkSucceeded != GL_TRUE)
         {
-            int bufferSize = 1024;
+            constexpr int BufferSize = 1024;
             GLsizei logLength = 0;
-            GLchar message[bufferSize];
-            glGetShaderInfoLog(m_ID, bufferSize, &logLength, message);
+            GLchar message[BufferSize];
+            glGetShaderInfoLog(m_ID, BufferSize, &logLength, message);
             string messageStr = string(message);
             Logger::Warn(format(
                 "Failed to link shader program with vsh '{}' and fsh '{}. Message: {}",
