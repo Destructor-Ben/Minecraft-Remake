@@ -21,7 +21,7 @@ cd "Minecraft-Remake"
 cmake -B build/
 cmake --build build/ --config Release
 
-cd build/Release
+cd build/Release/
 ./Minecraft_Remake.exe
 ```
 
@@ -31,10 +31,11 @@ cd build/Release
 git clone "https://github.com/Destructor-Ben/Minecraft-Remake"
 cd "Minecraft-Remake"
 
-cmake -DCMAKE_BUILD_TYPE=Release -B build/
-cmake --build build/
+cmake -DCMAKE_BUILD_TYPE=Release -B build/release/
+cmake --build build/release/
 
-./build/Minecraft_Remake
+cd build/release/
+./Minecraft_Remake
 ```
 
 ### MacOS
