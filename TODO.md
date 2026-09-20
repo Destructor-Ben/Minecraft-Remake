@@ -2,21 +2,15 @@
 
 - update textures
 - add a screenshot
+- change "Design" to "Features", list features + top level optimizations, and link to DESIGN.md
 
-- make config files for colours
 - make Colors.cpp set from a config file
-- make colours have a custom config serializer/deserializer
 
 - make proper test system
 - make all libraries submodules/cmake installed
 
 - manager rework
 - clean up comments
-
-- fix sun and moon glow and orientation (should face the player, smoother glow)
-
-- test on windows
-- test outside of NixOS
 
 - make controls easier to use so nothing has to be explained in the readme.
 
@@ -27,6 +21,7 @@
 - BoundingBox
 - Hash
 - Color
+- Config
 
 - Profiler
 - Logger
