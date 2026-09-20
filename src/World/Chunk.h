@@ -6,7 +6,7 @@
 
 namespace Minecraft
 {
-    class BoundingBox;
+    struct BoundingBox;
 
     // Chunks contain the actual block data and information about it's size, as wel as getters for blocks that access the data
     // TODO: add some fields that are recalculated when the chunk is loaded/modified

@@ -2,7 +2,7 @@
 
 namespace Minecraft
 {
-    class BoundingBox;
+    struct BoundingBox;
 
     enum class CameraPlane
     {

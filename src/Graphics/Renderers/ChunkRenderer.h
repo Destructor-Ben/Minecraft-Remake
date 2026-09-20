@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Hash.h"
+#include "Graphics/Quad.h"
 #include "World/ChunkPriorityQueue.h"
 
 namespace Minecraft
@@ -9,7 +10,6 @@ namespace Minecraft
     class ChunkMaterial;
     class Block;
     class Mesh;
-    class Quad;
     class Renderer;
     class Texture;
     class VertexBuffer;

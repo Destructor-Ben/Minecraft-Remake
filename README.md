@@ -6,7 +6,7 @@ A Minecraft remake in C++ 23 and OpenGL.
 
 The following will need to be installed to build the game:
 - CMake (minimum version 3.22)
-- A C++ compiler with C++ 23 support
+- A C++ compiler with C++ 23 support (just install Visual Studio on Windows)
 
 There are no runtime dependencies to install.
 
@@ -18,10 +18,11 @@ There are no runtime dependencies to install.
 git clone "https://github.com/Destructor-Ben/Minecraft-Remake"
 cd "Minecraft-Remake"
 
-cmake -DCMAKE_BUILD_TYPE=Release -B build/
-cmake --build build/
+cmake -B build/
+cmake --build build/ --config Release
 
-./build/Minecraft_Remake.exe
+cd build/Release
+./Minecraft_Remake.exe
 ```
 
 ### Linux
