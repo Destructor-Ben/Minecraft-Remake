@@ -139,6 +139,14 @@ namespace Minecraft
 
     void World::TickTime()
     {
+        // Debug, will probably be changed in the future: [[
+        if (Input::WasKeyReleased(Key::P))
+            Time = Noon;
+
+        if (Input::WasKeyReleased(Key::L))
+            Time = Midnight;
+        // ]]
+
         Time += Instance->TickDeltaTime;
 
         // New days start after dawn, not midnight
