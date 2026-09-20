@@ -18,6 +18,8 @@
 - test on windows
 - test outside of NixOS
 
+- make controls easier to use so nothing has to be explained in the readme.
+
 ## Classes Needing Tests
 
 - Transform
