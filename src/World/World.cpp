@@ -10,6 +10,8 @@
 #include "World/Chunk.h"
 #include "Physics/Physics.h"
 
+#include "World/Systems/TimeSystem.h"
+
 namespace Minecraft
 {
     World::World(ulong seed)
@@ -51,7 +53,7 @@ namespace Minecraft
         UpdateBlockBreaking();
         Instance->PerfProfiler->Pop();
 
-        TickTime();
+        TimeSystem::Tick(Instance->TickDeltaTime, Time);
 
         Instance->PerfProfiler->Pop();
     }
@@ -135,29 +137,6 @@ namespace Minecraft
         })
 
         Instance->PerfProfiler->Pop();
-    }
-
-    void World::TickTime()
-    {
-        // Debug, will probably be changed in the future: [[
-        if (Input::WasKeyReleased(Key::P))
-            Time = Noon;
-
-        if (Input::WasKeyReleased(Key::L))
-            Time = Midnight;
-        // ]]
-
-        Time += Instance->TickDeltaTime;
-
-        // New days start after dawn, not midnight
-        if (Time >= DayLength)
-        {
-            Time -= DayLength;
-            DayCount++;
-        }
-
-        TimePercent = Time / DayLength;
-        IsDay = Time > Dawn && Time < Dusk;
     }
 
     void World::UpdateCamera()

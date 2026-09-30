@@ -134,7 +134,7 @@ namespace Minecraft
         // - Use either another shape or make all the normals face up
         // TODO: calculate a MaxBrightness value (each for night and day) and also the ambient brightness, and use those to calculate the brightness of the directional light
         // - During the day, directional light should be less effective, but at night, it should be strong so we get cool directional light
-        float timePercent = Instance->CurrentWorld->TimePercent;
+        float timePercent = Instance->CurrentWorld->Time.TimePercent;
         float skyDarkness = Instance->SkyGraphics->GetSkyDarkness();
         float skyBrightness = (1 - skyDarkness);
         float skyboxAngle = timePercent * 2 * numbers::pi;

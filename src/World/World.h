@@ -6,6 +6,8 @@
 #include "World/Coords.h"
 #include "World/Generation/WorldGenerator.h"
 
+#include "World/State/TimeState.h"
+
 // TODO: make these functions that accept lambdas
 /*template <typename Func>
 inline void for_each_block(Func&& func) {
@@ -69,21 +71,11 @@ namespace Minecraft
         ChunkPos PreviousPlayerChunkPos = { };
         bool HasPlayerMovedChunks = true; // Set to true so when the world loads the chunk lists update
 
+        TimeState Time;
+
         // TODO: move below data to a Dimension class
         // Chunk data
         unordered_map <ChunkPos, Chunk> Chunks = { };
-
-        // Time
-        float Time = 0;
-        float TimePercent = 0;
-        bool IsDay = true;
-        int DayCount = 0;
-        static constexpr float DayLength = 60.0f * 5; // Measured in seconds
-        static constexpr float Dawn = 0;
-        static constexpr float Noon = DayLength / 4.0f;
-        static constexpr float Dusk = DayLength / 2.0f;
-        static constexpr float Midnight = DayLength * 3.0f / 4.0f;
-
         World(ulong seed);
 
         void Generate();
@@ -106,8 +98,6 @@ namespace Minecraft
 
     private:
         void UpdateChunkList(vector<Chunk*>& chunks, int radius);
-
-        void TickTime();
 
         void UpdateCamera();
         void UpdateBlockBreaking();

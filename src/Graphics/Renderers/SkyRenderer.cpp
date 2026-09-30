@@ -250,7 +250,7 @@ namespace Minecraft
 
     void SkyRenderer::Update()
     {
-        float timePercent = Instance->CurrentWorld->TimePercent;
+        float timePercent = Instance->CurrentWorld->Time.TimePercent;
 
         // Calculate a custom matrix that doesn't include movement
         mat4 projection = Instance->CurrentWorld->PlayerCamera.ProjectionMatrix;

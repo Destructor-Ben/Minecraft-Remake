@@ -17,3 +17,5 @@ target_sources(Minecraft_Remake PRIVATE
 add_subdirectory(Biomes)
 add_subdirectory(Blocks)
 add_subdirectory(Generation)
+add_subdirectory(State)
+add_subdirectory(Systems)

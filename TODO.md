@@ -14,6 +14,9 @@
 - manager rework
 - clean up comments
 
+- make my own mutex/rwlock wrapper that will give the resource when you acquire the mutex (and make it a const reference if its reading from a rwlock)
+  - like rust
+
 - make controls easier to use so nothing has to be explained in the readme.
 
 ## Classes Needing Tests
