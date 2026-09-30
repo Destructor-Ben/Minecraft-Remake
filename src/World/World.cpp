@@ -12,7 +12,9 @@
 #include "Physics/Physics.h"
 
 #include "World/Coords.h"
+#include "World/State/SkyState.h"
 #include "World/Systems/PlayerSystem.h"
+#include "World/Systems/SkySystem.h"
 #include "World/Systems/TimeSystem.h"
 
 namespace Minecraft
@@ -65,11 +67,12 @@ namespace Minecraft
         UpdateChunkList(m_RenderedChunks, RenderDistance);
 
         PlayerSystem::Update(Player, Instance->ScreenWidth, Instance->ScreenHeight);
+        SkySystem::Update(Sky, Time);
 
         // TODO: this should be in Tick
         m_WorldGenerator.GenerateChunksAroundPlayer(Player.PlayerTransform.Position, GenerationDistance, MinHeight, MaxHeight);
 
-        Instance->SkyGraphics->Update();
+        Instance->SkyGraphics->Update(Sky);
 
         Instance->PerfProfiler->Pop();
     }
@@ -80,7 +83,7 @@ namespace Minecraft
 
         Instance->Graphics->SceneCamera = &Player.PlayerCamera;
 
-        Instance->ChunkGraphics->RenderChunks(GetRenderedChunks());
+        Instance->ChunkGraphics->RenderChunks(GetRenderedChunks(), Sky);
 
         if (Instance->ChunkGraphics->DrawChunkBorders)
             Instance->ChunkGraphics->RenderDebugChunkBorders();

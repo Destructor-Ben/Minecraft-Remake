@@ -118,7 +118,7 @@ namespace Minecraft
         Instance->PerfProfiler->Pop();
     }
 
-    void ChunkRenderer::RenderChunks(const vector<Chunk*>& chunks)
+    void ChunkRenderer::RenderChunks(const vector<Chunk*>& chunks, SkyState &sky)
     {
         // TODO: should be done in Update
         RegenerateMeshes();
@@ -128,22 +128,16 @@ namespace Minecraft
         // Update the material
         // TODO: normals need to be transformed from local space to world space
         // - This shouldn't actually have any effect for chunks since they aren't rotated but definitely leave a comment about it somewhere
-        // TODO: this should be moved somewhere else and cleaned up
         // TODO: non solid blocks like tall grass stick out a lot - maybe make their other side get the same brightness?
         // - I think cross shaped blocks just don't work very well with lighting
         // - Use either another shape or make all the normals face up
         // TODO: calculate a MaxBrightness value (each for night and day) and also the ambient brightness, and use those to calculate the brightness of the directional light
         // - During the day, directional light should be less effective, but at night, it should be strong so we get cool directional light
-        float timePercent = Instance->CurrentWorld->Time.TimePercent;
-        float skyDarkness = Instance->SkyGraphics->GetSkyDarkness();
-        float skyBrightness = (1 - skyDarkness);
-        float skyboxAngle = timePercent * 2 * numbers::pi;
-        auto rotationAmount = glm::eulerAngleZ(skyboxAngle);
-        m_ChunkMaterial->AmbientLight = vec3(glm::lerp(0.1f, 0.5f, skyBrightness));
-        m_ChunkMaterial->DirToSun = rotationAmount * vec4(1, 0, 0, 1);
-        m_ChunkMaterial->SunLight = vec3(0.5f) * skyBrightness;
-        m_ChunkMaterial->DirToMoon = -m_ChunkMaterial->DirToSun;
-        m_ChunkMaterial->MoonLight = vec3(0.3f) * skyDarkness;
+        m_ChunkMaterial->AmbientLight = sky.AmbientLight;
+        m_ChunkMaterial->DirToSun = sky.DirToSun;
+        m_ChunkMaterial->DirToMoon = sky.DirToMoon;
+        m_ChunkMaterial->SunLight = sky.SunLight;
+        m_ChunkMaterial->MoonLight = sky.MoonLight;
 
         // Render the chunks
         Instance->PerfProfiler->Push("ChunkRenderer::RenderChunks");

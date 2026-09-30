@@ -7,6 +7,7 @@
 #include "World/Generation/WorldGenerator.h"
 
 #include "World/State/PlayerState.h"
+#include "World/State/SkyState.h"
 #include "World/State/TimeState.h"
 
 // TODO: make these functions that accept lambdas
@@ -64,6 +65,7 @@ namespace Minecraft
         static constexpr int MaxSpawnHeight = MaxHeight;
 
         PlayerState Player;
+        SkyState Sky;
         TimeState Time;
 
         // TODO: move below data to a Dimension class

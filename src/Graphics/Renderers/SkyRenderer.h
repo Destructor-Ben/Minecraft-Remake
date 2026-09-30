@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Config.h"
+#include "World/State/SkyState.h"
 
 namespace Minecraft
 {
@@ -18,11 +19,8 @@ namespace Minecraft
     public:
         SkyRenderer();
 
-        void Update();
+        void Update(SkyState &sky);
         void Render();
-
-        // TODO: temporary, remove when the renderer state gets reworked
-        float GetSkyDarkness() const { return m_SkyDarkness; }
 
     private:
         void PrepareSky();
@@ -36,11 +34,6 @@ namespace Minecraft
         static shared_ptr<IndexBuffer> CreateQuadIndices();
 
         Config m_Config;
-
-        // TODO: move these state variables to a SkyVisualState
-        float m_SkyDarkness = 0;
-        float m_SunsetStrength = 0;
-        vec3 m_SunsetDirection;
 
         // TODO: move these to a SkyRendererState
         mat4 m_Transform;

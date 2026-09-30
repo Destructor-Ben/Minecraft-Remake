@@ -44,7 +44,7 @@ Untested, but likely the same as the Linux build instructions.
 
 ## Controls
 
-WASD controls horizontal movement, Shift and Space control vertical movement.
+WASD controls horizontal movement, Shift and Space control vertical movement. Hold Control to fly faster.
 
 The grave/tilde key toggles the debug overlay. Escape opens the pause menu.
 

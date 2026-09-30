@@ -14,5 +14,6 @@ namespace Minecraft
         static constexpr float Noon = 1.0f / 4.0f;
         static constexpr float Dusk = 2.0f / 4.0f;
         static constexpr float Midnight = 3.0f / 4.0f;
+        static constexpr float EndOfDay = 1.0f;
     };
 }

@@ -21,6 +21,7 @@ namespace Minecraft
     SkyRenderer::SkyRenderer()
     {
         // TODO: make a FetchConfig function that fetches config values and stores them in state structs
+        // TODO: move all material fields to state variables and remove materials
         m_Config = Resources::RequestConfig("graphics/sky");
 
         PrepareSky();
@@ -248,106 +249,23 @@ namespace Minecraft
         m_MoonTransform = moonTransform.GetTransformationMatrix();
     }
 
-    void SkyRenderer::Update()
+    void SkyRenderer::Update(SkyState &sky)
     {
-        float timePercent = Instance->CurrentWorld->Time.TimePercent;
-
-        // Calculate a custom matrix that doesn't include movement
         mat4 projection = Instance->CurrentWorld->Player.PlayerCamera.ProjectionMatrix;
         mat4 view = Instance->CurrentWorld->Player.PlayerCamera.ViewMatrix;
         view = mat4(mat3(view)); // Remove translation
         m_Transform = projection * view;
+        m_TransformRotated = m_Transform * sky.CelestialObjectRotation;
 
-        // TODO: a bunch of this updating should be done with the lighting calculations too
-        // Rotate the sky objects while time changes
-        // Z axis is east and west
-        float skyboxAngle = timePercent * 2 * numbers::pi;
-        m_TransformRotated = m_Transform * glm::eulerAngleZ(skyboxAngle);
+        m_SunAndMoonMaterial->SkyDarkness = sky.Darkness;
 
-        // Update star twinkle time
+        m_SkyMaterial->SkyDarkness = sky.Darkness;
+        m_SkyMaterial->SunsetStrength = sky.SunsetStrength;
+        m_SkyMaterial->SunsetCoverage = sky.SunsetCoverage;
+        m_SkyMaterial->SunsetDirection = sky.SunsetDirection;
+
+        m_StarMaterial->SkyDarkness = sky.Darkness;
         m_StarMaterial->Time = Instance->ElapsedSeconds;
-
-        // Update the sky values
-        UpdateSkyDarkness(timePercent);
-        UpdateSunset(timePercent);
-    }
-
-    void SkyRenderer::UpdateSkyDarkness(float timePercent)
-    {
-        // The night gets darker after dusk, and gets light before dawn
-        constexpr float FadeTime = 0.05f;
-
-        // While at night
-        m_SkyDarkness = 1;
-
-        // Don't show during the day
-        if (timePercent <= 0.5f)
-            m_SkyDarkness = 0;
-
-        // Common linear equation values
-        float gradient = 1 / FadeTime;
-        float interceptNightStart = -gradient * 0.5;
-        float interceptNightEnd = gradient;
-
-        // After dusk start fading in
-        if (0.5f < timePercent && timePercent < 0.5f + FadeTime)
-            m_SkyDarkness = gradient * timePercent + interceptNightStart;
-
-        // Before dawn start fading out
-        if (1 - FadeTime < timePercent && timePercent < 1)
-            m_SkyDarkness = -gradient * timePercent + interceptNightEnd;
-    }
-
-    void SkyRenderer::UpdateSunset(float timePercent)
-    {
-        // Update the sunset direction and coverage
-        // We need 90 - Angle because of the working out on paper
-        constexpr float Angle = glm::radians(90.0f - 15.0f);
-        m_SkyMaterial->SunsetCoverage = 0.25; // TODO: change this line
-        // TODO: change the coverage and angle dynamically
-        m_SunsetDirection = vec3(-cos(Angle), -sin(Angle), 0);
-
-        // Adjust for east/west with rise/set
-        m_SunsetDirection.x *= timePercent <= 0.75f && timePercent >= 0.25 ? 1 : -1;
-
-        // Update the strength
-        // Sunsets will fade in linearly, stay for a bit, then fade out
-        constexpr float FadeTime = 0.075;
-        constexpr float SunsetTime = 0.025f;
-        constexpr float HalfSunsetTime = SunsetTime / 2.0f;
-
-        // No sunset
-        m_SunsetStrength = 0;
-
-        // Yes sunset
-        if (timePercent <= HalfSunsetTime || timePercent >= 1 - HalfSunsetTime || (timePercent >= 0.5f - HalfSunsetTime && timePercent <= 0.5f + HalfSunsetTime))
-            m_SunsetStrength = 1;
-
-        // Common linear equation values
-        float gradient = 1 / FadeTime;
-        float interceptSunsetStart = 1 - gradient * (0.5 - HalfSunsetTime);
-        float interceptSunsetEnd = 1 + gradient * (0.5 + HalfSunsetTime);
-        float interceptSunriseStart = 1 - gradient * (1 - HalfSunsetTime);
-        float interceptSunriseEnd = 1 + gradient * (HalfSunsetTime);
-
-        // Starting sunset
-        if (timePercent > 0.5f - HalfSunsetTime - FadeTime && timePercent < 0.5f - HalfSunsetTime)
-            m_SunsetStrength = gradient * timePercent + interceptSunsetStart;
-
-        // Ending sunset
-        if (timePercent < 0.5f + HalfSunsetTime + FadeTime && timePercent > 0.5f + HalfSunsetTime)
-            m_SunsetStrength = -gradient * timePercent + interceptSunsetEnd;
-
-        // Starting sunrise
-        if (timePercent > 1.0f - HalfSunsetTime - FadeTime && timePercent < 1.0f - HalfSunsetTime)
-            m_SunsetStrength = gradient * timePercent + interceptSunriseStart;
-
-        // Ending sunrise
-        if (timePercent < 0.0f + HalfSunsetTime + FadeTime && timePercent > 0.0f + HalfSunsetTime)
-            m_SunsetStrength = -gradient * timePercent + interceptSunriseEnd;
-
-        // Make the sunset more visible
-        m_SunsetStrength *= 2;
     }
 
     void SkyRenderer::Render()
@@ -363,21 +281,13 @@ namespace Minecraft
 
         // Draw the sky
         // Don't use Renderer.Draw, it is for normal objects
-        m_SkyMaterial->SkyDarkness = m_SkyDarkness;
-        m_SkyMaterial->SunsetStrength = m_SunsetStrength;
-        m_SkyMaterial->SunsetDirection = m_SunsetDirection;
         m_SkyMesh->Draw(m_Transform);
 
         // Draw the stars
-        if (m_SkyDarkness != 0)
-        {
-            m_StarMaterial->SkyDarkness = m_SkyDarkness;
+        if (m_StarMaterial->SkyDarkness != 0)
             m_StarMesh->DrawInstanced(m_TransformRotated, m_StarCount);
-        }
 
         // Sun and moon
-        m_SunAndMoonMaterial->SkyDarkness = m_SkyDarkness;
-
         m_SunAndMoonMaterial->IsSun = true;
         m_SunAndMoonMesh->Draw(m_TransformRotated * m_SunTransform);
 

@@ -3,6 +3,7 @@
 #include "Hash.h"
 #include "Graphics/Quad.h"
 #include "World/ChunkPriorityQueue.h"
+#include "World/State/SkyState.h"
 
 namespace Minecraft
 {
@@ -31,7 +32,7 @@ namespace Minecraft
         void OnEnterWorld();
         void OnExitWorld();
 
-        void RenderChunks(const vector<Chunk*>& chunks);
+        void RenderChunks(const vector<Chunk*>& chunks, SkyState &sky);
         void RenderChunk(Chunk& chunk);
         void QueueMeshRegen(Chunk& chunk, int priority = 0);
 

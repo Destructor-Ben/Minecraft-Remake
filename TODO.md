@@ -1,6 +1,7 @@
 # To Do List
 
 - update textures
+- add clouds to the sky
 - add a screenshot
 - change "Design" to "Features", list features + top level optimizations, and link to DESIGN.md
 
