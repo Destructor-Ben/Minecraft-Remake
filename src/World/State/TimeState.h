@@ -11,8 +11,8 @@ namespace Minecraft
 
         static constexpr float DayLength = 60.0f * 5; // Measured in seconds
         static constexpr float Dawn = 0;
-        static constexpr float Noon = DayLength / 4.0f;
-        static constexpr float Dusk = DayLength / 2.0f;
-        static constexpr float Midnight = DayLength * 3.0f / 4.0f;
+        static constexpr float Noon = 1.0f / 4.0f;
+        static constexpr float Dusk = 2.0f / 4.0f;
+        static constexpr float Midnight = 3.0f / 4.0f;
     };
 }
