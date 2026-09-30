@@ -6,7 +6,7 @@
 
 - make Colors.cpp set from a config file
 
-- fix random segfault from flying around
+- fix random segfault from flying around - from chunk generator
 
 - make proper test system
 - make all libraries submodules/cmake installed
