@@ -253,8 +253,8 @@ namespace Minecraft
         float timePercent = Instance->CurrentWorld->Time.TimePercent;
 
         // Calculate a custom matrix that doesn't include movement
-        mat4 projection = Instance->CurrentWorld->PlayerCamera.ProjectionMatrix;
-        mat4 view = Instance->CurrentWorld->PlayerCamera.ViewMatrix;
+        mat4 projection = Instance->CurrentWorld->Player.PlayerCamera.ProjectionMatrix;
+        mat4 view = Instance->CurrentWorld->Player.PlayerCamera.ViewMatrix;
         view = mat4(mat3(view)); // Remove translation
         m_Transform = projection * view;
 

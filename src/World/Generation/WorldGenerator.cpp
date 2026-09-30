@@ -75,7 +75,7 @@ namespace Minecraft
         Instance->PerfProfiler->Push("WorldGenerator::GenerateChunksAroundPlayer");
 
         // Only generate new chunks when moving along chunk borders
-        if (!m_World->HasPlayerMovedChunks)
+        if (!m_World->Player.HasPlayerMovedChunksThisTick)
         {
             // TODO: just don't start the profiler unless the player has moved chunks
             // TODO: repeat that pattern for other functions

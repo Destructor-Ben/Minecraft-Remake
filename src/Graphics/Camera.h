@@ -1,19 +1,15 @@
 #pragma once
 
 #include "Transform.h"
-
 #include "Graphics/CameraFrustum.h"
 
 namespace Minecraft
 {
-    class CameraFrustum;
-
-    // Handles camera matrices - view and projection
-    class Camera : public Transform
+    struct Camera
     {
-    public:
-        bool IsPerspective = true;
+        Transform ViewTransform;
 
+        bool IsPerspective = true;
         float FOV = 45.0f;
         float OrthographicScale = 1.0f;
 
@@ -25,6 +21,6 @@ namespace Minecraft
         mat4 ProjectionViewMatrix = mat4(1.0f);
         CameraFrustum Frustum = CameraFrustum(mat4(1.0f));
 
-        void Update();
+        void Update(int screenWidth, int screenHeight);
     };
 }

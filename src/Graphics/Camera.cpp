@@ -1,26 +1,19 @@
 #include "Camera.h"
 
-#include "Game.h"
-#include "Graphics/CameraFrustum.h"
-
 namespace Minecraft
 {
-    void Camera::Update()
+    void Camera::Update(int screenWidth, int screenHeight)
     {
-        // Calculate view matrix
-        vec3 forward = GetForwardVector();
-        ViewMatrix = glm::lookAt(Position, Position + forward, vec3(0, 1, 0));
+        vec3 forward = ViewTransform.GetForwardVector();
+        ViewMatrix = glm::lookAt(ViewTransform.Position, ViewTransform.Position + forward, vec3(0, 1, 0));
 
-        // Calculate projection matrix
-        if (IsPerspective && Instance->ScreenWidth != 0 && Instance->ScreenHeight != 0)
-            ProjectionMatrix = glm::perspective(FOV, (float)Instance->ScreenWidth / (float)Instance->ScreenHeight, NearClip, FarClip);
+        if (IsPerspective && screenWidth != 0 && screenHeight != 0)
+            ProjectionMatrix = glm::perspective(FOV, (float)screenWidth / (float)screenHeight, NearClip, FarClip);
         else
-            ProjectionMatrix = glm::ortho(0.0f, (float)Instance->ScreenWidth * OrthographicScale, 0.0f, (float)Instance->ScreenHeight * OrthographicScale, NearClip, FarClip);
+            ProjectionMatrix = glm::ortho(0.0f, (float)screenWidth * OrthographicScale, 0.0f, (float)screenHeight * OrthographicScale, NearClip, FarClip);
 
-        // Multiply projection and view matrix together
         ProjectionViewMatrix = ProjectionMatrix * ViewMatrix;
 
-        // Calculate frustum
         Frustum = CameraFrustum(ProjectionViewMatrix);
     }
 }

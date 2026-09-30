@@ -2,10 +2,8 @@
 
 namespace Minecraft
 {
-    // Base + instanced class to handle transformations
-    class Transform
+    struct Transform
     {
-    public:
         vec3 Position = vec3(0.0f);
         quat Rotation = quat(1.0f, 0.0f, 0.0f, 0.0f);
         vec3 Scale = vec3(1.0f);

@@ -32,7 +32,7 @@ namespace Minecraft::UIRenderer
         UICamera.IsPerspective = false;
         UICamera.NearClip = 0;
         UICamera.FarClip = 1;
-        UICamera.Update();
+        UICamera.Update(Instance->ScreenWidth, Instance->ScreenHeight);
     }
 
     void InitMesh()
@@ -113,7 +113,7 @@ namespace Minecraft::UIRenderer
     void OnResize()
     {
         // Update camera matrices
-        UICamera.Update();
+        UICamera.Update(Instance->ScreenWidth, Instance->ScreenHeight);
 
         // Recalculate UIStates
         for (auto& state : UI::UIStateList)

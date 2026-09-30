@@ -6,6 +6,7 @@
 #include "World/Coords.h"
 #include "World/Generation/WorldGenerator.h"
 
+#include "World/State/PlayerState.h"
 #include "World/State/TimeState.h"
 
 // TODO: make these functions that accept lambdas
@@ -62,15 +63,7 @@ namespace Minecraft
         static constexpr int MinSpawnHeight = MinHeight;
         static constexpr int MaxSpawnHeight = MaxHeight;
 
-        // Player
-        // TODO: move to player entity
-        static constexpr float PlayerReachDistance = 7.0f;
-        BlockType* SelectedBlock = nullptr;
-        Camera PlayerCamera;
-        optional <Block> PlayerTargetBlock = nullopt;
-        ChunkPos PreviousPlayerChunkPos = { };
-        bool HasPlayerMovedChunks = true; // Set to true so when the world loads the chunk lists update
-
+        PlayerState Player;
         TimeState Time;
 
         // TODO: move below data to a Dimension class
@@ -96,11 +89,12 @@ namespace Minecraft
         optional <Block> GetBlock(int x, int y, int z) { return GetBlock(BlockPos(x, y, z)); }
         optional <Block> GetBlock(const BlockPos& pos);
 
+        // TODO: make this done automatically in the chunk state (though maybe not, since priority is needed? at least don't allow writes without a priority or calling this)
+        void OnBlockModified(const BlockPos &pos);
+
     private:
         void UpdateChunkList(vector<Chunk*>& chunks, int radius);
 
-        void UpdateCamera();
-        void UpdateBlockBreaking();
         void UpdateMeshInDirection(const ChunkPos& chunkPos, vec3i dir);
 
         // TODO: these could be arrays maybe instead of vectors? their size will be fixed unless the render distance changes
@@ -110,8 +104,5 @@ namespace Minecraft
 
         ulong m_Seed = 0;
         WorldGenerator m_WorldGenerator;
-
-        float m_CameraPitch = 0.0f;
-        float m_CameraYaw = 0.0f;
     };
 }

@@ -38,7 +38,7 @@ namespace Minecraft
 
     void ChunkRenderer::RenderDebugChunkBorders()
     {
-        auto playerPos = Instance->CurrentWorld->PlayerCamera.Position;
+        auto playerPos = Instance->CurrentWorld->Player.PlayerTransform.Position;
         auto playerChunkPos = ChunkPos::FromWorldPos(playerPos);
         if (!m_ChunkMeshes.contains(playerChunkPos))
             return;

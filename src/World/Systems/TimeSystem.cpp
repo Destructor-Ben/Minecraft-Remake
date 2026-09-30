@@ -3,9 +3,9 @@
 #include "Input/Input.h"
 #include "World/State/TimeState.h"
 
-namespace Minecraft
+namespace Minecraft::TimeSystem
 {
-    void TimeSystem::Tick(float deltaTime, TimeState &time)
+    void Tick(TimeState &time, float deltaTime)
     {
         // Debug, will probably be changed in the future: [[
         if (Input::WasKeyReleased(Key::P))
@@ -13,6 +13,12 @@ namespace Minecraft
 
         if (Input::WasKeyReleased(Key::L))
             time.TimeSeconds = TimeState::Midnight * TimeState::DayLength;
+
+        if (Input::WasKeyReleased(Key::O))
+            time.TimeSeconds = TimeState::Dawn * TimeState::DayLength;
+
+        if (Input::WasKeyReleased(Key::K))
+            time.TimeSeconds = TimeState::Dusk * TimeState::DayLength;
         // ]]
 
         time.TimeSeconds += deltaTime;

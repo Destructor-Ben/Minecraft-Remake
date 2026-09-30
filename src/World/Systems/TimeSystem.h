@@ -4,5 +4,5 @@
 
 namespace Minecraft::TimeSystem
 {
-    void Tick(float deltaTime, TimeState &time);
+    void Tick(TimeState &time, float deltaTime);
 }

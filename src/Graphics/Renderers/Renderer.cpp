@@ -135,7 +135,7 @@ namespace Minecraft
     {
         // Move to the position and face the camera
         auto transform = glm::translate(point);
-        transform *= toMat4(glm::quatLookAt(SceneCamera->GetForwardVector(), vec3(0, 1, 0)));
+        transform *= toMat4(glm::quatLookAt(SceneCamera->ViewTransform.GetForwardVector(), vec3(0, 1, 0)));
 
         m_DebugMaterial->Color = color;
         m_DebugMaterial->DrawCircle = true;

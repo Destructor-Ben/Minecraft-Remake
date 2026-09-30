@@ -46,6 +46,7 @@ namespace Minecraft::Physics
         while (t < maxDistance)
         {
             // Check if the current voxel is a solid block
+            // TODO: don't fetch from a global variable, pass in the world
             auto block = Instance->CurrentWorld->GetBlock(BlockPos(voxelPos));
             // TODO: replace with an IsSolid bool? or perhaps allow passing in the condition for the collision
             if (block.has_value() && block->Data->Type != Blocks::Air)

@@ -87,13 +87,13 @@ namespace Minecraft
         }
         else
         {
-            vec3 playerPos = Instance->CurrentWorld->PlayerCamera.Position;
+            vec3 playerPos = Instance->CurrentWorld->Player.PlayerTransform.Position;
             m_PlayerPosText->SetText(format("PlayerPos: ({:.3f},{:.3f},{:.3f})", playerPos.x, playerPos.y, playerPos.z));
             auto blockPos = BlockPos::FromWorldPos(playerPos);
             m_PlayerBlockPosText->SetText(format("  BlockPos: ({},{},{})", blockPos.x, blockPos.y, blockPos.z));
             auto chunkPos = ChunkPos::FromWorldPos(playerPos);
             m_PlayerChunkText->SetText(format("  Chunk: ({},{},{})", chunkPos.x, chunkPos.y, chunkPos.z));
-            vec3 playerRot = glm::eulerAngles(Instance->CurrentWorld->PlayerCamera.Rotation);
+            vec3 playerRot = glm::eulerAngles(Instance->CurrentWorld->Player.PlayerTransform.Rotation);
             m_PlayerDirectionText->SetText("TODO"); // TODO: idk how to do this
         }
     }
