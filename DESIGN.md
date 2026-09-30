@@ -59,5 +59,6 @@ This was decided on because it makes it easy to extend the behaviour of the game
 - chunk data storage in both RAM and on disk
 - data oriented entity-block data
 - parallelization
+- TODO: RAII OpenGL resources (make sure they have removed copy ctor)
 
 -->

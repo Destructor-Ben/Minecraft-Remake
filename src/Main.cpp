@@ -21,6 +21,7 @@ int main()
 {
     try
     {
+        std::signal(SIGINT, SignalHandler);
         std::signal(SIGTERM, SignalHandler);
 
         Instance = make_shared<Game>();
