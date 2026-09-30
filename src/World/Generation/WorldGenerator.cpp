@@ -1,6 +1,5 @@
 #include "WorldGenerator.h"
 
-#include <cstddef>
 #include <thread>
 #include <thread_pool/thread_pool.h>
 
@@ -74,7 +73,6 @@ namespace Minecraft
     void WorldGenerator::GenerateChunksAroundPlayer(vec3 playerPos, int radius, int minHeight, int maxHeight)
     {
         Instance->PerfProfiler->Push("WorldGenerator::GenerateChunksAroundPlayer");
-        Logger::Info("Step 1");
 
         // Only generate new chunks when moving along chunk borders
         if (!m_World->HasPlayerMovedChunks)
@@ -94,8 +92,6 @@ namespace Minecraft
 
         auto playerChunkPos = ChunkPos::FromWorldPos(playerPos);
 
-        Logger::Info("Step 2");
-
         // TODO: what the fuck why isn't this working!!
         for_chunk_in_radius(x, y, z, radius, {
             // TODO: maybe multithread this part? [[
@@ -108,13 +104,9 @@ namespace Minecraft
                 continue;
             // TODO END ]]
 
-            Logger::Info("Step 2.5");
-
             chunkGenThreadPool.enqueue_detach(
                 [this, chunkPos, &chunkMutex, &meshRegenMutex]()
                 {
-                    Logger::Info("Inner 1");
-
                     // Check if the chunk exists and create it
                     Chunk* chunk = nullptr;
 
@@ -124,61 +116,39 @@ namespace Minecraft
                         std::lock_guard lock(chunkMutex);
 
                         auto existingChunk = m_World->GetChunk(chunkPos);
-                        Logger::Info("Inner 2");
-                        if (existingChunk.has_value()) {
-                            Logger::Info("Inner 2.5");
+                        if (existingChunk.has_value())
                             return;
-                        }
 
                         m_World->Chunks.emplace(chunkPos, Chunk(chunkPos));
                         chunk = &m_World->Chunks.at(chunkPos);
-                        Logger::Info("Inner 2.75");
                     }
-
-                    Logger::Info("Inner 3");
 
                     // Generate the chunk
                     Generate(*chunk);
 
-                    Logger::Info("Inner 4");
-
                     // Regenerate chunk meshes
                     // m_ChunkRemeshDirections includes the current chunk and all neighbors
                     {
-                        Logger::Info(format("GETTING MESH REGEN MUTEX: {}", (size_t)&meshRegenMutex));
                         std::lock_guard lock(meshRegenMutex);
-                        std::lock_guard lock2(chunkMutex);
-
-                        Logger::Info("MESH REGEN 1");
 
                         for (const auto& direction : m_ChunkRemeshDirections)
                         {
                             auto otherChunkPos = chunkPos;
                             otherChunkPos.Pos += direction;
-                            Logger::Info("MESH REGEN 2");
                             auto chunkToRemesh = m_World->GetChunk(otherChunkPos); // TODO: maybe this line should have a lock
-                            Logger::Info("MESH REGEN 3");
                             if (chunkToRemesh.has_value())
                             {
                                 // TODO: priority
-                                Logger::Info("MESH REGEN 4");
                                 Instance->ChunkGraphics->QueueMeshRegen(*chunkToRemesh.value());
                             }
-                            Logger::Info("MESH REGEN 5");
                         }
                     }
-
-                    Logger::Info("Inner 5");
                 }
             );
         })
 
-        Logger::Info("Step 3");
-
         // TODO: read the above threadpool impl
         chunkGenThreadPool.wait_for_tasks();
-
-        Logger::Info("Step 4");
 
         Instance->PerfProfiler->Pop();
     }
