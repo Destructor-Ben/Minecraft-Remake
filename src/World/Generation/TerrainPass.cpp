@@ -82,8 +82,8 @@ namespace Minecraft
         m_UndergroundBlocksMap[Biomes::Jungle] = Blocks::Dirt;
 
         // TODO: proper blocks for snowy biomes
-        m_SurfaceBlocksMap[Biomes::Tundra] = Blocks::IronOre;
-        m_UndergroundBlocksMap[Biomes::Tundra] = Blocks::IronOre;
+        m_SurfaceBlocksMap[Biomes::Tundra] = Blocks::Gravel;
+        m_UndergroundBlocksMap[Biomes::Tundra] = Blocks::Gravel;
         m_SurfaceBlocksMap[Biomes::SnowyForest] = Blocks::Clay;
         m_UndergroundBlocksMap[Biomes::SnowyForest] = Blocks::Clay;
     }

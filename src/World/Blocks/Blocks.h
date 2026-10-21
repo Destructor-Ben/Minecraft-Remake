@@ -24,11 +24,13 @@ namespace Minecraft::Blocks
     inline BlockType* Air = CreateBlock<AirBlock>();
     inline BlockType* Stone = CreateBlock<SolidBlock>(vec2i(0, 1));
     inline BlockType* Dirt = CreateBlock<SolidBlock>(vec2i(1, 1));
+    // TODO: rename the grasses
     inline BlockType* Grass = CreateBlock<GrassBlock>(vec2i(1, 1));
     inline BlockType* TallGrass = CreateBlock<TallGrassBlock>(vec2i(4, 1));
     inline BlockType* Sand = CreateBlock<SolidBlock>(vec2i(5, 1));
     inline BlockType* Clay = CreateBlock<SolidBlock>(vec2i(6, 1));
-    inline BlockType* IronOre = CreateBlock<SolidBlock>(vec2i(7, 1));
+    inline BlockType* Gravel = CreateBlock<SolidBlock>(vec2i(7, 1));
     inline BlockType* Wood = CreateBlock<WoodBlock>(vec2i(0, 2));
     inline BlockType* Leaves = CreateBlock<SolidBlock>(vec2i(2, 2));
+    // TODO: add oak sapling and more different grass heights
 }

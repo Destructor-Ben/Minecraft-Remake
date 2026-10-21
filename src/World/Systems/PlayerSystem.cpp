@@ -160,7 +160,7 @@ namespace Minecraft::PlayerSystem
         else if (Input::WasKeyReleased(Key::Six))
             player.SelectedBlock = Blocks::Clay;
         else if (Input::WasKeyReleased(Key::Seven))
-            player.SelectedBlock = Blocks::IronOre;
+            player.SelectedBlock = Blocks::Gravel;
         else if (Input::WasKeyReleased(Key::Eight))
             player.SelectedBlock = Blocks::Wood;
         else if (Input::WasKeyReleased(Key::Nine))

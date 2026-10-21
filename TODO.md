@@ -1,6 +1,7 @@
 # To Do List
 
-- update textures
+- Update sun and moon textures
+- Make sun and moon the same size
 - add clouds to the sky
 - add a screenshot
 - change "Design" to "Features", list features + top level optimizations, and link to DESIGN.md

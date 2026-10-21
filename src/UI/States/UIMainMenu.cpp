@@ -65,7 +65,7 @@ namespace Minecraft
 
     void UIMainMenu::OnResize()
     {
-        m_Background->DrawnSprite.UVs = Rectangle(vec2i(0), Instance->ScreenSize / 30);
+        m_Background->DrawnSprite.UVs = Rectangle(vec2i(0), Instance->ScreenSize / 8);
     }
 
     void UIMainMenu::CheckActive()
