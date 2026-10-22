@@ -23,15 +23,15 @@ namespace Minecraft::SkySystem
         sky.MoonLight = vec3(0.3f) * sky.Darkness;
     }
 
-    void UpdateFromConfig(SkyState &sky, Config &config)
+    void UpdateConfig(SkyState &sky, Config &config)
     {
-        sky.BrightnessFadeDuration = config.TryGetValue<float>("brightness-fade-duration").value_or(0.0);
+        sky.Config.BrightnessFadeDuration = config.TryGetValue<float>("brightness-fade-duration").value_or(0.0);
 
-        sky.SunsetStrengthMultiplier = config.TryGetValue<float>("sunset/strength-multiplier").value_or(1.0);
-        sky.SunsetConstantDuration = config.TryGetValue<float>("sunset/constant-duration").value_or(0.0);
-        sky.SunsetFadeDuration = config.TryGetValue<float>("sunset/fade-duration").value_or(0.0);
-        sky.SunsetAngle = config.TryGetValue<float>("sunset/angle").value_or(0.0);
-        sky.SunsetCoverage = config.TryGetValue<float>("sunset/coverage").value_or(0.0);
+        sky.Config.SunsetStrengthMultiplier = config.TryGetValue<float>("sunset/strength-multiplier").value_or(1.0);
+        sky.Config.SunsetConstantDuration = config.TryGetValue<float>("sunset/constant-duration").value_or(0.0);
+        sky.Config.SunsetFadeDuration = config.TryGetValue<float>("sunset/fade-duration").value_or(0.0);
+        sky.Config.SunsetAngle = config.TryGetValue<float>("sunset/angle").value_or(0.0);
+        sky.Config.SunsetCoverage = config.TryGetValue<float>("sunset/coverage").value_or(0.0);
     }
 
     static void UpdateSkyDarkness(SkyState &sky, float timePercent)
@@ -42,16 +42,16 @@ namespace Minecraft::SkySystem
             skyDarkness = 0;
 
         // Common linear equation values
-        float gradient = 1 / sky.BrightnessFadeDuration;
+        float gradient = 1 / sky.Config.BrightnessFadeDuration;
         float interceptNightStart = -gradient * 0.5;
         float interceptNightEnd = gradient;
 
         // After dusk start fading in
-        if (TimeState::Dusk < timePercent && timePercent < TimeState::Dusk + sky.BrightnessFadeDuration)
+        if (TimeState::Dusk < timePercent && timePercent < TimeState::Dusk + sky.Config.BrightnessFadeDuration)
             skyDarkness = gradient * timePercent + interceptNightStart;
 
         // Before dawn start fading out
-        if (TimeState::EndOfDay - sky.BrightnessFadeDuration < timePercent && timePercent < TimeState::EndOfDay)
+        if (TimeState::EndOfDay - sky.Config.BrightnessFadeDuration < timePercent && timePercent < TimeState::EndOfDay)
             skyDarkness = -gradient * timePercent + interceptNightEnd;
 
         sky.Darkness = skyDarkness;
@@ -61,8 +61,8 @@ namespace Minecraft::SkySystem
     static void UpdateSunset(SkyState &sky, float timePercent)
     {
         // Sunsets will fade in linearly, stay for a bit, then fade out
-        float fadeTime = sky.SunsetFadeDuration;
-        float sunsetTime = sky.SunsetConstantDuration;
+        float fadeTime = sky.Config.SunsetFadeDuration;
+        float sunsetTime = sky.Config.SunsetConstantDuration;
         float halfSunsetTime = sunsetTime / 2.0f;
 
         float sunsetStrength = 0;
@@ -94,9 +94,9 @@ namespace Minecraft::SkySystem
             sunsetStrength = -gradient * timePercent + interceptSunriseEnd;
 
         // Make the sunset more visible
-        sky.SunsetStrength = sunsetStrength * sky.SunsetStrengthMultiplier;
+        sky.SunsetStrength = sunsetStrength * sky.Config.SunsetStrengthMultiplier;
 
-        float realAngle = glm::radians(90.0f - sky.SunsetAngle); // We need 90 - Angle because of the working out on paper
+        float realAngle = glm::radians(90.0f - sky.Config.SunsetAngle); // We need 90 - Angle because of the working out on paper
         sky.SunsetDirection = vec3(-cos(realAngle), -sin(realAngle), 0);
 
         // Adjust for east/west with rise/set

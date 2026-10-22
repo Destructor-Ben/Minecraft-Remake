@@ -259,7 +259,7 @@ namespace Minecraft
 
         m_SkyMaterial->SkyDarkness = sky.Darkness;
         m_SkyMaterial->SunsetStrength = sky.SunsetStrength;
-        m_SkyMaterial->SunsetCoverage = sky.SunsetCoverage;
+        m_SkyMaterial->SunsetCoverage = sky.Config.SunsetCoverage;
         m_SkyMaterial->SunsetDirection = sky.SunsetDirection;
 
         m_StarMaterial->SkyDarkness = sky.Darkness;

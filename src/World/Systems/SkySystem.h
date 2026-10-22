@@ -7,5 +7,5 @@
 namespace Minecraft::SkySystem
 {
     void Update(SkyState &sky, TimeState &time);
-    void UpdateFromConfig(SkyState &sky, Config &config);
+    void UpdateConfig(SkyState &sky, Config &config);
 }

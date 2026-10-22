@@ -40,7 +40,7 @@ namespace Minecraft
 
         // TODO: hot reload this when the config changes
         auto skyConfig = Resources::RequestConfig("graphics/sky");
-        SkySystem::UpdateFromConfig(Sky, skyConfig);
+        SkySystem::UpdateConfig(Sky, skyConfig);
 
         Instance->Graphics->OnEnterWorld();
     }
