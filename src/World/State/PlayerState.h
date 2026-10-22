@@ -7,6 +7,7 @@
 
 namespace Minecraft
 {
+    // TODO: move some of the constants to a config
     struct PlayerState
     {
         Transform PlayerTransform = { };
