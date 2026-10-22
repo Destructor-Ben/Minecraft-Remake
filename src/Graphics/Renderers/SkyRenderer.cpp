@@ -20,8 +20,6 @@ namespace Minecraft
 {
     SkyRenderer::SkyRenderer()
     {
-        // TODO: make a FetchConfig function that fetches config values and stores them in state structs
-        // TODO: move all material fields to state variables and remove materials
         m_Config = Resources::RequestConfig("graphics/sky");
 
         PrepareSky();
@@ -32,7 +30,7 @@ namespace Minecraft
     void SkyRenderer::PrepareSky()
     {
         // TODO: store this in a struct, perhaps sky visual state
-        auto sunsetColor = m_Config.TryGetValue<Color>("sunset-color").value_or(Colors::White);
+        auto sunsetColor = m_Config.TryGetValue<Color>("sunset/color").value_or(Colors::White);
 
         auto skyDayGradient = Resources::RequestTexture("sky/day-color");
         auto skyNightGradient = Resources::RequestTexture("sky/night-color");

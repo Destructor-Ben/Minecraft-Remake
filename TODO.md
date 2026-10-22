@@ -3,6 +3,8 @@
 - Update sun and moon textures
 - Make sun and moon the same size
 - add clouds to the sky
+- make the block and biome types dynamically loaded from yaml
+- implement hot reloading for specific configs
 - add a screenshot
 - change "Design" to "Features", list features + top level optimizations, and link to DESIGN.md
 
@@ -35,6 +37,9 @@
 
 - Physics/
 - Random/
+
+- Coordinate conversion functions in World/
+- Custom for loops in World.h
 
 # Old
 

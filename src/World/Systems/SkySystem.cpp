@@ -20,30 +20,38 @@ namespace Minecraft::SkySystem
         // TODO: no hardcode, load from config
         sky.AmbientLight = vec3(glm::lerp(0.1f, 0.5f, sky.Brightness));
         sky.SunLight = vec3(0.5f) * sky.Brightness;
-        sky.MoonLight = vec3(0.3f) * sky.Brightness;
+        sky.MoonLight = vec3(0.3f) * sky.Darkness;
+    }
+
+    void UpdateFromConfig(SkyState &sky, Config &config)
+    {
+        sky.BrightnessFadeDuration = config.TryGetValue<float>("brightness-fade-duration").value_or(0.0);
+
+        sky.SunsetStrengthMultiplier = config.TryGetValue<float>("sunset/strength-multiplier").value_or(1.0);
+        sky.SunsetConstantDuration = config.TryGetValue<float>("sunset/constant-duration").value_or(0.0);
+        sky.SunsetFadeDuration = config.TryGetValue<float>("sunset/fade-duration").value_or(0.0);
+        sky.SunsetAngle = config.TryGetValue<float>("sunset/angle").value_or(0.0);
+        sky.SunsetCoverage = config.TryGetValue<float>("sunset/coverage").value_or(0.0);
     }
 
     static void UpdateSkyDarkness(SkyState &sky, float timePercent)
     {
-        // TODO: no hardcode, load from config
-        constexpr float FadeTime = 0.05f;
-
         float skyDarkness = 1;
 
         if (timePercent <= TimeState::Dusk)
             skyDarkness = 0;
 
         // Common linear equation values
-        float gradient = 1 / FadeTime;
+        float gradient = 1 / sky.BrightnessFadeDuration;
         float interceptNightStart = -gradient * 0.5;
         float interceptNightEnd = gradient;
 
         // After dusk start fading in
-        if (TimeState::Dusk < timePercent && timePercent < TimeState::Dusk + FadeTime)
+        if (TimeState::Dusk < timePercent && timePercent < TimeState::Dusk + sky.BrightnessFadeDuration)
             skyDarkness = gradient * timePercent + interceptNightStart;
 
         // Before dawn start fading out
-        if (TimeState::EndOfDay - FadeTime < timePercent && timePercent < TimeState::EndOfDay)
+        if (TimeState::EndOfDay - sky.BrightnessFadeDuration < timePercent && timePercent < TimeState::EndOfDay)
             skyDarkness = -gradient * timePercent + interceptNightEnd;
 
         sky.Darkness = skyDarkness;
@@ -53,48 +61,43 @@ namespace Minecraft::SkySystem
     static void UpdateSunset(SkyState &sky, float timePercent)
     {
         // Sunsets will fade in linearly, stay for a bit, then fade out
-        // TODO: no hardcode, load from config
-        constexpr float FadeTime = 0.075;
-        constexpr float SunsetTime = 0.025f;
-        constexpr float HalfSunsetTime = SunsetTime / 2.0f;
+        float fadeTime = sky.SunsetFadeDuration;
+        float sunsetTime = sky.SunsetConstantDuration;
+        float halfSunsetTime = sunsetTime / 2.0f;
 
         float sunsetStrength = 0;
 
-        if (timePercent <= HalfSunsetTime || timePercent >= 1 - HalfSunsetTime || (timePercent >= 0.5f - HalfSunsetTime && timePercent <= 0.5f + HalfSunsetTime))
+        if (timePercent <= halfSunsetTime || timePercent >= 1 - halfSunsetTime || (timePercent >= 0.5f - halfSunsetTime && timePercent <= 0.5f + halfSunsetTime))
             sunsetStrength = 1;
 
         // Common linear equation values
-        float gradient = 1 / FadeTime;
-        float interceptSunsetStart = 1 - gradient * (0.5 - HalfSunsetTime);
-        float interceptSunsetEnd = 1 + gradient * (0.5 + HalfSunsetTime);
-        float interceptSunriseStart = 1 - gradient * (1 - HalfSunsetTime);
-        float interceptSunriseEnd = 1 + gradient * (HalfSunsetTime);
+        float gradient = 1 / fadeTime;
+        float interceptSunsetStart = 1 - gradient * (0.5 - halfSunsetTime);
+        float interceptSunsetEnd = 1 + gradient * (0.5 + halfSunsetTime);
+        float interceptSunriseStart = 1 - gradient * (1 - halfSunsetTime);
+        float interceptSunriseEnd = 1 + gradient * (halfSunsetTime);
 
         // Starting sunset
-        if (timePercent > TimeState::Dusk - HalfSunsetTime - FadeTime && timePercent < TimeState::Dusk - HalfSunsetTime)
+        if (timePercent > TimeState::Dusk - halfSunsetTime - fadeTime && timePercent < TimeState::Dusk - halfSunsetTime)
             sunsetStrength = gradient * timePercent + interceptSunsetStart;
 
         // Ending sunset
-        if (timePercent < TimeState::Dusk + HalfSunsetTime + FadeTime && timePercent > TimeState::Dusk + HalfSunsetTime)
+        if (timePercent < TimeState::Dusk + halfSunsetTime + fadeTime && timePercent > TimeState::Dusk + halfSunsetTime)
             sunsetStrength = -gradient * timePercent + interceptSunsetEnd;
 
         // Starting sunrise
-        if (timePercent > TimeState::EndOfDay - HalfSunsetTime - FadeTime && timePercent < TimeState::EndOfDay - HalfSunsetTime)
+        if (timePercent > TimeState::EndOfDay - halfSunsetTime - fadeTime && timePercent < TimeState::EndOfDay - halfSunsetTime)
             sunsetStrength = gradient * timePercent + interceptSunriseStart;
 
         // Ending sunrise
-        if (timePercent < TimeState::Dawn + HalfSunsetTime + FadeTime && timePercent > TimeState::Dawn + HalfSunsetTime)
+        if (timePercent < TimeState::Dawn + halfSunsetTime + fadeTime && timePercent > TimeState::Dawn + halfSunsetTime)
             sunsetStrength = -gradient * timePercent + interceptSunriseEnd;
 
         // Make the sunset more visible
-        sunsetStrength *= 2;
-        
-        sky.SunsetStrength = sunsetStrength;
-        // TODO: no hardcode angle or coverage, load from config (and store in other values, which are then used here in calculations)
-        sky.SunsetCoverage = 0.25;
-        constexpr float Angle = 15.0f;
-        float angle = glm::radians(90.0f - Angle); // We need 90 - Angle because of the working out on paper
-        sky.SunsetDirection = vec3(-cos(angle), -sin(angle), 0);
+        sky.SunsetStrength = sunsetStrength * sky.SunsetStrengthMultiplier;
+
+        float realAngle = glm::radians(90.0f - sky.SunsetAngle); // We need 90 - Angle because of the working out on paper
+        sky.SunsetDirection = vec3(-cos(realAngle), -sin(realAngle), 0);
 
         // Adjust for east/west with rise/set
         sky.SunsetDirection.x *= timePercent <= TimeState::Midnight && timePercent >= TimeState::Noon ? 1 : -1;

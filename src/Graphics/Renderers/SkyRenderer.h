@@ -33,6 +33,8 @@ namespace Minecraft
         static shared_ptr<VertexBuffer> CreateQuadVertices();
         static shared_ptr<IndexBuffer> CreateQuadIndices();
 
+        // TODO: move all material fields to state variables and remove materials, also move all of the below to some state variables
+
         Config m_Config;
 
         // TODO: move these to a SkyRendererState

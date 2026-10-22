@@ -1,4 +1,12 @@
-sunset-color: "#fb8209"
+brightness-fade-duration: 0.05
+
+sunset:
+  color: "#fb8209"
+  strength-multiplier: 2
+  constant-duration: 0.075
+  fade-duration: 0.025
+  angle: 15
+  coverage: 0.25
 
 sun-glow:
   color: "#fffcb8"

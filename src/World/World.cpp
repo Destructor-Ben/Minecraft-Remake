@@ -7,6 +7,7 @@
 #include "Graphics/Renderers/ChunkRenderer.h"
 #include "Graphics/Renderers/Renderer.h"
 #include "Graphics/Renderers/SkyRenderer.h"
+#include "ResourceManager.h"
 #include "Transform.h"
 #include "World/Chunk.h"
 #include "Physics/Physics.h"
@@ -36,6 +37,10 @@ namespace Minecraft
     void World::OnEnter()
     {
         PlayerSystem::OnEnterWorld(Player);
+
+        // TODO: hot reload this when the config changes
+        auto skyConfig = Resources::RequestConfig("graphics/sky");
+        SkySystem::UpdateFromConfig(Sky, skyConfig);
 
         Instance->Graphics->OnEnterWorld();
     }
