@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22)
 project(Minecraft-Remake VERSION 0.1.0 LANGUAGES CXX C)
 set(CMAKE_CXX_STANDARD 23)
 
-set(MINECRAFT_BUILD_TESTS ON)
+message(WARNING ${MINECRAFT_BUILD_TESTS})
 
 # Makes the binaries end up in build/[debug/release] instead of being in a src sub-folder
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
@@ -50,14 +50,6 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(yaml-cpp)
 
-FetchContent_Declare(
-  googletest
-  URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
-)
-# For Windows: Prevent overriding the parent project's compiler/linker settings
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(googletest)
-
 # Add the main executable and the tests exeutable
 add_executable(Minecraft src/Main.cpp)
 target_link_libraries(Minecraft PRIVATE Minecraft-Core)
@@ -67,7 +59,21 @@ if(WIN32)
 endif()
 
 if(MINECRAFT_BUILD_TESTS)
+  FetchContent_Declare(
+    googletest
+    URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
+  )
+  # For Windows: Prevent overriding the parent project's compiler/linker settings
+  set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+  FetchContent_MakeAvailable(googletest)
+
+  enable_testing()
+
   add_executable(Minecraft-Tests)
   target_link_libraries(Minecraft-Tests PRIVATE Minecraft-Core)
+  target_link_libraries(Minecraft-Tests PRIVATE GTest::gtest_main)
   add_subdirectory(tests)
+
+  include(GoogleTest)
+  gtest_discover_tests(Minecraft-Tests)
 endif()

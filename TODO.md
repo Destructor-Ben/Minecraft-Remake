@@ -14,7 +14,6 @@
 
 - test app icon on windows in the exe itself
 
-- make proper test system
 - make all libraries submodules/cmake installed
 
 - manager rework
