@@ -13,8 +13,8 @@ namespace Minecraft::Logger
 
     void Init()
     {
-        LogFile.open("Minecraft_Remake.log", std::ofstream::out | std::ofstream::trunc);
-        LogFile << "Minecraft_Remake log file, version " << Version::String << "\n\n" << std::flush;
+        LogFile.open("Minecraft.log", std::ofstream::out | std::ofstream::trunc);
+        LogFile << "Minecraft Remake log file, version " << Version::String << "\n\n" << std::flush;
     }
 
     void Shutdown()

@@ -6,4 +6,4 @@ else
   cd bin/release
 fi
 
-./Minecraft_Remake
+./Minecraft

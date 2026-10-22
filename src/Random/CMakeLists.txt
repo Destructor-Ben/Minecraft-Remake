@@ -1,4 +1,4 @@
-target_sources(Minecraft_Remake PRIVATE
+target_sources(Minecraft-Core PRIVATE
     NoiseGenerator.cpp
     NoiseGenerator.h
     Random.cpp

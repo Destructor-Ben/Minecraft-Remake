@@ -24,7 +24,7 @@ namespace Minecraft
     void Game::Initialize()
     {
         Logger::Init();
-        Logger::Info(format("Starting Minecraft_Remake version {}...", Version::String));
+        Logger::Info(format("Starting Minecraft Remake version {}...", Version::String));
 
         PerfProfiler = make_shared<Profiler>();
         PerfProfiler->BeginFrame("Init");

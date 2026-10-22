@@ -2,6 +2,8 @@
 
 A Minecraft remake in C++ 23 and OpenGL.
 
+Note that some textures used here are from Minecraft and are owned by Mojang.
+
 ## Dependencies
 
 The following will need to be installed to build the game:
@@ -22,7 +24,7 @@ cmake -B build/
 cmake --build build/ --config Release
 
 cd build/Release/
-./Minecraft_Remake.exe
+./Minecraft.exe
 ```
 
 ### Linux
@@ -35,7 +37,7 @@ cmake -DCMAKE_BUILD_TYPE=Release -B build/release/
 cmake --build build/release/
 
 cd build/release/
-./Minecraft_Remake
+./Minecraft
 ```
 
 ### MacOS

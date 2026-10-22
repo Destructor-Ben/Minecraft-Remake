@@ -6,4 +6,4 @@ else
   cd bin/release
 fi
 
-valgrind ./Minecraft_Remake
+valgrind ./Minecraft

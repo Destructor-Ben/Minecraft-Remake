@@ -1,8 +1,4 @@
-# Makes the binaries end up in build/[debug/release] instead of being in a src sub-folder
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-
-# Adding the source files
-target_sources(Minecraft_Remake PRIVATE
+target_sources(Minecraft-Core PRIVATE
     BoundingBox.cpp
     BoundingBox.h
     Color.cpp
@@ -16,7 +12,6 @@ target_sources(Minecraft_Remake PRIVATE
     Hash.h
     Logger.cpp
     Logger.h
-    Main.cpp
     Profiler.cpp
     Profiler.h
     Rectangle.cpp
@@ -33,9 +28,3 @@ add_subdirectory(Physics)
 add_subdirectory(Random)
 add_subdirectory(UI)
 add_subdirectory(World)
-
-# Auto include Common.h in all files
-target_precompile_headers(Minecraft_Remake PRIVATE "Common.h")
-
-# Allows includes from src e.g. #include "Game.h"
-target_include_directories(Minecraft_Remake PRIVATE .)

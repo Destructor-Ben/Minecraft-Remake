@@ -1,4 +1,4 @@
-target_sources(Minecraft_Remake PRIVATE
+target_sources(Minecraft-Core PRIVATE
     UICrosshair.cpp
     UICrosshair.h
     UIDebug.cpp

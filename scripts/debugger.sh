@@ -2,4 +2,4 @@
 
 cd bin/debug
 
-gdb --exec=./Minecraft_Remake
+gdb --exec=./Minecraft
