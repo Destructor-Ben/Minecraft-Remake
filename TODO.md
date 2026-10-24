@@ -26,21 +26,21 @@
 
 ## Classes Needing Tests
 
-- Transform
-- Rectangle
-- BoundingBox
-- Hash
-- Color
-- Config
+- [ ] Transform
+- [ ] Rectangle
+- [ ] BoundingBox
+- [ ] Hash
+- [ ] Color
+- [ ] Config
 
-- Profiler
-- Logger
+- [ ] Profiler
+- [ ] Logger
 
-- Physics/
-- Random/
+- [ ] Physics/
+- [ ] Random/
 
-- Coordinate conversion functions in World/
-- Custom for loops in World.h
+- [ ] Coordinate conversion functions in World/
+- [ ] Custom for loops in World.h
 
 # Old
 
