@@ -1,11 +1,15 @@
 # To Do List
 
+## Sun & Moon
 - Update sun and moon textures
 - Make sun and moon the same size
+- give the moon phases
+  - use a normal map to calculate it's lighting
+
 - add clouds to the sky
 - make the block and biome types dynamically loaded from yaml
 - implement hot reloading for specific configs
-- add a screenshot
+- add a screenshot to the readme
 - change "Design" to "Features", list features + top level optimizations, and link to DESIGN.md
 
 - make Colors.cpp set from a config file
@@ -23,6 +27,36 @@
   - like rust
 
 - make controls easier to use so nothing has to be explained in the readme.
+- perhaps make a controls popup in game
+
+## Game Mechanics
+
+- inventory (open with tab)
+- hotbar & block select
+- more blocks
+  - rework the registry system
+  - each "block" is just an id (index to data)
+  - make a `BlockProperty<T>` class that wraps an array and has a `BlockProperty.Get(BlockType block)`
+- rework block types:
+  - solid
+  - solid & orientable (can be placed in any direction, including grass blocks upside down)
+  - nonsolid (stuff like flowers)
+- block variants
+  - slabs (top, bottom, and side)
+  - stairs (all 6 directions)
+  - walls
+  - fences
+- dual hotbar (select variant of a block)
+  - hold shift while scrolling or pressing number keys to select a variant
+  - also allow toggling 'auto variant', which selects the variant based on what you are looking at
+- allow mixed slabs
+- allow filling the rest of a partial block with a solid block, e.g. filling the remaining 1/4th of a stair with something else
+- allow multiple nonsolid blocks to occupy the same block
+  - e.g. multiple flowers
+
+- interact (e)
+- drop item (q)
+- gamemodes
 
 ## Classes Needing Tests
 
@@ -32,6 +66,9 @@
 - Hash
 - Color
 - Config
+
+- Camera
+- CameraFrustum
 
 - Profiler
 - Logger
