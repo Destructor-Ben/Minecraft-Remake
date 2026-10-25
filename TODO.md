@@ -6,6 +6,21 @@
 - give the moon phases
   - use a normal map to calculate it's lighting
 
+## Graphics
+
+- separate GL library into a separate library
+- add an (unfilled) VK library too for future vulkan implementation
+- make a backend agnostic graphics abstraction:
+  - Rework the mesh API:
+    - this is supposed to be a backend agnostic abstraction
+    - make 2 types of meshes: StaticMesh and DynamicMesh
+    - StaticMesh take data during creation
+    - remove the need for materials
+  - ensure shaders are backend agnostic
+  - ensure textures are backend agnostic
+
+## Other
+
 - add clouds to the sky
 - make the block and biome types dynamically loaded from yaml
 - implement hot reloading for specific configs
@@ -28,6 +43,18 @@
 
 - make controls easier to use so nothing has to be explained in the readme.
 - perhaps make a controls popup in game
+
+- generating structure across chunk borders - look at how minecraft does it
+- worldgen steps/load levels -> look at how minecraft does it
+
+- Partial transparency support for blocks
+- Make all chunk loops that use radii circle instead of squares
+- Make all materials automatically request their shaders? it makes no sense to make them not do it since it is passed in anyway
+
+- lighting
+  - tweak existing directional lighting to be better
+  - Add shadows for the sun and moon
+  - add a block lighting system that is smoother than the original game and allows for coloured and circular lights
 
 ## Game Mechanics
 
@@ -78,18 +105,6 @@
 
 - Coordinate conversion functions in World/
 - Custom for loops in World.h
-
-# Old
-
-// TODO: reuse shaders and meshes more, i did design this so i can
-// TODO: rework materials - keep in mind that Shader.SetUniform doesn't do any bining
-
-- Worldgen border fixes + steps - look at how minecraft does it
-- The process segfaults on linux when exiting
-
-- Partial transparency support for blocks
-- Make all chunk loops that use radii circle instead of squares
-- Make all materials automatically request their shaders? it makes no sense to make them not do it since it is passed in anyway
 
 ## Proper Design
 
@@ -170,13 +185,6 @@
     - Perhaps optiosn to use shadows for point lights
   - Deferred renderer - Almost all geometry
   - Forward - Partially transparent
-
-## Build System
-
-- Make the libraries submodules instead of directly embedded
-- Statically link all libraries
-- Make assets use an asset bundle
-- Compile to WASM in future to allow modding support and JIT compilation
 
 ## Optimizations
 
