@@ -1,11 +1,14 @@
 # To Do List
 
-## Sun & Moon
+## Sky
+
 - Update sun and moon textures
 - give the moon phases
   - use a normal map to calculate it's lighting
-- add eclipses
+- add solar and lunar eclipses
 - add blood moons
+- add clouds to the sky
+- add a basic weather system
 
 ## Graphics
 
@@ -22,7 +25,6 @@
 
 ## Other
 
-- add clouds to the sky
 - make the block and biome types dynamically loaded from yaml
 - implement hot reloading for specific configs
 - add a screenshot to the readme

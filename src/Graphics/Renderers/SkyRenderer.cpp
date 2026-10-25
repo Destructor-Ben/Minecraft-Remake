@@ -77,7 +77,7 @@ namespace Minecraft::SkyRenderer
 
     void RenderCelestialObject(State &state, shared_ptr<Texture> texture, mat4 transform, float brightness, const CelestialObject &obj)
     {
-        state.CelestialObjectShader->Bind();
+        state.CelestialObjectShader->Bind(); // TODO: avoid doing this twice
         state.CelestialObjectShader->SetUniform("uBrightness", brightness);
         state.CelestialObjectShader->SetUniform("uTexture", texture, 0);
         state.CelestialObjectShader->SetUniform("uGlowSize", obj.GlowSize);

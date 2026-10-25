@@ -12,7 +12,6 @@ namespace Minecraft
 
 namespace Minecraft::SkyRenderer
 {
-    // TODO: delete SunMoonMaterial
     struct State
     {
         mat4 Transform;
