@@ -27,7 +27,6 @@ namespace Minecraft
 {
     class Renderer;
     class ChunkRenderer;
-    class SkyRenderer;
     class World;
 
     class Game;
@@ -38,6 +37,7 @@ namespace Minecraft
     {
     public:
         // Loop variables
+        // TODO: struct
         bool Running = true;
         chrono::time_point <chrono::steady_clock> StartTime;
         float ElapsedSeconds = 0;
@@ -55,6 +55,7 @@ namespace Minecraft
         float TargetTickRate = 10;
 
         // Window
+        // TODO: struct
         GLFWwindow* Window = nullptr;
         int ScreenWidth = 0;
         int ScreenHeight = 0;
@@ -66,9 +67,9 @@ namespace Minecraft
         shared_ptr <Profiler> PerfProfiler = nullptr;
 
         // Renderers
+        // TODO: move these out of here
         shared_ptr <Renderer> Graphics = nullptr;
         shared_ptr <ChunkRenderer> ChunkGraphics = nullptr;
-        shared_ptr <SkyRenderer> SkyGraphics = nullptr;
 
         // World
         shared_ptr <World> CurrentWorld = nullptr;

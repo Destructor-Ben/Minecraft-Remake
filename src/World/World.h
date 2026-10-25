@@ -6,6 +6,7 @@
 #include "World/Coords.h"
 #include "World/Generation/WorldGenerator.h"
 
+#include "Graphics/Renderers/SkyRenderer.h"
 #include "World/State/PlayerState.h"
 #include "World/State/SkyState.h"
 #include "World/State/TimeState.h"
@@ -68,12 +69,16 @@ namespace Minecraft
         SkyState Sky;
         TimeState Time;
 
+        SkyRenderer::State SkyRendererState;
+
         // TODO: move below data to a Dimension class
         // Chunk data
         unordered_map <ChunkPos, Chunk> Chunks = { };
         World(ulong seed);
 
         void Generate();
+
+        void Prepare();
         void OnEnter();
         void OnExit();
 

@@ -21,7 +21,10 @@ moon-glow:
 stars:
   count: 750
   seed: 0xf63a0f1fc91367d8
-  scale: 0.005
-  scale-percent-variance: 0.25
+  temperature-strength: 0.35
+  max-brightness: 0.9
+  twinkle-strength: 0.75
   min-twinkle-speed: 1.0
   max-twinkle-speed: 2.0
+  scale: 0.005
+  scale-percent-variance: 0.25

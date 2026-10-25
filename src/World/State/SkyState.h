@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Color.h"
+
 namespace Minecraft
 {
     struct SkyState
@@ -22,11 +24,26 @@ namespace Minecraft
         struct SkyConfig {
             float BrightnessFadeDuration = 0;
 
-            float SunsetStrengthMultiplier = 0;
-            float SunsetConstantDuration = 0;
-            float SunsetFadeDuration = 0;
-            float SunsetCoverage = 0;
-            float SunsetAngle = 0;
+            struct {
+                Color MainColor = { };
+                float StrengthMultiplier = 0;
+                float ConstantDuration = 0;
+                float FadeDuration = 0;
+                float Coverage = 0;
+                float Angle = 0;
+            } Sunset;
+
+            struct {
+                int Count = 0;
+                ulong Seed = 0;
+                float TemperatureStrength = 0;
+                float MaxBrightness = 0;
+                float TwinkleStrength = 0;
+                float MinTwinkleSpeed = 0;
+                float MaxTwinkleSpeed = 0;
+                float Scale = 0;
+                float ScalePercentVariance = 0;
+            } Stars;
         } Config;
     };
 }

@@ -10,7 +10,6 @@
 #include "Graphics/GL.h"
 #include "Graphics/Renderers/Renderer.h"
 #include "Graphics/Renderers/ChunkRenderer.h"
-#include "Graphics/Renderers/SkyRenderer.h"
 #include "Graphics/Renderers/TextRenderer.h"
 #include "Graphics/Renderers/UIRenderer.h"
 #include "Random/RandomTests.h"
@@ -52,7 +51,6 @@ namespace Minecraft
 
         Graphics = make_shared<Renderer>();
         ChunkGraphics = make_shared<ChunkRenderer>();
-        SkyGraphics = make_shared<SkyRenderer>();
 
         PerfProfiler->Pop();
 
@@ -77,7 +75,6 @@ namespace Minecraft
 
         // We manually null these out because we need to deallocate the objects in a guaranteed order
         CurrentWorld = nullptr;
-        SkyGraphics = nullptr;
         ChunkGraphics = nullptr;
         Graphics = nullptr;
         PerfProfiler = nullptr;
@@ -330,6 +327,7 @@ namespace Minecraft
         Logger::Info("Entering world...");
         InGame = true;
         IsPaused = false;
+        CurrentWorld->Prepare(); // TODO: this should be done on a separate thread while in a loading screen
         CurrentWorld->OnEnter();
         SetMouseHidden(true);
     }

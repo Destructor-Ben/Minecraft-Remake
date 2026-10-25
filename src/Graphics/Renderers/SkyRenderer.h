@@ -1,56 +1,42 @@
 #pragma once
 
-#include "Config.h"
+#include "World/State/PlayerState.h"
 #include "World/State/SkyState.h"
 
 namespace Minecraft
 {
     class Mesh;
+    class Shader;
     class Texture;
-    class IndexBuffer;
-    class VertexBuffer;
+}
 
-    class SkyMaterial;
-    class StarMaterial;
-    class SunMoonMaterial;
-
-    class SkyRenderer
+namespace Minecraft::SkyRenderer
+{
+    // TODO: delete SunMoonMaterial
+    struct State
     {
-    public:
-        SkyRenderer();
+        mat4 Transform;
+        mat4 TransformRotated;
+        mat4 SunTransform;
+        mat4 MoonTransform;
 
-        void Update(SkyState &sky);
-        void Render();
+        shared_ptr<Mesh> SkyMesh;
+        shared_ptr<Mesh> StarMesh;
+        shared_ptr<Mesh> CelestialObjectMesh;
 
-    private:
-        void PrepareSky();
-        void PrepareStars();
-        void PrepareSunAndMoon();
+        shared_ptr<Shader> SkyShader;
+        shared_ptr<Shader> StarShader;
+        shared_ptr<Shader> CelestialObjectShader;
 
-        void UpdateSkyDarkness(float timePercent);
-        void UpdateSunset(float timePercent);
-
-        static shared_ptr<VertexBuffer> CreateQuadVertices();
-        static shared_ptr<IndexBuffer> CreateQuadIndices();
-
-        // TODO: move all material fields to state variables and remove materials, also move all of the below to some state variables
-
-        Config m_Config;
-
-        // TODO: move these to a SkyRendererState
-        mat4 m_Transform;
-        mat4 m_TransformRotated;
-        mat4 m_SunTransform;
-        mat4 m_MoonTransform;
-
-        shared_ptr<Mesh> m_SkyMesh;
-        shared_ptr<SkyMaterial> m_SkyMaterial;
-
-        int m_StarCount = 0;
-        shared_ptr<Mesh> m_StarMesh;
-        shared_ptr<StarMaterial> m_StarMaterial;
-
-        shared_ptr<Mesh> m_SunAndMoonMesh;
-        shared_ptr<SunMoonMaterial> m_SunAndMoonMaterial;
+        shared_ptr<Texture> DayGradient;
+        shared_ptr<Texture> NightGradient;
+        shared_ptr<Texture> SunTexture;
+        shared_ptr<Texture> MoonTexture;
+        shared_ptr<Texture> StarTexture;
+        shared_ptr<Texture> StarTemperatureGradient;
     };
+
+    void Prepare(State &state, const SkyState &sky);
+    void Update(State &state, const SkyState &sky, const PlayerState &player);
+    void Render(State &state, const SkyState &sky);
 }

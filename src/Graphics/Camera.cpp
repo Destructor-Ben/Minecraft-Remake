@@ -5,7 +5,8 @@ namespace Minecraft
     void Camera::Update(int screenWidth, int screenHeight)
     {
         vec3 forward = ViewTransform.GetForwardVector();
-        ViewMatrix = glm::lookAt(ViewTransform.Position, ViewTransform.Position + forward, vec3(0, 1, 0));
+        vec3 up = ViewTransform.GetUpVector();
+        ViewMatrix = glm::lookAt(ViewTransform.Position, ViewTransform.Position + forward, up);
 
         if (IsPerspective && screenWidth != 0 && screenHeight != 0)
             ProjectionMatrix = glm::perspective(FOV, (float)screenWidth / (float)screenHeight, NearClip, FarClip);

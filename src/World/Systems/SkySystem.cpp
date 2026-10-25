@@ -1,4 +1,5 @@
 #include "SkySystem.h"
+#include "Colors.h"
 #include "World/State/TimeState.h"
 
 namespace Minecraft::SkySystem
@@ -27,11 +28,22 @@ namespace Minecraft::SkySystem
     {
         sky.Config.BrightnessFadeDuration = config.TryGetValue<float>("brightness-fade-duration").value_or(0.0);
 
-        sky.Config.SunsetStrengthMultiplier = config.TryGetValue<float>("sunset/strength-multiplier").value_or(1.0);
-        sky.Config.SunsetConstantDuration = config.TryGetValue<float>("sunset/constant-duration").value_or(0.0);
-        sky.Config.SunsetFadeDuration = config.TryGetValue<float>("sunset/fade-duration").value_or(0.0);
-        sky.Config.SunsetAngle = config.TryGetValue<float>("sunset/angle").value_or(0.0);
-        sky.Config.SunsetCoverage = config.TryGetValue<float>("sunset/coverage").value_or(0.0);
+        sky.Config.Sunset.MainColor = config.TryGetValue<Color>("sunset/color").value_or(Colors::White);
+        sky.Config.Sunset.StrengthMultiplier = config.TryGetValue<float>("sunset/strength-multiplier").value_or(1.0);
+        sky.Config.Sunset.ConstantDuration = config.TryGetValue<float>("sunset/constant-duration").value_or(0.0);
+        sky.Config.Sunset.FadeDuration = config.TryGetValue<float>("sunset/fade-duration").value_or(0.0);
+        sky.Config.Sunset.Angle = config.TryGetValue<float>("sunset/angle").value_or(0.0);
+        sky.Config.Sunset.Coverage = config.TryGetValue<float>("sunset/coverage").value_or(0.0);
+
+        sky.Config.Stars.Count = config.TryGetValue<int>("stars/count").value_or(100);
+        sky.Config.Stars.Seed = config.TryGetValue<ulong>("stars/seed").value_or(123);
+        sky.Config.Stars.TemperatureStrength = config.TryGetValue<float>("stars/temperature-strength").value_or(0.0f);
+        sky.Config.Stars.MaxBrightness = config.TryGetValue<float>("stars/max-brightness").value_or(0.0f);
+        sky.Config.Stars.TwinkleStrength = config.TryGetValue<float>("stars/twinkle-strength").value_or(0.0f);
+        sky.Config.Stars.MinTwinkleSpeed = config.TryGetValue<float>("stars/min-twinkle-speed").value_or(0.0f);
+        sky.Config.Stars.MaxTwinkleSpeed = config.TryGetValue<float>("stars/max-twinkle-speed").value_or(0.0f);
+        sky.Config.Stars.Scale = config.TryGetValue<float>("stars/scale").value_or(1.0f);
+        sky.Config.Stars.ScalePercentVariance = config.TryGetValue<float>("stars/scale-percent-variance").value_or(0.0f);
     }
 
     static void UpdateSkyDarkness(SkyState &sky, float timePercent)
@@ -61,8 +73,8 @@ namespace Minecraft::SkySystem
     static void UpdateSunset(SkyState &sky, float timePercent)
     {
         // Sunsets will fade in linearly, stay for a bit, then fade out
-        float fadeTime = sky.Config.SunsetFadeDuration;
-        float sunsetTime = sky.Config.SunsetConstantDuration;
+        float fadeTime = sky.Config.Sunset.FadeDuration;
+        float sunsetTime = sky.Config.Sunset.ConstantDuration;
         float halfSunsetTime = sunsetTime / 2.0f;
 
         float sunsetStrength = 0;
@@ -94,9 +106,9 @@ namespace Minecraft::SkySystem
             sunsetStrength = -gradient * timePercent + interceptSunriseEnd;
 
         // Make the sunset more visible
-        sky.SunsetStrength = sunsetStrength * sky.Config.SunsetStrengthMultiplier;
+        sky.SunsetStrength = sunsetStrength * sky.Config.Sunset.StrengthMultiplier;
 
-        float realAngle = glm::radians(90.0f - sky.Config.SunsetAngle); // We need 90 - Angle because of the working out on paper
+        float realAngle = glm::radians(90.0f - sky.Config.Sunset.Angle); // We need 90 - Angle because of the working out on paper
         sky.SunsetDirection = vec3(-cos(realAngle), -sin(realAngle), 0);
 
         // Adjust for east/west with rise/set

@@ -34,13 +34,22 @@ namespace Minecraft
         // Time = Dawn;
     }
 
-    void World::OnEnter()
+    void World::Prepare()
     {
         PlayerSystem::OnEnterWorld(Player);
 
         // TODO: hot reload this when the config changes
         auto skyConfig = Resources::RequestConfig("graphics/sky");
         SkySystem::UpdateConfig(Sky, skyConfig);
+
+        SkyRenderer::Prepare(SkyRendererState, Sky);
+
+        Instance->Graphics->OnEnterWorld();
+    }
+
+    void World::OnEnter()
+    {
+        PlayerSystem::OnEnterWorld(Player);
 
         Instance->Graphics->OnEnterWorld();
     }
@@ -77,7 +86,7 @@ namespace Minecraft
         // TODO: this should be in Tick
         m_WorldGenerator.GenerateChunksAroundPlayer(Player.PlayerTransform.Position, GenerationDistance, MinHeight, MaxHeight);
 
-        Instance->SkyGraphics->Update(Sky);
+        SkyRenderer::Update(SkyRendererState, Sky, Player);
 
         Instance->PerfProfiler->Pop();
     }
@@ -93,7 +102,9 @@ namespace Minecraft
         if (Instance->ChunkGraphics->DrawChunkBorders)
             Instance->ChunkGraphics->RenderDebugChunkBorders();
 
-        Instance->SkyGraphics->Render();
+        Instance->PerfProfiler->Push("SkyRenderer::Render");
+        SkyRenderer::Render(SkyRendererState, Sky);
+        Instance->PerfProfiler->Pop();
 
         Instance->PerfProfiler->Pop();
     }
