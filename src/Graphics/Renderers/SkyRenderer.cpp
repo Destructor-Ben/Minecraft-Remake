@@ -5,12 +5,15 @@
 #include "ResourceManager.h"
 #include "Random/Random.h"
 #include "World/State/PlayerState.h"
+#include "World/State/SkyState.h"
+#include <algorithm>
 
 namespace Minecraft::SkyRenderer
 {
     static void PrepareSky(State &state, const SkyState &sky);
     static void PrepareStars(State &state, const SkyState &sky);
     static void PrepareSunAndMoon(State &state, const SkyState &sky);
+    static void RenderCelestialObject(State &state, shared_ptr<Texture> texture, mat4 transform, float brightness, const CelestialObject &obj);
 
     static shared_ptr<VertexBuffer> CreateQuadVertices();
     static shared_ptr<IndexBuffer> CreateQuadIndices();
@@ -19,7 +22,7 @@ namespace Minecraft::SkyRenderer
     {
         PrepareSky(state, sky);
         PrepareStars(state, sky);
-        // PrepareSunAndMoon(state, sky);
+        PrepareSunAndMoon(state, sky);
     }
 
     void Update(State &state, const SkyState &sky, const PlayerState &player)
@@ -64,21 +67,23 @@ namespace Minecraft::SkyRenderer
             state.StarMesh->DrawInstanced(state.TransformRotated, sky.Config.Stars.Count);
         }
 
+        RenderCelestialObject(state, state.SunTexture, state.SunTransform, 1.0f, sky.Config.Sun);
+        RenderCelestialObject(state, state.MoonTexture, state.MoonTransform, std::max(sky.Darkness, 0.35f), sky.Config.Moon);
+
         // Reset GL state
         glDepthMask(true);
         glDepthFunc(GL_LESS);
+    }
 
-        /*
-        // TODO: moved here from update:
-        m_SunAndMoonMaterial->SkyDarkness = sky.Darkness;
-
-        // Sun and moon
-        m_SunAndMoonMaterial->IsSun = true;
-        m_SunAndMoonMesh->Draw(m_TransformRotated * m_SunTransform);
-
-        m_SunAndMoonMaterial->IsSun = false;
-        m_SunAndMoonMesh->Draw(m_TransformRotated * m_MoonTransform);
-        */
+    void RenderCelestialObject(State &state, shared_ptr<Texture> texture, mat4 transform, float brightness, const CelestialObject &obj)
+    {
+        state.CelestialObjectShader->Bind();
+        state.CelestialObjectShader->SetUniform("uBrightness", brightness);
+        state.CelestialObjectShader->SetUniform("uTexture", texture, 0);
+        state.CelestialObjectShader->SetUniform("uGlowSize", obj.GlowSize);
+        state.CelestialObjectShader->SetUniform("uGlowStrength", obj.GlowStrength);
+        state.CelestialObjectShader->SetUniform("uGlowColor", obj.GlowColor.RGB);
+        state.CelestialObjectMesh->Draw(state.TransformRotated * transform);
     }
 
     shared_ptr<VertexBuffer> CreateQuadVertices()
@@ -259,25 +264,12 @@ namespace Minecraft::SkyRenderer
         VertexArray::Unbind();
     }
 
-    /*
     void PrepareSunAndMoon(State &state, const SkyState &sky)
     {
-        // Create the material
-        auto sunTexture = Resources::RequestTexture("sky/sun");
-        auto moonTexture = Resources::RequestTexture("sky/moon");
+        state.CelestialObjectShader = Resources::RequestShader("sky/celestial-object");
+        state.SunTexture = Resources::RequestTexture("sky/sun");
+        state.MoonTexture = Resources::RequestTexture("sky/moon");
 
-        auto shader = Resources::RequestShader("sky/sun-moon");
-        m_SunAndMoonMaterial = make_shared<SunMoonMaterial>(shader);
-        m_SunAndMoonMaterial->SunTexture = sunTexture;
-        m_SunAndMoonMaterial->MoonTexture = moonTexture;
-        m_SunAndMoonMaterial->SunGlowColor = m_Config.TryGetValue<Color>("sun-glow/color").value_or(Colors::Magenta).RGB;
-        m_SunAndMoonMaterial->MoonGlowColor = m_Config.TryGetValue<Color>("moon-glow/color").value_or(Colors::Magenta).RGB;
-        m_SunAndMoonMaterial->SunGlowSize = m_Config.TryGetValue<float>("sun-glow/size").value_or(1.0);
-        m_SunAndMoonMaterial->MoonGlowSize = m_Config.TryGetValue<float>("moon-glow/size").value_or(1.0);
-        m_SunAndMoonMaterial->SunGlowStrength = m_Config.TryGetValue<float>("sun-glow/strength").value_or(1.0);
-        m_SunAndMoonMaterial->MoonGlowStrength = m_Config.TryGetValue<float>("moon-glow/strength").value_or(1.0);
-
-        // Create the mesh
         auto vertexBuffer = CreateQuadVertices();
         auto indexBuffer = CreateQuadIndices();
 
@@ -286,23 +278,22 @@ namespace Minecraft::SkyRenderer
         vertexArray->PushFloat(2);
         vertexArray->AddBuffer(vertexBuffer);
 
-        m_SunAndMoonMesh = make_shared<Mesh>(vertexArray);
-        m_SunAndMoonMesh->Materials[m_SunAndMoonMaterial] = indexBuffer;
+        auto material = make_shared<Material>(state.CelestialObjectShader);
+        state.CelestialObjectMesh = make_shared<Mesh>(vertexArray);
+        state.CelestialObjectMesh->Materials[material] = indexBuffer;
 
-        // Set transforms
         auto sunTransform = Transform();
         sunTransform.Position.x = 1;
         sunTransform.Rotation = quat(glm::eulerAngleY(-numbers::pi / 2.0f));
-        sunTransform.Scale *= 0.25f;
+        sunTransform.Scale *= sky.Config.Sun.Scale;
 
         auto moonTransform = Transform();
         moonTransform.Position.x = -1;
         moonTransform.Rotation = quat(glm::eulerAngleY(numbers::pi / 2.0f));
         moonTransform.Rotation *= quat(glm::eulerAngleZ(numbers::pi));
-        moonTransform.Scale *= 0.1f;
+        moonTransform.Scale *= sky.Config.Moon.Scale;
 
-        m_SunTransform = sunTransform.GetTransformationMatrix();
-        m_MoonTransform = moonTransform.GetTransformationMatrix();
+        state.SunTransform = sunTransform.GetTransformationMatrix();
+        state.MoonTransform = moonTransform.GetTransformationMatrix();
     }
-    */
 }

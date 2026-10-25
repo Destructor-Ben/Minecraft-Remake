@@ -5,6 +5,4 @@ target_sources(Minecraft-Core PRIVATE
     DebugMaterial.h
     SpriteMaterial.cpp
     SpriteMaterial.h
-    SunMoonMaterial.cpp
-    SunMoonMaterial.h
 )

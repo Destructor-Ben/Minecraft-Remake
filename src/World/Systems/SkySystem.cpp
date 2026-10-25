@@ -1,11 +1,13 @@
 #include "SkySystem.h"
 #include "Colors.h"
+#include "World/State/SkyState.h"
 #include "World/State/TimeState.h"
 
 namespace Minecraft::SkySystem
 {
     static void UpdateSkyDarkness(SkyState &sky, float timePercent);
     static void UpdateSunset(SkyState &sky, float timePercent);
+    static void UpdateCelestialObjectConfig(CelestialObject &obj, Config &config, string name);
 
     // TODO: colour the sun and moon lighting, similar to how the glow is coloured, and also change it based on the sunset values
     void Update(SkyState &sky, TimeState &time)
@@ -44,6 +46,17 @@ namespace Minecraft::SkySystem
         sky.Config.Stars.MaxTwinkleSpeed = config.TryGetValue<float>("stars/max-twinkle-speed").value_or(0.0f);
         sky.Config.Stars.Scale = config.TryGetValue<float>("stars/scale").value_or(1.0f);
         sky.Config.Stars.ScalePercentVariance = config.TryGetValue<float>("stars/scale-percent-variance").value_or(0.0f);
+
+        UpdateCelestialObjectConfig(sky.Config.Sun, config, "sun");
+        UpdateCelestialObjectConfig(sky.Config.Moon, config, "moon");
+    }
+
+    void UpdateCelestialObjectConfig(CelestialObject &obj, Config &config, string name)
+    {
+        obj.Scale = config.TryGetValue<float>(format("{}/scale", name)).value_or(1.0);
+        obj.GlowColor = config.TryGetValue<Color>(format("{}/glow-color", name)).value_or(Colors::Magenta);
+        obj.GlowSize = config.TryGetValue<float>(format("{}/glow-size", name)).value_or(1.0);
+        obj.GlowStrength = config.TryGetValue<float>(format("{}/glow-strength", name)).value_or(1.0);
     }
 
     static void UpdateSkyDarkness(SkyState &sky, float timePercent)

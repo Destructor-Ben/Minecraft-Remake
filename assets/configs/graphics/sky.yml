@@ -8,15 +8,17 @@ sunset:
   angle: 15
   coverage: 0.25
 
-sun-glow:
-  color: "#fffcb8"
-  size: 0.5
-  strength: 1.0
+sun:
+  scale: 0.25
+  glow-color: "#fffcb8"
+  glow-size: 0.5
+  glow-strength: 1.0
 
-moon-glow:
-  color: "#fcfcff"
-  size: 0.5
-  strength: 0.35
+moon:
+  scale: 0.25
+  glow-color: "#fcfcff"
+  glow-size: 0.5
+  glow-strength: 0.35
 
 stars:
   count: 750

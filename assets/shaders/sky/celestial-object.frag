@@ -2,8 +2,7 @@
 
 in vec2 TexCoord;
 
-uniform float uSkyDarkness;
-uniform float uMinBrightness;
+uniform float uBrightness;
 uniform float uGlowSize;
 uniform float uGlowStrength;
 uniform vec3 uGlowColor;
@@ -14,7 +13,7 @@ out vec4 FragColor;
 void main()
 {
     FragColor = texture(uTexture, TexCoord);
-    FragColor.a *= mix(uMinBrightness, 1, uSkyDarkness);
+    FragColor.a *= uBrightness;
 
     if (FragColor.a == 0.0) {
         float glowDst = length((TexCoord - vec2(0.5)) / uGlowSize);

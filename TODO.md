@@ -2,9 +2,10 @@
 
 ## Sun & Moon
 - Update sun and moon textures
-- Make sun and moon the same size
 - give the moon phases
   - use a normal map to calculate it's lighting
+- add eclipses
+- add blood moons
 
 ## Graphics
 

@@ -4,6 +4,14 @@
 
 namespace Minecraft
 {
+    struct CelestialObject
+    {
+        float Scale = 0;
+        Color GlowColor = { };
+        float GlowSize = 0;
+        float GlowStrength = 0;
+    };
+
     struct SkyState
     {
         float Brightness = 0;
@@ -44,6 +52,9 @@ namespace Minecraft
                 float Scale = 0;
                 float ScalePercentVariance = 0;
             } Stars;
+
+            CelestialObject Sun;
+            CelestialObject Moon;
         } Config;
     };
 }
