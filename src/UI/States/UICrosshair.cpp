@@ -15,7 +15,7 @@ namespace Minecraft
         m_Crosshair->x.Percent = 0.5f;
         m_Crosshair->y.Percent = 0.5f;
         m_Crosshair->OriginX.Percent = 0.5f;
-        m_Crosshair->OriginX.Percent = 0.5f;
+        m_Crosshair->OriginY.Percent = 0.5f;
         AddElement(m_Crosshair);
     }
 

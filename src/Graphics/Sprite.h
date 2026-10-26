@@ -10,7 +10,7 @@ namespace Minecraft
     struct Sprite
     {
         vec2i Position = vec2i(0);
-        vec2i Origin = vec2i(0); // Keep in mind that without using a rectangle, origin is subtracted from position
+        vec2i Origin = vec2i(0); // Translation that occurs before rotation (but not scaling?)
         vec2i Size = vec2i(0);
         float Rotation = 0;
         float Depth = 0.5f; // 0 to 1 range

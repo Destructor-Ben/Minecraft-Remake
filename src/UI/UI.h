@@ -3,6 +3,7 @@
 #include "UI/UIState.h"
 #include "UI/States/UICrosshair.h"
 #include "UI/States/UIDebug.h"
+#include "UI/States/UIHotbar.h"
 #include "UI/States/UIMainMenu.h"
 #include "UI/States/UIPauseMenu.h"
 
@@ -23,6 +24,7 @@ namespace Minecraft::UI
     }
     // END TODO
 
+    // TODO: implement this as the regular UI scale field below
     inline constexpr int SpriteScale = 3; // Since sprites are small
 
     // TODO: implement these 3 properly
@@ -35,6 +37,7 @@ namespace Minecraft::UI
 
     // Ingame
     inline UIState* Crosshair;
+    inline UIState* Hotbar;
     inline UIState* PauseMenu;
     inline UIState* DebugMenu;
 
@@ -44,6 +47,7 @@ namespace Minecraft::UI
         MainMenu = CreateUI<UIMainMenu>();
 
         Crosshair = CreateUI<UICrosshair>();
+        Hotbar = CreateUI<UIHotbar>();
         PauseMenu = CreateUI<UIPauseMenu>();
         DebugMenu = CreateUI<UIDebug>();
     }

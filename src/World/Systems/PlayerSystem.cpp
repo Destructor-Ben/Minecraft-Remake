@@ -162,7 +162,7 @@ namespace Minecraft::PlayerSystem
         float scrollDelta = Input::GetScrollWheelDelta();
         if (scrollDelta != 0)
         {
-            player.SelectedHotbarSlot += (int)scrollDelta;
+            player.SelectedHotbarSlot -= (int)scrollDelta;
 
             // Don't use modulus, since it is machine dependent for negatives
             while (player.SelectedHotbarSlot >= PlayerState::HotbarSize)
