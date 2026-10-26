@@ -14,6 +14,8 @@ namespace Minecraft::SkyRenderer
 {
     struct State
     {
+        int CreatedStarCount; // May not match the value in the config (because of hot reloading)
+
         mat4 Transform;
         mat4 TransformRotated;
         mat4 SunTransform;

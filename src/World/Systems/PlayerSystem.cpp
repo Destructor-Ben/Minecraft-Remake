@@ -143,6 +143,7 @@ namespace Minecraft::PlayerSystem
         player.PlayerTransform.Rotation = quat(vec3(player.CameraPitch, player.CameraYaw, 0.0f));
     }
 
+    // TODO: allow scrolling the hotbar, also store a hotbar index
     static void UpdateSelectedBlock(PlayerState &player)
     {
         if (Input::WasKeyReleased(Key::Zero))

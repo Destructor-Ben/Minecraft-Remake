@@ -2,8 +2,6 @@ cmake_minimum_required(VERSION 3.22)
 project(Minecraft-Remake VERSION 0.1.0 LANGUAGES CXX C)
 set(CMAKE_CXX_STANDARD 23)
 
-message(WARNING ${MINECRAFT_BUILD_TESTS})
-
 # Makes the binaries end up in build/[debug/release] instead of being in a src sub-folder
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 

@@ -64,7 +64,7 @@ namespace Minecraft::SkyRenderer
             state.StarShader->SetUniform("uTwinkleStrength", sky.Config.Stars.TwinkleStrength);
             state.StarShader->SetUniform("uMaxBrightness", sky.Config.Stars.MaxBrightness);
             state.StarShader->SetUniform("uTime", Instance->ElapsedSeconds);
-            state.StarMesh->DrawInstanced(state.TransformRotated, sky.Config.Stars.Count);
+            state.StarMesh->DrawInstanced(state.TransformRotated, state.CreatedStarCount);
         }
 
         RenderCelestialObject(state, state.SunTexture, state.SunTransform, 1.0f, sky.Config.Sun);
@@ -195,7 +195,8 @@ namespace Minecraft::SkyRenderer
 
         Random starRandom(sky.Config.Stars.Seed);
 
-        for (int i = 0; i < sky.Config.Stars.Count; ++i)
+        state.CreatedStarCount = sky.Config.Stars.Count;
+        for (int i = 0; i < state.CreatedStarCount; ++i)
         {
             vec3 position = starRandom.NextPointOnSphere();
             float rotation = starRandom.NextFloat() * numbers::pi * 2;
