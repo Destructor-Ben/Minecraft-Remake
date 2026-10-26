@@ -1,5 +1,7 @@
 # To Do List
 
+- add hotbar UI
+
 ## Sky
 
 - Update sun and moon textures

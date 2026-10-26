@@ -1,6 +1,7 @@
 #include "World/Systems/PlayerSystem.h"
 
 #include "Input/Input.h"
+#include "Logger.h"
 #include "Physics/Physics.h"
 #include "World/Blocks/Blocks.h"
 #include "World/World.h"
@@ -12,7 +13,7 @@ namespace Minecraft::PlayerSystem
     static void TickBlockBreakOrPlace(PlayerState &player, World &world);
 
     static void UpdateRotation(PlayerState &player);
-    static void UpdateSelectedBlock(PlayerState &player);
+    static void UpdateHotbar(PlayerState &player);
 
     void Tick(PlayerState &player, World &world, float deltaTime)
     {
@@ -28,7 +29,7 @@ namespace Minecraft::PlayerSystem
     void Update(PlayerState &player, int screenWidth, int screenHeight)
     {
         UpdateRotation(player);
-        UpdateSelectedBlock(player);
+        UpdateHotbar(player);
 
         player.PlayerCamera.ViewTransform = player.PlayerTransform;
         player.PlayerCamera.Update(screenWidth, screenHeight);
@@ -43,6 +44,18 @@ namespace Minecraft::PlayerSystem
         player.CurrentChunkPos = ChunkPos::FromWorldPos(initialPlayerPos);
         player.PreviousChunkPos = player.CurrentChunkPos;
         player.HasPlayerMovedChunksThisTick = true;
+
+        // TODO: temporary until I make a proper inventory system
+        player.Hotbar[0] = nullopt;
+        player.Hotbar[1] = Blocks::Grass;
+        player.Hotbar[2] = Blocks::Dirt;
+        player.Hotbar[3] = Blocks::Stone;
+        player.Hotbar[4] = Blocks::TallGrass;
+        player.Hotbar[5] = Blocks::Sand;
+        player.Hotbar[6] = Blocks::Gravel;
+        player.Hotbar[7] = Blocks::Clay;
+        player.Hotbar[8] = Blocks::Wood;
+        player.Hotbar[9] = Blocks::Leaves;
     }
 
     static void TickMovement(PlayerState &player, float deltaTime)
@@ -107,6 +120,7 @@ namespace Minecraft::PlayerSystem
             return;
 
         auto targetBlockPos = BlockPos(player.TargetBlock->HitBlockPos);
+        auto selectedItem = player.GetSelectedItem();
 
         if (Input::WasMouseButtonPressed(MouseButton::Left))
         {
@@ -117,7 +131,7 @@ namespace Minecraft::PlayerSystem
             targetBlock->Data->Type = Blocks::Air;
             world.OnBlockModified(BlockPos(targetBlockPos));
         }
-        else if (Input::WasMouseButtonPressed(MouseButton::Right) && player.SelectedBlock.has_value())
+        else if (Input::WasMouseButtonPressed(MouseButton::Right) && selectedItem.has_value())
         {
             targetBlockPos.Pos += player.TargetBlock->HitFaceNormal;
             auto targetBlock = world.GetBlock(targetBlockPos);
@@ -130,7 +144,7 @@ namespace Minecraft::PlayerSystem
             if (targetBlock->Data->Type != Blocks::Air)
                 return;
 
-            targetBlock->Data->Type = player.SelectedBlock.value();
+            targetBlock->Data->Type = selectedItem.value();
             world.OnBlockModified(targetBlockPos);
         }
     }
@@ -143,28 +157,44 @@ namespace Minecraft::PlayerSystem
         player.PlayerTransform.Rotation = quat(vec3(player.CameraPitch, player.CameraYaw, 0.0f));
     }
 
-    // TODO: allow scrolling the hotbar, also store a hotbar index
-    static void UpdateSelectedBlock(PlayerState &player)
+    static void UpdateHotbar(PlayerState &player)
     {
-        if (Input::WasKeyReleased(Key::Zero))
-            player.SelectedBlock = nullopt;
-        else if (Input::WasKeyReleased(Key::One))
-            player.SelectedBlock = Blocks::Stone;
+        float scrollDelta = Input::GetScrollWheelDelta();
+        if (scrollDelta != 0)
+        {
+            player.SelectedHotbarSlot += (int)scrollDelta;
+
+            // Don't use modulus, since it is machine dependent for negatives
+            while (player.SelectedHotbarSlot >= PlayerState::HotbarSize)
+            {
+                player.SelectedHotbarSlot -= PlayerState::HotbarSize;
+            }
+
+            while (player.SelectedHotbarSlot < 0)
+            {
+                player.SelectedHotbarSlot += PlayerState::HotbarSize;
+            }
+        }
+
+        if (Input::WasKeyReleased(Key::One))
+            player.SelectedHotbarSlot = 0;
         else if (Input::WasKeyReleased(Key::Two))
-            player.SelectedBlock = Blocks::Dirt;
+            player.SelectedHotbarSlot = 1;
         else if (Input::WasKeyReleased(Key::Three))
-            player.SelectedBlock = Blocks::Grass;
+            player.SelectedHotbarSlot = 2;
         else if (Input::WasKeyReleased(Key::Four))
-            player.SelectedBlock = Blocks::TallGrass;
+            player.SelectedHotbarSlot = 3;
         else if (Input::WasKeyReleased(Key::Five))
-            player.SelectedBlock = Blocks::Sand;
+            player.SelectedHotbarSlot = 4;
         else if (Input::WasKeyReleased(Key::Six))
-            player.SelectedBlock = Blocks::Clay;
+            player.SelectedHotbarSlot = 5;
         else if (Input::WasKeyReleased(Key::Seven))
-            player.SelectedBlock = Blocks::Gravel;
+            player.SelectedHotbarSlot = 6;
         else if (Input::WasKeyReleased(Key::Eight))
-            player.SelectedBlock = Blocks::Wood;
+            player.SelectedHotbarSlot = 7;
         else if (Input::WasKeyReleased(Key::Nine))
-            player.SelectedBlock = Blocks::Leaves;
+            player.SelectedHotbarSlot = 8;
+        else if (Input::WasKeyReleased(Key::Zero))
+            player.SelectedHotbarSlot = 9;
     }
 }

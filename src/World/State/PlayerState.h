@@ -25,7 +25,18 @@ namespace Minecraft
         float MaxCameraAngle = glm::radians(89.0f);
 
         float ReachDistance = 7.0f;
-        optional<BlockType*> SelectedBlock = nullopt; // TODO: don't actually store a BlockType* here, rework BlockType so BlockType is an ID
         optional<RayHitInfo> TargetBlock = nullopt;
+
+        // Will not be made into a config option because I hate how Minecraft has 9 hotbar slots (10 leads to nice round numbers)
+        static constexpr int HotbarSize = 10;
+
+        int SelectedHotbarSlot = 0;
+        // TODO: in future, make this an array of ItemStack
+        array<optional<BlockType*>, HotbarSize> Hotbar = { };
+
+        optional<BlockType*> GetSelectedItem()
+        {
+            return Hotbar[SelectedHotbarSlot];
+        }
     };
 }
